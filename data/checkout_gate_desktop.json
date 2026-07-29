@@ -1,0 +1,90 @@
+{
+ "device": "desktop",
+ "generated_at": "2026-07-28T08:13:12.378Z",
+ "steps": [
+  {
+   "step": 1,
+   "label": "pdp_landing",
+   "url": "https://www.lucirajewelry.com/products/corinthian-pave-diamond-mens-ring",
+   "screenshot": "reports\\captures\\gate-1-pdp_landing-desktop.png",
+   "blocking_overlay": {
+    "coverage_pct": 116.7,
+    "z": "auto",
+    "text": "Fast Shipping Trending SIMILAR ITEMS"
+   },
+   "login_wall": true,
+   "guest_option": false,
+   "asks_phone": true,
+   "visible_ctas": [
+    "A small reminder: Embrace yourself",
+    "Extraaa 3% Bank Discount on Eterna",
+    "Tennis Bracelets You'll Love | ₹50",
+    "Find Your Sparkle on a Video Call",
+    "Try at Home, Love for Life",
+    "Build Your Jewelry",
+    "Find a Store",
+    "BESTSELLERS",
+    "LUCIRA EXPRESS",
+    "ENGAGEMENT & BRIDAL",
+    "RINGS",
+    "EARRINGS"
+   ]
+  },
+  {
+   "step": 2,
+   "label": "cart_with_item",
+   "url": "https://www.lucirajewelry.com/checkout/cart",
+   "screenshot": "reports\\captures\\gate-2-cart_with_item-desktop.png",
+   "blocking_overlay": null,
+   "login_wall": false,
+   "guest_option": false,
+   "asks_phone": false,
+   "visible_ctas": [
+    "275+ In Cart 100+ Wishlisted",
+    "Corinthian Pave Diamond Men's Ring",
+    "REMOVE",
+    "MOVE TO WISHLIST",
+    "Shop with Complete Confidence See ",
+    "PROCEED TO CHECKOUT",
+    "Apply Coupon Unlock exclusive savi",
+    "ADD",
+    "Call",
+    "Whatsapp",
+    "Chat"
+   ]
+  },
+  {
+   "step": 3,
+   "label": "after_checkout_click",
+   "url": "https://www.lucirajewelry.com/checkout/cart",
+   "screenshot": "reports\\captures\\gate-3-after_checkout_click-desktop.png",
+   "blocking_overlay": {
+    "coverage_pct": 100,
+    "z": "600",
+    "text": ""
+   },
+   "login_wall": true,
+   "guest_option": false,
+   "asks_phone": true,
+   "visible_ctas": [
+    "275+ In Cart 100+ Wishlisted",
+    "Corinthian Pave Diamond Men's Ring",
+    "REMOVE",
+    "MOVE TO WISHLIST",
+    "Shop with Complete Confidence See ",
+    "PROCEED TO CHECKOUT",
+    "Apply Coupon Unlock exclusive savi",
+    "ADD",
+    "Call",
+    "Whatsapp",
+    "Chat",
+    "REQUEST OTP"
+   ],
+   "checkout_cta": {
+    "found": true,
+    "text": "PROCEED TO CHECKOUT"
+   }
+  }
+ ],
+ "js_errors": []
+}

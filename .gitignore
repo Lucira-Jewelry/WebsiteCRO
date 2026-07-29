@@ -1,0 +1,31 @@
+# Dependencies — reinstall with: cd tools/cro-mcp && npm install
+node_modules/
+package-lock.json
+
+# Playwright browser binaries (downloaded by `playwright install chromium`)
+.cache/
+ms-playwright/
+
+# Transient build fragments written by tools/merge_csv.ps1
+data/_frag.csv
+
+# OS / editor noise
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
+*.swp
+*~
+
+# Local-only Claude settings (keep .mcp.json — it is shared config)
+.claude/settings.local.json
+
+# Raw Playwright captures are large (~36 MB) and fully regenerable:
+#   cd tools/cro-mcp && node capture.js
+# The evidence that matters is already embedded in reports/insights.html.
+# Two decisive screenshots are force-committed below via .gitattributes-style
+# negation so the repo still carries the proof without the bulk.
+reports/captures/*
+!reports/captures/gate-3-after_checkout_click-mobile.png
+!reports/captures/gate-3-after_checkout_click-desktop.png
+!reports/captures/overlay-pdp-mobile.png

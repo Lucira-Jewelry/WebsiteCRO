@@ -1,0 +1,496 @@
+<style>
+  :root{
+    --bg:#EEF0ED; --surface:#FFFFFF; --raise:#F7F8F6; --ink:#1B2320; --muted:#5B6560; --faint:#8A938E;
+    --accent:#A9813F; --accent-ink:#5E4520;
+    --critical:#A23B2E; --critical-bg:#F7E7E4;
+    --high:#B0722A; --high-bg:#F8EDDC;
+    --good:#48684C; --good-bg:#E5EDE5;
+    --medium:#3D5A73; --medium-bg:#E3EAEF;
+    --line:rgba(27,35,32,0.13); --line-strong:rgba(27,35,32,0.26);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#111412; --surface:#191E1A; --raise:#1F2521; --ink:#EDEFEA; --muted:#9AA69E; --faint:#6E786F;
+      --accent:#C79B4E; --accent-ink:#D8B87A; --critical:#E4695C; --critical-bg:#3B2320;
+      --high:#DFA555; --high-bg:#392D19; --good:#8CBC92; --good-bg:#1C2A1E;
+      --medium:#8FB3D2; --medium-bg:#1D2B35;
+      --line:rgba(237,239,234,0.14); --line-strong:rgba(237,239,234,0.28); }
+  }
+  :root[data-theme="dark"]{ --bg:#111412; --surface:#191E1A; --raise:#1F2521; --ink:#EDEFEA; --muted:#9AA69E;
+    --faint:#6E786F; --accent:#C79B4E; --accent-ink:#D8B87A; --critical:#E4695C; --critical-bg:#3B2320;
+    --high:#DFA555; --high-bg:#392D19; --good:#8CBC92; --good-bg:#1C2A1E; --medium:#8FB3D2; --medium-bg:#1D2B35;
+    --line:rgba(237,239,234,0.14); --line-strong:rgba(237,239,234,0.28); }
+  :root[data-theme="light"]{ --bg:#EEF0ED; --surface:#FFFFFF; --raise:#F7F8F6; --ink:#1B2320; --muted:#5B6560;
+    --faint:#8A938E; --accent:#A9813F; --accent-ink:#5E4520; --critical:#A23B2E; --critical-bg:#F7E7E4;
+    --high:#B0722A; --high-bg:#F8EDDC; --good:#48684C; --good-bg:#E5EDE5; --medium:#3D5A73; --medium-bg:#E3EAEF;
+    --line:rgba(27,35,32,0.13); --line-strong:rgba(27,35,32,0.26); }
+
+  *{box-sizing:border-box;} html,body{margin:0;padding:0;}
+  body{background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;
+    font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  .page{max-width:1020px;margin:0 auto;padding:48px 22px 90px;}
+  h1,h2{font-family:Iowan Old Style,"Palatino Linotype","Book Antiqua",Georgia,serif;font-weight:600;margin:0;text-wrap:balance;}
+  .measure{max-width:70ch;} p{margin:0 0 12px;}
+  code{font-family:ui-monospace,"SF Mono","Cascadia Code",monospace;font-size:.85em;background:var(--line);padding:1px 5px;border-radius:3px;}
+  ::selection{background:var(--accent);color:#fff;}
+
+  .masthead{display:flex;flex-direction:column;gap:8px;padding-bottom:22px;margin-bottom:26px;border-bottom:1px solid var(--line-strong);}
+  .eyebrow{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-ink);font-weight:700;}
+  .masthead h1{font-size:38px;line-height:1.08;}
+  .masthead .meta{font-size:13px;color:var(--muted);margin-top:3px;}
+
+  .sprint{margin-bottom:44px;}
+  .sprint-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:6px;
+    padding-bottom:9px;border-bottom:2px solid var(--accent);}
+  .sprint-head h2{font-size:21px;}
+  .sprint-head .when{font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--muted);}
+  .sprint-note{font-size:13px;color:var(--muted);margin:0 0 16px;max-width:74ch;}
+
+  .task{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:0;margin-bottom:12px;overflow:hidden;}
+  .task.crit{border-left:4px solid var(--critical);}
+  .task.high{border-left:4px solid var(--high);}
+  .task.med{border-left:4px solid var(--medium);}
+  .task-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;padding:14px 17px 0;}
+  .tid{font-family:ui-monospace,monospace;font-size:11.5px;font-weight:700;color:var(--accent-ink);
+    background:var(--raise);padding:2px 7px;border-radius:4px;}
+  .task-head h3{margin:0;font-size:15.5px;font-weight:700;flex:1;min-width:240px;}
+  .chips{display:flex;gap:5px;flex-wrap:wrap;padding:8px 17px 0;}
+  .chip{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+    padding:2px 7px;border-radius:100px;white-space:nowrap;}
+  .chip.critical{background:var(--critical-bg);color:var(--critical);}
+  .chip.high{background:var(--high-bg);color:var(--high);}
+  .chip.med{background:var(--medium-bg);color:var(--medium);}
+  .chip.owner{background:var(--raise);color:var(--ink);border:1px solid var(--line-strong);}
+  .chip.effort{background:var(--good-bg);color:var(--good);}
+  .chip.effort.slow{background:var(--high-bg);color:var(--high);}
+  .chip.dep{background:var(--raise);color:var(--faint);}
+  .task-body{padding:11px 17px 15px;font-size:13.5px;}
+  .task-body p{margin:0 0 9px;}
+  .steps{margin:0;padding-left:19px;font-size:13px;}
+  .steps li{margin-bottom:4px;}
+  .accept{margin-top:11px;padding:10px 12px;background:var(--raise);border-radius:6px;font-size:12.5px;}
+  .accept b{display:block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
+  .accept code{background:var(--surface);}
+
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  .twrap{overflow-x:auto;border:1px solid var(--line);border-radius:6px;}
+  th{text-align:left;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:700;
+    padding:9px 11px;background:var(--raise);border-bottom:1px solid var(--line-strong);white-space:nowrap;}
+  td{padding:8px 11px;border-bottom:1px solid var(--line);background:var(--surface);font-variant-numeric:tabular-nums;}
+  tr:last-child td{border-bottom:none;}
+  th.num,td.num{text-align:right;}
+  td.ok{color:var(--good);font-weight:600;} td.bad{color:var(--critical);font-weight:700;}
+  td.dim{color:var(--faint);}
+  td.mono{font-family:ui-monospace,monospace;font-size:11.5px;color:var(--muted);}
+
+  .banner{background:var(--surface);border:1px solid var(--line-strong);border-left:5px solid var(--accent);
+    border-radius:6px;padding:16px 19px;font-size:13.5px;}
+  .banner.alarm{border-color:var(--critical);border-left-color:var(--critical);}
+  .banner h3{margin:0 0 7px;font-size:16px;font-family:inherit;font-weight:700;}
+  .note{font-size:12px;color:var(--faint);margin-top:9px;}
+  .foot{margin-top:50px;padding-top:18px;border-top:1px solid var(--line);font-size:11.5px;color:var(--faint);}
+</style>
+
+<div class="page">
+
+  <div class="masthead">
+    <div class="eyebrow">Lucira Jewelry · CRO Action Plan</div>
+    <h1>What to do, in what order</h1>
+    <div class="meta">Derived from Run 005 · 20 tasks across 4 owners · every task has a runnable acceptance test</div>
+  </div>
+
+  <div class="banner alarm" style="margin-bottom:30px;">
+    <h3>Read this first: two tasks account for most of the available upside</h3>
+    <p class="measure" style="margin:0;">Sprint&nbsp;1 exists because the checkout OTP wall and the entry popup are both
+      <b>configuration and layout problems, not rebuilds</b>. T1 and T7 together are roughly a day of work between a
+      frontend developer and whoever owns the popup tool. Everything after that is smaller, slower, or dependent on
+      measurement that is currently broken.</p>
+    <p class="measure" style="margin:9px 0 0;">Effort figures are my estimates from reading the rendered site, not
+      your team's. Treat them as relative sizing, not commitments.</p>
+  </div>
+
+  <!-- ============ SPRINT 1 ============ -->
+  <div class="sprint">
+    <div class="sprint-head">
+      <h2>Sprint 1 — Unblock the funnel</h2>
+      <span class="when">this week · 5 tasks</span>
+    </div>
+    <p class="sprint-note">Nothing here needs a redesign or a data migration. Ship these before touching anything else,
+      because they change the numbers every later task is measured against.</p>
+
+    <div class="task crit">
+      <div class="task-head"><span class="tid">T1</span><h3>Convert the mobile checkout login modal to a bottom sheet</h3></div>
+      <div class="chips">
+        <span class="chip critical">Critical</span><span class="chip owner">Frontend</span>
+        <span class="chip effort">~4 hours</span><span class="chip med">+₹4–6L / mo modelled</span>
+      </div>
+      <div class="task-body">
+        <p>Desktop converts 4.2× better through the identical gate because the cart, total and step progress stay
+          visible. Reproduce that context on mobile. This is the single best effort-to-impact ratio in the plan.</p>
+        <ol class="steps">
+          <li>Change the modal from full-viewport to a bottom sheet occupying ~60% of the viewport height.</li>
+          <li>Keep the cart summary and the <code>CART 1/3</code> step indicator visible above the sheet.</li>
+          <li>Retitle from “Welcome to Lucira” to state the purpose — e.g. “Verify your number to continue to shipping”.</li>
+          <li>Show the order total inside the sheet, so the user knows what they are logging in for.</li>
+          <li>Give the close control a hit area of at least 44×44&nbsp;px.</li>
+        </ol>
+        <div class="accept"><b>Acceptance test</b>
+          Run <code>cro_funnel_walk</code> at <code>device: "mobile"</code>. The cart step must report
+          <code>blocking_overlay.coverage_pct &lt; 60</code> and the cart total must still be readable in the
+          screenshot. Compare against today's baseline of <code>100</code>.</div>
+      </div>
+    </div>
+
+    <div class="task crit">
+      <div class="task-head"><span class="tid">T7</span><h3>Stop the spin-wheel popup firing on the first page of a session</h3></div>
+      <div class="chips">
+        <span class="chip critical">Critical</span><span class="chip owner">Marketing ops</span>
+        <span class="chip effort">~1 hour · config only</span><span class="chip med">+₹3–5L / mo modelled</span>
+      </div>
+      <div class="task-body">
+        <p>A paid visitor's first impression is a lottery wheel demanding a phone number, on the page they paid to
+          reach. Homepage popups absorb 2,221 clicks against 215 on the top navigation link.</p>
+        <ol class="steps">
+          <li>In NitroCommerce (<code>x.nitrocommerce.ai/nitro-popup-sdk.js</code>): disable display on the first page view of a session.</li>
+          <li>Re-trigger on exit intent, or after 2+ page views or 30+ seconds — a visitor who has browsed is worth asking.</li>
+          <li>Exclude <code>/checkout/*</code> entirely so it can never compound with T1's login gate.</li>
+        </ol>
+        <div class="accept"><b>Acceptance test</b>
+          Run <code>cro_overlay_audit</code> against a fresh session on <code>/</code>,
+          <code>/collections/eterna</code> and a PDP. All three must return
+          <code>blocking: null</code>. Today all three return a 100%-coverage overlay at z-index 9999.</div>
+      </div>
+    </div>
+
+    <div class="task crit">
+      <div class="task-head"><span class="tid">T9</span><h3>Stop Google Ads counting Begin Checkout as a conversion</h3></div>
+      <div class="chips">
+        <span class="chip critical">Critical</span><span class="chip owner">Paid media</span>
+        <span class="chip effort">~15 minutes</span><span class="chip med">Unblocks all ROAS reporting</span>
+      </div>
+      <div class="task-body">
+        <p>Campaign “conversions” currently blend Purchase + Begin Checkout + two <code>UPLOAD_CLICKS</code> actions,
+          inflating totals roughly 7× against real orders. Until this is fixed, no ROAS figure in the account is usable
+          and Smart Bidding is optimising toward noise.</p>
+        <ol class="steps">
+          <li>Set <code>Begin Checkout</code> → <code>include_in_conversions_metric: false</code>.</li>
+          <li>Switch the primary bidding action to <code>Lucira (web) purchase</code> — the correctly wired GA4 import, currently <em>excluded</em> from the metric.</li>
+        </ol>
+        <div class="accept"><b>Acceptance test</b>
+          Total campaign conversions for a 7-day window should land within roughly ±30% of real Razorpay orders for the
+          same window (18 for 19–25 Jul), instead of the current ~7× overstatement.</div>
+      </div>
+    </div>
+
+    <div class="task high">
+      <div class="task-head"><span class="tid">T10</span><h3>Confirm whether the two upload-based conversion actions are intentional</h3></div>
+      <div class="chips">
+        <span class="chip high">High</span><span class="chip owner">Paid media</span>
+        <span class="chip effort">~30 minutes</span><span class="chip dep">blocks T9 sign-off</span>
+      </div>
+      <div class="task-body">
+        <p><code>Offline Purchase</code> and <code>CRM Online Conversion</code> are both counted. For an omnichannel
+          business running city-level campaigns that map to physical stores, this may be deliberate online-to-offline
+          attribution — in which case leave them and treat the blended figure as O2O, not e-commerce.</p>
+        <ol class="steps">
+          <li>Ask whoever built the account whether these represent store sales attributed to online ads.</li>
+          <li>If yes: keep them, but report e-commerce ROAS from a separate segment that excludes them.</li>
+          <li>If no: set both to not count.</li>
+        </ol>
+        <div class="accept"><b>Acceptance test</b>
+          A documented decision either way. This is a judgement call about the business model, not a defect —
+          it just needs to be a deliberate choice rather than an accident.</div>
+      </div>
+    </div>
+
+    <div class="task high">
+      <div class="task-head"><span class="tid">T12</span><h3>Pause the three zero-conversion campaigns</h3></div>
+      <div class="chips">
+        <span class="chip high">High</span><span class="chip owner">Paid media</span>
+        <span class="chip effort">~15 minutes</span><span class="chip med">₹52,336 / mo confirmed</span>
+      </div>
+      <div class="task-body">
+        <p>Confirmed spend with zero attributed conversions over 30 days. Pause pending the T9 tracking fix, then
+          reassess — some may be genuinely broken rather than genuinely unprofitable.</p>
+        <div class="twrap" style="margin:10px 0 0;">
+          <table>
+            <thead><tr><th>Campaign</th><th class="num">30-day spend</th><th class="num">Conversions</th></tr></thead>
+            <tbody>
+              <tr><td class="mono">online_mof_all_all_retar_display_01.12.2025</td><td class="num">₹22,191</td><td class="num bad">0</td></tr>
+              <tr><td class="mono">online_tof_all_all_embrace_dgen_11.07.2026</td><td class="num">₹15,326</td><td class="num bad">0</td></tr>
+              <tr><td class="mono">offline_mof_all_noida_acqn_search-gmb_14.04.2026</td><td class="num">₹14,819</td><td class="num bad">0</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="accept"><b>Acceptance test</b>
+          Spend on those three campaigns reads ₹0 for a full day. Re-evaluate after T9 lands — the GMB campaign in
+          particular may be driving store visits that the current config can't see.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ SPRINT 2 ============ -->
+  <div class="sprint">
+    <div class="sprint-head">
+      <h2>Sprint 2 — Remove the commitment barrier</h2>
+      <span class="when">next 2 weeks · 4 tasks</span>
+    </div>
+    <p class="sprint-note">T2 is the largest single prize in the plan but needs real development and ideally a test
+      harness. T14 is small but must ship alongside it, or you will have no way to measure whether T2 worked.</p>
+
+    <div class="task crit">
+      <div class="task-head"><span class="tid">T2</span><h3>Add guest checkout; move phone capture to the shipping step</h3></div>
+      <div class="chips">
+        <span class="chip critical">Critical</span><span class="chip owner">Frontend + backend</span>
+        <span class="chip effort slow">~3–5 days</span><span class="chip med">+₹8–12L / mo modelled</span>
+        <span class="chip dep">pairs with T14</span>
+      </div>
+      <div class="task-body">
+        <p>A mandatory OTP before checkout asks for commitment before the visitor has seen shipping cost or delivery
+          date. You already capture a phone number at the shipping step, so the pre-checkout gate is redundant — the
+          number still arrives, one step later, from someone who has decided to buy.</p>
+        <ol class="steps">
+          <li>Add “Continue as guest” as the <em>primary</em> action; keep login secondary for returning customers.</li>
+          <li>Capture phone at shipping, where delivery makes the ask self-evidently justified.</li>
+          <li>Preserve cart contents across the guest→login transition, so a user who changes their mind loses nothing.</li>
+          <li>Ship to mobile first and use desktop as the control if you cannot run a true A/B test.</li>
+        </ol>
+        <div class="accept"><b>Acceptance test</b>
+          <code>cro_funnel_walk</code> at <code>device: "mobile"</code> must reach a URL under
+          <code>/checkout/shipping</code> with <code>login_wall: false</code>. Today it stays on
+          <code>/checkout/cart</code> with <code>login_wall: true</code> and <code>guest_option: false</code>.</div>
+      </div>
+    </div>
+
+    <div class="task crit">
+      <div class="task-head"><span class="tid">T14</span><h3>Fire <code>begin_checkout</code> when checkout opens, not after OTP succeeds</h3></div>
+      <div class="chips">
+        <span class="chip critical">Critical</span><span class="chip owner">Frontend + analytics</span>
+        <span class="chip effort">~2 hours</span><span class="chip dep">required to measure T1 &amp; T2</span>
+      </div>
+      <div class="task-body">
+        <p>GA4 records 144 mobile <code>begin_checkout</code> against 1,964 cart users. That 7.3% is partly a
+          <em>measurement</em> artifact: the event currently fires after OTP verification, so everyone blocked by the
+          wall is invisible. Without this fix you cannot distinguish “T1 worked” from “the event moved”.</p>
+        <ol class="steps">
+          <li>Fire <code>begin_checkout</code> on the checkout intent — the button click — not on successful auth.</li>
+          <li>Add a separate event for OTP shown / OTP completed, so the gate's cost is measurable in its own right.</li>
+          <li>Record the change date prominently; it creates a step change in the funnel that is not a behaviour change.</li>
+        </ol>
+        <div class="accept"><b>Acceptance test</b>
+          <code>begin_checkout</code> should rise sharply toward cart-page user count while purchases stay flat.
+          That is the expected and correct outcome — annotate it so nobody later reads it as a conversion win.</div>
+      </div>
+    </div>
+
+    <div class="task high">
+      <div class="task-head"><span class="tid">T3</span><h3>Move the reviews summary to roughly 16% page depth on PDPs</h3></div>
+      <div class="chips">
+        <span class="chip high">High</span><span class="chip owner">Frontend</span>
+        <span class="chip effort">~3 hours</span><span class="chip med">No new content needed</span>
+      </div>
+      <div class="task-body">
+        <p>Measured at 47.8% of a 19.5-screen page; the median mobile visitor stops at 18.3%. For a ₹44,370 considered
+          purchase the strongest trust asset is effectively unpublished. Certification, returns and shipping are
+          already well placed — reviews are the only real casualty.</p>
+        <ol class="steps">
+          <li>Insert a compact summary — stars, review count, one quoted review — directly below Product Details.</li>
+          <li>Leave the full review list where it is; only the summary needs to move up.</li>
+        </ol>
+        <div class="accept"><b>Acceptance test</b>
+          <code>cro_fold_analysis</code> with <code>avgScrollDepthPct: 18.3</code> must return the Reviews element at
+          <code>pct_down &lt;= 20</code> and <code>seen_by_median_visitor: true</code>.</div>
+      </div>
+    </div>
+
+    <div class="task high">
+      <div class="task-head"><span class="tid">T17</span><h3>Complete a purchase inside the Instagram and Facebook in-app browsers</h3></div>
+      <div class="chips">
+        <span class="chip high">High</span><span class="chip owner">QA / growth</span>
+        <span class="chip effort">~2 hours, real device</span>
+      </div>
+      <div class="task-body">
+        <p>Paid Social bounces at 62–100% on every page, including pages that convert well from other channels — so this
+          is not a landing-page problem. The top three JS errors are Meta WebView signatures
+          (<code>window.webkit.messageHandlers</code> undefined, 817 sessions; <code>Java object is gone</code>, 694).
+          Roughly 1,500 sessions where the page may never have worked.</p>
+        <ol class="steps">
+          <li>On a real phone, open an Instagram ad link and attempt a full purchase without leaving the in-app browser.</li>
+          <li>Repeat in the Facebook in-app browser, on both iOS and Android.</li>
+          <li>Note specifically whether OTP delivery and Razorpay redirect survive the WebView.</li>
+        </ol>
+        <div class="accept"><b>Acceptance test</b>
+          A written pass/fail per platform. If OTP or payment fails in-app, that is a larger finding than anything else
+          in this plan and should be escalated ahead of Sprint 3.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ SPRINT 3 ============ -->
+  <div class="sprint">
+    <div class="sprint-head">
+      <h2>Sprint 3 — Fix the measurement floor</h2>
+      <span class="when">weeks 3–4 · 5 tasks</span>
+    </div>
+    <p class="sprint-note">None of these change conversion directly. They change whether you can <em>trust</em> what
+      you measure afterwards — which is why they sit after the funnel fixes but before any further optimisation.</p>
+
+    <div class="task high">
+      <div class="task-head"><span class="tid">T13</span><h3>Inspect the Shopify Web Pixel configuration</h3></div>
+      <div class="chips"><span class="chip high">High</span><span class="chip owner">Analytics</span><span class="chip effort">~1 hour</span></div>
+      <div class="task-body">
+        <p>GA4 captured 42 purchases against ~64 GA4-trackable online orders over 30 days — a 66% capture rate. I could
+          not diagnose further: the <code>read_pixels</code> scope is not granted to the integration, so the Web Pixel
+          config is not inspectable via API.</p>
+        <ol class="steps">
+          <li>Either grant <code>read_pixels</code> to the analytics integration, or check <b>Shopify Admin → Settings → Customer events</b> manually.</li>
+          <li>Verify the purchase tag fires on Razorpay return and on Partial COD orders specifically.</li>
+          <li>Check consent-mode defaults — a default-deny can suppress a third of events.</li>
+        </ol>
+        <div class="accept"><b>Acceptance test</b>
+          GA4 purchases within ~10% of Razorpay order count for a 7-day window.</div>
+      </div>
+    </div>
+
+    <div class="task med">
+      <div class="task-head"><span class="tid">T15</span><h3>Add bot filtering at the GA4 data-stream level</h3></div>
+      <div class="chips"><span class="chip med">Medium</span><span class="chip owner">Analytics</span><span class="chip effort">~1 hour</span></div>
+      <div class="task-body">
+        <p>Clarity flagged 34.4% of sessions as bots. GA4 is not bot-filtered, so every blended metric — bounce,
+          scroll, engagement, conversion rate — is diluted by roughly a third.</p>
+        <div class="accept"><b>Acceptance test</b>
+          GA4 session count drops materially and stabilises; the gap to Clarity's non-bot session count narrows.
+          Annotate the date — the drop is a data-quality fix, not a traffic loss.</div>
+      </div>
+    </div>
+
+    <div class="task med">
+      <div class="task-head"><span class="tid">T19</span><h3>Re-run lab vitals with 3 runs per page</h3></div>
+      <div class="chips"><span class="chip med">Medium</span><span class="chip owner">Analytics</span><span class="chip effort">~30 minutes</span></div>
+      <div class="task-body">
+        <p>The batch capture measured each page once, and 2 of 8 readings were clear outliers (desktop PDP at 19&nbsp;s,
+          an early probe at 15.7&nbsp;s that turned out to be a cold-start artifact). Single-run LCP is not decision-grade.</p>
+        <div class="accept"><b>Acceptance test</b>
+          <code>cro_vitals</code> with <code>runs: 3</code> on all four funnel pages, both devices. Use the medians;
+          discard the batch figures. Specifically confirm or dismiss the desktop collection-page CLS of 0.154.</div>
+      </div>
+    </div>
+
+    <div class="task med">
+      <div class="task-head"><span class="tid">T20</span><h3>Decide what the website is accountable for</h3></div>
+      <div class="chips"><span class="chip med">Medium</span><span class="chip owner">Leadership</span><span class="chip effort">one meeting</span></div>
+      <div class="task-body">
+        <p>60% of orders are physical-store orders written back through the ERP, and the city-level ad campaigns
+          (Pune, Noida, Borivali, Chembur, Paschim Vihar) map exactly to store locations. On online-only orders the
+          conversion rate is ~0.03%, which looks alarming — but if the site's real job is partly to drive store
+          visits, that number is measuring the wrong thing.</p>
+        <ol class="steps">
+          <li>Agree what the site is measured on: direct online sales, store-visit assists, or a weighted blend.</li>
+          <li>If store visits count, define how they are attributed — and revisit T10 in that light.</li>
+          <li>Set the target for whichever metric you pick, so later runs have something to compare against.</li>
+        </ol>
+        <div class="accept"><b>Acceptance test</b>
+          A written definition added to the repo README. Every subsequent report is measured against it.</div>
+      </div>
+    </div>
+
+    <div class="task med">
+      <div class="task-head"><span class="tid">T18</span><h3>Confirm whether EMI / financing is offered</h3></div>
+      <div class="chips"><span class="chip med">Medium</span><span class="chip owner">Payments + frontend</span><span class="chip effort">~2 hours if it exists</span></div>
+      <div class="task-body">
+        <p>No financing, EMI or instalment messaging matched on any page at either breakpoint, on baskets of
+          ₹44,000–₹1,85,000. <b>This is a keyword match and could be a false negative</b> — confirm before acting.</p>
+        <ol class="steps">
+          <li>Ask the payments team whether EMI is available through Razorpay on these baskets.</li>
+          <li>If offered: show “from ₹X/month” beside the sticky price, which is already always visible.</li>
+          <li>If not offered: evaluate it as a conversion lever — it is a standard purchase enabler at this price point in this market.</li>
+        </ol>
+        <div class="accept"><b>Acceptance test</b>
+          If added, <code>cro_fold_analysis</code> returns the EMI element as <code>present: true</code> with
+          <code>pct_down &lt; 5</code> or <code>sticky: true</code>.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ BACKLOG ============ -->
+  <div class="sprint">
+    <div class="sprint-head">
+      <h2>Backlog — structural</h2>
+      <span class="when">when Sprints 1–3 are verified · 6 tasks</span>
+    </div>
+    <p class="sprint-note">Real work with real value, but all of it is either slower, lower-confidence, or would be
+      measured against numbers that Sprints 1–3 are about to change.</p>
+    <div class="twrap">
+      <table>
+        <thead><tr><th>ID</th><th>Task</th><th>Owner</th><th>Effort</th><th>Why it waits</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">T4</td><td>Shorten mobile templates — homepage 21.5 → ~10 screens, PDP 19.5 → ~10</td><td>Frontend + content</td><td>weeks</td><td>Large change; audit what sits below the reach line first rather than guessing</td></tr>
+          <tr><td class="mono">T5</td><td>Fix desktop collection-page CLS (0.154)</td><td>Frontend</td><td>~4 hours</td><td>Confirm it is real via T19 before spending time on it</td></tr>
+          <tr><td class="mono">T6</td><td>Verify the Zoho SalesIQ chat widget (z-index 2147483647) does not overlap the sticky Add-to-Cart bar at 375&nbsp;px</td><td>Frontend</td><td>~1 hour</td><td>Suspected from the z-index, not yet observed causing a problem</td></tr>
+          <tr><td class="mono">T8</td><td>Reduce third-party scripts — 14 hosts, including two separate popup/engagement SDKs (NitroCommerce + WebEngage)</td><td>Frontend + marketing</td><td>days</td><td>Needs a decision on which popup tool to keep; T7 may resolve it</td></tr>
+          <tr><td class="mono">T11</td><td>Investigate the 670-vs-425,000 Shopify native session gap</td><td>Analytics</td><td>~half day</td><td>Expected for a headless storefront — confirm it is benign, then document and ignore</td></tr>
+          <tr><td class="mono">T16</td><td>Add express checkout / Buy Now on PDPs</td><td>Frontend</td><td>days</td><td>Only meaningful once T2 removes the login gate — otherwise it leads to the same wall</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ============ VERIFICATION ============ -->
+  <div class="sprint">
+    <div class="sprint-head">
+      <h2>How to verify anything actually worked</h2>
+      <span class="when">before / after protocol</span>
+    </div>
+    <p class="sprint-note">Do not judge these changes on next-day conversion rate. Purchases run 2–3 per day, so a
+      single day tells you nothing. Use the lab test for “did the change ship correctly” and the dashboard for
+      “did behaviour move”.</p>
+
+    <div class="banner">
+      <h3>The lab test — immediate, deterministic</h3>
+      <p style="margin:0 0 9px;">Run the relevant <code>cro_*</code> tool before the change and again after. It answers
+        “is the thing actually fixed”, in minutes, with no waiting for traffic.</p>
+      <div class="twrap">
+        <table>
+          <thead><tr><th>Task</th><th>Tool</th><th>Today's baseline</th><th>Target</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">T1</td><td class="mono">cro_funnel_walk</td><td class="bad">coverage 100%</td><td class="ok">&lt; 60%, cart visible</td></tr>
+            <tr><td class="mono">T2</td><td class="mono">cro_funnel_walk</td><td class="bad">login_wall: true</td><td class="ok">reaches /checkout/shipping</td></tr>
+            <tr><td class="mono">T3</td><td class="mono">cro_fold_analysis</td><td class="bad">Reviews @ 47.8%</td><td class="ok">≤ 20%</td></tr>
+            <tr><td class="mono">T7</td><td class="mono">cro_overlay_audit</td><td class="bad">blocking on 3 pages</td><td class="ok">blocking: null</td></tr>
+            <tr><td class="mono">T5, T19</td><td class="mono">cro_vitals</td><td class="dim">single-run, noisy</td><td class="ok">median of 3, CLS ≤ 0.1</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="banner" style="margin-top:14px;">
+      <h3>The field test — slower, and the one that counts</h3>
+      <p style="margin:0 0 9px;">Watch these in the interactive dashboard. Compare <b>week over week</b>, not day over
+        day: the 7-day window overlaps 6 of 7 days, so daily deltas are damped and noisy.</p>
+      <div class="twrap">
+        <table>
+          <thead><tr><th>Metric</th><th class="num">Today</th><th>Expected direction</th><th>Watch out for</th></tr></thead>
+          <tbody>
+            <tr><td>Mobile cart → checkout</td><td class="num bad">7.3%</td><td class="ok">up, toward desktop's 30.9%</td><td>T14 inflates this artificially — annotate the ship date</td></tr>
+            <tr><td>Rage clicks per 1k sessions (mobile)</td><td class="num bad">23.2</td><td class="ok">down after T1 and T7</td><td>Clarity coverage must span the full comparison window</td></tr>
+            <tr><td>Homepage → collection</td><td class="num bad">33.96%</td><td class="ok">up after T7</td><td>Check session volume didn't move first</td></tr>
+            <tr><td>Paid Social bounce</td><td class="num bad">62–100%</td><td class="ok">down after T7 and T17</td><td>If T17 finds in-app checkout broken, T7 alone won't fix this</td></tr>
+            <tr><td>Purchases (7-day)</td><td class="num">18</td><td class="ok">up</td><td>Needs 2–3 weeks to read at this volume</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note" style="margin-bottom:0;">One rule throughout: <b>check session volume before crediting any rate
+        change to a site change.</b> Paid Social converts near zero, so its share shifting moves every blended rate
+        without anything on the site having changed.</p>
+    </div>
+  </div>
+
+  <div class="foot">
+    <div><b>20 tasks</b> · 5 in Sprint 1 · 4 in Sprint 2 · 5 in Sprint 3 · 6 in backlog</div>
+    <div style="margin-top:7px;">Owners: Frontend (T1, T3, T4, T5, T6, T16), Frontend+backend (T2), Frontend+analytics (T14),
+      Marketing ops (T7, T8), Paid media (T9, T10, T12), Analytics (T13, T15, T19, T11), QA/growth (T17),
+      Payments (T18), Leadership (T20).</div>
+    <div style="margin-top:7px;">Every acceptance test is runnable today via the <code>cro</code> MCP server
+      (<code>.mcp.json</code>) or the interactive dashboard. Effort estimates are mine, not the team's.</div>
+  </div>
+
+</div>

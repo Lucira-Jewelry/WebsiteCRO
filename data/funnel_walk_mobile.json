@@ -1,0 +1,66 @@
+{
+ "device": "mobile",
+ "generated_at": "2026-07-28T08:08:54.574Z",
+ "steps": [
+  {
+   "step": 1,
+   "label": "collection",
+   "url": "https://www.lucirajewelry.com/collections/eterna",
+   "screenshot": "reports\\captures\\funnel-1-collection-mobile.png",
+   "blocking_overlay": {
+    "coverage_pct": 100,
+    "z": "9999",
+    "text": "Authentication Login to your account. REGISTER TO WIN A REWARD Try Your Luck! Win A Diamon"
+   },
+   "centre_click_hits": "img",
+   "dismiss": {
+    "method": "close-affordance",
+    "text": "Lab Grown Diamond Jewelry in Pune\n|\nLab ",
+    "cleared": false
+   }
+  },
+  {
+   "step": 2,
+   "label": "product",
+   "url": "https://www.lucirajewelry.com/products/7-80-ct-pear-diamond-east-west-tennis-bracelet",
+   "screenshot": "reports\\captures\\funnel-2-product-mobile.png",
+   "blocking_overlay": null,
+   "centre_click_hits": "img",
+   "dismiss": {
+    "method": "close-affordance",
+    "text": "Your Lucira jewelry piece arrives in a p",
+    "cleared": true
+   }
+  },
+  {
+   "step": 3,
+   "label": "after_add_to_cart",
+   "url": "https://www.lucirajewelry.com/checkout/cart",
+   "screenshot": "reports\\captures\\funnel-3-after_add_to_cart-mobile.png",
+   "blocking_overlay": null,
+   "centre_click_hits": "MADE TO ORDER 50+ Wishlisted 7.80 ct Pear Diamond East-West Tennis Bra",
+   "add_to_cart": {
+    "found": true,
+    "text": "ADD TO CART"
+   }
+  },
+  {
+   "step": 4,
+   "label": "cart",
+   "url": "https://www.lucirajewelry.com/checkout/cart",
+   "screenshot": "reports\\captures\\funnel-4-cart-mobile.png",
+   "blocking_overlay": null,
+   "centre_click_hits": "MADE TO ORDER 50+ Wishlisted 7.80 ct Pear Diamond East-West Tennis Bra",
+   "cart_state": {
+    "looks_empty": false,
+    "doc_height_px": 1786,
+    "screens_tall": 2.2,
+    "checkout_cta": [
+     "PROCEED TO CHECKOUT"
+    ],
+    "login_wall": false
+   }
+  }
+ ],
+ "js_errors": []
+}

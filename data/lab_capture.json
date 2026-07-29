@@ -1,0 +1,1341 @@
+{
+ "generated_at": "2026-07-28T07:58:31.010Z",
+ "site": "https://www.lucirajewelry.com",
+ "pages": {
+  "home-mobile": {
+   "key": "home",
+   "label": "Homepage",
+   "url": "https://www.lucirajewelry.com/",
+   "device": "mobile",
+   "avg_scroll_depth_pct": 27.8,
+   "http_status": 200,
+   "overlays": {
+    "body_scroll_locked": false,
+    "blocking": {
+     "coverage_pct": 100,
+     "z": "9999",
+     "text": "Authentication Login to your account. REGISTER TO WIN A REWARD Try Your Luck! Win A Diamond Pendant +91 REQUEST OTP 100%"
+    },
+    "centre_click_hits": "img",
+    "all": [
+     {
+      "coverage_pct": 100,
+      "z": "9999",
+      "text": "Authentication Login to your account. REGISTER TO WIN A REWARD Try Your Luck! Win A Diamon"
+     },
+     {
+      "coverage_pct": 18.9,
+      "z": "100",
+      "text": "A small reminder: Embrace yourself. Extraaa 3% Bank Discount on Eterna. Tennis Bracelets Y"
+     },
+     {
+      "coverage_pct": 1.8,
+      "z": "499",
+      "text": "At your Service"
+     }
+    ]
+   },
+   "screenshot_viewport": "reports\\captures\\overlay-home-mobile.png",
+   "fold": {
+    "doc_height_px": 17487,
+    "screens_tall": 21.5,
+    "avg_scroll_reach_px": 4861,
+    "elements": [
+     {
+      "label": "Price",
+      "present": true,
+      "sticky": false,
+      "pct_down": 11.7,
+      "top_px": 2049,
+      "seen_by_median": true
+     },
+     {
+      "label": "Add to Cart",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Buy Now",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Checkout",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Variant selector",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Size guide",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Certification",
+      "present": true,
+      "sticky": false,
+      "pct_down": 5.9,
+      "top_px": 1030,
+      "seen_by_median": true
+     },
+     {
+      "label": "Returns / exchange",
+      "present": true,
+      "sticky": false,
+      "pct_down": 6.2,
+      "top_px": 1089,
+      "seen_by_median": true
+     },
+     {
+      "label": "Shipping info",
+      "present": true,
+      "sticky": false,
+      "pct_down": 5.9,
+      "top_px": 1030,
+      "seen_by_median": true
+     },
+     {
+      "label": "EMI / financing",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Reviews",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Product details",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Try at home",
+      "present": true,
+      "sticky": true,
+      "pct_down": 0,
+      "top_px": 0,
+      "seen_by_median": true
+     }
+    ]
+   },
+   "vitals": {
+    "lcp_ms": 1908,
+    "cls": 0.0577,
+    "fcp_ms": 708,
+    "ttfb_ms": 181,
+    "dom_content_loaded_ms": 379,
+    "load_ms": 9868,
+    "js_errors": 0,
+    "js_error_samples": []
+   },
+   "heatmap": {
+    "matched": 5,
+    "unmatched": [
+     {
+      "text": "Spin the Wheel",
+      "count": 400
+     },
+     {
+      "text": "WELCOME TO LUCIRA",
+      "count": 259
+     }
+    ],
+    "image": "reports\\captures\\heatmap-home-mobile.png"
+   }
+  },
+  "plp-mobile": {
+   "key": "plp",
+   "label": "Collection (PLP)",
+   "url": "https://www.lucirajewelry.com/collections/eterna",
+   "device": "mobile",
+   "avg_scroll_depth_pct": 27.66,
+   "http_status": 200,
+   "overlays": {
+    "body_scroll_locked": false,
+    "blocking": {
+     "coverage_pct": 100,
+     "z": "9999",
+     "text": "Authentication Login to your account. REGISTER TO WIN A REWARD Try Your Luck! Win A Diamond Pendant +91 REQUEST OTP 100%"
+    },
+    "centre_click_hits": "img",
+    "all": [
+     {
+      "coverage_pct": 100,
+      "z": "9999",
+      "text": "Authentication Login to your account. REGISTER TO WIN A REWARD Try Your Luck! Win A Diamon"
+     },
+     {
+      "coverage_pct": 18.9,
+      "z": "100",
+      "text": "A small reminder: Embrace yourself. Extraaa 3% Bank Discount on Eterna. Tennis Bracelets Y"
+     },
+     {
+      "coverage_pct": 3.7,
+      "z": "500",
+      "text": "Sort Filter"
+     },
+     {
+      "coverage_pct": 1.8,
+      "z": "499",
+      "text": "At your Service"
+     }
+    ]
+   },
+   "screenshot_viewport": "reports\\captures\\overlay-plp-mobile.png",
+   "fold": {
+    "doc_height_px": 8526,
+    "screens_tall": 10.5,
+    "avg_scroll_reach_px": 2358,
+    "elements": [
+     {
+      "label": "Price",
+      "present": true,
+      "sticky": false,
+      "pct_down": 18,
+      "top_px": 1536,
+      "seen_by_median": true
+     },
+     {
+      "label": "Add to Cart",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Buy Now",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Checkout",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Variant selector",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Size guide",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Certification",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Returns / exchange",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Shipping info",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "EMI / financing",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Reviews",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Product details",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Try at home",
+      "present": true,
+      "sticky": true,
+      "pct_down": 0,
+      "top_px": 0,
+      "seen_by_median": true
+     }
+    ]
+   },
+   "vitals": {
+    "lcp_ms": 1876,
+    "cls": 0.0493,
+    "fcp_ms": 1132,
+    "ttfb_ms": 126,
+    "dom_content_loaded_ms": 327,
+    "load_ms": 5819,
+    "js_errors": 0,
+    "js_error_samples": []
+   },
+   "heatmap": {
+    "matched": 5,
+    "unmatched": [
+     {
+      "text": "Spin the Wheel",
+      "count": 915
+     }
+    ],
+    "image": "reports\\captures\\heatmap-plp-mobile.png"
+   }
+  },
+  "pdp-mobile": {
+   "key": "pdp",
+   "label": "Product (PDP)",
+   "url": "https://www.lucirajewelry.com/products/corinthian-pave-diamond-mens-ring",
+   "device": "mobile",
+   "avg_scroll_depth_pct": 18.26,
+   "http_status": 200,
+   "overlays": {
+    "body_scroll_locked": false,
+    "blocking": {
+     "coverage_pct": 100,
+     "z": "9999",
+     "text": "Authentication Login to your account. REGISTER TO WIN A REWARD Try Your Luck! Win A Diamond Pendant +91 REQUEST OTP 100%"
+    },
+    "centre_click_hits": "img",
+    "all": [
+     {
+      "coverage_pct": 100,
+      "z": "9999",
+      "text": "Authentication Login to your account. REGISTER TO WIN A REWARD Try Your Luck! Win A Diamon"
+     },
+     {
+      "coverage_pct": 12.9,
+      "z": "100",
+      "text": "A small reminder: Embrace yourself. Extraaa 3% Bank Discount on Eterna. Tennis Bracelets Y"
+     },
+     {
+      "coverage_pct": 10,
+      "z": "200",
+      "text": "STORES ADD TO CART"
+     },
+     {
+      "coverage_pct": 0.8,
+      "z": "499",
+      "text": "At your Service"
+     }
+    ]
+   },
+   "screenshot_viewport": "reports\\captures\\overlay-pdp-mobile.png",
+   "fold": {
+    "doc_height_px": 15837,
+    "screens_tall": 19.5,
+    "avg_scroll_reach_px": 2892,
+    "elements": [
+     {
+      "label": "Price",
+      "present": true,
+      "sticky": true,
+      "pct_down": -0.3,
+      "top_px": -42,
+      "seen_by_median": true
+     },
+     {
+      "label": "Add to Cart",
+      "present": true,
+      "sticky": true,
+      "pct_down": -0.3,
+      "top_px": -51,
+      "seen_by_median": true
+     },
+     {
+      "label": "Buy Now",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Checkout",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Variant selector",
+      "present": true,
+      "sticky": false,
+      "pct_down": 16.5,
+      "top_px": 2614,
+      "seen_by_median": true
+     },
+     {
+      "label": "Size guide",
+      "present": true,
+      "sticky": false,
+      "pct_down": 6.1,
+      "top_px": 962,
+      "seen_by_median": true
+     },
+     {
+      "label": "Certification",
+      "present": true,
+      "sticky": false,
+      "pct_down": 9.5,
+      "top_px": 1511,
+      "seen_by_median": true
+     },
+     {
+      "label": "Returns / exchange",
+      "present": true,
+      "sticky": false,
+      "pct_down": 9.3,
+      "top_px": 1465,
+      "seen_by_median": true
+     },
+     {
+      "label": "Shipping info",
+      "present": true,
+      "sticky": false,
+      "pct_down": 1.1,
+      "top_px": 177,
+      "seen_by_median": true
+     },
+     {
+      "label": "EMI / financing",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Reviews",
+      "present": true,
+      "sticky": false,
+      "pct_down": 47.8,
+      "top_px": 7576,
+      "seen_by_median": false
+     },
+     {
+      "label": "Product details",
+      "present": true,
+      "sticky": false,
+      "pct_down": 15.7,
+      "top_px": 2490,
+      "seen_by_median": true
+     },
+     {
+      "label": "Try at home",
+      "present": true,
+      "sticky": true,
+      "pct_down": 0,
+      "top_px": 0,
+      "seen_by_median": true
+     }
+    ]
+   },
+   "vitals": {
+    "lcp_ms": 2412,
+    "cls": 0.0538,
+    "fcp_ms": 840,
+    "ttfb_ms": 95,
+    "dom_content_loaded_ms": 403,
+    "load_ms": 561,
+    "js_errors": 0,
+    "js_error_samples": []
+   },
+   "heatmap": {
+    "matched": 3,
+    "unmatched": [
+     {
+      "text": "MH",
+      "count": 295
+     },
+     {
+      "text": "MQ",
+      "count": 225
+     },
+     {
+      "text": "Spin the Wheel",
+      "count": 77
+     }
+    ],
+    "image": "reports\\captures\\heatmap-pdp-mobile.png"
+   }
+  },
+  "cart-mobile": {
+   "key": "cart",
+   "label": "Cart",
+   "url": "https://www.lucirajewelry.com/checkout/cart",
+   "device": "mobile",
+   "avg_scroll_depth_pct": 80.9,
+   "http_status": 200,
+   "overlays": {
+    "body_scroll_locked": false,
+    "blocking": null,
+    "centre_click_hits": "Looks like you haven't added anything to your cart yet.",
+    "all": [
+     {
+      "coverage_pct": 7.9,
+      "z": "100",
+      "text": "CART 1/3"
+     }
+    ]
+   },
+   "screenshot_viewport": "reports\\captures\\overlay-cart-mobile.png",
+   "fold": {
+    "doc_height_px": 909,
+    "screens_tall": 1.1,
+    "avg_scroll_reach_px": 735,
+    "elements": [
+     {
+      "label": "Price",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Add to Cart",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Buy Now",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Checkout",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Variant selector",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Size guide",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Certification",
+      "present": true,
+      "sticky": false,
+      "pct_down": 74.1,
+      "top_px": 674,
+      "seen_by_median": true
+     },
+     {
+      "label": "Returns / exchange",
+      "present": true,
+      "sticky": false,
+      "pct_down": 74.1,
+      "top_px": 674,
+      "seen_by_median": true
+     },
+     {
+      "label": "Shipping info",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "EMI / financing",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Reviews",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Product details",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Try at home",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     }
+    ]
+   },
+   "vitals": {
+    "lcp_ms": 704,
+    "cls": 0.0005,
+    "fcp_ms": 704,
+    "ttfb_ms": 179,
+    "dom_content_loaded_ms": 351,
+    "load_ms": 2765,
+    "js_errors": 0,
+    "js_error_samples": []
+   }
+  },
+  "home-desktop": {
+   "key": "home",
+   "label": "Homepage",
+   "url": "https://www.lucirajewelry.com/",
+   "device": "desktop",
+   "avg_scroll_depth_pct": 27.8,
+   "http_status": 200,
+   "overlays": {
+    "body_scroll_locked": true,
+    "blocking": {
+     "coverage_pct": 100,
+     "z": "600",
+     "text": ""
+    },
+    "centre_click_hits": "REGISTER TO WIN A REWARD Try Your Luck! Win A Diamond Pendant +91 REQUEST OTP 100% Secured",
+    "all": [
+     {
+      "coverage_pct": 100,
+      "z": "600",
+      "text": ""
+     },
+     {
+      "coverage_pct": 46.3,
+      "z": "600",
+      "text": "Authentication Login or register to access your account and win prizes. REGISTER TO WIN A "
+     },
+     {
+      "coverage_pct": 15.7,
+      "z": "100",
+      "text": "A small reminder: Embrace yourself. Extraaa 3% Bank Discount on Eterna. Tennis Bracelets Y"
+     },
+     {
+      "coverage_pct": 0.4,
+      "z": "499",
+      "text": "At your Service"
+     }
+    ]
+   },
+   "screenshot_viewport": "reports\\captures\\overlay-home-desktop.png",
+   "fold": {
+    "doc_height_px": 14736,
+    "screens_tall": 16.4,
+    "avg_scroll_reach_px": 4097,
+    "elements": [
+     {
+      "label": "Price",
+      "present": true,
+      "sticky": false,
+      "pct_down": 15.3,
+      "top_px": 2252,
+      "seen_by_median": true
+     },
+     {
+      "label": "Add to Cart",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Buy Now",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Checkout",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Variant selector",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Size guide",
+      "present": true,
+      "sticky": false,
+      "pct_down": 84.6,
+      "top_px": 12467,
+      "seen_by_median": false
+     },
+     {
+      "label": "Certification",
+      "present": true,
+      "sticky": false,
+      "pct_down": 5.4,
+      "top_px": 795,
+      "seen_by_median": true
+     },
+     {
+      "label": "Returns / exchange",
+      "present": true,
+      "sticky": false,
+      "pct_down": 5.4,
+      "top_px": 795,
+      "seen_by_median": true
+     },
+     {
+      "label": "Shipping info",
+      "present": true,
+      "sticky": false,
+      "pct_down": 5.4,
+      "top_px": 795,
+      "seen_by_median": true
+     },
+     {
+      "label": "EMI / financing",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Reviews",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Product details",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Try at home",
+      "present": true,
+      "sticky": true,
+      "pct_down": 0.2,
+      "top_px": 35,
+      "seen_by_median": true
+     }
+    ]
+   },
+   "vitals": {
+    "lcp_ms": 1776,
+    "cls": 0.015,
+    "fcp_ms": 716,
+    "ttfb_ms": 51,
+    "dom_content_loaded_ms": 306,
+    "load_ms": 457,
+    "js_errors": 0,
+    "js_error_samples": []
+   },
+   "heatmap": {
+    "matched": 5,
+    "unmatched": [
+     {
+      "text": "Spin the Wheel",
+      "count": 400
+     },
+     {
+      "text": "WELCOME TO LUCIRA",
+      "count": 259
+     }
+    ],
+    "image": "reports\\captures\\heatmap-home-desktop.png"
+   }
+  },
+  "plp-desktop": {
+   "key": "plp",
+   "label": "Collection (PLP)",
+   "url": "https://www.lucirajewelry.com/collections/eterna",
+   "device": "desktop",
+   "avg_scroll_depth_pct": 27.66,
+   "http_status": 200,
+   "overlays": {
+    "body_scroll_locked": false,
+    "blocking": null,
+    "centre_click_hits": "img",
+    "all": [
+     {
+      "coverage_pct": 17.5,
+      "z": "auto",
+      "text": "Filters CLEAR ALL In Store Available Malad (35) Pune (30) Chembur (27) Borivali (22) Noida"
+     },
+     {
+      "coverage_pct": 15.7,
+      "z": "100",
+      "text": "A small reminder: Embrace yourself. Extraaa 3% Bank Discount on Eterna. Tennis Bracelets Y"
+     },
+     {
+      "coverage_pct": 0.4,
+      "z": "499",
+      "text": "At your Service"
+     }
+    ]
+   },
+   "screenshot_viewport": "reports\\captures\\overlay-plp-desktop.png",
+   "fold": {
+    "doc_height_px": 12003,
+    "screens_tall": 13.3,
+    "avg_scroll_reach_px": 3320,
+    "elements": [
+     {
+      "label": "Price",
+      "present": true,
+      "sticky": false,
+      "pct_down": 14.8,
+      "top_px": 1782,
+      "seen_by_median": true
+     },
+     {
+      "label": "Add to Cart",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Buy Now",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Checkout",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Variant selector",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Size guide",
+      "present": true,
+      "sticky": true,
+      "pct_down": 14,
+      "top_px": 1684,
+      "seen_by_median": true
+     },
+     {
+      "label": "Certification",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Returns / exchange",
+      "present": true,
+      "sticky": false,
+      "pct_down": 89.4,
+      "top_px": 10730,
+      "seen_by_median": false
+     },
+     {
+      "label": "Shipping info",
+      "present": true,
+      "sticky": false,
+      "pct_down": 90.3,
+      "top_px": 10835,
+      "seen_by_median": false
+     },
+     {
+      "label": "EMI / financing",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Reviews",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Product details",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Try at home",
+      "present": true,
+      "sticky": true,
+      "pct_down": 0.6,
+      "top_px": 70,
+      "seen_by_median": true
+     }
+    ]
+   },
+   "vitals": {
+    "lcp_ms": 1836,
+    "cls": 0.1538,
+    "fcp_ms": 732,
+    "ttfb_ms": 49,
+    "dom_content_loaded_ms": 356,
+    "load_ms": 470,
+    "js_errors": 0,
+    "js_error_samples": []
+   },
+   "heatmap": {
+    "matched": 2,
+    "unmatched": [
+     {
+      "text": "Register to Win a Reward",
+      "count": 1618
+     },
+     {
+      "text": "Spin the Wheel",
+      "count": 915
+     },
+     {
+      "text": "REQUEST OTP",
+      "count": 490
+     },
+     {
+      "text": "New user? Register",
+      "count": 308
+     }
+    ],
+    "image": "reports\\captures\\heatmap-plp-desktop.png"
+   }
+  },
+  "pdp-desktop": {
+   "key": "pdp",
+   "label": "Product (PDP)",
+   "url": "https://www.lucirajewelry.com/products/corinthian-pave-diamond-mens-ring",
+   "device": "desktop",
+   "avg_scroll_depth_pct": 18.26,
+   "http_status": 200,
+   "overlays": {
+    "body_scroll_locked": true,
+    "blocking": {
+     "coverage_pct": 116.7,
+     "z": "auto",
+     "text": "Fast Shipping Trending SIMILAR ITEMS"
+    },
+    "centre_click_hits": "REGISTER TO WIN A REWARD Try Your Luck! Win A Diamond Pendant +91 REQUEST OTP 100% Secured",
+    "all": [
+     {
+      "coverage_pct": 116.7,
+      "z": "auto",
+      "text": "Fast Shipping Trending SIMILAR ITEMS"
+     },
+     {
+      "coverage_pct": 100,
+      "z": "600",
+      "text": ""
+     },
+     {
+      "coverage_pct": 46.3,
+      "z": "600",
+      "text": "Authentication Login or register to access your account and win prizes. REGISTER TO WIN A "
+     },
+     {
+      "coverage_pct": 15.7,
+      "z": "100",
+      "text": "A small reminder: Embrace yourself. Extraaa 3% Bank Discount on Eterna. Tennis Bracelets Y"
+     },
+     {
+      "coverage_pct": 8,
+      "z": "200",
+      "text": "STORES NEARBY ADD TO CART"
+     }
+    ]
+   },
+   "screenshot_viewport": "reports\\captures\\overlay-pdp-desktop.png",
+   "fold": {
+    "doc_height_px": 12023,
+    "screens_tall": 13.4,
+    "avg_scroll_reach_px": 2195,
+    "elements": [
+     {
+      "label": "Price",
+      "present": true,
+      "sticky": true,
+      "pct_down": -0.3,
+      "top_px": -37,
+      "seen_by_median": true
+     },
+     {
+      "label": "Add to Cart",
+      "present": true,
+      "sticky": true,
+      "pct_down": -0.4,
+      "top_px": -45,
+      "seen_by_median": true
+     },
+     {
+      "label": "Buy Now",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Checkout",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Variant selector",
+      "present": true,
+      "sticky": false,
+      "pct_down": 5,
+      "top_px": 596,
+      "seen_by_median": true
+     },
+     {
+      "label": "Size guide",
+      "present": true,
+      "sticky": false,
+      "pct_down": 6.1,
+      "top_px": 737,
+      "seen_by_median": true
+     },
+     {
+      "label": "Certification",
+      "present": true,
+      "sticky": false,
+      "pct_down": 11.6,
+      "top_px": 1396,
+      "seen_by_median": true
+     },
+     {
+      "label": "Returns / exchange",
+      "present": true,
+      "sticky": false,
+      "pct_down": 8.1,
+      "top_px": 974,
+      "seen_by_median": true
+     },
+     {
+      "label": "Shipping info",
+      "present": true,
+      "sticky": true,
+      "pct_down": 1.7,
+      "top_px": 207,
+      "seen_by_median": true
+     },
+     {
+      "label": "EMI / financing",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Reviews",
+      "present": true,
+      "sticky": false,
+      "pct_down": 54.2,
+      "top_px": 6514,
+      "seen_by_median": false
+     },
+     {
+      "label": "Product details",
+      "present": true,
+      "sticky": false,
+      "pct_down": 19.1,
+      "top_px": 2299,
+      "seen_by_median": false
+     },
+     {
+      "label": "Try at home",
+      "present": true,
+      "sticky": true,
+      "pct_down": 0.6,
+      "top_px": 70,
+      "seen_by_median": true
+     }
+    ]
+   },
+   "vitals": {
+    "lcp_ms": 19080,
+    "cls": 0.0245,
+    "fcp_ms": 692,
+    "ttfb_ms": 49,
+    "dom_content_loaded_ms": 264,
+    "load_ms": 5634,
+    "js_errors": 0,
+    "js_error_samples": []
+   },
+   "heatmap": {
+    "matched": 2,
+    "unmatched": [
+     {
+      "text": "MH",
+      "count": 295
+     },
+     {
+      "text": "MQ",
+      "count": 225
+     },
+     {
+      "text": "Spin the Wheel",
+      "count": 77
+     },
+     {
+      "text": "CUSTOMIZE",
+      "count": 55
+     }
+    ],
+    "image": "reports\\captures\\heatmap-pdp-desktop.png"
+   }
+  },
+  "cart-desktop": {
+   "key": "cart",
+   "label": "Cart",
+   "url": "https://www.lucirajewelry.com/checkout/cart",
+   "device": "desktop",
+   "avg_scroll_depth_pct": 80.9,
+   "http_status": 200,
+   "overlays": {
+    "body_scroll_locked": false,
+    "blocking": null,
+    "centre_click_hits": "Your cart is empty Looks like you haven't added anything to your cart yet. SHOP NOW",
+    "all": []
+   },
+   "screenshot_viewport": "reports\\captures\\overlay-cart-desktop.png",
+   "fold": {
+    "doc_height_px": 900,
+    "screens_tall": 1,
+    "avg_scroll_reach_px": 728,
+    "elements": [
+     {
+      "label": "Price",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Add to Cart",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Buy Now",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Checkout",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Variant selector",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Size guide",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Certification",
+      "present": true,
+      "sticky": false,
+      "pct_down": 94.1,
+      "top_px": 847,
+      "seen_by_median": false
+     },
+     {
+      "label": "Returns / exchange",
+      "present": true,
+      "sticky": false,
+      "pct_down": 94.1,
+      "top_px": 847,
+      "seen_by_median": false
+     },
+     {
+      "label": "Shipping info",
+      "present": true,
+      "sticky": true,
+      "pct_down": 1.7,
+      "top_px": 15,
+      "seen_by_median": true
+     },
+     {
+      "label": "EMI / financing",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Reviews",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Product details",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     },
+     {
+      "label": "Try at home",
+      "present": false,
+      "sticky": null,
+      "pct_down": null,
+      "top_px": null,
+      "seen_by_median": null
+     }
+    ]
+   },
+   "vitals": {
+    "lcp_ms": 608,
+    "cls": 0.0003,
+    "fcp_ms": 608,
+    "ttfb_ms": 56,
+    "dom_content_loaded_ms": 237,
+    "load_ms": 407,
+    "js_errors": 0,
+    "js_error_samples": []
+   }
+  }
+ }
+}

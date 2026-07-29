@@ -1,0 +1,4 @@
+run_at,target_date,ga4_device,ga4_funnel,clarity_daily,snapshot,rows_added,notes
+2026-07-27 09:00,2026-07-25,ok,ok,ok,ok,897,"Initial build. 60d GA4 backfill (27 May-25 Jul), Clarity 19-25 Jul, full deep-dive snapshot."
+2026-07-27 18:30,2026-07-25,skipped,skipped,ok,skipped,21,"Manual run. GA4 already current through T-2. Clarity backfilled 12-18 Jul, doubling coverage to 14 days and enabling week-over-week behaviour comparison."
+2026-07-28 09:15,2026-07-26,ok,ok,ok,ok,19,"Added 26 Jul. Also added homepage journey funnel + Clarity heatmap-vs-funnel data to snapshot (findings F9/F10)."

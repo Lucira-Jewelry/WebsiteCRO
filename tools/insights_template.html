@@ -1,0 +1,692 @@
+<style>
+  :root{
+    --bg:#EEF0ED; --surface:#FFFFFF; --raise:#F7F8F6; --ink:#1B2320; --muted:#5B6560; --faint:#8A938E;
+    --accent:#A9813F; --accent-ink:#5E4520;
+    --critical:#A23B2E; --critical-bg:#F7E7E4;
+    --high:#B0722A; --high-bg:#F8EDDC;
+    --good:#48684C; --good-bg:#E5EDE5;
+    --medium:#3D5A73; --medium-bg:#E3EAEF;
+    --line:rgba(27,35,32,0.13); --line-strong:rgba(27,35,32,0.26);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#111412; --surface:#191E1A; --raise:#1F2521; --ink:#EDEFEA; --muted:#9AA69E; --faint:#6E786F;
+      --accent:#C79B4E; --accent-ink:#D8B87A; --critical:#E4695C; --critical-bg:#3B2320;
+      --high:#DFA555; --high-bg:#392D19; --good:#8CBC92; --good-bg:#1C2A1E;
+      --medium:#8FB3D2; --medium-bg:#1D2B35;
+      --line:rgba(237,239,234,0.14); --line-strong:rgba(237,239,234,0.28); }
+  }
+  :root[data-theme="dark"]{ --bg:#111412; --surface:#191E1A; --raise:#1F2521; --ink:#EDEFEA; --muted:#9AA69E;
+    --faint:#6E786F; --accent:#C79B4E; --accent-ink:#D8B87A; --critical:#E4695C; --critical-bg:#3B2320;
+    --high:#DFA555; --high-bg:#392D19; --good:#8CBC92; --good-bg:#1C2A1E; --medium:#8FB3D2; --medium-bg:#1D2B35;
+    --line:rgba(237,239,234,0.14); --line-strong:rgba(237,239,234,0.28); }
+  :root[data-theme="light"]{ --bg:#EEF0ED; --surface:#FFFFFF; --raise:#F7F8F6; --ink:#1B2320; --muted:#5B6560;
+    --faint:#8A938E; --accent:#A9813F; --accent-ink:#5E4520; --critical:#A23B2E; --critical-bg:#F7E7E4;
+    --high:#B0722A; --high-bg:#F8EDDC; --good:#48684C; --good-bg:#E5EDE5; --medium:#3D5A73; --medium-bg:#E3EAEF;
+    --line:rgba(27,35,32,0.13); --line-strong:rgba(27,35,32,0.26); }
+
+  *{box-sizing:border-box;} html,body{margin:0;padding:0;}
+  body{background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;
+    font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  .page{max-width:1080px;margin:0 auto;padding:52px 22px 96px;}
+  h1,h2,h3{font-family:Iowan Old Style,"Palatino Linotype","Book Antiqua",Georgia,serif;font-weight:600;margin:0;text-wrap:balance;}
+  .measure{max-width:70ch;} p{margin:0 0 13px;}
+  code{font-family:ui-monospace,"SF Mono","Cascadia Code",monospace;font-size:.86em;background:var(--line);padding:1px 5px;border-radius:3px;}
+  ::selection{background:var(--accent);color:#fff;}
+
+  .masthead{display:flex;flex-direction:column;gap:9px;padding-bottom:24px;margin-bottom:14px;border-bottom:1px solid var(--line-strong);}
+  .eyebrow{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-ink);font-weight:700;}
+  .masthead h1{font-size:41px;line-height:1.07;}
+  .masthead .meta{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;color:var(--muted);margin-top:4px;font-variant-numeric:tabular-nums;}
+
+  section{margin-bottom:50px;}
+  .sec-head{display:flex;align-items:baseline;gap:13px;margin-bottom:16px;padding-bottom:9px;border-bottom:1px solid var(--line);}
+  .sec-head .tag{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700;white-space:nowrap;}
+  .sec-head h2{font-size:23px;}
+
+  .chip{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+    padding:2px 8px;border-radius:100px;white-space:nowrap;}
+  .chip.critical{background:var(--critical-bg);color:var(--critical);}
+  .chip.high{background:var(--high-bg);color:var(--high);}
+  .chip.medium{background:var(--medium-bg);color:var(--medium);}
+  .chip.good{background:var(--good-bg);color:var(--good);}
+  .chip.low{background:var(--raise);color:var(--faint);}
+
+  .banner{background:var(--surface);border:1px solid var(--line-strong);border-left:5px solid var(--accent);
+    border-radius:6px;padding:19px 22px;}
+  .banner.alarm{border-color:var(--critical);border-left-color:var(--critical);}
+  .banner.fix{border-left-color:var(--good);}
+  .banner h3{font-size:19px;margin:9px 0 9px;}
+  .banner.alarm h3{color:var(--critical);}
+
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(152px,1fr));gap:1px;background:var(--line);
+    border:1px solid var(--line);border-radius:6px;overflow:hidden;}
+  .kpi{background:var(--surface);padding:15px 16px;}
+  .kpi .lbl{font-size:11px;color:var(--muted);}
+  .kpi .num{font-size:23px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.01em;margin-top:2px;}
+  .kpi .num.bad{color:var(--critical);} .kpi .num.warn{color:var(--high);} .kpi .num.ok{color:var(--good);}
+  .kpi .sub{font-size:10.5px;color:var(--faint);margin-top:2px;}
+
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  .twrap{overflow-x:auto;border:1px solid var(--line);border-radius:6px;}
+  th{text-align:left;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:700;
+    padding:9px 11px;background:var(--raise);border-bottom:1px solid var(--line-strong);white-space:nowrap;}
+  th.grp{text-align:center;border-left:1px solid var(--line);color:var(--accent-ink);}
+  td{padding:8px 11px;border-bottom:1px solid var(--line);background:var(--surface);font-variant-numeric:tabular-nums;}
+  tr:last-child td{border-bottom:none;} tr.total td{background:var(--raise);font-weight:700;}
+  th.num,td.num{text-align:right;} td.sep{border-left:1px solid var(--line);}
+  td.bad{color:var(--critical);font-weight:700;} td.warn{color:var(--high);font-weight:600;}
+  td.ok{color:var(--good);font-weight:600;} td.dim{color:var(--faint);}
+  td.url{font-variant-numeric:normal;font-family:ui-monospace,monospace;font-size:11.5px;color:var(--muted);}
+
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .split3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:17px 19px;}
+  .card h4{margin:0 0 12px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);}
+
+  figure{margin:0;background:var(--surface);border:1px solid var(--line);border-radius:8px;overflow:hidden;}
+  figure img{display:block;width:100%;height:auto;}
+  /* Full-page heatmaps are 8,000–16,000 px tall; scroll them in place rather
+     than letting one image dominate the document. */
+  .tall{max-height:560px;overflow-y:auto;background:var(--raise);
+    border-bottom:1px solid var(--line);position:relative;}
+  .tall::-webkit-scrollbar{width:9px;}
+  .tall::-webkit-scrollbar-thumb{background:var(--line-strong);border-radius:5px;}
+  .scrollhint{font-size:10px;letter-spacing:.06em;text-transform:uppercase;font-weight:700;
+    color:var(--muted);padding:5px 13px 0;}
+  figcaption{padding:10px 13px;font-size:12px;color:var(--muted);border-top:1px solid var(--line);}
+  figcaption b{color:var(--ink);}
+  .shots{display:grid;grid-template-columns:420px 1fr;gap:18px;align-items:start;}
+  @media (max-width:860px){ .split,.split3,.shots{grid-template-columns:1fr;} }
+
+  .chain{display:flex;flex-direction:column;gap:0;margin:4px 0;}
+  .chain-step{display:grid;grid-template-columns:118px 1fr;gap:14px;padding:11px 0;border-bottom:1px solid var(--line);}
+  .chain-step:last-child{border-bottom:none;}
+  .chain-step .k{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--muted);padding-top:2px;}
+  .chain-step .v{font-size:13.5px;}
+
+  ol.recs{margin:0;padding:0;list-style:none;counter-reset:r;display:flex;flex-direction:column;gap:14px;}
+  ol.recs li{counter-increment:r;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px 18px 16px 52px;position:relative;}
+  ol.recs li::before{content:counter(r);position:absolute;left:16px;top:16px;width:24px;height:24px;border-radius:50%;
+    background:var(--accent);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;}
+  ol.recs li h4{margin:0 0 4px;font-size:15.5px;font-family:inherit;font-weight:700;letter-spacing:0;text-transform:none;color:var(--ink);}
+  ol.recs .rmeta{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 9px;}
+  ol.recs .how{margin-top:9px;padding-top:9px;border-top:1px dashed var(--line-strong);font-size:13px;}
+  ol.recs .how b{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:3px;}
+  ol.recs ul{margin:5px 0 0;padding-left:18px;font-size:13px;} ol.recs ul li{all:unset;display:list-item;margin-bottom:3px;}
+
+  .bars{display:flex;flex-direction:column;gap:8px;}
+  .brow{display:grid;grid-template-columns:1fr 100px 60px;align-items:center;gap:11px;font-size:12.5px;}
+  .brow .u{font-family:ui-monospace,monospace;font-size:11.5px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .brow .track{background:var(--line);border-radius:3px;height:15px;overflow:hidden;}
+  .brow .fill{height:100%;border-radius:3px 0 0 3px;}
+  .brow .fill.good{background:var(--good);} .brow .fill.warn{background:var(--high);} .brow .fill.bad{background:var(--critical);}
+  .brow .v{text-align:right;font-variant-numeric:tabular-nums;}
+
+  .note{font-size:12px;color:var(--faint);margin-top:9px;}
+  .divider{margin:48px 0 30px;border-top:2px solid var(--accent);padding-top:16px;}
+  .foot{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);font-size:11.5px;color:var(--faint);}
+  .foot .g{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:9px 18px;margin-top:9px;}
+</style>
+
+<div class="page">
+
+  <div class="masthead">
+    <div class="eyebrow">AI CRO Analyst — Run 005 · Full Insight Pass</div>
+    <h1>Lucira Jewelry</h1>
+    <div class="meta">
+      <span>Generated 28 Jul 2026</span>
+      <span>Analytics: 27 May – 26 Jul 2026 · Behaviour: 12–26 Jul · Lab: measured live 28 Jul</span>
+      <span>Online storefront only — 127 ERP/store orders excluded</span>
+    </div>
+  </div>
+
+  <p class="measure" style="font-size:15px;color:var(--muted);margin-bottom:36px;">
+    Previous runs identified <em>where</em> the funnel leaked using GA4, Clarity and Shopify. This run adds a
+    Playwright measurement layer that drove the real site at both breakpoints — so the cause is no longer inferred
+    from click counts. It is on record, with screenshots, and it is one thing.
+  </p>
+
+  <section>
+    <div class="sec-head"><span class="tag">The Finding</span><h2>Checkout is an OTP wall with no guest path — and mobile renders it as a full-screen takeover</h2></div>
+
+    <div class="banner alarm">
+      <span class="chip critical">Root cause · proven live · fix is a layout change</span>
+      <h3>Clicking “Proceed to Checkout” does not go to checkout. It demands a phone number.</h3>
+      <p class="measure">Playwright added a real ₹44,370 ring to the cart and clicked the checkout button on both
+        breakpoints. On both, the URL stayed at <code>/checkout/cart</code> and a login modal appeared asking for a
+        phone number and an OTP. There is <b>no guest checkout option on either device</b>.</p>
+      <p class="measure" style="margin-bottom:0;">The gate is identical. The <em>experience of it</em> is not — and that
+        difference is the entire mobile-versus-desktop conversion gap.</p>
+    </div>
+
+    <div class="shots" style="margin-top:18px;">
+      <figure>
+        <img src="<!--__IMG:gate_mobile__-->" alt="Mobile cart after clicking Proceed to Checkout: a full-screen modal covering the cart, asking for a phone number and OTP.">
+        <figcaption><b>Mobile — 7.3% proceed.</b> The modal is a full-screen takeover. The cart, the total and the
+          step context all disappear. Nothing indicates this is a login step rather than a broken button.</figcaption>
+      </figure>
+      <figure>
+        <img src="<!--__IMG:gate_desktop__-->" alt="Desktop cart after clicking Proceed to Checkout: a centred dialog with the cart and a CART/SHIPPING/PAYMENT progress bar still visible around it.">
+        <figcaption><b>Desktop — 30.9% proceed.</b> Same modal, centred. The cart, the ₹44,370 total and the
+          <b>CART → SHIPPING → PAYMENT</b> progress bar stay visible around it. It reads as “log in to continue”,
+          because the surrounding context says so.</figcaption>
+      </figure>
+    </div>
+
+    <div class="banner" style="margin-top:18px;">
+      <h3 style="margin-top:0;">Every rage-clicked element on the cart page is a component of this one modal</h3>
+      <p class="measure">Clarity recorded what users attacked on <code>/checkout/cart</code>. Each item now has a
+        confirmed home in the screenshot above — this is the same modal seen from the data side:</p>
+      <div class="twrap" style="margin-top:12px;">
+        <table>
+          <thead><tr><th>Clarity rage-click target</th><th class="num">Weight</th><th>What it is in the modal</th></tr></thead>
+          <tbody>
+            <tr><td class="url">"WELCOME TO LUCIRA…"</td><td class="num bad">16,483</td><td>The modal headline</td></tr>
+            <tr><td class="url">" " (blank)</td><td class="num bad">14,556</td><td>The scrim behind it</td></tr>
+            <tr><td class="url">"Your cart is empty…"</td><td class="num warn">6,415</td><td>Cart state behind the modal</td></tr>
+            <tr><td class="url">"Subtotal ₹2,84,917 Savings"</td><td class="num warn">4,950</td><td>Total, visible but unreachable</td></tr>
+            <tr><td class="url">"Cart 1/3"</td><td class="num warn">4,654</td><td><b>The step indicator</b> — users click it trying to advance</td></tr>
+            <tr><td class="url">"100% Secured &amp; Spam Free"</td><td class="num">1,835</td><td>Trust line under the OTP button</td></tr>
+            <tr><td class="url">"REQUEST OTP"</td><td class="num">1,201</td><td>The button itself</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note" style="margin-bottom:0;">“Cart 1/3” being clicked 4,654 times is the clearest signal in the whole
+        dataset: the header promises three steps, the button refuses to advance, so people start clicking the progress
+        indicator instead.</p>
+    </div>
+
+    <div class="twrap" style="margin-top:18px;">
+      <table>
+        <thead><tr><th>Cart → checkout</th><th class="num">Mobile</th><th class="num">Desktop</th><th>Lab observation</th></tr></thead>
+        <tbody>
+          <tr><td>Users reaching cart</td><td class="num">1,964</td><td class="num">68</td><td class="dim">GA4, 19–25 Jul</td></tr>
+          <tr><td>Began checkout</td><td class="num">144</td><td class="num">21</td><td class="dim">GA4</td></tr>
+          <tr><td><b>Progression</b></td><td class="num bad">7.3%</td><td class="num ok">30.9%</td><td><b>4.2× gap</b></td></tr>
+          <tr><td>Rage clicks on cart</td><td class="num bad">538</td><td class="num ok">0</td><td class="dim">Clarity</td></tr>
+          <tr><td>Login wall on checkout click</td><td class="num bad">yes</td><td class="num bad">yes</td><td>Identical gate</td></tr>
+          <tr><td>Guest checkout offered</td><td class="num bad">no</td><td class="num bad">no</td><td>Neither device</td></tr>
+          <tr><td>Modal form factor</td><td class="num bad">full-screen</td><td class="num ok">centred dialog</td><td><b>the difference</b></td></tr>
+          <tr><td>Cart + total stay visible</td><td class="num bad">no</td><td class="num ok">yes</td><td>Context preserved</td></tr>
+          <tr><td>Step progress visible</td><td class="num bad">no</td><td class="num ok">yes</td><td>CART→SHIPPING→PAYMENT</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Compounding</span><h2>A lottery wheel greets the first page of every mobile session</h2></div>
+    <div class="split">
+      <figure>
+        <img src="<!--__IMG:pdp_takeover__-->" alt="Mobile product page covered by a spin-the-wheel modal offering discounts and asking for a phone number.">
+        <figcaption><b>Product page, mobile.</b> A spin-the-wheel graphic and an OTP form cover the viewport. The ring
+          the visitor clicked an ad to see is entirely hidden.</figcaption>
+      </figure>
+      <div>
+        <div class="banner alarm" style="margin-bottom:14px;">
+          <h3 style="margin-top:0;">It fires on the session’s first page — which for paid traffic is the landing page</h3>
+          <p class="measure" style="margin-bottom:0;">A fresh session on the homepage, a collection page or a product page
+            all produced the same <b>100%-viewport overlay at z-index 9999</b>. It appears once per session, so it lands on
+            whatever page the visitor arrives on. Since most paid traffic lands deep on a PLP or PDP, that means the very
+            first thing a paid visitor sees is a lottery wheel demanding their phone number.</p>
+        </div>
+        <div class="twrap">
+          <table>
+            <thead><tr><th>First page of session</th><th class="num">Mobile</th><th class="num">Desktop</th></tr></thead>
+            <tbody>
+              <tr><td class="url">/ (home)</td><td class="num bad">100% blocked</td><td class="num warn">scrim only</td></tr>
+              <tr><td class="url">/collections/eterna</td><td class="num bad">100% blocked</td><td class="num ok">clear</td></tr>
+              <tr><td class="url">/products/corinthian-pave…</td><td class="num bad">100% blocked</td><td class="num ok">clear</td></tr>
+              <tr><td class="url">/checkout/cart</td><td class="num ok">clear</td><td class="num ok">clear</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">This asymmetry — mobile blocked, desktop mostly clear — matches the behavioural split exactly:
+          <b>2,170 mobile rage clicks against 13 on desktop</b> over the same week.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider">
+    <div class="eyebrow">Heatmaps</div>
+    <h2 style="font-size:24px;margin:6px 0 8px;">Where the attention actually goes</h2>
+    <p class="measure" style="margin:0;font-size:13.5px;color:var(--muted);">
+      Clarity's API exposes click counts keyed by element <em>text</em>, not coordinates — so it cannot produce a
+      heatmap image. Playwright resolves each of those texts to its live position on the page, and the counts are
+      painted there. Intensity is scaled against the busiest element on each page, and the dashed line marks the depth
+      the median visitor actually reaches.
+    </p>
+  </div>
+
+  <section>
+    <div class="split3">
+      <figure>
+        <div class="scrollhint">scroll to see full page ↓</div>
+        <div class="tall"><img src="<!--__IMG:heat_home__-->" alt="Homepage click heatmap showing the hottest zones concentrated on popup and login elements near the top of a very long page."></div>
+        <figcaption><b>Homepage</b> · 21.5 screens tall, 27.8% scrolled.<br>Popup + login elements absorb
+          <b>2,221 clicks</b>; “Rings”, the top navigation link, gets <b>215</b>.</figcaption>
+      </figure>
+      <figure>
+        <div class="scrollhint">scroll to see full page ↓</div>
+        <div class="tall"><img src="<!--__IMG:heat_plp__-->" alt="Collection page click heatmap with heavy clustering on the collection title and popup elements."></div>
+        <figcaption><b>Collection (Eterna)</b> · 10.5 screens, 27.7% scrolled.<br>Highest popup pressure on the site —
+          <b>3,331 clicks</b> on overlay elements.</figcaption>
+      </figure>
+      <figure>
+        <div class="scrollhint">scroll to see full page ↓</div>
+        <div class="tall"><img src="<!--__IMG:heat_pdp__-->" alt="Product page click heatmap concentrated on variant selectors high on the page, with reviews far below the reach line."></div>
+        <figcaption><b>Product page</b> · 19.5 screens, 18.3% scrolled.<br>Variant selection dominates
+          (<b>“Yellow” 638</b>). Popups fall to <b>111</b> — the modal has usually been dismissed by now.</figcaption>
+      </figure>
+    </div>
+    <p class="note">Match rates: 5/7 homepage, 5/6 collection, 3/6 product. “Spin the Wheel” never resolved to a text
+      node on any page — it is rendered as a graphic, so despite being the second-most-clicked element site-wide it
+      cannot appear in these images. Treat the heatmaps as a floor on popup pressure, not a ceiling.</p>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Funnel</span><h2>Every step, both devices</h2></div>
+    <div class="twrap">
+      <table>
+        <thead>
+          <tr><th rowspan="2">Step</th><th class="num grp" colspan="2">Mobile</th><th class="num grp" colspan="2">Desktop</th><th rowspan="2">What happens here</th></tr>
+          <tr><th class="num sep">Users</th><th class="num">→ next</th><th class="num sep">Users</th><th class="num">→ next</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>View Item</td><td class="num sep">53,597</td><td class="num bad">3.39%</td><td class="num sep">5,178</td><td class="num bad">1.10%</td><td>Popup on first page of session</td></tr>
+          <tr><td>Add to Cart</td><td class="num sep">1,818</td><td class="num bad">7.92%</td><td class="num sep">57</td><td class="num ok">36.84%</td><td class="dim">—</td></tr>
+          <tr><td>Begin Checkout</td><td class="num sep">144</td><td class="num warn">42.36%</td><td class="num sep">21</td><td class="num ok">66.67%</td><td class="bad">OTP wall, no guest path</td></tr>
+          <tr><td>Add Shipping</td><td class="num sep">61</td><td class="num warn">57.38%</td><td class="num sep">14</td><td class="num ok">71.43%</td><td class="dim">—</td></tr>
+          <tr><td>Add Payment</td><td class="num sep">35</td><td class="num warn">37.14%</td><td class="num sep">10</td><td class="num bad">10.00%</td><td class="dim">n=10, unreliable</td></tr>
+          <tr class="total"><td>Purchase</td><td class="num sep">13</td><td class="num">0.024%</td><td class="num sep">1</td><td class="num">0.019%</td><td>end-to-end</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="split" style="margin-top:18px;">
+      <div class="card">
+        <h4>Homepage journey — the second-biggest leak</h4>
+        <div class="twrap" style="border:none;">
+          <table>
+            <thead><tr><th>Step</th><th class="num">Users</th><th class="num">→ next</th><th class="num">Lost</th></tr></thead>
+            <tbody>
+              <tr><td>Homepage</td><td class="num">6,455</td><td class="num bad">33.96%</td><td class="num bad">4,263</td></tr>
+              <tr><td>Collection</td><td class="num">2,192</td><td class="num">55.20%</td><td class="num warn">982</td></tr>
+              <tr><td>Product</td><td class="num">1,210</td><td class="num warn">18.51%</td><td class="num warn">986</td></tr>
+              <tr><td>Add to Cart</td><td class="num">224</td><td class="num warn">16.96%</td><td class="num">186</td></tr>
+              <tr><td>Begin Checkout</td><td class="num">38</td><td class="num warn">18.42%</td><td class="num">31</td></tr>
+              <tr class="total"><td>Purchase</td><td class="num">7</td><td class="num">0.108%</td><td class="num dim">—</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note" style="margin-bottom:0;">Two-thirds of homepage visitors never reach a collection page. The
+          homepage is <b>21.5 screens tall on mobile</b> and gets 27.8% scrolled — so 72% of it is never seen.</p>
+      </div>
+      <div class="card">
+        <h4>Homepage traffic is your best traffic</h4>
+        <div class="twrap" style="border:none;">
+          <table>
+            <thead><tr><th>Step rate</th><th class="num">Home-origin</th><th class="num">Site-wide</th><th class="num">×</th></tr></thead>
+            <tbody>
+              <tr><td>Product → cart</td><td class="num ok">18.51%</td><td class="num bad">3.19%</td><td class="num ok">5.8</td></tr>
+              <tr><td>Cart → checkout</td><td class="num ok">16.96%</td><td class="num">8.80%</td><td class="num ok">1.9</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="measure" style="margin:12px 0 0;font-size:13px;">Visitors who start at the homepage convert
+          <b>5.8× better</b> at the add-to-cart step than the site blend. The site-wide figure is dragged down by paid
+          traffic landing deep and bouncing. The homepage isn't a weak page — it's a high-intent entry point being
+          throttled at its first step.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Traffic</span><h2>Paid Social bounces on every page it touches</h2></div>
+    <div class="twrap">
+      <table>
+        <thead><tr><th>Landing page</th><th>Channel</th><th class="num">Sessions</th><th class="num">Bounce</th><th class="num">Avg duration</th></tr></thead>
+        <tbody>
+          <tr><td class="url">/collections/rings</td><td>Organic Search</td><td class="num">18</td><td class="num ok">33.3%</td><td class="num ok">582 s</td></tr>
+          <tr><td class="url">/collections/rings</td><td>Paid Shopping</td><td class="num">7</td><td class="num ok">14.3%</td><td class="num ok">762 s</td></tr>
+          <tr><td class="url">/collections/rings</td><td><b>Paid Social</b></td><td class="num bad">10</td><td class="num bad">100%</td><td class="num bad">5.8 s</td></tr>
+          <tr><td class="url">/collections/jewelry</td><td>Organic Search</td><td class="num">25</td><td class="num ok">32.0%</td><td class="num ok">470 s</td></tr>
+          <tr><td class="url">/collections/jewelry</td><td><b>Paid Social</b></td><td class="num">125</td><td class="num bad">64.8%</td><td class="num">60 s</td></tr>
+          <tr><td class="url">/collections/all-rings</td><td><b>Paid Social</b></td><td class="num">1,032</td><td class="num bad">66.1%</td><td class="num">47 s</td></tr>
+          <tr><td class="url">/collections/all-earrings</td><td><b>Paid Social</b></td><td class="num">787</td><td class="num bad">61.6%</td><td class="num">48 s</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="banner alarm" style="margin-top:14px;">
+      <p class="measure" style="margin:0;"><code>/collections/rings</code> is the control: <b>33% bounce from Organic
+        Search with 582-second sessions, and 100% bounce from Paid Social at 5.8 seconds</b> — same page, same week.
+        The <code>all-</code> collections only look broken because they are where Meta traffic lands; the templates are
+        byte-for-byte identical (26 cards, first card at 392px, same controls). Redesigning the landing page would not
+        have fixed anything.</p>
+      <p class="measure" style="margin:10px 0 0;">The mechanism is visible in the JS errors: the top three are Meta
+        in-app WebView signatures — <code>window.webkit.messageHandlers</code> undefined (817 sessions) and
+        <code>Java object is gone</code> (694). Roughly <b>1,500 sessions</b> where the page may never have worked.
+        Combine that with a full-screen OTP modal on arrival and a 5.8-second session is not surprising.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Fold</span><h2>What visitors actually see — measured, all pages</h2></div>
+    <div class="twrap">
+      <table>
+        <thead><tr><th>Page</th><th class="num">Height</th><th class="num">Screens</th><th class="num">Scrolled</th><th class="num">Reached</th><th>Never seen by the median visitor</th></tr></thead>
+        <tbody>
+          <tr><td class="url">/ (mobile)</td><td class="num">17,487 px</td><td class="num bad">21.5</td><td class="num bad">27.8%</td><td class="num">4,861 px</td><td class="dim">all labelled elements are above the line</td></tr>
+          <tr><td class="url">/collections/eterna (mobile)</td><td class="num">8,526 px</td><td class="num warn">10.5</td><td class="num bad">27.7%</td><td class="num">2,358 px</td><td class="dim">—</td></tr>
+          <tr><td class="url">/products/corinthian… (mobile)</td><td class="num">15,837 px</td><td class="num bad">19.5</td><td class="num bad">18.3%</td><td class="num">2,892 px</td><td class="bad">Customer Reviews @ 47.8%</td></tr>
+          <tr><td class="url">/checkout/cart (mobile, 1 item)</td><td class="num ok">1,786 px</td><td class="num ok">2.2</td><td class="num ok">80.9%</td><td class="num">1,445 px</td><td class="ok">nothing — page is short</td></tr>
+          <tr><td class="url">/ (desktop)</td><td class="num">14,736 px</td><td class="num warn">16.4</td><td class="num warn">40.1%</td><td class="num">5,909 px</td><td class="dim">—</td></tr>
+          <tr><td class="url">/products/corinthian… (desktop)</td><td class="num">12,023 px</td><td class="num warn">13.4</td><td class="num warn">40.1%</td><td class="num">4,821 px</td><td class="bad">Customer Reviews @ 54.2%</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="split" style="margin-top:16px;">
+      <div class="card">
+        <h4>Product page — element depth (mobile)</h4>
+        <div class="twrap" style="border:none;">
+          <table>
+            <thead><tr><th>Element</th><th class="num">Depth</th><th>Seen?</th></tr></thead>
+            <tbody>
+              <tr><td>Price ₹44,370</td><td class="num ok">sticky</td><td class="ok">always</td></tr>
+              <tr><td>Add to Cart</td><td class="num ok">sticky</td><td class="ok">always</td></tr>
+              <tr><td>Try at Home</td><td class="num ok">sticky</td><td class="ok">always</td></tr>
+              <tr><td>Fast Shipping</td><td class="num ok">1.1%</td><td class="ok">yes</td></tr>
+              <tr><td>Size Guide</td><td class="num ok">6.1%</td><td class="ok">yes</td></tr>
+              <tr><td>Returns / exchange</td><td class="num ok">9.3%</td><td class="ok">yes</td></tr>
+              <tr><td>Certification</td><td class="num ok">9.5%</td><td class="ok">yes</td></tr>
+              <tr><td>Product details</td><td class="num ok">15.7%</td><td class="ok">yes</td></tr>
+              <tr><td>Variant selector</td><td class="num warn">16.5%</td><td class="warn">borderline</td></tr>
+              <tr><td><b>Customer Reviews</b></td><td class="num bad">47.8%</td><td class="bad">no</td></tr>
+              <tr><td><b>EMI / financing</b></td><td class="num bad">absent</td><td class="bad">not on page</td></tr>
+              <tr><td><b>Buy Now / express</b></td><td class="num bad">absent</td><td class="bad">not on page</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <h4>Two gaps worth naming</h4>
+        <p class="measure" style="font-size:13.5px;"><b>Reviews are unreachable.</b> They sit at 47.8% of a 19.5-screen
+          page; the median visitor stops at 18.3%. For a ₹44,370 considered purchase, the single strongest trust asset
+          is functionally not on the page. Moving them to just under Product Details (~16%) requires no new content.</p>
+        <p class="measure" style="font-size:13.5px;">
+          <b>No EMI or financing anywhere.</b> Across every page and both breakpoints, no financing, EMI or
+          instalment messaging matched. For ₹44,000–₹1,85,000 baskets in the Indian market that is a notable omission —
+          EMI availability is a standard purchase enabler at this price point.</p>
+        <p class="note" style="margin-bottom:0;">Caveat on the second: this is a keyword match against rendered text.
+          If financing is offered under wording my patterns didn't cover, or only appears inside the gated checkout,
+          it would read as absent. Worth a human confirmation before acting.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Speed</span><h2>Lab and field disagree — and the difference is the point</h2></div>
+    <div class="split">
+      <div class="card">
+        <h4>Lab (Playwright, warm CDN) vs field (Clarity, real users)</h4>
+        <div class="twrap" style="border:none;">
+          <table>
+            <thead><tr><th>Page</th><th class="num">Lab LCP</th><th class="num">Field LCP</th><th class="num">TTFB</th></tr></thead>
+            <tbody>
+              <tr><td class="url">/ (mobile)</td><td class="num ok">1,908</td><td class="num warn">3,796</td><td class="num ok">181</td></tr>
+              <tr><td class="url">/collections/eterna</td><td class="num ok">1,876</td><td class="num ok">2,872</td><td class="num ok">126</td></tr>
+              <tr><td class="url">/products/corinthian…</td><td class="num ok">2,412</td><td class="num warn">3,392</td><td class="num ok">95</td></tr>
+              <tr><td class="url">/checkout/cart</td><td class="num ok">704</td><td class="num warn">3,568</td><td class="num ok">179</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="measure" style="margin:12px 0 0;font-size:13px;"><b>The origin and CDN are fine.</b> TTFB is
+          95–181 ms and lab LCP is 0.7–2.4 s — all inside “good”. The field median is roughly 1.5–5× slower, which
+          points at real-user devices and networks, not at server response.</p>
+        <p class="measure" style="margin:9px 0 0;font-size:13px;">That reframes the recommendation: speed work belongs
+          in <b>payload weight and render path</b> — image sizes, third-party script count, main-thread work — not in
+          origin or hosting. Notably, the site loads <b>14 third-party script hosts</b>, including two separate
+          popup/engagement SDKs.</p>
+      </div>
+      <div class="card">
+        <h4>Layout stability</h4>
+        <div class="bars">
+          <div class="brow"><span class="u">/ (mobile)</span><div class="track"><div class="fill good" style="width:38%"></div></div><span class="v">0.058</span></div>
+          <div class="brow"><span class="u">/collections/eterna (mobile)</span><div class="track"><div class="fill good" style="width:33%"></div></div><span class="v">0.049</span></div>
+          <div class="brow"><span class="u">/products/corinthian… (mobile)</span><div class="track"><div class="fill good" style="width:36%"></div></div><span class="v">0.054</span></div>
+          <div class="brow"><span class="u">/checkout/cart (mobile)</span><div class="track"><div class="fill good" style="width:2%"></div></div><span class="v">0.001</span></div>
+          <div class="brow"><span class="u">/collections/eterna (desktop)</span><div class="track"><div class="fill warn" style="width:100%"></div></div><span class="v">0.154</span></div>
+        </div>
+        <p class="note">Good ≤0.1. Mobile CLS is healthy at 0.05–0.06 — better than the ~0.09 Clarity reported. The one
+          outlier is the desktop collection page at <b>0.154</b>, which is in “needs improvement”: something shifts
+          during load there. Single measurement, worth re-running before acting.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider">
+    <div class="eyebrow">Recommendations</div>
+    <h2 style="font-size:24px;margin:6px 0 8px;">What to change, in order — and how</h2>
+    <p class="measure" style="margin:0;font-size:13.5px;color:var(--muted);">
+      Ordered by expected impact per unit of effort. Revenue figures are modelled against the real 84-order online
+      baseline (₹21,41,269/month, AOV ₹25,491) using conservative relative lifts — they are scenarios, not forecasts.
+    </p>
+  </div>
+
+  <section>
+    <ol class="recs">
+      <li>
+        <h4>Make the mobile checkout modal behave like the desktop one</h4>
+        <div class="rmeta"><span class="chip critical">Critical</span><span class="chip good">Effort: hours</span><span class="chip medium">+₹4–6L / month modelled</span></div>
+        <p class="measure" style="margin:0;font-size:13.5px;">The cheapest high-impact change available. Desktop
+          converts 4.2× better through the identical gate purely because the cart, the total and the
+          CART→SHIPPING→PAYMENT progress stay visible. Reproduce that on mobile as a bottom sheet covering ~60% of the
+          viewport instead of a full takeover.</p>
+        <div class="how"><b>How</b>
+          <ul>
+            <li>Change the mobile modal from full-viewport to a bottom sheet; keep the cart summary and step indicator visible above it.</li>
+            <li>Retitle it to state the purpose — “Verify your number to continue to shipping”, not “Welcome to Lucira”.</li>
+            <li>Show the order total inside the sheet so the user knows what they're logging in <em>for</em>.</li>
+            <li>Enlarge the close affordance and give it a visible hit area of at least 44×44 px.</li>
+            <li>Verify with <code>cro_funnel_walk</code> at the mobile breakpoint before and after.</li>
+          </ul>
+        </div>
+      </li>
+
+      <li>
+        <h4>Offer guest checkout — collect the phone number at the shipping step instead</h4>
+        <div class="rmeta"><span class="chip critical">Critical</span><span class="chip warn">Effort: days</span><span class="chip medium">+₹8–12L / month modelled</span></div>
+        <p class="measure" style="margin:0;font-size:13.5px;">The larger prize. A mandatory OTP before checkout asks
+          for commitment before the visitor has seen shipping cost or delivery date. You already capture a phone number
+          at the shipping step — the pre-checkout gate is redundant. Nothing is lost by moving it: the number still
+          arrives, one step later, from a user who has decided to buy.</p>
+        <div class="how"><b>How</b>
+          <ul>
+            <li>Add “Continue as guest” as the primary action; keep login secondary for returning customers.</li>
+            <li>Capture phone at shipping, where it is contextually justified by delivery.</li>
+            <li>Instrument it: fire <code>begin_checkout</code> when checkout <em>opens</em>, not after OTP succeeds — the current placement is why GA4 shows only 144.</li>
+            <li>Run as an A/B test if possible; if not, ship to mobile only first and compare against desktop as the control.</li>
+          </ul>
+        </div>
+      </li>
+
+      <li>
+        <h4>Suppress the spin-wheel modal on entry — trigger it on exit intent or after real engagement</h4>
+        <div class="rmeta"><span class="chip critical">Critical</span><span class="chip good">Effort: config only</span><span class="chip medium">+₹3–5L / month modelled</span></div>
+        <p class="measure" style="margin:0;font-size:13.5px;">A paid visitor's first impression is a lottery wheel
+          demanding a phone number, on the page they paid to reach. Homepage popups absorb <b>2,221 clicks against 215
+          on the top navigation link</b> — a 10.3 : 1 ratio.</p>
+        <div class="how"><b>How</b>
+          <ul>
+            <li>In NitroCommerce (<code>nitro-popup-sdk.js</code>): never show on the first page view of a session.</li>
+            <li>Trigger on exit intent, or after 2+ page views or 30+ seconds — a visitor who has browsed is worth asking.</li>
+            <li>Exclude <code>/checkout/*</code> entirely so it can never compound with the login gate.</li>
+            <li>Re-audit with <code>cro_overlay_audit</code> against a fresh session on home, a PLP and a PDP.</li>
+          </ul>
+        </div>
+      </li>
+
+      <li>
+        <h4>Move Customer Reviews from 47.8% to roughly 16% page depth</h4>
+        <div class="rmeta"><span class="chip high">High</span><span class="chip good">Effort: hours</span><span class="chip low">No new content</span></div>
+        <p class="measure" style="margin:0;font-size:13.5px;">Reviews sit on screen 9 of 19.5; the median visitor stops
+          at screen 3.6. The strongest trust asset for a ₹44,370 purchase is effectively unpublished. Certification,
+          returns and shipping are already well placed — reviews are the one real casualty.</p>
+        <div class="how"><b>How</b>
+          <ul>
+            <li>Put a compact rating summary (stars, count, one quoted review) directly beneath Product Details.</li>
+            <li>Leave the full review list where it is; only the summary needs to move up.</li>
+            <li>Confirm the new depth with <code>cro_fold_analysis</code> at <code>avgScrollDepthPct: 18.3</code>.</li>
+          </ul>
+        </div>
+      </li>
+
+      <li>
+        <h4>Fix the Meta traffic path before spending more on it</h4>
+        <div class="rmeta"><span class="chip high">High</span><span class="chip warn">Effort: days</span><span class="chip medium">₹52,336 / month confirmed waste</span></div>
+        <p class="measure" style="margin:0;font-size:13.5px;">Paid Social bounces at 62–100% on every page, including
+          pages that convert well from other channels — so this is not a landing-page problem. Three campaigns spent
+          ₹52,336 in 30 days with zero attributed conversions.</p>
+        <div class="how"><b>How</b>
+          <ul>
+            <li>Open the full funnel inside the Instagram and Facebook in-app browsers on a real device and complete a purchase. The WebView JS errors suggest it may not be completable.</li>
+            <li>Pause the three zero-conversion campaigns (Display retargeting, Demand Gen prospecting, Noida GMB Search) pending the tracking fix.</li>
+            <li>Add bot filtering at the GA4 data-stream level — 34% of Clarity sessions were bot-flagged.</li>
+          </ul>
+        </div>
+      </li>
+
+      <li>
+        <h4>Fix the Google Ads conversion configuration</h4>
+        <div class="rmeta"><span class="chip high">High</span><span class="chip good">Effort: minutes</span><span class="chip low">Unblocks all measurement</span></div>
+        <p class="measure" style="margin:0;font-size:13.5px;">Campaign “conversions” currently blend Purchase +
+          Begin Checkout + two <code>UPLOAD_CLICKS</code> actions, inflating totals roughly 7× against real orders. The
+          correctly wired GA4 purchase import is <em>excluded</em> from the bidding metric — so Smart Bidding is
+          optimising toward the noisy signal and ignoring the clean one.</p>
+        <div class="how"><b>How</b>
+          <ul>
+            <li>Set <code>Begin Checkout</code> to not count in the Conversions column.</li>
+            <li>Confirm whether <code>Offline Purchase</code> and <code>CRM Online Conversion</code> are intentional O2O attribution before changing them — for an omnichannel business they may be deliberate.</li>
+            <li>Switch the primary bidding action to <code>Lucira (web) purchase</code> (the GA4 import).</li>
+            <li>Grant the <code>read_pixels</code> scope so the Web Pixel config can be inspected, or check Settings → Customer events manually.</li>
+          </ul>
+        </div>
+      </li>
+
+      <li>
+        <h4>Shorten the mobile page templates</h4>
+        <div class="rmeta"><span class="chip medium">Medium</span><span class="chip warn">Effort: weeks</span></div>
+        <p class="measure" style="margin:0;font-size:13.5px;">The homepage is 21.5 screens and the PDP 19.5, against a
+          scroll ceiling of 18–28%. Roughly three-quarters of both pages is never seen. Anything below ~20% of a PDP or
+          ~28% of the homepage should be treated as unpublished until proven otherwise.</p>
+        <div class="how"><b>How</b>
+          <ul>
+            <li>Audit what sits below the reach line and either promote it or delete it — do not add more.</li>
+            <li>The desktop homepage is 16.4 screens against 40% scroll, so it is proportionally far healthier; mobile is the priority.</li>
+            <li>Reduce the 14 third-party script hosts — two separate popup/engagement SDKs are loaded.</li>
+          </ul>
+        </div>
+      </li>
+
+      <li>
+        <h4>Confirm whether EMI / financing is offered, and surface it if so</h4>
+        <div class="rmeta"><span class="chip medium">Medium</span><span class="chip good">Effort: hours if it exists</span></div>
+        <p class="measure" style="margin:0;font-size:13.5px;">No financing messaging matched on any page at either
+          breakpoint, on baskets of ₹44,000–₹1,85,000. If EMI is available, it belongs beside the price. If it isn't,
+          it is worth evaluating as a conversion lever at this price point in this market.</p>
+        <div class="how"><b>How</b>
+          <ul>
+            <li>Confirm with the payments team first — this is a keyword match and could be a false negative.</li>
+            <li>If offered, show “from ₹X/month” beside the sticky price, which is already always visible.</li>
+          </ul>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Toolkit</span><h2>The Playwright MCP server</h2></div>
+    <p class="measure">Registered at <code>.mcp.json</code> as <code>cro</code>, backed by
+      <code>tools/cro-mcp/</code>. The official <code>@playwright/mcp</code> exposes generic browser automation; these
+      tools answer CRO questions directly and return structured numbers rather than DOM dumps, which keeps them cheap
+      to read into an agent's context.</p>
+    <div class="twrap">
+      <table>
+        <thead><tr><th>Tool</th><th>What it answers</th><th>Used above for</th></tr></thead>
+        <tbody>
+          <tr><td class="url">cro_screenshot</td><td>What does this page actually look like, at this breakpoint, after popups fire?</td><td>All screenshots</td></tr>
+          <tr><td class="url">cro_fold_analysis</td><td>Where does each CRO element sit, and does the median visitor reach it?</td><td>Reviews @47.8%, EMI absent, page heights</td></tr>
+          <tr><td class="url">cro_heatmap</td><td>Where did the clicks land, on the real rendered page?</td><td>The three heatmap images</td></tr>
+          <tr><td class="url">cro_overlay_audit</td><td>What covers the page, and does it intercept clicks?</td><td>The 100%-viewport modal finding</td></tr>
+          <tr><td class="url">cro_vitals</td><td>Real LCP / CLS / TTFB from a live navigation.</td><td>Lab-vs-field reconciliation</td></tr>
+          <tr><td class="url">cro_funnel_walk</td><td>Can a real user actually complete the funnel?</td><td>Proving the checkout gate</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Deliberately built on the SDK's low-level <code>Server</code> API, which has been stable across
+      versions, so a minor SDK bump won't break it. Screenshots and heatmaps land in
+      <code>reports/captures/</code>; structured results in <code>data/lab_capture.json</code>.</p>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Integrity</span><h2>Corrections from this run</h2></div>
+    <div class="twrap">
+      <table>
+        <thead><tr><th>Earlier claim</th><th>Verdict</th><th>What measurement showed</th></tr></thead>
+        <tbody>
+          <tr><td><b>Run 004:</b> “Cart scroll of 80.9% means users read the whole cart and are stuck.”</td>
+              <td><span class="chip high">overstated</span></td>
+              <td>The cart is <b>2.2 screens</b> with an item (1.1 empty). 80.9% is ~1.8 screens — real engagement, but not the long-page reading the phrasing implied. The stuck-ness is proven by the gate, not by the scroll figure.</td></tr>
+          <tr><td>An early lab probe suggested <b>LCP 15.7 s / TTFB 7.4 s</b>.</td>
+              <td><span class="chip critical">wrong</span></td>
+              <td>Cold-start artifact — first navigation of the session. Repeat runs give mobile LCP <b>1.9–2.4 s</b> and TTFB <b>95–181 ms</b>. Never reported as a finding; corrected here for the record.</td></tr>
+          <tr><td><b>Run 004:</b> popups fire “on cart, PLP and PDP”.</td>
+              <td><span class="chip high">imprecise</span></td>
+              <td>The modal fires on the <b>first page of a session</b>, not every page. Because paid traffic lands deep, that first page is usually the landing page — so the practical effect is similar, but the fix is different.</td></tr>
+          <tr><td><b>Run 002:</b> “Move trust signals above the fold on mobile PDPs.”</td>
+              <td><span class="chip critical">wrong</span></td>
+              <td>Re-confirmed wrong. Shipping 1.1%, returns 9.3%, certification 9.5% — all already reached. Only reviews (47.8%) are out of range.</td></tr>
+          <tr><td><b>Run 003:</b> “Curated collections beat generic ones — diff the templates.”</td>
+              <td><span class="chip critical">wrong</span></td>
+              <td>Templates are identical. The gap is channel: Paid Social bounces 62–100% everywhere.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section style="margin-bottom:0;">
+    <div class="sec-head"><span class="tag">Method</span><h2>Limits of this run</h2></div>
+    <ul class="measure" style="padding-left:17px;color:var(--muted);font-size:13.5px;line-height:1.75;">
+      <li><b>Lab vitals are single-run per page.</b> Two of eight readings were clear outliers (desktop PDP at 19 s). The
+        <code>cro_vitals</code> tool medians across three runs; the batch capture did not. Treat individual lab LCP
+        figures as indicative and re-run before acting on any one of them.</li>
+      <li><b>Desktop “never seen” flags are unreliable</b> in the batch capture — it applied the mobile scroll depth to
+        desktop pages. The desktop rows in the fold table use Clarity's 40.1% desktop figure; the batch JSON does not.</li>
+      <li><b>The overlay detector false-positives on tall content sections.</b> The desktop PDP flagged 116.7% coverage
+        for a “Fast Shipping / Trending / Similar Items” block, which is content, not an overlay. The z-index 9999
+        Authentication modal is the real finding; verify any coverage figure over 100% against its screenshot.</li>
+      <li><b>Automated modal dismissal failed once</b>, on the collection page — the heuristic matched an unrelated
+        element. This is a tool limitation, not evidence that the close button is broken; the screenshots show a working
+        ✕. The usability concern is that it is small and competing with a busy graphic, not that it fails.</li>
+      <li><b>“Spin the Wheel” never resolved to a text node</b>, so the site's second-most-clicked element is absent
+        from the heatmap images. Popup pressure in those images is a floor.</li>
+      <li><b>EMI absence is a keyword match</b> against rendered text and could be a false negative. Confirm with the
+        payments team before treating it as a gap.</li>
+      <li><b>Lab measurements are one machine, one network, one moment.</b> They prove the gate exists and is
+        reproducible; they do not describe the distribution of real-user experience. Clarity remains the field source.</li>
+    </ul>
+  </section>
+
+  <div class="foot">
+    <div>Sources</div>
+    <div class="g">
+      <div>GA4 — property 478308692 · 61 days daily, funnels, pages, channels</div>
+      <div>Microsoft Clarity — ro0m9zh071 · 12–26 Jul, clicks, scroll, vitals, JS errors</div>
+      <div>Shopify Admin — orders segmented by sourceName + tags</div>
+      <div>Google Ads — account 2348623547 · spend &amp; conversion config</div>
+      <div>Playwright 1.49 / Chromium 151 — live measurement, 28 Jul 2026</div>
+    </div>
+  </div>
+
+</div>

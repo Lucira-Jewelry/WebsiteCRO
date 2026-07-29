@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "cro": {
+      "command": "node",
+      "args": ["tools/cro-mcp/index.js"],
+      "env": {
+        "CRO_OUT_DIR": "reports/captures"
+      }
+    }
+  }
+}

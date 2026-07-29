@@ -1,0 +1,16 @@
+{
+  "name": "cro-mcp",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Playwright-backed MCP server exposing CRO measurement tools: screenshots, fold analysis, click-heatmap overlays, Core Web Vitals, overlay audits and funnel walks.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "postinstall": "playwright install chromium"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "playwright": "^1.49.0"
+  }
+}
