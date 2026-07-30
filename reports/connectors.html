@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Connector Health — Lucira Jewelry CRO</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --bg:#EEF0ED; --surface:#FFFFFF; --raise:#F7F8F6; --ink:#1B2320; --muted:#5B6560; --faint:#8A938E;
+    --accent:#A9813F; --accent-ink:#5E4520;
+    --critical:#A23B2E; --critical-bg:#F7E7E4;
+    --high:#B0722A; --high-bg:#F8EDDC;
+    --good:#48684C; --good-bg:#E5EDE5;
+    --medium:#3D5A73; --medium-bg:#E3EAEF;
+    --line:rgba(27,35,32,0.13); --line-strong:rgba(27,35,32,0.26);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#111412; --surface:#191E1A; --raise:#1F2521; --ink:#EDEFEA; --muted:#9AA69E; --faint:#6E786F;
+      --accent:#C79B4E; --accent-ink:#D8B87A; --critical:#E4695C; --critical-bg:#3B2320;
+      --high:#DFA555; --high-bg:#392D19; --good:#8CBC92; --good-bg:#1C2A1E;
+      --medium:#8FB3D2; --medium-bg:#1D2B35;
+      --line:rgba(237,239,234,0.14); --line-strong:rgba(237,239,234,0.28); }
+  }
+  :root[data-theme="dark"]{ --bg:#111412; --surface:#191E1A; --raise:#1F2521; --ink:#EDEFEA; --muted:#9AA69E;
+    --faint:#6E786F; --accent:#C79B4E; --accent-ink:#D8B87A; --critical:#E4695C; --critical-bg:#3B2320;
+    --high:#DFA555; --high-bg:#392D19; --good:#8CBC92; --good-bg:#1C2A1E; --medium:#8FB3D2; --medium-bg:#1D2B35;
+    --line:rgba(237,239,234,0.14); --line-strong:rgba(237,239,234,0.28); }
+  :root[data-theme="light"]{ --bg:#EEF0ED; --surface:#FFFFFF; --raise:#F7F8F6; --ink:#1B2320; --muted:#5B6560;
+    --faint:#8A938E; --accent:#A9813F; --accent-ink:#5E4520; --critical:#A23B2E; --critical-bg:#F7E7E4;
+    --high:#B0722A; --high-bg:#F8EDDC; --good:#48684C; --good-bg:#E5EDE5; --medium:#3D5A73; --medium-bg:#E3EAEF;
+    --line:rgba(27,35,32,0.13); --line-strong:rgba(27,35,32,0.26); }
+
+  *{box-sizing:border-box;} html,body{margin:0;padding:0;}
+  body{background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;
+    font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  .page{max-width:1080px;margin:0 auto;padding:40px 22px 90px;}
+  h1,h2,h3,h4{font-family:Iowan Old Style,"Palatino Linotype","Book Antiqua",Georgia,serif;font-weight:600;margin:0;text-wrap:balance;}
+  .measure{max-width:70ch;} p{margin:0 0 13px;}
+  code{font-family:ui-monospace,"SF Mono","Cascadia Code",monospace;font-size:.86em;background:var(--line);padding:1px 5px;border-radius:3px;}
+
+  .hubnav{background:var(--surface);border-bottom:1px solid var(--line-strong);}
+  .hubnav .inner{max-width:1080px;margin:0 auto;padding:11px 22px;display:flex;flex-wrap:wrap;align-items:center;gap:5px;}
+  .hubnav a{font-size:12.5px;font-weight:600;color:var(--muted);text-decoration:none;padding:6px 13px;border-radius:100px;white-space:nowrap;}
+  .hubnav a:hover{background:var(--raise);color:var(--ink);}
+  .hubnav a.active{background:var(--accent);color:#fff;}
+  .hubnav .sep{color:var(--faint);font-size:12px;margin:0 2px;}
+
+  .masthead{display:flex;flex-direction:column;gap:8px;padding-bottom:20px;margin-bottom:26px;border-bottom:1px solid var(--line-strong);}
+  .eyebrow{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-ink);font-weight:700;}
+  .masthead h1{font-size:34px;line-height:1.1;}
+  .masthead .meta{font-size:12.5px;color:var(--muted);margin-top:2px;}
+
+  section{margin-bottom:36px;}
+  .sec-head{display:flex;align-items:baseline;gap:12px;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--line);}
+  .sec-head .tag{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700;}
+  .sec-head h2{font-size:20px;}
+
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);
+    border:1px solid var(--line);border-radius:6px;overflow:hidden;margin-bottom:26px;}
+  .kpi{background:var(--surface);padding:14px 15px;}
+  .kpi .lbl{font-size:11px;color:var(--muted);}
+  .kpi .num{font-size:26px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.01em;margin-top:2px;}
+  .kpi .num.bad{color:var(--critical);} .kpi .num.ok{color:var(--good);} .kpi .num.warn{color:var(--high);}
+
+  .conn-list{display:flex;flex-direction:column;gap:10px;}
+  .conn{display:grid;grid-template-columns:28px 1fr auto;gap:14px;align-items:center;background:var(--surface);
+    border:1px solid var(--line);border-radius:8px;padding:14px 18px;}
+  .conn .dot{width:12px;height:12px;border-radius:50%;justify-self:center;}
+  .conn .dot.ok{background:var(--good);}
+  .conn .dot.bad{background:var(--critical);}
+  .conn .dot.off{background:var(--faint);}
+  .conn h4{font-size:15px;margin:0 0 2px;}
+  .conn p{margin:0;font-size:12.5px;color:var(--muted);}
+  .conn .status{font-size:11.5px;font-weight:700;letter-spacing:.03em;white-space:nowrap;text-align:right;}
+  .conn .status.ok{color:var(--good);}
+  .conn .status.bad{color:var(--critical);}
+  .conn .status.off{color:var(--faint);}
+
+  .chip{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+    padding:2px 8px;border-radius:100px;white-space:nowrap;}
+  .chip.critical{background:var(--critical-bg);color:var(--critical);}
+  .chip.good{background:var(--good-bg);color:var(--good);}
+  .chip.low{background:var(--raise);color:var(--faint);}
+
+  .banner{background:var(--surface);border:1px solid var(--line-strong);border-left:4px solid var(--accent);
+    border-radius:6px;padding:15px 18px;font-size:13.5px;}
+  .banner.alarm{border-color:var(--critical);border-left-color:var(--critical);}
+  .banner b{color:var(--ink);}
+
+  .foot{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);font-size:11.5px;color:var(--faint);}
+</style>
+</head>
+<body>
+
+<nav class="hubnav"><div class="inner">
+  <a href="index.html">Reports Home</a><span class="sep">&middot;</span>
+  <a href="insights.html">Insights</a>
+  <a href="action_plan.html">Action Plan</a>
+  <a href="interactive.html">Interactive Dashboard</a>
+  <a href="connectors.html" class="active">Connectors</a>
+</div></nav>
+
+<div class="page">
+
+  <div class="masthead">
+    <div class="eyebrow">System Health</div>
+    <h1>Connector Status</h1>
+    <div class="meta">Every data source this analysis depends on, checked live &middot; 30 Jul 2026</div>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi"><div class="lbl">Connected &amp; working</div><div class="num ok">5</div></div>
+    <div class="kpi"><div class="lbl">Broken</div><div class="num bad">1</div></div>
+    <div class="kpi"><div class="lbl">Not configured</div><div class="num warn">1</div></div>
+  </div>
+
+  <section>
+    <div class="sec-head"><span class="tag">Status</span><h2>All 7 data sources</h2></div>
+    <div class="conn-list">
+
+      <div class="conn">
+        <div class="dot ok"></div>
+        <div><h4>Google Analytics 4</h4><p>Property 478308692 ("Lucira"), Standard tier &middot; sessions, funnel events, page-level data</p></div>
+        <div class="status ok">CONNECTED &middot; verified 30 Jul</div>
+      </div>
+
+      <div class="conn">
+        <div class="dot ok"></div>
+        <div><h4>Microsoft Clarity</h4><p>Project ro0m9zh071 &middot; rage/dead clicks, scroll depth, session recordings, JS errors</p></div>
+        <div class="status ok">CONNECTED &middot; verified 30 Jul</div>
+      </div>
+
+      <div class="conn">
+        <div class="dot ok"></div>
+        <div><h4>Shopify Admin</h4><p>luciraonline.myshopify.com, Advanced plan &middot; orders, products, customers</p></div>
+        <div class="status ok">CONNECTED &middot; verified 30 Jul</div>
+      </div>
+
+      <div class="conn">
+        <div class="dot ok"></div>
+        <div><h4>Google Ads</h4><p>Manager 1034627191 &middot; Account 2348623547 &middot; campaigns, spend, conversions</p></div>
+        <div class="status ok">CONNECTED &middot; verified 30 Jul</div>
+      </div>
+
+      <div class="conn" style="border-color:var(--critical);background:var(--critical-bg);">
+        <div class="dot bad"></div>
+        <div><h4>Google Search Console</h4><p>Attempted <code>site_snapshot</code>, <code>quick_wins</code>,
+          <code>ctr_opportunities</code> &mdash; all failed with <code>invalid_client</code> after 4 tries.
+          This is a broken OAuth client configuration, not a rate limit.</p></div>
+        <div class="status bad">BROKEN &middot; needs reconnect</div>
+      </div>
+
+      <div class="conn">
+        <div class="dot ok"></div>
+        <div><h4>WebEngage</h4><p>India datacenter &middot; API responsive (users, events, transactional campaigns)</p>
+          <span class="chip low">Not used in this CRO analysis — different purpose (messaging/engagement)</span></div>
+        <div class="status ok">CONNECTED &middot; unused here</div>
+      </div>
+
+      <div class="conn" style="opacity:.75;">
+        <div class="dot off"></div>
+        <div><h4>Meta / Facebook Ads API</h4><p>No connector is configured in this environment. Everything on the
+          Traffic &amp; Meta/Ads page about Paid Social comes from GA4 channel attribution and Clarity's in-app-browser
+          error signatures — not from Meta's own ad platform, so campaign-level Meta spend/ROAS cannot currently
+          be pulled directly.</p></div>
+        <div class="status off">NOT CONFIGURED</div>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Action</span><h2>What to do about the gaps</h2></div>
+    <div class="banner alarm" style="margin-bottom:12px;">
+      <p style="margin:0;"><b>Google Search Console:</b> reconnect the connector before the next deep-dive if
+        organic search visibility, keyword rankings, or title/meta-description CTR opportunities are wanted — none
+        of that is currently represented anywhere in this report.</p>
+    </div>
+    <div class="banner">
+      <p style="margin:0;"><b>Meta Ads API:</b> if you want Meta's own spend/ROAS/campaign data alongside Google
+        Ads (rather than inferring Paid Social behaviour from GA4 + Clarity, which is what this report does today),
+        that connector would need to be set up separately.</p>
+    </div>
+  </section>
+
+  <div class="foot">
+    Checked by attempting a real, lightweight call against each connector on 30 Jul 2026 — this is a live status,
+    not a configuration assumption. Re-run this check periodically; connector auth can expire independently of
+    the data pipeline.
+  </div>
+
+</div>
+</body>
+</html>

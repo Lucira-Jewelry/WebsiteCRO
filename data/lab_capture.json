@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-28T07:58:31.010Z",
+ "generated_at": "2026-07-29T10:33:01.380Z",
  "site": "https://www.lucirajewelry.com",
  "pages": {
   "home-mobile": {
@@ -13,25 +13,20 @@
     "body_scroll_locked": false,
     "blocking": {
      "coverage_pct": 100,
-     "z": "9999",
+     "z": "2000",
      "text": "Authentication Login to your account. REGISTER TO WIN A REWARD Try Your Luck! Win A Diamond Pendant +91 REQUEST OTP 100%"
     },
     "centre_click_hits": "img",
     "all": [
      {
       "coverage_pct": 100,
-      "z": "9999",
+      "z": "2000",
       "text": "Authentication Login to your account. REGISTER TO WIN A REWARD Try Your Luck! Win A Diamon"
      },
      {
       "coverage_pct": 18.9,
       "z": "100",
       "text": "A small reminder: Embrace yourself. Extraaa 3% Bank Discount on Eterna. Tennis Bracelets Y"
-     },
-     {
-      "coverage_pct": 1.8,
-      "z": "499",
-      "text": "At your Service"
      }
     ]
    },
@@ -141,19 +136,19 @@
       "label": "Try at home",
       "present": true,
       "sticky": true,
-      "pct_down": 0,
-      "top_px": 0,
+      "pct_down": 0.2,
+      "top_px": 40,
       "seen_by_median": true
      }
     ]
    },
    "vitals": {
-    "lcp_ms": 1908,
+    "lcp_ms": 2828,
     "cls": 0.0577,
-    "fcp_ms": 708,
-    "ttfb_ms": 181,
-    "dom_content_loaded_ms": 379,
-    "load_ms": 9868,
+    "fcp_ms": 2828,
+    "ttfb_ms": 606,
+    "dom_content_loaded_ms": 1316,
+    "load_ms": 1423,
     "js_errors": 0,
     "js_error_samples": []
    },
@@ -181,18 +176,9 @@
    "http_status": 200,
    "overlays": {
     "body_scroll_locked": false,
-    "blocking": {
-     "coverage_pct": 100,
-     "z": "9999",
-     "text": "Authentication Login to your account. REGISTER TO WIN A REWARD Try Your Luck! Win A Diamond Pendant +91 REQUEST OTP 100%"
-    },
+    "blocking": null,
     "centre_click_hits": "img",
     "all": [
-     {
-      "coverage_pct": 100,
-      "z": "9999",
-      "text": "Authentication Login to your account. REGISTER TO WIN A REWARD Try Your Luck! Win A Diamon"
-     },
      {
       "coverage_pct": 18.9,
       "z": "100",
@@ -202,25 +188,20 @@
       "coverage_pct": 3.7,
       "z": "500",
       "text": "Sort Filter"
-     },
-     {
-      "coverage_pct": 1.8,
-      "z": "499",
-      "text": "At your Service"
      }
     ]
    },
    "screenshot_viewport": "reports\\captures\\overlay-plp-mobile.png",
    "fold": {
-    "doc_height_px": 8526,
-    "screens_tall": 10.5,
-    "avg_scroll_reach_px": 2358,
+    "doc_height_px": 12242,
+    "screens_tall": 15.1,
+    "avg_scroll_reach_px": 3386,
     "elements": [
      {
       "label": "Price",
       "present": true,
       "sticky": false,
-      "pct_down": 18,
+      "pct_down": 12.5,
       "top_px": 1536,
       "seen_by_median": true
      },
@@ -316,19 +297,19 @@
       "label": "Try at home",
       "present": true,
       "sticky": true,
-      "pct_down": 0,
-      "top_px": 0,
+      "pct_down": 0.7,
+      "top_px": 80,
       "seen_by_median": true
      }
     ]
    },
    "vitals": {
-    "lcp_ms": 1876,
+    "lcp_ms": 1756,
     "cls": 0.0493,
-    "fcp_ms": 1132,
-    "ttfb_ms": 126,
-    "dom_content_loaded_ms": 327,
-    "load_ms": 5819,
+    "fcp_ms": 1080,
+    "ttfb_ms": 92,
+    "dom_content_loaded_ms": 424,
+    "load_ms": 704,
     "js_errors": 0,
     "js_error_samples": []
    },
@@ -352,32 +333,13 @@
    "http_status": 200,
    "overlays": {
     "body_scroll_locked": false,
-    "blocking": {
-     "coverage_pct": 100,
-     "z": "9999",
-     "text": "Authentication Login to your account. REGISTER TO WIN A REWARD Try Your Luck! Win A Diamond Pendant +91 REQUEST OTP 100%"
-    },
+    "blocking": null,
     "centre_click_hits": "img",
     "all": [
-     {
-      "coverage_pct": 100,
-      "z": "9999",
-      "text": "Authentication Login to your account. REGISTER TO WIN A REWARD Try Your Luck! Win A Diamon"
-     },
      {
       "coverage_pct": 12.9,
       "z": "100",
       "text": "A small reminder: Embrace yourself. Extraaa 3% Bank Discount on Eterna. Tennis Bracelets Y"
-     },
-     {
-      "coverage_pct": 10,
-      "z": "200",
-      "text": "STORES ADD TO CART"
-     },
-     {
-      "coverage_pct": 0.8,
-      "z": "499",
-      "text": "At your Service"
      }
     ]
    },
@@ -455,8 +417,8 @@
       "label": "Shipping info",
       "present": true,
       "sticky": false,
-      "pct_down": 1.1,
-      "top_px": 177,
+      "pct_down": 9.3,
+      "top_px": 1472,
       "seen_by_median": true
      },
      {
@@ -487,19 +449,19 @@
       "label": "Try at home",
       "present": true,
       "sticky": true,
-      "pct_down": 0,
-      "top_px": 0,
+      "pct_down": 0.5,
+      "top_px": 80,
       "seen_by_median": true
      }
     ]
    },
    "vitals": {
-    "lcp_ms": 2412,
-    "cls": 0.0538,
-    "fcp_ms": 840,
-    "ttfb_ms": 95,
-    "dom_content_loaded_ms": 403,
-    "load_ms": 561,
+    "lcp_ms": 2196,
+    "cls": 0.0576,
+    "fcp_ms": 404,
+    "ttfb_ms": 47,
+    "dom_content_loaded_ms": 137,
+    "load_ms": 218,
     "js_errors": 0,
     "js_error_samples": []
    },
@@ -654,12 +616,12 @@
     ]
    },
    "vitals": {
-    "lcp_ms": 704,
-    "cls": 0.0005,
-    "fcp_ms": 704,
-    "ttfb_ms": 179,
-    "dom_content_loaded_ms": 351,
-    "load_ms": 2765,
+    "lcp_ms": 524,
+    "cls": 0,
+    "fcp_ms": 524,
+    "ttfb_ms": 44,
+    "dom_content_loaded_ms": 349,
+    "load_ms": 350,
     "js_errors": 0,
     "js_error_samples": []
    }
@@ -675,45 +637,40 @@
     "body_scroll_locked": true,
     "blocking": {
      "coverage_pct": 100,
-     "z": "600",
+     "z": "2000",
      "text": ""
     },
     "centre_click_hits": "REGISTER TO WIN A REWARD Try Your Luck! Win A Diamond Pendant +91 REQUEST OTP 100% Secured",
     "all": [
      {
       "coverage_pct": 100,
-      "z": "600",
+      "z": "2000",
       "text": ""
      },
      {
       "coverage_pct": 46.3,
-      "z": "600",
+      "z": "2000",
       "text": "Authentication Login or register to access your account and win prizes. REGISTER TO WIN A "
      },
      {
       "coverage_pct": 15.7,
       "z": "100",
       "text": "A small reminder: Embrace yourself. Extraaa 3% Bank Discount on Eterna. Tennis Bracelets Y"
-     },
-     {
-      "coverage_pct": 0.4,
-      "z": "499",
-      "text": "At your Service"
      }
     ]
    },
    "screenshot_viewport": "reports\\captures\\overlay-home-desktop.png",
    "fold": {
-    "doc_height_px": 14736,
-    "screens_tall": 16.4,
-    "avg_scroll_reach_px": 4097,
+    "doc_height_px": 14991,
+    "screens_tall": 16.7,
+    "avg_scroll_reach_px": 4167,
     "elements": [
      {
       "label": "Price",
       "present": true,
       "sticky": false,
-      "pct_down": 15.3,
-      "top_px": 2252,
+      "pct_down": 16.7,
+      "top_px": 2507,
       "seen_by_median": true
      },
      {
@@ -752,32 +709,32 @@
       "label": "Size guide",
       "present": true,
       "sticky": false,
-      "pct_down": 84.6,
-      "top_px": 12467,
+      "pct_down": 84.9,
+      "top_px": 12722,
       "seen_by_median": false
      },
      {
       "label": "Certification",
       "present": true,
       "sticky": false,
-      "pct_down": 5.4,
-      "top_px": 795,
+      "pct_down": 7,
+      "top_px": 1051,
       "seen_by_median": true
      },
      {
       "label": "Returns / exchange",
       "present": true,
       "sticky": false,
-      "pct_down": 5.4,
-      "top_px": 795,
+      "pct_down": 7,
+      "top_px": 1051,
       "seen_by_median": true
      },
      {
       "label": "Shipping info",
       "present": true,
       "sticky": false,
-      "pct_down": 5.4,
-      "top_px": 795,
+      "pct_down": 7,
+      "top_px": 1051,
       "seen_by_median": true
      },
      {
@@ -808,19 +765,19 @@
       "label": "Try at home",
       "present": true,
       "sticky": true,
-      "pct_down": 0.2,
-      "top_px": 35,
+      "pct_down": 0.5,
+      "top_px": 70,
       "seen_by_median": true
      }
     ]
    },
    "vitals": {
-    "lcp_ms": 1776,
-    "cls": 0.015,
-    "fcp_ms": 716,
-    "ttfb_ms": 51,
-    "dom_content_loaded_ms": 306,
-    "load_ms": 457,
+    "lcp_ms": 1176,
+    "cls": 0.0307,
+    "fcp_ms": 432,
+    "ttfb_ms": 43,
+    "dom_content_loaded_ms": 273,
+    "load_ms": 284,
     "js_errors": 0,
     "js_error_samples": []
    },
@@ -854,31 +811,26 @@
      {
       "coverage_pct": 17.5,
       "z": "auto",
-      "text": "Filters CLEAR ALL In Store Available Malad (35) Pune (30) Chembur (27) Borivali (22) Noida"
+      "text": "Filters CLEAR ALL In Store Available Malad (32) Pune (29) Chembur (26) Borivali (21) Noida"
      },
      {
       "coverage_pct": 15.7,
       "z": "100",
       "text": "A small reminder: Embrace yourself. Extraaa 3% Bank Discount on Eterna. Tennis Bracelets Y"
-     },
-     {
-      "coverage_pct": 0.4,
-      "z": "499",
-      "text": "At your Service"
      }
     ]
    },
    "screenshot_viewport": "reports\\captures\\overlay-plp-desktop.png",
    "fold": {
-    "doc_height_px": 12003,
-    "screens_tall": 13.3,
-    "avg_scroll_reach_px": 3320,
+    "doc_height_px": 8040,
+    "screens_tall": 8.9,
+    "avg_scroll_reach_px": 2224,
     "elements": [
      {
       "label": "Price",
       "present": true,
       "sticky": false,
-      "pct_down": 14.8,
+      "pct_down": 22.2,
       "top_px": 1782,
       "seen_by_median": true
      },
@@ -918,7 +870,7 @@
       "label": "Size guide",
       "present": true,
       "sticky": true,
-      "pct_down": 14,
+      "pct_down": 20.9,
       "top_px": 1684,
       "seen_by_median": true
      },
@@ -934,16 +886,16 @@
       "label": "Returns / exchange",
       "present": true,
       "sticky": false,
-      "pct_down": 89.4,
-      "top_px": 10730,
+      "pct_down": 84.2,
+      "top_px": 6767,
       "seen_by_median": false
      },
      {
       "label": "Shipping info",
       "present": true,
       "sticky": false,
-      "pct_down": 90.3,
-      "top_px": 10835,
+      "pct_down": 85.5,
+      "top_px": 6872,
       "seen_by_median": false
      },
      {
@@ -974,40 +926,28 @@
       "label": "Try at home",
       "present": true,
       "sticky": true,
-      "pct_down": 0.6,
+      "pct_down": 0.9,
       "top_px": 70,
       "seen_by_median": true
      }
     ]
    },
    "vitals": {
-    "lcp_ms": 1836,
-    "cls": 0.1538,
-    "fcp_ms": 732,
-    "ttfb_ms": 49,
-    "dom_content_loaded_ms": 356,
-    "load_ms": 470,
+    "lcp_ms": 1468,
+    "cls": 0.015,
+    "fcp_ms": 392,
+    "ttfb_ms": 35,
+    "dom_content_loaded_ms": 177,
+    "load_ms": 226,
     "js_errors": 0,
     "js_error_samples": []
    },
    "heatmap": {
-    "matched": 2,
+    "matched": 5,
     "unmatched": [
-     {
-      "text": "Register to Win a Reward",
-      "count": 1618
-     },
      {
       "text": "Spin the Wheel",
       "count": 915
-     },
-     {
-      "text": "REQUEST OTP",
-      "count": 490
-     },
-     {
-      "text": "New user? Register",
-      "count": 308
      }
     ],
     "image": "reports\\captures\\heatmap-plp-desktop.png"
@@ -1021,38 +961,23 @@
    "avg_scroll_depth_pct": 18.26,
    "http_status": 200,
    "overlays": {
-    "body_scroll_locked": true,
+    "body_scroll_locked": false,
     "blocking": {
      "coverage_pct": 116.7,
      "z": "auto",
-     "text": "Fast Shipping Trending SIMILAR ITEMS"
+     "text": "Trending SIMILAR ITEMS"
     },
-    "centre_click_hits": "REGISTER TO WIN A REWARD Try Your Luck! Win A Diamond Pendant +91 REQUEST OTP 100% Secured",
+    "centre_click_hits": "img",
     "all": [
      {
       "coverage_pct": 116.7,
       "z": "auto",
-      "text": "Fast Shipping Trending SIMILAR ITEMS"
-     },
-     {
-      "coverage_pct": 100,
-      "z": "600",
-      "text": ""
-     },
-     {
-      "coverage_pct": 46.3,
-      "z": "600",
-      "text": "Authentication Login or register to access your account and win prizes. REGISTER TO WIN A "
+      "text": "Trending SIMILAR ITEMS"
      },
      {
       "coverage_pct": 15.7,
       "z": "100",
       "text": "A small reminder: Embrace yourself. Extraaa 3% Bank Discount on Eterna. Tennis Bracelets Y"
-     },
-     {
-      "coverage_pct": 8,
-      "z": "200",
-      "text": "STORES NEARBY ADD TO CART"
      }
     ]
    },
@@ -1129,9 +1054,9 @@
      {
       "label": "Shipping info",
       "present": true,
-      "sticky": true,
-      "pct_down": 1.7,
-      "top_px": 207,
+      "sticky": false,
+      "pct_down": 11.3,
+      "top_px": 1363,
       "seen_by_median": true
      },
      {
@@ -1169,17 +1094,17 @@
     ]
    },
    "vitals": {
-    "lcp_ms": 19080,
-    "cls": 0.0245,
-    "fcp_ms": 692,
-    "ttfb_ms": 49,
-    "dom_content_loaded_ms": 264,
-    "load_ms": 5634,
+    "lcp_ms": 12072,
+    "cls": 0.0216,
+    "fcp_ms": 600,
+    "ttfb_ms": 32,
+    "dom_content_loaded_ms": 358,
+    "load_ms": 382,
     "js_errors": 0,
     "js_error_samples": []
    },
    "heatmap": {
-    "matched": 2,
+    "matched": 1,
     "unmatched": [
      {
       "text": "MH",
@@ -1196,6 +1121,10 @@
      {
       "text": "CUSTOMIZE",
       "count": 55
+     },
+     {
+      "text": "REQUEST OTP",
+      "count": 34
      }
     ],
     "image": "reports\\captures\\heatmap-pdp-desktop.png"
@@ -1327,12 +1256,12 @@
     ]
    },
    "vitals": {
-    "lcp_ms": 608,
+    "lcp_ms": 948,
     "cls": 0.0003,
-    "fcp_ms": 608,
-    "ttfb_ms": 56,
-    "dom_content_loaded_ms": 237,
-    "load_ms": 407,
+    "fcp_ms": 948,
+    "ttfb_ms": 38,
+    "dom_content_loaded_ms": 353,
+    "load_ms": 2194,
     "js_errors": 0,
     "js_error_samples": []
    }

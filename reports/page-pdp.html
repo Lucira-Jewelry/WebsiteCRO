@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Product (PDP) — Lucira Jewelry CRO</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --bg:#EEF0ED; --surface:#FFFFFF; --raise:#F7F8F6; --ink:#1B2320; --muted:#5B6560; --faint:#8A938E;
+    --accent:#A9813F; --accent-ink:#5E4520;
+    --critical:#A23B2E; --critical-bg:#F7E7E4;
+    --high:#B0722A; --high-bg:#F8EDDC;
+    --good:#48684C; --good-bg:#E5EDE5;
+    --medium:#3D5A73; --medium-bg:#E3EAEF;
+    --line:rgba(27,35,32,0.13); --line-strong:rgba(27,35,32,0.26);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#111412; --surface:#191E1A; --raise:#1F2521; --ink:#EDEFEA; --muted:#9AA69E; --faint:#6E786F;
+      --accent:#C79B4E; --accent-ink:#D8B87A; --critical:#E4695C; --critical-bg:#3B2320;
+      --high:#DFA555; --high-bg:#392D19; --good:#8CBC92; --good-bg:#1C2A1E;
+      --medium:#8FB3D2; --medium-bg:#1D2B35;
+      --line:rgba(237,239,234,0.14); --line-strong:rgba(237,239,234,0.28); }
+  }
+  :root[data-theme="dark"]{ --bg:#111412; --surface:#191E1A; --raise:#1F2521; --ink:#EDEFEA; --muted:#9AA69E;
+    --faint:#6E786F; --accent:#C79B4E; --accent-ink:#D8B87A; --critical:#E4695C; --critical-bg:#3B2320;
+    --high:#DFA555; --high-bg:#392D19; --good:#8CBC92; --good-bg:#1C2A1E; --medium:#8FB3D2; --medium-bg:#1D2B35;
+    --line:rgba(237,239,234,0.14); --line-strong:rgba(237,239,234,0.28); }
+  :root[data-theme="light"]{ --bg:#EEF0ED; --surface:#FFFFFF; --raise:#F7F8F6; --ink:#1B2320; --muted:#5B6560;
+    --faint:#8A938E; --accent:#A9813F; --accent-ink:#5E4520; --critical:#A23B2E; --critical-bg:#F7E7E4;
+    --high:#B0722A; --high-bg:#F8EDDC; --good:#48684C; --good-bg:#E5EDE5; --medium:#3D5A73; --medium-bg:#E3EAEF;
+    --line:rgba(27,35,32,0.13); --line-strong:rgba(27,35,32,0.26); }
+
+  *{box-sizing:border-box;} html,body{margin:0;padding:0;}
+  body{background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;
+    font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  .page{max-width:1080px;margin:0 auto;padding:40px 22px 90px;}
+  h1,h2,h3,h4{font-family:Iowan Old Style,"Palatino Linotype","Book Antiqua",Georgia,serif;font-weight:600;margin:0;text-wrap:balance;}
+  .measure{max-width:70ch;} p{margin:0 0 13px;}
+  code{font-family:ui-monospace,"SF Mono","Cascadia Code",monospace;font-size:.86em;background:var(--line);padding:1px 5px;border-radius:3px;}
+
+  .hubnav{background:var(--surface);border-bottom:1px solid var(--line-strong);}
+  .hubnav .inner{max-width:1080px;margin:0 auto;padding:11px 22px;display:flex;flex-wrap:wrap;align-items:center;gap:5px;}
+  .hubnav a{font-size:12.5px;font-weight:600;color:var(--muted);text-decoration:none;padding:6px 13px;border-radius:100px;white-space:nowrap;}
+  .hubnav a:hover{background:var(--raise);color:var(--ink);}
+  .hubnav a.active{background:var(--accent);color:#fff;}
+  .hubnav .sep{color:var(--faint);font-size:12px;margin:0 2px;}
+
+  .subnav{background:var(--raise);border-bottom:1px solid var(--line);}
+  .subnav .inner{max-width:1080px;margin:0 auto;padding:9px 22px;display:flex;flex-wrap:wrap;align-items:center;gap:4px;}
+  .subnav .label{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);font-weight:700;margin-right:8px;}
+  .subnav a{font-size:12.5px;font-weight:600;color:var(--muted);text-decoration:none;padding:5px 12px;border-radius:6px;white-space:nowrap;border:1px solid transparent;}
+  .subnav a:hover{border-color:var(--line-strong);color:var(--ink);}
+  .subnav a.active{background:var(--surface);border-color:var(--line-strong);color:var(--accent-ink);}
+
+  .masthead{display:flex;flex-direction:column;gap:8px;padding-bottom:20px;margin-bottom:22px;border-bottom:1px solid var(--line-strong);}
+  .eyebrow{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-ink);font-weight:700;}
+  .masthead h1{font-size:34px;line-height:1.1;}
+  .masthead .meta{font-size:12.5px;color:var(--muted);margin-top:2px;}
+
+  .goal{background:var(--surface);border:1px solid var(--line-strong);border-left:5px solid var(--accent);
+    border-radius:6px;padding:16px 20px;margin-bottom:26px;}
+  .goal .lbl{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-ink);font-weight:700;margin-bottom:6px;}
+  .goal .target{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-top:8px;}
+  .goal .num{font-size:26px;font-weight:700;font-variant-numeric:tabular-nums;}
+  .goal .arrow{color:var(--faint);font-size:18px;}
+  .goal .num.now{color:var(--critical);}
+  .goal .num.want{color:var(--good);}
+
+  section{margin-bottom:36px;}
+  .sec-head{display:flex;align-items:baseline;gap:12px;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--line);}
+  .sec-head .tag{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700;}
+  .sec-head h2{font-size:20px;}
+
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);
+    border:1px solid var(--line);border-radius:6px;overflow:hidden;margin-bottom:10px;}
+  .kpi{background:var(--surface);padding:14px 15px;}
+  .kpi .lbl{font-size:11px;color:var(--muted);}
+  .kpi .num{font-size:21px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.01em;margin-top:2px;}
+  .kpi .num.bad{color:var(--critical);} .kpi .num.warn{color:var(--high);} .kpi .num.ok{color:var(--good);}
+  .kpi .sub{font-size:10.5px;color:var(--faint);margin-top:2px;}
+  .devlabel{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);font-weight:700;margin:18px 0 6px;}
+
+  .controls{background:var(--raise);border:1px solid var(--line);border-radius:6px;padding:11px 14px;margin-bottom:18px;}
+  .ctrl-row{display:flex;flex-wrap:wrap;gap:9px 14px;align-items:center;}
+  .ctrl-label{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;}
+  input[type=date]{font:inherit;font-size:13px;padding:5px 8px;border:1px solid var(--line-strong);
+    border-radius:5px;background:var(--surface);color:var(--ink);font-variant-numeric:tabular-nums;}
+  .seg{display:inline-flex;border:1px solid var(--line-strong);border-radius:6px;overflow:hidden;}
+  .seg button{font:inherit;font-size:12.5px;padding:5px 11px;border:0;background:var(--surface);
+    color:var(--muted);cursor:pointer;border-right:1px solid var(--line);}
+  .seg button:last-child{border-right:0;}
+  .seg button[aria-pressed=true]{background:var(--accent);color:#fff;font-weight:600;}
+  .seg button:hover:not([aria-pressed=true]){background:var(--raise);color:var(--ink);}
+  .rangenote{font-size:12px;color:var(--faint);font-variant-numeric:tabular-nums;}
+
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  .twrap{overflow-x:auto;border:1px solid var(--line);border-radius:6px;}
+  th{text-align:left;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:700;
+    padding:9px 11px;background:var(--raise);border-bottom:1px solid var(--line-strong);white-space:nowrap;}
+  td{padding:9px 11px;border-bottom:1px solid var(--line);background:var(--surface);font-variant-numeric:tabular-nums;vertical-align:top;}
+  tr:last-child td{border-bottom:none;}
+  th.num,td.num{text-align:right;}
+  td.bad{color:var(--critical);font-weight:700;} td.warn{color:var(--high);font-weight:600;}
+  td.ok{color:var(--good);font-weight:600;} td.dim{color:var(--faint);}
+
+  .chip{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+    padding:2px 8px;border-radius:100px;white-space:nowrap;}
+  .chip.critical{background:var(--critical-bg);color:var(--critical);}
+  .chip.high{background:var(--high-bg);color:var(--high);}
+  .chip.medium{background:var(--medium-bg);color:var(--medium);}
+  .chip.good{background:var(--good-bg);color:var(--good);}
+  .chip.low{background:var(--raise);color:var(--faint);}
+
+  .banner{background:var(--surface);border:1px solid var(--line-strong);border-left:4px solid var(--accent);
+    border-radius:6px;padding:15px 18px;font-size:13.5px;}
+  .banner.alarm{border-color:var(--critical);border-left-color:var(--critical);}
+  .banner.good{border-left-color:var(--good);}
+  .banner b{color:var(--ink);}
+
+  .fold{display:flex;flex-direction:column;gap:0;margin:4px 0;border:1px solid var(--line);border-radius:6px;overflow:hidden;}
+  .fold-row{display:grid;grid-template-columns:170px 1fr 60px;gap:12px;padding:9px 13px;border-bottom:1px solid var(--line);
+    font-size:12.5px;background:var(--surface);align-items:center;}
+  .fold-row:last-child{border-bottom:none;}
+  .fold-row .bar{background:var(--line);border-radius:3px;height:8px;position:relative;overflow:hidden;}
+  .fold-row .bar i{position:absolute;left:0;top:0;bottom:0;background:var(--accent);}
+  .fold-row.miss{background:var(--critical-bg);}
+
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  @media (max-width:820px){ .split{grid-template-columns:1fr;} }
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:18px 20px;}
+  .card h4{margin:0 0 10px;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);}
+  .rec-list{margin:0;padding-left:18px;font-size:13px;line-height:1.7;}
+  .rec-list li{margin-bottom:8px;} .rec-list li:last-child{margin-bottom:0;}
+
+  .foot{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);font-size:11.5px;color:var(--faint);}
+</style>
+</head>
+<body>
+
+<nav class="hubnav"><div class="inner">
+  <a href="index.html">Reports Home</a><span class="sep">&middot;</span>
+  <a href="insights.html">Insights</a>
+  <a href="action_plan.html">Action Plan</a>
+  <a href="interactive.html">Interactive Dashboard</a>
+  <a href="connectors.html">Connectors</a>
+</div></nav>
+<nav class="subnav"><div class="inner">
+  <span class="label">Page-by-page</span>
+  <a href="page-homepage.html">Homepage</a>
+  <a href="page-plp.html">Collection (PLP)</a>
+  <a href="page-pdp.html" class="active">Product (PDP)</a>
+  <a href="page-cart-checkout.html">Cart &amp; Checkout</a>
+  <a href="page-traffic-ads.html">Traffic &amp; Meta/Ads</a>
+</div></nav>
+
+<div class="page">
+
+  <div class="masthead">
+    <div class="eyebrow">Page Insights &middot; Product (PDP)</div>
+    <h1>Product Pages</h1>
+    <div class="meta">/products/* &middot; 12 PDPs tracked &middot; data through 27 Jul, lab checks 29&ndash;30 Jul 2026</div>
+  </div>
+
+  <div class="goal">
+    <div class="lbl">Job of this page</div>
+    <p style="margin:0;font-size:14.5px;">Get a visitor to add the product to cart. This is where intent turns into
+      action — and where the gap between good traffic and average traffic is largest.</p>
+    <div class="target">
+      <div><div style="font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">Product &rarr; Add to Cart, site blend</div>
+        <span class="num now">3.19%</span></div>
+      <span class="arrow">&rarr;</span>
+      <div><div style="font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">Already achieved from homepage traffic</div>
+        <span class="num want">18.51%</span></div>
+      <div style="margin-left:auto;font-size:12.5px;color:var(--muted);max-width:34ch;">A 5.8&times; gap between
+        homepage-origin and blended traffic. Not a PDP redesign problem — a traffic-quality and speed problem.</div>
+    </div>
+  </div>
+
+  <div class="banner alarm" style="margin-bottom:26px;">
+    <p style="margin:0;"><b>Most critical open issue, this page type:</b> desktop PDP LCP measured at
+      <b>16,988ms ("poor")</b> across 3 clean lab runs — see T21 below. This is a bigger, more certain defect than
+      anything else currently open on product pages.</p>
+  </div>
+
+  <section>
+    <div class="sec-head"><span class="tag">Speed</span><h2>Load performance — reference PDP (Corinthian Pave Diamond Men's Ring)</h2></div>
+    <div class="kpis">
+      <div class="kpi"><div class="lbl">Field LCP (mobile, Clarity)</div><div class="num warn">3,392ms</div><div class="sub">needs improvement</div></div>
+      <div class="kpi"><div class="lbl">Lab LCP (mobile, median of 3)</div><div class="num warn">2,520ms</div><div class="sub">needs improvement &middot; 30 Jul</div></div>
+      <div class="kpi"><div class="lbl">Lab LCP (desktop, median of 3)</div><div class="num bad">16,988ms</div><div class="sub">POOR &middot; 30 Jul &middot; T21</div></div>
+      <div class="kpi"><div class="lbl">Desktop page weight</div><div class="num warn">~10.2MB</div><div class="sub">181 requests</div></div>
+    </div>
+    <p class="measure" style="font-size:12.5px;color:var(--muted);">Desktop, not mobile, is the broken device here —
+      the reverse of most findings on this site. 3 runs landed at 16,604 / 16,988 / 17,164ms — a ~3% spread, ruling
+      out cold-start noise. See <a href="action_plan.html">Action Plan T21</a> for the fix plan (compress/preload the
+      LCP image, audit the 181-request waterfall).</p>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Fold</span><h2>What a mobile visitor actually sees — reference PDP</h2></div>
+    <p class="measure" style="font-size:13px;color:var(--muted);">Page is 16.3 screens tall on mobile; the median
+      visitor scrolls to just 17.9% (2,370px) before leaving.</p>
+    <div class="fold">
+      <div class="fold-row"><span>Price / Add to Cart</span><div class="bar"><i style="width:100%"></i></div><span>0%</span></div>
+      <div class="fold-row"><span>Size Guide</span><div class="bar"><i style="width:41%"></i></div><span>7.3%</span></div>
+      <div class="fold-row"><span>Certification / Returns / Shipping</span><div class="bar"><i style="width:62%"></i></div><span>11.1&ndash;11.4%</span></div>
+      <div class="fold-row"><span>Product Details</span><div class="bar"><i style="width:98%"></i></div><span>17.5%</span></div>
+      <div class="fold-row miss"><span><b>Customer Reviews</b></span><div class="bar"><i style="width:100%;background:var(--critical)"></i></div><span>48.1%</span></div>
+    </div>
+    <p class="note" style="font-size:12px;color:var(--faint);margin-top:8px;">Everything except Reviews sits inside
+      the 18% reach line. Reviews is the one real casualty — see the issue below.</p>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Issues</span><h2>What's actually wrong on this page type</h2></div>
+    <div class="twrap">
+      <table>
+        <thead><tr><th>Issue</th><th>Criticality</th><th>Status</th><th>Evidence</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><b>Desktop LCP is ~17 seconds</b> (T21)</td>
+            <td><span class="chip critical">Critical</span></td>
+            <td><span class="chip critical">Open, newly confirmed 30 Jul</span></td>
+            <td>3-run median 16,988ms vs mobile's 2,520ms on the same URL. ~10.2MB transferred, 181 requests.
+              Not in the original Run 005 capture — mobile-only was measured then.</td>
+          </tr>
+          <tr>
+            <td><b>Reviews summary buried at ~47&ndash;48% depth</b> (F3)</td>
+            <td><span class="chip critical">Critical</span></td>
+            <td><span class="chip high">Reported shipped, NOT verified live</span></td>
+            <td>Checked live on 2 products 30 Jul at fresh scroll depth 17.93% &mdash; both still show
+              <code>Customer Reviews</code> at 47&ndash;48% depth, unchanged from Run 005. No star/summary badge
+              found anywhere higher on the page. See <a href="insights.html">Insights &rarr; Update, 30 Jul</a>
+              before crediting this as fixed.</td>
+          </tr>
+          <tr>
+            <td>PDP template is 19.5 screens against an ~18% scroll ceiling</td>
+            <td><span class="chip medium">Medium</span></td>
+            <td><span class="chip low">Open</span></td>
+            <td>15,804px doc height; all 12 top PDPs cluster at 18&ndash;21% scroll depth &mdash; the template
+              generalises, this isn't one product's problem.</td>
+          </tr>
+          <tr>
+            <td>Two slowest PDPs also have the lowest engagement</td>
+            <td><span class="chip medium">Medium</span></td>
+            <td><span class="chip low">Correlation, not proven causal</span></td>
+            <td>Bezel-set ring: 5,072ms field LCP / 12.4s engagement (lowest of all 12). Paramount ring: 4,200ms /
+              16.2s. Confidence 0.75 &mdash; worth a closer look once T21 is fixed and the measurement is cleaner.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Traffic &amp; Engagement</span><h2>Reference PDPs &mdash; pick any range</h2></div>
+    <div class="controls">
+      <div class="ctrl-row">
+        <span class="ctrl-label">Range</span>
+        <input type="date" id="from" aria-label="From date">
+        <span style="color:var(--faint)">&rarr;</span>
+        <input type="date" id="to" aria-label="To date">
+        <div class="seg" role="group" aria-label="Quick ranges">
+          <button data-preset="7">7d</button><button data-preset="14">14d</button><button data-preset="30">30d</button>
+        </div>
+        <span class="rangenote" id="rangenote"></span>
+      </div>
+    </div>
+    <div class="devlabel">Mobile &mdash; Corinthian (reference PDP)</div>
+    <div class="kpis" id="kpisCorinthianMobile"></div>
+    <div class="devlabel">Desktop &mdash; Corinthian</div>
+    <div class="kpis" id="kpisCorinthianDesktop"></div>
+    <div class="devlabel">Desktop &mdash; Paramount (2nd PDP, for contrast)</div>
+    <div class="kpis" id="kpisParamountDesktop"></div>
+    <p class="measure" style="font-size:12.5px;color:var(--muted);margin-top:8px;"><b>Across every range, a large
+      majority of mobile PDP traffic is brand-new visitors</b> landing directly on a product page with zero site
+      context &mdash; this is cold/ad traffic, not warmed-up browsers, which raises the bar on what the page needs
+      to prove immediately (hence T3's urgency). Desktop skews consistently warmer, and Paramount desktop sessions
+      run well over 100 seconds on average across every range &mdash; exactly the kind of high-investment session
+      that a 17-second LCP (T21) taxes hardest. Data covers 29 Jun&ndash;28 Jul 2026 (30 days stored).</p>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Recommendations</span><h2>What to do next, by device</h2></div>
+    <div class="split">
+      <div class="card">
+        <h4>Mobile</h4>
+        <ol class="rec-list">
+          <li>Treat T3 (reviews summary near the top) as higher priority than its "Critical, open" status alone
+            suggests &mdash; with ~80% new users, the page has one shot to establish trust, and reviews are the
+            strongest trust asset currently unpublished at 47&ndash;48% depth.</li>
+          <li>1.18 pages/session suggests visitors aren't exploring further after landing &mdash; consider a
+            related-products prompt once T3 and T21 are resolved, not before.</li>
+        </ol>
+      </div>
+      <div class="card">
+        <h4>Desktop</h4>
+        <ol class="rec-list">
+          <li>Fix T21 first, above everything else on this page &mdash; a 176.7s-average session (Paramount) is
+            exactly the profile the ~17s LCP actively damages. This isn't a marginal user; it's someone already
+            spending 3 minutes on the page.</li>
+          <li>Lower new-user share (32&ndash;68%) than mobile means desktop PDP traffic is warmer on average &mdash;
+            speed, not trust signals, is the higher-leverage fix here.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Traffic</span><h2>Per-product performance (mobile, 7d)</h2></div>
+    <div class="twrap">
+      <table>
+        <thead><tr><th>Product</th><th class="num">Views</th><th class="num">Bounce</th><th class="num">Engagement</th><th class="num">Field LCP</th></tr></thead>
+        <tbody>
+          <tr><td>Corinthian Pave Diamond Men's Ring <span class="chip low">reference</span></td><td class="num">2,938</td><td class="num">34.6%</td><td class="num">19.3s</td><td class="num warn">3,392ms</td></tr>
+          <tr><td>Paramount Pave Diamond Men's Ring</td><td class="num">2,721</td><td class="num">36.4%</td><td class="num bad">16.2s</td><td class="num bad">4,200ms</td></tr>
+          <tr><td>Men's Classic Solitaire Engagement Ring</td><td class="num">2,210</td><td class="num">35.7%</td><td class="num">20.5s</td><td class="num warn">3,432ms</td></tr>
+          <tr><td>Men's Bezel-Set Solitaire Lab Grown Diamond Ring</td><td class="num">2,165</td><td class="num warn">41.0%</td><td class="num bad">12.4s</td><td class="num bad">5,072ms</td></tr>
+          <tr><td>Gemstone &amp; Diamond Chandelier Earrings</td><td class="num">2,001</td><td class="num">29.0%</td><td class="num ok">44.3s</td><td class="num dim">&mdash;</td></tr>
+          <tr><td>Four-Prong Round Solitaire Ring 7.50mm</td><td class="num">1,743</td><td class="num">36.7%</td><td class="num">22.2s</td><td class="num warn">3,680ms</td></tr>
+          <tr><td>Princess-Cut Diamond Men's Classic Ring</td><td class="num">1,662</td><td class="num">28.0%</td><td class="num">26.8s</td><td class="num dim">&mdash;</td></tr>
+          <tr><td>Box Gold Neck Chain</td><td class="num">1,604</td><td class="num warn">41.6%</td><td class="num">15.9s</td><td class="num dim">&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="foot">
+    Sources: GA4 (30d page-level for the filter above, 7d per-product), Clarity fold/scroll data, Playwright
+    <code>cro_vitals</code> + <code>cro_fold_analysis</code> (29&ndash;30 Jul). Full narrative in
+    <a href="insights.html">Insights</a>; tasks tracked in <a href="action_plan.html">Action Plan</a> (T3, T19, T21).
+  </div>
+
+</div>
+
+<script>
+const CORINTHIAN = [{"d":"2026-06-29","dev":"desktop","s":1,"eng":1,"dur":0.0,"pps":1.00,"nu":0,"tu":1,"b":0.00},{"d":"2026-07-02","dev":"desktop","s":3,"eng":3,"dur":25.0,"pps":1.00,"nu":1,"tu":2,"b":0.00},{"d":"2026-07-03","dev":"desktop","s":1,"eng":1,"dur":251.9,"pps":1.00,"nu":0,"tu":1,"b":0.00},{"d":"2026-07-05","dev":"desktop","s":2,"eng":0,"dur":5.0,"pps":1.00,"nu":2,"tu":2,"b":100.00},{"d":"2026-07-07","dev":"desktop","s":4,"eng":2,"dur":9.9,"pps":1.00,"nu":3,"tu":4,"b":50.00},{"d":"2026-07-08","dev":"desktop","s":4,"eng":3,"dur":337.7,"pps":1.00,"nu":3,"tu":4,"b":25.00},{"d":"2026-07-09","dev":"desktop","s":3,"eng":2,"dur":36.9,"pps":1.00,"nu":2,"tu":3,"b":33.33},{"d":"2026-07-10","dev":"desktop","s":1,"eng":1,"dur":37.6,"pps":1.00,"nu":0,"tu":1,"b":0.00},{"d":"2026-07-11","dev":"desktop","s":7,"eng":7,"dur":244.1,"pps":1.00,"nu":5,"tu":7,"b":0.00},{"d":"2026-07-12","dev":"desktop","s":3,"eng":3,"dur":90.9,"pps":1.00,"nu":2,"tu":3,"b":0.00},{"d":"2026-07-13","dev":"desktop","s":9,"eng":6,"dur":49.4,"pps":0.78,"nu":3,"tu":7,"b":33.33},{"d":"2026-07-14","dev":"desktop","s":5,"eng":4,"dur":79.2,"pps":1.00,"nu":5,"tu":5,"b":20.00},{"d":"2026-07-15","dev":"desktop","s":6,"eng":6,"dur":51.5,"pps":1.00,"nu":2,"tu":6,"b":0.00},{"d":"2026-07-16","dev":"desktop","s":6,"eng":3,"dur":19.9,"pps":0.83,"nu":5,"tu":5,"b":50.00},{"d":"2026-07-17","dev":"desktop","s":4,"eng":1,"dur":9.6,"pps":1.00,"nu":3,"tu":4,"b":75.00},{"d":"2026-07-18","dev":"desktop","s":6,"eng":6,"dur":15.7,"pps":1.00,"nu":4,"tu":6,"b":0.00},{"d":"2026-07-19","dev":"desktop","s":7,"eng":4,"dur":61.3,"pps":0.86,"nu":4,"tu":6,"b":42.86},{"d":"2026-07-20","dev":"desktop","s":8,"eng":7,"dur":93.1,"pps":1.00,"nu":5,"tu":8,"b":12.50},{"d":"2026-07-21","dev":"desktop","s":9,"eng":6,"dur":62.1,"pps":1.00,"nu":4,"tu":8,"b":33.33},{"d":"2026-07-22","dev":"desktop","s":14,"eng":10,"dur":41.6,"pps":1.07,"nu":5,"tu":11,"b":28.57},{"d":"2026-07-23","dev":"desktop","s":7,"eng":1,"dur":6.7,"pps":0.71,"nu":3,"tu":5,"b":85.71},{"d":"2026-07-24","dev":"desktop","s":3,"eng":1,"dur":10.4,"pps":1.00,"nu":2,"tu":3,"b":66.67},{"d":"2026-07-25","dev":"desktop","s":6,"eng":5,"dur":71.5,"pps":1.33,"nu":2,"tu":5,"b":16.67},{"d":"2026-07-26","dev":"desktop","s":7,"eng":4,"dur":151.4,"pps":1.00,"nu":5,"tu":6,"b":42.86},{"d":"2026-07-27","dev":"desktop","s":9,"eng":8,"dur":66.2,"pps":0.78,"nu":3,"tu":5,"b":11.11},{"d":"2026-07-28","dev":"desktop","s":11,"eng":6,"dur":19.8,"pps":1.00,"nu":8,"tu":11,"b":45.45},{"d":"2026-06-29","dev":"mobile","s":29,"eng":22,"dur":64.9,"pps":1.31,"nu":18,"tu":27,"b":24.14},{"d":"2026-06-30","dev":"mobile","s":53,"eng":35,"dur":72.6,"pps":1.19,"nu":30,"tu":51,"b":33.96},{"d":"2026-07-01","dev":"mobile","s":34,"eng":27,"dur":31.7,"pps":1.24,"nu":18,"tu":34,"b":20.59},{"d":"2026-07-02","dev":"mobile","s":33,"eng":19,"dur":45.3,"pps":1.12,"nu":22,"tu":32,"b":42.42},{"d":"2026-07-03","dev":"mobile","s":49,"eng":34,"dur":42.2,"pps":1.33,"nu":23,"tu":47,"b":30.61},{"d":"2026-07-04","dev":"mobile","s":71,"eng":51,"dur":110.3,"pps":1.32,"nu":39,"tu":67,"b":28.17},{"d":"2026-07-05","dev":"mobile","s":73,"eng":49,"dur":87.0,"pps":1.23,"nu":44,"tu":72,"b":32.88},{"d":"2026-07-06","dev":"mobile","s":83,"eng":53,"dur":71.2,"pps":1.17,"nu":58,"tu":82,"b":36.14},{"d":"2026-07-07","dev":"mobile","s":124,"eng":81,"dur":66.1,"pps":1.21,"nu":84,"tu":119,"b":34.68},{"d":"2026-07-08","dev":"mobile","s":126,"eng":103,"dur":49.6,"pps":1.22,"nu":91,"tu":123,"b":18.25},{"d":"2026-07-09","dev":"mobile","s":254,"eng":173,"dur":76.8,"pps":1.31,"nu":186,"tu":247,"b":31.89},{"d":"2026-07-10","dev":"mobile","s":157,"eng":100,"dur":79.6,"pps":1.22,"nu":114,"tu":154,"b":36.31},{"d":"2026-07-11","dev":"mobile","s":234,"eng":164,"dur":60.5,"pps":1.19,"nu":180,"tu":230,"b":29.91},{"d":"2026-07-12","dev":"mobile","s":271,"eng":185,"dur":77.3,"pps":1.23,"nu":209,"tu":262,"b":31.73},{"d":"2026-07-13","dev":"mobile","s":273,"eng":182,"dur":68.6,"pps":1.22,"nu":225,"tu":267,"b":33.33},{"d":"2026-07-14","dev":"mobile","s":309,"eng":207,"dur":59.7,"pps":1.17,"nu":241,"tu":299,"b":33.01},{"d":"2026-07-15","dev":"mobile","s":274,"eng":177,"dur":73.3,"pps":1.23,"nu":210,"tu":265,"b":35.40},{"d":"2026-07-16","dev":"mobile","s":304,"eng":202,"dur":53.6,"pps":1.23,"nu":233,"tu":294,"b":33.55},{"d":"2026-07-17","dev":"mobile","s":315,"eng":212,"dur":62.6,"pps":1.19,"nu":247,"tu":306,"b":32.70},{"d":"2026-07-18","dev":"mobile","s":338,"eng":205,"dur":55.5,"pps":1.21,"nu":265,"tu":325,"b":39.35},{"d":"2026-07-19","dev":"mobile","s":391,"eng":252,"dur":71.2,"pps":1.19,"nu":284,"tu":372,"b":35.55},{"d":"2026-07-20","dev":"mobile","s":371,"eng":242,"dur":60.9,"pps":1.18,"nu":288,"tu":364,"b":34.77},{"d":"2026-07-21","dev":"mobile","s":370,"eng":227,"dur":61.1,"pps":1.18,"nu":278,"tu":355,"b":38.65},{"d":"2026-07-22","dev":"mobile","s":358,"eng":244,"dur":56.8,"pps":1.18,"nu":252,"tu":345,"b":31.84},{"d":"2026-07-23","dev":"mobile","s":297,"eng":191,"dur":73.4,"pps":1.17,"nu":215,"tu":287,"b":35.69},{"d":"2026-07-24","dev":"mobile","s":347,"eng":230,"dur":69.9,"pps":1.18,"nu":257,"tu":335,"b":33.72},{"d":"2026-07-25","dev":"mobile","s":357,"eng":243,"dur":65.6,"pps":1.17,"nu":262,"tu":347,"b":31.93},{"d":"2026-07-26","dev":"mobile","s":412,"eng":266,"dur":70.5,"pps":1.17,"nu":318,"tu":398,"b":35.44},{"d":"2026-07-27","dev":"mobile","s":350,"eng":235,"dur":54.7,"pps":1.19,"nu":272,"tu":340,"b":32.86},{"d":"2026-07-28","dev":"mobile","s":351,"eng":238,"dur":68.9,"pps":1.21,"nu":278,"tu":340,"b":32.19}];
+const PARAMOUNT = [{"d":"2026-06-29","dev":"desktop","s":10,"eng":6,"dur":45.0,"pps":1.10,"nu":5,"tu":9,"b":40.00},{"d":"2026-06-30","dev":"desktop","s":7,"eng":5,"dur":85.6,"pps":1.00,"nu":5,"tu":6,"b":28.57},{"d":"2026-07-01","dev":"desktop","s":7,"eng":4,"dur":24.2,"pps":0.71,"nu":4,"tu":7,"b":42.86},{"d":"2026-07-02","dev":"desktop","s":12,"eng":8,"dur":43.8,"pps":1.17,"nu":5,"tu":10,"b":33.33},{"d":"2026-07-03","dev":"desktop","s":5,"eng":3,"dur":39.7,"pps":0.80,"nu":3,"tu":4,"b":40.00},{"d":"2026-07-04","dev":"desktop","s":8,"eng":7,"dur":54.1,"pps":1.12,"nu":3,"tu":7,"b":12.50},{"d":"2026-07-05","dev":"desktop","s":6,"eng":3,"dur":3.3,"pps":0.67,"nu":1,"tu":4,"b":50.00},{"d":"2026-07-06","dev":"desktop","s":2,"eng":2,"dur":130.4,"pps":1.00,"nu":2,"tu":2,"b":0.00},{"d":"2026-07-07","dev":"desktop","s":6,"eng":2,"dur":10.4,"pps":0.67,"nu":2,"tu":4,"b":66.67},{"d":"2026-07-08","dev":"desktop","s":6,"eng":5,"dur":36.9,"pps":1.00,"nu":1,"tu":6,"b":16.67},{"d":"2026-07-09","dev":"desktop","s":6,"eng":4,"dur":116.2,"pps":1.17,"nu":3,"tu":6,"b":33.33},{"d":"2026-07-10","dev":"desktop","s":14,"eng":10,"dur":58.1,"pps":0.71,"nu":1,"tu":8,"b":28.57},{"d":"2026-07-11","dev":"desktop","s":13,"eng":10,"dur":117.4,"pps":1.08,"nu":5,"tu":11,"b":23.08},{"d":"2026-07-12","dev":"desktop","s":8,"eng":6,"dur":155.1,"pps":0.88,"nu":4,"tu":7,"b":25.00},{"d":"2026-07-13","dev":"desktop","s":15,"eng":11,"dur":207.4,"pps":0.87,"nu":2,"tu":11,"b":26.67},{"d":"2026-07-14","dev":"desktop","s":15,"eng":11,"dur":178.2,"pps":1.00,"nu":5,"tu":13,"b":26.67},{"d":"2026-07-15","dev":"desktop","s":9,"eng":8,"dur":48.2,"pps":1.00,"nu":0,"tu":9,"b":11.11},{"d":"2026-07-16","dev":"desktop","s":7,"eng":4,"dur":51.5,"pps":1.00,"nu":3,"tu":6,"b":42.86},{"d":"2026-07-17","dev":"desktop","s":14,"eng":13,"dur":215.7,"pps":1.07,"nu":2,"tu":13,"b":7.14},{"d":"2026-07-18","dev":"desktop","s":19,"eng":15,"dur":35.7,"pps":0.74,"nu":1,"tu":13,"b":21.05},{"d":"2026-07-19","dev":"desktop","s":10,"eng":8,"dur":269.0,"pps":1.30,"nu":1,"tu":10,"b":20.00},{"d":"2026-07-20","dev":"desktop","s":28,"eng":23,"dur":138.0,"pps":1.04,"nu":7,"tu":21,"b":17.86},{"d":"2026-07-21","dev":"desktop","s":17,"eng":12,"dur":160.8,"pps":1.00,"nu":1,"tu":13,"b":29.41},{"d":"2026-07-22","dev":"desktop","s":13,"eng":7,"dur":197.0,"pps":1.00,"nu":4,"tu":9,"b":46.15},{"d":"2026-07-23","dev":"desktop","s":7,"eng":7,"dur":33.9,"pps":1.00,"nu":2,"tu":4,"b":0.00},{"d":"2026-07-24","dev":"desktop","s":9,"eng":4,"dur":25.4,"pps":0.78,"nu":2,"tu":7,"b":55.56},{"d":"2026-07-25","dev":"desktop","s":16,"eng":9,"dur":123.4,"pps":0.81,"nu":7,"tu":13,"b":43.75},{"d":"2026-07-26","dev":"desktop","s":3,"eng":2,"dur":23.7,"pps":1.00,"nu":3,"tu":3,"b":33.33},{"d":"2026-07-27","dev":"desktop","s":17,"eng":14,"dur":269.8,"pps":1.24,"nu":0,"tu":12,"b":17.65},{"d":"2026-07-28","dev":"desktop","s":11,"eng":10,"dur":342.4,"pps":1.18,"nu":4,"tu":10,"b":9.09},{"d":"2026-06-29","dev":"mobile","s":322,"eng":195,"dur":70.6,"pps":1.22,"nu":230,"tu":310,"b":39.44},{"d":"2026-06-30","dev":"mobile","s":283,"eng":187,"dur":58.8,"pps":1.14,"nu":210,"tu":271,"b":33.92},{"d":"2026-07-01","dev":"mobile","s":272,"eng":174,"dur":51.9,"pps":1.20,"nu":196,"tu":265,"b":36.03},{"d":"2026-07-02","dev":"mobile","s":319,"eng":196,"dur":61.6,"pps":1.18,"nu":230,"tu":311,"b":38.56},{"d":"2026-07-03","dev":"mobile","s":301,"eng":182,"dur":50.6,"pps":1.20,"nu":231,"tu":293,"b":39.53},{"d":"2026-07-04","dev":"mobile","s":285,"eng":169,"dur":45.6,"pps":1.18,"nu":217,"tu":280,"b":40.70},{"d":"2026-07-05","dev":"mobile","s":341,"eng":222,"dur":63.9,"pps":1.16,"nu":244,"tu":328,"b":34.90},{"d":"2026-07-06","dev":"mobile","s":241,"eng":156,"dur":74.3,"pps":1.19,"nu":166,"tu":233,"b":35.27},{"d":"2026-07-07","dev":"mobile","s":364,"eng":217,"dur":50.6,"pps":1.18,"nu":260,"tu":344,"b":40.38},{"d":"2026-07-08","dev":"mobile","s":381,"eng":200,"dur":52.5,"pps":1.17,"nu":298,"tu":369,"b":47.51},{"d":"2026-07-09","dev":"mobile","s":458,"eng":294,"dur":75.4,"pps":1.20,"nu":320,"tu":438,"b":35.81},{"d":"2026-07-10","dev":"mobile","s":324,"eng":205,"dur":71.5,"pps":1.18,"nu":237,"tu":319,"b":36.73},{"d":"2026-07-11","dev":"mobile","s":309,"eng":205,"dur":56.5,"pps":1.12,"nu":215,"tu":305,"b":33.66},{"d":"2026-07-12","dev":"mobile","s":341,"eng":232,"dur":84.9,"pps":1.26,"nu":238,"tu":333,"b":31.96},{"d":"2026-07-13","dev":"mobile","s":288,"eng":177,"dur":66.9,"pps":1.14,"nu":199,"tu":282,"b":38.54},{"d":"2026-07-14","dev":"mobile","s":233,"eng":152,"dur":66.8,"pps":1.11,"nu":160,"tu":226,"b":34.76},{"d":"2026-07-15","dev":"mobile","s":272,"eng":186,"dur":64.3,"pps":1.20,"nu":195,"tu":264,"b":31.62},{"d":"2026-07-16","dev":"mobile","s":250,"eng":171,"dur":49.8,"pps":1.21,"nu":165,"tu":247,"b":31.60},{"d":"2026-07-17","dev":"mobile","s":295,"eng":195,"dur":49.5,"pps":1.15,"nu":208,"tu":291,"b":33.90},{"d":"2026-07-18","dev":"mobile","s":296,"eng":201,"dur":72.0,"pps":1.18,"nu":214,"tu":290,"b":32.09},{"d":"2026-07-19","dev":"mobile","s":365,"eng":246,"dur":85.3,"pps":1.22,"nu":259,"tu":347,"b":32.60},{"d":"2026-07-20","dev":"mobile","s":351,"eng":224,"dur":47.1,"pps":1.14,"nu":244,"tu":337,"b":36.18},{"d":"2026-07-21","dev":"mobile","s":322,"eng":202,"dur":62.5,"pps":1.15,"nu":222,"tu":313,"b":37.27},{"d":"2026-07-22","dev":"mobile","s":371,"eng":228,"dur":53.2,"pps":1.14,"nu":244,"tu":354,"b":38.54},{"d":"2026-07-23","dev":"mobile","s":311,"eng":204,"dur":46.7,"pps":1.17,"nu":213,"tu":304,"b":34.41},{"d":"2026-07-24","dev":"mobile","s":336,"eng":198,"dur":54.0,"pps":1.13,"nu":231,"tu":331,"b":41.07},{"d":"2026-07-25","dev":"mobile","s":289,"eng":183,"dur":55.0,"pps":1.18,"nu":186,"tu":281,"b":36.68},{"d":"2026-07-26","dev":"mobile","s":332,"eng":203,"dur":65.5,"pps":1.15,"nu":244,"tu":326,"b":38.86},{"d":"2026-07-27","dev":"mobile","s":283,"eng":177,"dur":71.3,"pps":1.18,"nu":189,"tu":274,"b":37.46},{"d":"2026-07-28","dev":"mobile","s":259,"eng":166,"dur":58.0,"pps":1.12,"nu":172,"tu":258,"b":35.91}];
+
+const $ = s => document.querySelector(s);
+const fmt = n => n===null||n===undefined||isNaN(n) ? "—" : Math.round(n).toLocaleString("en-IN");
+const pct = (n,d=1) => n===null||n===undefined||isNaN(n) ? "—" : n.toFixed(d)+"%";
+const bounceCls = v => v==null?"":(v<=30?"ok":v>=50?"bad":"warn");
+const engCls = v => v==null?"":(v>=60?"ok":v<40?"bad":"warn");
+
+const maxDate = CORINTHIAN.reduce((m,r)=>r.d>m?r.d:m, CORINTHIAN[0].d);
+const minDate = CORINTHIAN.reduce((m,r)=>r.d<m?r.d:m, CORINTHIAN[0].d);
+const shift = (d,n) => { const x = new Date(d); x.setDate(x.getDate()+n); return x.toISOString().slice(0,10); };
+let state = { from:null, to:null };
+
+function slice(DATA, from, to, dev){
+  const rows = DATA.filter(r => r.dev===dev && r.d>=from && r.d<=to);
+  const s = rows.reduce((a,r)=>a+r.s,0);
+  const eng = rows.reduce((a,r)=>a+r.eng,0);
+  const nu = rows.reduce((a,r)=>a+r.nu,0);
+  const tu = rows.reduce((a,r)=>a+r.tu,0);
+  const dur = s ? rows.reduce((a,r)=>a+r.dur*r.s,0)/s : null;
+  const pps = s ? rows.reduce((a,r)=>a+r.pps*r.s,0)/s : null;
+  const b = s ? rows.reduce((a,r)=>a+r.b*r.s,0)/s : null;
+  return { sessions:s, users:tu, engRate: s?eng/s*100:null, dur, pps, newPct: tu?nu/tu*100:null, bounce:b };
+}
+
+function kpiHTML(d){
+  const rows = [
+    ["Sessions", fmt(d.sessions), ""],
+    ["Users", fmt(d.users), ""],
+    ["Bounce rate", pct(d.bounce), bounceCls(d.bounce)],
+    ["Engagement rate", pct(d.engRate), engCls(d.engRate)],
+    ["Avg session duration", d.dur!=null?d.dur.toFixed(1)+"s":"—", ""],
+    ["Pages / session", d.pps!=null?d.pps.toFixed(2):"—", ""],
+    ["New users", pct(d.newPct), ""]
+  ];
+  return rows.map(([l,v,c]) => '<div class="kpi"><div class="lbl">'+l+'</div><div class="num '+c+'">'+v+'</div></div>').join("");
+}
+
+function render(){
+  $("#kpisCorinthianMobile").innerHTML = kpiHTML(slice(CORINTHIAN, state.from, state.to, "mobile"));
+  $("#kpisCorinthianDesktop").innerHTML = kpiHTML(slice(CORINTHIAN, state.from, state.to, "desktop"));
+  $("#kpisParamountDesktop").innerHTML = kpiHTML(slice(PARAMOUNT, state.from, state.to, "desktop"));
+  const days = Math.round((new Date(state.to) - new Date(state.from))/864e5) + 1;
+  $("#rangenote").textContent = state.from + " → " + state.to + " (" + days + (days===1?" day)":" days)");
+}
+
+function setPreset(n){
+  state.to = maxDate;
+  state.from = n >= 30 ? minDate : shift(state.to, -(n-1));
+  if (state.from < minDate) state.from = minDate;
+  $("#from").value = state.from; $("#to").value = state.to;
+}
+
+document.querySelectorAll("[data-preset]").forEach(b => b.addEventListener("click", () => {
+  setPreset(+b.dataset.preset);
+  document.querySelectorAll("[data-preset]").forEach(x => x.setAttribute("aria-pressed", String(x===b)));
+  render();
+}));
+$("#from").addEventListener("change", e => { state.from = e.target.value;
+  if (state.from > state.to){ state.to = state.from; $("#to").value = state.to; }
+  document.querySelectorAll("[data-preset]").forEach(x => x.setAttribute("aria-pressed","false"));
+  render(); });
+$("#to").addEventListener("change", e => { state.to = e.target.value;
+  if (state.to < state.from){ state.from = state.to; $("#from").value = state.from; }
+  document.querySelectorAll("[data-preset]").forEach(x => x.setAttribute("aria-pressed","false"));
+  render(); });
+
+setPreset(30);
+document.querySelector('[data-preset="30"]').setAttribute("aria-pressed","true");
+render();
+</script>
+</body>
+</html>

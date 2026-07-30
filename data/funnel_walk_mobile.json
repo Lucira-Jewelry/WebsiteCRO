@@ -1,6 +1,6 @@
 {
  "device": "mobile",
- "generated_at": "2026-07-28T08:08:54.574Z",
+ "generated_at": "2026-07-29T10:32:35.002Z",
  "steps": [
   {
    "step": 1,
@@ -9,7 +9,7 @@
    "screenshot": "reports\\captures\\funnel-1-collection-mobile.png",
    "blocking_overlay": {
     "coverage_pct": 100,
-    "z": "9999",
+    "z": "2000",
     "text": "Authentication Login to your account. REGISTER TO WIN A REWARD Try Your Luck! Win A Diamon"
    },
    "centre_click_hits": "img",
@@ -38,7 +38,7 @@
    "url": "https://www.lucirajewelry.com/checkout/cart",
    "screenshot": "reports\\captures\\funnel-3-after_add_to_cart-mobile.png",
    "blocking_overlay": null,
-   "centre_click_hits": "MADE TO ORDER 50+ Wishlisted 7.80 ct Pear Diamond East-West Tennis Bra",
+   "centre_click_hits": "MADE TO ORDER 25+ In Cart 50+ Wishlisted 7.80 ct Pear Diamond East-Wes",
    "add_to_cart": {
     "found": true,
     "text": "ADD TO CART"
@@ -50,7 +50,7 @@
    "url": "https://www.lucirajewelry.com/checkout/cart",
    "screenshot": "reports\\captures\\funnel-4-cart-mobile.png",
    "blocking_overlay": null,
-   "centre_click_hits": "MADE TO ORDER 50+ Wishlisted 7.80 ct Pear Diamond East-West Tennis Bra",
+   "centre_click_hits": "MADE TO ORDER 25+ In Cart 50+ Wishlisted 7.80 ct Pear Diamond East-Wes",
    "cart_state": {
     "looks_empty": false,
     "doc_height_px": 1786,

@@ -1,6 +1,6 @@
 {
  "device": "mobile",
- "generated_at": "2026-07-28T08:11:47.847Z",
+ "generated_at": "2026-07-29T10:30:22.269Z",
  "steps": [
   {
    "step": 1,
@@ -9,7 +9,7 @@
    "screenshot": "reports\\captures\\gate-1-pdp_landing-mobile.png",
    "blocking_overlay": {
     "coverage_pct": 100,
-    "z": "9999",
+    "z": "2000",
     "text": "Authentication Login to your account. REGISTER TO WIN A REWARD Try Your Luck! Win A Diamond Pendant "
    },
    "login_wall": true,
@@ -59,7 +59,7 @@
    "screenshot": "reports\\captures\\gate-3-after_checkout_click-mobile.png",
    "blocking_overlay": {
     "coverage_pct": 100,
-    "z": "9999",
+    "z": "2000",
     "text": "Authentication Login to your account. WELCOME TO LUCIRA Welcome To The Jewelry World Of Lucira! +91 "
    },
    "login_wall": true,

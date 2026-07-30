@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Traffic &amp; Meta/Ads — Lucira Jewelry CRO</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --bg:#EEF0ED; --surface:#FFFFFF; --raise:#F7F8F6; --ink:#1B2320; --muted:#5B6560; --faint:#8A938E;
+    --accent:#A9813F; --accent-ink:#5E4520;
+    --critical:#A23B2E; --critical-bg:#F7E7E4;
+    --high:#B0722A; --high-bg:#F8EDDC;
+    --good:#48684C; --good-bg:#E5EDE5;
+    --medium:#3D5A73; --medium-bg:#E3EAEF;
+    --line:rgba(27,35,32,0.13); --line-strong:rgba(27,35,32,0.26);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#111412; --surface:#191E1A; --raise:#1F2521; --ink:#EDEFEA; --muted:#9AA69E; --faint:#6E786F;
+      --accent:#C79B4E; --accent-ink:#D8B87A; --critical:#E4695C; --critical-bg:#3B2320;
+      --high:#DFA555; --high-bg:#392D19; --good:#8CBC92; --good-bg:#1C2A1E;
+      --medium:#8FB3D2; --medium-bg:#1D2B35;
+      --line:rgba(237,239,234,0.14); --line-strong:rgba(237,239,234,0.28); }
+  }
+  :root[data-theme="dark"]{ --bg:#111412; --surface:#191E1A; --raise:#1F2521; --ink:#EDEFEA; --muted:#9AA69E;
+    --faint:#6E786F; --accent:#C79B4E; --accent-ink:#D8B87A; --critical:#E4695C; --critical-bg:#3B2320;
+    --high:#DFA555; --high-bg:#392D19; --good:#8CBC92; --good-bg:#1C2A1E; --medium:#8FB3D2; --medium-bg:#1D2B35;
+    --line:rgba(237,239,234,0.14); --line-strong:rgba(237,239,234,0.28); }
+  :root[data-theme="light"]{ --bg:#EEF0ED; --surface:#FFFFFF; --raise:#F7F8F6; --ink:#1B2320; --muted:#5B6560;
+    --faint:#8A938E; --accent:#A9813F; --accent-ink:#5E4520; --critical:#A23B2E; --critical-bg:#F7E7E4;
+    --high:#B0722A; --high-bg:#F8EDDC; --good:#48684C; --good-bg:#E5EDE5; --medium:#3D5A73; --medium-bg:#E3EAEF;
+    --line:rgba(27,35,32,0.13); --line-strong:rgba(27,35,32,0.26); }
+
+  *{box-sizing:border-box;} html,body{margin:0;padding:0;}
+  body{background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;
+    font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  .page{max-width:1080px;margin:0 auto;padding:40px 22px 90px;}
+  h1,h2,h3,h4{font-family:Iowan Old Style,"Palatino Linotype","Book Antiqua",Georgia,serif;font-weight:600;margin:0;text-wrap:balance;}
+  .measure{max-width:70ch;} p{margin:0 0 13px;}
+  code{font-family:ui-monospace,"SF Mono","Cascadia Code",monospace;font-size:.86em;background:var(--line);padding:1px 5px;border-radius:3px;}
+
+  .hubnav{background:var(--surface);border-bottom:1px solid var(--line-strong);}
+  .hubnav .inner{max-width:1080px;margin:0 auto;padding:11px 22px;display:flex;flex-wrap:wrap;align-items:center;gap:5px;}
+  .hubnav a{font-size:12.5px;font-weight:600;color:var(--muted);text-decoration:none;padding:6px 13px;border-radius:100px;white-space:nowrap;}
+  .hubnav a:hover{background:var(--raise);color:var(--ink);}
+  .hubnav a.active{background:var(--accent);color:#fff;}
+  .hubnav .sep{color:var(--faint);font-size:12px;margin:0 2px;}
+
+  .subnav{background:var(--raise);border-bottom:1px solid var(--line);}
+  .subnav .inner{max-width:1080px;margin:0 auto;padding:9px 22px;display:flex;flex-wrap:wrap;align-items:center;gap:4px;}
+  .subnav .label{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);font-weight:700;margin-right:8px;}
+  .subnav a{font-size:12.5px;font-weight:600;color:var(--muted);text-decoration:none;padding:5px 12px;border-radius:6px;white-space:nowrap;border:1px solid transparent;}
+  .subnav a:hover{border-color:var(--line-strong);color:var(--ink);}
+  .subnav a.active{background:var(--surface);border-color:var(--line-strong);color:var(--accent-ink);}
+
+  .masthead{display:flex;flex-direction:column;gap:8px;padding-bottom:20px;margin-bottom:22px;border-bottom:1px solid var(--line-strong);}
+  .eyebrow{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-ink);font-weight:700;}
+  .masthead h1{font-size:34px;line-height:1.1;}
+  .masthead .meta{font-size:12.5px;color:var(--muted);margin-top:2px;}
+
+  .goal{background:var(--surface);border:1px solid var(--line-strong);border-left:5px solid var(--accent);
+    border-radius:6px;padding:16px 20px;margin-bottom:26px;}
+  .goal .lbl{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-ink);font-weight:700;margin-bottom:6px;}
+
+  section{margin-bottom:36px;}
+  .sec-head{display:flex;align-items:baseline;gap:12px;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--line);}
+  .sec-head .tag{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700;}
+  .sec-head h2{font-size:20px;}
+
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);
+    border:1px solid var(--line);border-radius:6px;overflow:hidden;margin-bottom:10px;}
+  .kpi{background:var(--surface);padding:14px 15px;}
+  .kpi .lbl{font-size:11px;color:var(--muted);}
+  .kpi .num{font-size:21px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.01em;margin-top:2px;}
+  .kpi .num.bad{color:var(--critical);} .kpi .num.warn{color:var(--high);} .kpi .num.ok{color:var(--good);}
+  .kpi .sub{font-size:10.5px;color:var(--faint);margin-top:2px;}
+
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  .twrap{overflow-x:auto;border:1px solid var(--line);border-radius:6px;}
+  th{text-align:left;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:700;
+    padding:9px 11px;background:var(--raise);border-bottom:1px solid var(--line-strong);white-space:nowrap;}
+  td{padding:9px 11px;border-bottom:1px solid var(--line);background:var(--surface);font-variant-numeric:tabular-nums;vertical-align:top;}
+  tr:last-child td{border-bottom:none;}
+  th.num,td.num{text-align:right;}
+  td.bad{color:var(--critical);font-weight:700;} td.warn{color:var(--high);font-weight:600;}
+  td.ok{color:var(--good);font-weight:600;} td.dim{color:var(--faint);}
+
+  .chip{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+    padding:2px 8px;border-radius:100px;white-space:nowrap;}
+  .chip.critical{background:var(--critical-bg);color:var(--critical);}
+  .chip.high{background:var(--high-bg);color:var(--high);}
+  .chip.medium{background:var(--medium-bg);color:var(--medium);}
+  .chip.good{background:var(--good-bg);color:var(--good);}
+  .chip.low{background:var(--raise);color:var(--faint);}
+
+  .banner{background:var(--surface);border:1px solid var(--line-strong);border-left:4px solid var(--accent);
+    border-radius:6px;padding:15px 18px;font-size:13.5px;}
+  .banner.alarm{border-color:var(--critical);border-left-color:var(--critical);}
+  .banner b{color:var(--ink);}
+
+  .devlabel{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);font-weight:700;margin:18px 0 6px;}
+
+  .controls{background:var(--raise);border:1px solid var(--line);border-radius:6px;padding:11px 14px;margin-bottom:18px;}
+  .ctrl-row{display:flex;flex-wrap:wrap;gap:9px 14px;align-items:center;}
+  .ctrl-label{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;}
+  input[type=date]{font:inherit;font-size:13px;padding:5px 8px;border:1px solid var(--line-strong);
+    border-radius:5px;background:var(--surface);color:var(--ink);font-variant-numeric:tabular-nums;}
+  .seg{display:inline-flex;border:1px solid var(--line-strong);border-radius:6px;overflow:hidden;}
+  .seg button{font:inherit;font-size:12.5px;padding:5px 11px;border:0;background:var(--surface);
+    color:var(--muted);cursor:pointer;border-right:1px solid var(--line);}
+  .seg button:last-child{border-right:0;}
+  .seg button[aria-pressed=true]{background:var(--accent);color:#fff;font-weight:600;}
+  .seg button:hover:not([aria-pressed=true]){background:var(--raise);color:var(--ink);}
+  .rangenote{font-size:12px;color:var(--faint);font-variant-numeric:tabular-nums;}
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  @media (max-width:820px){ .split{grid-template-columns:1fr;} }
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:18px 20px;}
+  .card h4{margin:0 0 10px;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);}
+  .rec-list{margin:0;padding-left:18px;font-size:13px;line-height:1.7;}
+  .rec-list li{margin-bottom:8px;} .rec-list li:last-child{margin-bottom:0;}
+
+  .foot{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);font-size:11.5px;color:var(--faint);}
+</style>
+</head>
+<body>
+
+<nav class="hubnav"><div class="inner">
+  <a href="index.html">Reports Home</a><span class="sep">&middot;</span>
+  <a href="insights.html">Insights</a>
+  <a href="action_plan.html">Action Plan</a>
+  <a href="interactive.html">Interactive Dashboard</a>
+  <a href="connectors.html">Connectors</a>
+</div></nav>
+<nav class="subnav"><div class="inner">
+  <span class="label">Page-by-page</span>
+  <a href="page-homepage.html">Homepage</a>
+  <a href="page-plp.html">Collection (PLP)</a>
+  <a href="page-pdp.html">Product (PDP)</a>
+  <a href="page-cart-checkout.html">Cart &amp; Checkout</a>
+  <a href="page-traffic-ads.html" class="active">Traffic &amp; Meta/Ads</a>
+</div></nav>
+
+<div class="page">
+
+  <div class="masthead">
+    <div class="eyebrow">Page Insights &middot; Not a page — where the visitors come from</div>
+    <h1>Traffic Sources: Meta &amp; Google Ads</h1>
+    <div class="meta">Paid Social (Meta/Instagram/Facebook), Google Ads &middot; data through 27 Jul, Ads pulled fresh 30 Jul 2026</div>
+  </div>
+
+  <div class="goal">
+    <div class="lbl">Why this gets its own section</div>
+    <p style="margin:0;font-size:14.5px;">Every page-type section above shows bounce/engagement swinging wildly on
+      identical templates. This section is why: the swing is almost entirely explained by which channel the visitor
+      arrived from, not which page they landed on.</p>
+  </div>
+
+  <section>
+    <div class="sec-head"><span class="tag">Meta</span><h2>Paid Social bounces on every page it touches</h2></div>
+    <div class="twrap">
+      <table>
+        <thead><tr><th>Landing page</th><th>Channel</th><th class="num">Sessions</th><th class="num">Bounce</th><th class="num">Avg duration</th></tr></thead>
+        <tbody>
+          <tr><td rowspan="2">/collections/rings</td><td>Organic Search</td><td class="num">18</td><td class="num ok">33.3%</td><td class="num">582.3s</td></tr>
+          <tr><td><b>Paid Social</b></td><td class="num">10</td><td class="num bad">100.0%</td><td class="num bad">5.8s</td></tr>
+          <tr><td rowspan="2">/collections/jewelry</td><td>Organic Search</td><td class="num">25</td><td class="num ok">32.0%</td><td class="num">469.9s</td></tr>
+          <tr><td><b>Paid Social</b></td><td class="num">125</td><td class="num bad">64.8%</td><td class="num warn">59.6s</td></tr>
+          <tr><td>/collections/all-rings</td><td><b>Paid Social</b></td><td class="num">1,032</td><td class="num bad">66.1%</td><td class="num warn">46.6s</td></tr>
+          <tr><td>/collections/all-earrings</td><td><b>Paid Social</b></td><td class="num">787</td><td class="num bad">61.6%</td><td class="num warn">48.1s</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="banner alarm" style="margin-top:14px;">
+      <p style="margin:0;"><b>F4, Critical, Open.</b> Paid Social bounces 62&ndash;100% regardless of landing page —
+        corroborated across 4 pages, ~2,800 sessions. The exact same <code>/collections/rings</code> page bounces
+        33.3% from Organic Search and 100% from Paid Social, in the same week. This is not a page problem.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Meta</span><h2>Meta in-app browser (WebView) JavaScript errors</h2></div>
+    <div class="kpis">
+      <div class="kpi"><div class="lbl">iOS Meta WebView errors</div><div class="num bad">817</div><div class="sub">sessions affected</div></div>
+      <div class="kpi"><div class="lbl">Android Meta WebView errors</div><div class="num bad">694</div><div class="sub">sessions affected</div></div>
+      <div class="kpi"><div class="lbl">Total sessions affected</div><div class="num bad">1,511</div></div>
+    </div>
+    <p class="measure" style="font-size:13px;">Both errors are specifically the Meta in-app browser failing to bridge
+      native calls: <code>window.webkit.messageHandlers</code> undefined (iOS) and
+      <code>postMessage: Java object is gone</code> (Android). This is what happens when someone clicks an
+      Instagram/Facebook ad and the checkout flow runs inside Meta's own in-app browser instead of Safari/Chrome —
+      a likely contributor to F4's bounce numbers above, and possibly to checkout failures specifically for
+      Meta-sourced traffic (see T17: complete a purchase inside the Instagram/Facebook in-app browser, still open).</p>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Google Ads</span><h2>Full 30-day account pull — the conversion problem is bigger than previously known</h2></div>
+    <div class="kpis">
+      <div class="kpi"><div class="lbl">Total spend, 30d (enabled)</div><div class="num">₹9,68,304</div></div>
+      <div class="kpi"><div class="lbl">Non-video campaigns, 0 conversions</div><div class="num bad">₹1,07,223</div><div class="sub">8 campaigns</div></div>
+      <div class="kpi"><div class="lbl">Share of total spend</div><div class="num warn">11.1%</div></div>
+      <div class="kpi"><div class="lbl">Per-conversion value range seen</div><div class="num warn">₹1 &ndash; ₹28,175</div><div class="sub">same "conversions" column</div></div>
+    </div>
+    <div class="twrap">
+      <table>
+        <thead><tr><th>Campaign</th><th>Type</th><th class="num">30d spend</th><th class="num">Conversions</th><th>Note</th></tr></thead>
+        <tbody>
+          <tr><td>Display retargeting</td><td>Display</td><td class="num bad">₹22,156</td><td class="num">0</td><td>Retargeting with zero return is the most surprising line here</td></tr>
+          <tr><td>Embrace acquisition</td><td>Demand Gen</td><td class="num bad">₹18,219</td><td class="num">0</td><td>&mdash;</td></tr>
+          <tr><td>ROC-except-store retargeting</td><td>Demand Gen</td><td class="num bad">₹14,756</td><td class="num">0.26</td><td>Effectively zero</td></tr>
+          <tr><td>Noida local search (GMB)</td><td>Search</td><td class="num bad">₹14,702</td><td class="num">0</td><td>Pune/Chembur/Borivali GMB show 12–60 conversions — Noida shows none</td></tr>
+          <tr><td>"Store city" retargeting</td><td>Demand Gen</td><td class="num bad">₹13,352</td><td class="num">0</td><td>Bottom-of-funnel retargeting is normally the highest-converting stage</td></tr>
+          <tr><td>Pan-India "checkout" campaign</td><td>Demand Gen</td><td class="num bad">₹11,818</td><td class="num">0</td><td><b>12,173 clicks, zero conversions</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="banner alarm" style="margin-top:14px;">
+      <p style="margin:0;"><b>Recommendation:</b> pause-and-review these 6 campaigns pending investigation
+        (₹95,003 of the ₹1,07,223). Prioritise the pan-India checkout campaign — 12,173 clicks for zero conversions
+        is either a tracking gap (see T13, Web Pixel investigation, still open) or a real mismatch, find out which
+        before cutting spend. Separately: segment "conversions" by action type before trusting any blended ROAS —
+        a ₹1-per-conversion click action and a ₹28,175-per-conversion purchase action are both in that one column
+        today (T9/T10).</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Engagement</span><h2>Channel engagement, quantified &mdash; pick any range</h2></div>
+    <div class="controls">
+      <div class="ctrl-row">
+        <span class="ctrl-label">Range</span>
+        <input type="date" id="from" aria-label="From date">
+        <span style="color:var(--faint)">&rarr;</span>
+        <input type="date" id="to" aria-label="To date">
+        <div class="seg" role="group" aria-label="Quick ranges">
+          <button data-preset="7">7d</button><button data-preset="14">14d</button><button data-preset="30">30d</button>
+        </div>
+        <span class="rangenote" id="rangenote"></span>
+      </div>
+    </div>
+    <div class="devlabel">Mobile &mdash; /collections/all-rings, Paid-Social-heavy</div>
+    <div class="kpis" id="kpisAllRings"></div>
+    <div class="devlabel">Mobile &mdash; /collections/eterna, organic-heavy (comparison)</div>
+    <div class="kpis" id="kpisEterna"></div>
+    <p class="measure" style="font-size:12.5px;color:var(--muted);margin-top:8px;">Across every range, engagement
+      rate on the Paid-Social-heavy collection page runs at roughly <b>half</b> the organic-heavy one — the same
+      pattern F4 shows in bounce rate, visible again in a second, independent GA4 metric. This is channel quality,
+      not a page defect (see <a href="page-plp.html">Collection (PLP)</a> for the full page-level view). Data
+      covers 29 Jun&ndash;28 Jul 2026 (30 days stored).</p>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Recommendations</span><h2>What to do next</h2></div>
+    <div class="split">
+      <div class="card">
+        <h4>Mobile — where almost all Meta/Paid Social traffic lands</h4>
+        <ol class="rec-list">
+          <li>Complete T17 (finish a purchase inside the Instagram/Facebook in-app browser on a real device) before
+            spending on more Meta traffic — 1,511 sessions already show WebView JS errors, so the checkout may be
+            silently failing for exactly this channel.</li>
+          <li>Report Paid Social funnel metrics separately from the site blend — its 62&ndash;100% bounce and 33%
+            engagement rate will otherwise drag down every aggregate number and hide genuine template performance.</li>
+        </ol>
+      </div>
+      <div class="card">
+        <h4>Google Ads — account-level, not device-specific</h4>
+        <ol class="rec-list">
+          <li>Pause-and-review the 6 real-spend, zero-conversion campaigns above (₹95,003/30d) — device-level
+            Google Ads breakdowns weren't pulled this round, so treat this as an account-level action for now.</li>
+          <li>Prioritise the pan-India "checkout" campaign (12,173 clicks, 0 conversions) — investigate via T13
+            before deciding whether it's a tracking gap or a real mismatch.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Gap</span><h2>Organic search (Google Search Console)</h2></div>
+    <p class="measure" style="font-size:13.5px;color:var(--muted);">Not represented here — the connector is broken.
+      See <a href="connectors.html">Connectors</a> for details and what's needed to fix it.</p>
+  </section>
+
+  <div class="foot">
+    Sources: GA4 channel/landing-page data (7d), GA4 30d page-level data (for the filter above), Microsoft Clarity
+    JS-error signatures, Google Ads full account pull (30 Jul 2026). Full narrative in
+    <a href="insights.html">Insights</a>; tasks tracked in <a href="action_plan.html">Action Plan</a> (T9, T10, T12, T13, T17).
+  </div>
+
+</div>
+
+<script>
+const ALLRINGS = [{"d":"2026-06-29","dev":"mobile","s":272,"eng":84,"dur":31.6,"pps":1.10,"nu":147,"tu":267,"b":69.12},{"d":"2026-06-30","dev":"mobile","s":240,"eng":75,"dur":36.0,"pps":1.12,"nu":130,"tu":237,"b":68.75},{"d":"2026-07-01","dev":"mobile","s":258,"eng":85,"dur":36.3,"pps":1.12,"nu":149,"tu":252,"b":67.05},{"d":"2026-07-02","dev":"mobile","s":212,"eng":63,"dur":50.0,"pps":1.13,"nu":96,"tu":195,"b":70.28},{"d":"2026-07-03","dev":"mobile","s":260,"eng":92,"dur":44.1,"pps":1.11,"nu":113,"tu":254,"b":64.62},{"d":"2026-07-04","dev":"mobile","s":183,"eng":84,"dur":55.0,"pps":1.23,"nu":84,"tu":172,"b":54.10},{"d":"2026-07-05","dev":"mobile","s":208,"eng":73,"dur":43.1,"pps":1.18,"nu":108,"tu":199,"b":64.90},{"d":"2026-07-06","dev":"mobile","s":191,"eng":69,"dur":248.8,"pps":1.11,"nu":104,"tu":184,"b":63.87},{"d":"2026-07-07","dev":"mobile","s":213,"eng":60,"dur":29.0,"pps":1.09,"nu":124,"tu":212,"b":71.83},{"d":"2026-07-08","dev":"mobile","s":268,"eng":74,"dur":20.8,"pps":1.07,"nu":135,"tu":262,"b":72.39},{"d":"2026-07-09","dev":"mobile","s":208,"eng":75,"dur":41.4,"pps":1.12,"nu":108,"tu":205,"b":63.94},{"d":"2026-07-10","dev":"mobile","s":228,"eng":89,"dur":36.1,"pps":1.18,"nu":110,"tu":219,"b":60.96},{"d":"2026-07-11","dev":"mobile","s":230,"eng":77,"dur":28.5,"pps":1.16,"nu":124,"tu":215,"b":66.52},{"d":"2026-07-12","dev":"mobile","s":190,"eng":66,"dur":37.7,"pps":1.14,"nu":102,"tu":187,"b":65.26},{"d":"2026-07-13","dev":"mobile","s":219,"eng":79,"dur":72.8,"pps":1.11,"nu":117,"tu":210,"b":63.93},{"d":"2026-07-14","dev":"mobile","s":190,"eng":50,"dur":30.0,"pps":1.13,"nu":114,"tu":187,"b":73.68},{"d":"2026-07-15","dev":"mobile","s":180,"eng":55,"dur":35.4,"pps":1.12,"nu":99,"tu":173,"b":69.44},{"d":"2026-07-16","dev":"mobile","s":112,"eng":36,"dur":32.6,"pps":1.11,"nu":58,"tu":105,"b":67.86},{"d":"2026-07-17","dev":"mobile","s":120,"eng":51,"dur":54.7,"pps":1.12,"nu":62,"tu":119,"b":57.50},{"d":"2026-07-18","dev":"mobile","s":152,"eng":56,"dur":16.0,"pps":1.26,"nu":93,"tu":149,"b":63.16},{"d":"2026-07-19","dev":"mobile","s":143,"eng":49,"dur":16.5,"pps":1.17,"nu":74,"tu":140,"b":65.73},{"d":"2026-07-20","dev":"mobile","s":167,"eng":56,"dur":64.4,"pps":1.08,"nu":83,"tu":161,"b":66.47},{"d":"2026-07-21","dev":"mobile","s":88,"eng":32,"dur":51.1,"pps":1.11,"nu":42,"tu":83,"b":63.64},{"d":"2026-07-22","dev":"mobile","s":104,"eng":36,"dur":39.7,"pps":1.12,"nu":56,"tu":97,"b":65.38},{"d":"2026-07-23","dev":"mobile","s":203,"eng":76,"dur":33.5,"pps":1.13,"nu":87,"tu":198,"b":62.56},{"d":"2026-07-24","dev":"mobile","s":227,"eng":72,"dur":54.9,"pps":1.17,"nu":120,"tu":222,"b":68.28},{"d":"2026-07-25","dev":"mobile","s":226,"eng":80,"dur":33.2,"pps":1.14,"nu":127,"tu":221,"b":64.60},{"d":"2026-07-26","dev":"mobile","s":237,"eng":83,"dur":158.9,"pps":1.14,"nu":146,"tu":232,"b":64.98},{"d":"2026-07-27","dev":"mobile","s":316,"eng":103,"dur":22.1,"pps":1.08,"nu":169,"tu":311,"b":67.41},{"d":"2026-07-28","dev":"mobile","s":252,"eng":68,"dur":37.1,"pps":1.17,"nu":149,"tu":245,"b":73.02}];
+const ETERNA_MOBILE = [{"d":"2026-06-29","dev":"mobile","s":4,"eng":4,"dur":12.1,"pps":1.00,"nu":0,"tu":2,"b":0.00},{"d":"2026-06-30","dev":"mobile","s":5,"eng":5,"dur":42.0,"pps":1.20,"nu":0,"tu":5,"b":0.00},{"d":"2026-07-01","dev":"mobile","s":4,"eng":3,"dur":14.6,"pps":1.00,"nu":0,"tu":3,"b":25.00},{"d":"2026-07-02","dev":"mobile","s":1,"eng":0,"dur":0.0,"pps":1.00,"nu":0,"tu":1,"b":100.00},{"d":"2026-07-03","dev":"mobile","s":2,"eng":2,"dur":41.3,"pps":1.00,"nu":0,"tu":2,"b":0.00},{"d":"2026-07-04","dev":"mobile","s":3,"eng":3,"dur":80.0,"pps":2.00,"nu":0,"tu":3,"b":0.00},{"d":"2026-07-06","dev":"mobile","s":2,"eng":2,"dur":44.7,"pps":1.50,"nu":0,"tu":2,"b":0.00},{"d":"2026-07-07","dev":"mobile","s":2,"eng":2,"dur":89.3,"pps":2.00,"nu":0,"tu":2,"b":0.00},{"d":"2026-07-08","dev":"mobile","s":1,"eng":1,"dur":19.7,"pps":1.00,"nu":0,"tu":1,"b":0.00},{"d":"2026-07-09","dev":"mobile","s":6,"eng":4,"dur":41.9,"pps":1.17,"nu":0,"tu":5,"b":33.33},{"d":"2026-07-10","dev":"mobile","s":292,"eng":205,"dur":88.6,"pps":1.23,"nu":91,"tu":286,"b":29.79},{"d":"2026-07-11","dev":"mobile","s":822,"eng":516,"dur":103.1,"pps":1.32,"nu":216,"tu":759,"b":37.23},{"d":"2026-07-12","dev":"mobile","s":920,"eng":545,"dur":63.7,"pps":1.25,"nu":305,"tu":858,"b":40.76},{"d":"2026-07-13","dev":"mobile","s":905,"eng":576,"dur":77.6,"pps":1.29,"nu":233,"tu":838,"b":36.35},{"d":"2026-07-14","dev":"mobile","s":792,"eng":512,"dur":112.5,"pps":1.40,"nu":117,"tu":725,"b":35.35},{"d":"2026-07-15","dev":"mobile","s":828,"eng":550,"dur":76.6,"pps":1.36,"nu":165,"tu":777,"b":33.57},{"d":"2026-07-16","dev":"mobile","s":866,"eng":535,"dur":70.5,"pps":1.26,"nu":198,"tu":807,"b":38.22},{"d":"2026-07-17","dev":"mobile","s":866,"eng":561,"dur":81.3,"pps":1.35,"nu":154,"tu":809,"b":35.22},{"d":"2026-07-18","dev":"mobile","s":770,"eng":486,"dur":79.1,"pps":1.26,"nu":137,"tu":716,"b":36.88},{"d":"2026-07-19","dev":"mobile","s":897,"eng":549,"dur":92.4,"pps":1.28,"nu":226,"tu":824,"b":38.80},{"d":"2026-07-20","dev":"mobile","s":849,"eng":532,"dur":81.6,"pps":1.33,"nu":246,"tu":798,"b":37.34},{"d":"2026-07-21","dev":"mobile","s":915,"eng":559,"dur":83.3,"pps":1.23,"nu":274,"tu":862,"b":38.91},{"d":"2026-07-22","dev":"mobile","s":796,"eng":485,"dur":144.2,"pps":1.27,"nu":164,"tu":743,"b":39.07},{"d":"2026-07-23","dev":"mobile","s":717,"eng":442,"dur":79.0,"pps":1.39,"nu":122,"tu":664,"b":38.35},{"d":"2026-07-24","dev":"mobile","s":616,"eng":424,"dur":93.5,"pps":1.38,"nu":96,"tu":580,"b":31.17},{"d":"2026-07-25","dev":"mobile","s":727,"eng":497,"dur":84.0,"pps":1.32,"nu":103,"tu":672,"b":31.64},{"d":"2026-07-26","dev":"mobile","s":743,"eng":484,"dur":94.8,"pps":1.34,"nu":104,"tu":680,"b":34.86},{"d":"2026-07-27","dev":"mobile","s":717,"eng":496,"dur":96.0,"pps":1.34,"nu":117,"tu":675,"b":30.82},{"d":"2026-07-28","dev":"mobile","s":735,"eng":468,"dur":100.0,"pps":1.34,"nu":117,"tu":669,"b":36.33}];
+
+const $ = s => document.querySelector(s);
+const fmt = n => n===null||n===undefined||isNaN(n) ? "—" : Math.round(n).toLocaleString("en-IN");
+const pct = (n,d=1) => n===null||n===undefined||isNaN(n) ? "—" : n.toFixed(d)+"%";
+const bounceCls = v => v==null?"":(v<=30?"ok":v>=50?"bad":"warn");
+const engCls = v => v==null?"":(v>=60?"ok":v<40?"bad":"warn");
+
+const maxDate = ALLRINGS.reduce((m,r)=>r.d>m?r.d:m, ALLRINGS[0].d);
+const minDate = ALLRINGS.reduce((m,r)=>r.d<m?r.d:m, ALLRINGS[0].d);
+const shift = (d,n) => { const x = new Date(d); x.setDate(x.getDate()+n); return x.toISOString().slice(0,10); };
+let state = { from:null, to:null };
+
+function slice(DATA, from, to){
+  const rows = DATA.filter(r => r.d>=from && r.d<=to);
+  const s = rows.reduce((a,r)=>a+r.s,0);
+  const eng = rows.reduce((a,r)=>a+r.eng,0);
+  const nu = rows.reduce((a,r)=>a+r.nu,0);
+  const tu = rows.reduce((a,r)=>a+r.tu,0);
+  const dur = s ? rows.reduce((a,r)=>a+r.dur*r.s,0)/s : null;
+  const b = s ? rows.reduce((a,r)=>a+r.b*r.s,0)/s : null;
+  return { sessions:s, engRate: s?eng/s*100:null, dur, newPct: tu?nu/tu*100:null, bounce:b };
+}
+
+function kpiHTML(d){
+  const rows = [
+    ["Engagement rate", pct(d.engRate), engCls(d.engRate)],
+    ["Avg session duration", d.dur!=null?d.dur.toFixed(1)+"s":"—", ""],
+    ["New users", pct(d.newPct), ""],
+    ["Sessions", fmt(d.sessions), ""]
+  ];
+  return rows.map(([l,v,c]) => '<div class="kpi"><div class="lbl">'+l+'</div><div class="num '+c+'">'+v+'</div></div>').join("");
+}
+
+function render(){
+  $("#kpisAllRings").innerHTML = kpiHTML(slice(ALLRINGS, state.from, state.to));
+  $("#kpisEterna").innerHTML = kpiHTML(slice(ETERNA_MOBILE, state.from, state.to));
+  const days = Math.round((new Date(state.to) - new Date(state.from))/864e5) + 1;
+  $("#rangenote").textContent = state.from + " → " + state.to + " (" + days + (days===1?" day)":" days)");
+}
+
+function setPreset(n){
+  state.to = maxDate;
+  state.from = n >= 30 ? minDate : shift(state.to, -(n-1));
+  if (state.from < minDate) state.from = minDate;
+  $("#from").value = state.from; $("#to").value = state.to;
+}
+
+document.querySelectorAll("[data-preset]").forEach(b => b.addEventListener("click", () => {
+  setPreset(+b.dataset.preset);
+  document.querySelectorAll("[data-preset]").forEach(x => x.setAttribute("aria-pressed", String(x===b)));
+  render();
+}));
+$("#from").addEventListener("change", e => { state.from = e.target.value;
+  if (state.from > state.to){ state.to = state.from; $("#to").value = state.to; }
+  document.querySelectorAll("[data-preset]").forEach(x => x.setAttribute("aria-pressed","false"));
+  render(); });
+$("#to").addEventListener("change", e => { state.to = e.target.value;
+  if (state.to < state.from){ state.from = state.to; $("#from").value = state.from; }
+  document.querySelectorAll("[data-preset]").forEach(x => x.setAttribute("aria-pressed","false"));
+  render(); });
+
+setPreset(30);
+document.querySelector('[data-preset="30"]').setAttribute("aria-pressed","true");
+render();
+</script>
+</body>
+</html>

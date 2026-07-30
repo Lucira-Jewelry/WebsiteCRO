@@ -426,13 +426,15 @@
     { "id": "F5", "priority": "medium", "title": "PDP template is 19.5 screens against an 18% scroll ceiling", "evidence": "15,804px doc height; all 12 top PDPs scroll 18-21%", "confidence": 0.9, "status": "open" },
     { "id": "F6", "priority": "medium", "title": "Two slowest PDPs also have lowest engagement", "evidence": "bezel-set 5,072ms/12.4s; paramount 4,200ms/16.2s", "confidence": 0.75, "status": "open" },
     { "id": "F7", "priority": "medium", "title": "/schemes mobile slider generates 135 rage + 334 dead clicks", "evidence": "54.3% bounce mobile vs 52.9s engagement desktop", "confidence": 0.8, "status": "open" },
-    { "id": "F8", "priority": "low", "title": "'Something went wrong!' is 4th most rage-clicked element", "evidence": "31,595 weight, page not yet attributed", "confidence": 0.7, "status": "needs_investigation" }
+    { "id": "F8", "priority": "low", "title": "'Something went wrong!' is 4th most rage-clicked element", "evidence": "31,595 weight, page not yet attributed", "confidence": 0.7, "status": "needs_investigation" },
+    { "id": "F11", "priority": "critical", "title": "PDP desktop LCP is ~17s (poor), confirmed not a cold-start artifact", "evidence": "cro_vitals runs=3 on /products/corinthian-pave-diamond-mens-ring desktop: 16,604 / 16,988 / 17,164 ms (median 16,988, ~3% spread) against ~10.2MB transfer over 181 requests. Same URL on mobile medians 2,520ms (needs-improvement), ~9.6MB. Resolves T19's open question about the earlier single-run 19s reading -- confirmed real and reproducible, not noise. Opened as T21.", "confidence": 0.95, "status": "open" }
   ],
 
   "corrections_log": [
     { "run": "run-002", "claim": "Move trust signals above the fold on mobile PDPs", "verdict": "wrong", "reason": "Shipping at 1.1%, certification and lifetime-exchange at 9.6% page depth — already inside the 18% visitors reach. Real casualty is Customer Reviews at 41.4%.", "corrected_in": "run-004" },
     { "run": "run-002", "claim": "GA4 under-counts orders by ~80% (42 vs 211)", "verdict": "wrong", "reason": "211 included 127 ERP/store orders and 22 salesperson-assisted draft orders. True GA4-trackable base is ~64; capture rate is ~66%, not 20%.", "corrected_in": "run-003" },
     { "run": "run-002", "claim": "Shopify native session analytics is broken", "verdict": "wrong", "reason": "Storefront is headless — Shopify native sessions are expected to be near-zero. Not a defect.", "corrected_in": "run-003" },
+    { "run": "lab sweep 2026-07-29", "claim": "Desktop collection-page (PLP) CLS is 0.154 (T5)", "verdict": "wrong", "reason": "Single-run capture.js reading. T19's median-of-3 cro_vitals re-run on /collections/eterna desktop measured 0.004-0.005 across 3 clean, low-variance runs -- roughly 30x lower. The original figure was noise from a cold-start run, not a real layout shift. T5 dismissed.", "corrected_in": "lab sweep 2026-07-30" },
     { "run": "run-003", "claim": "Curated collections beat generic ones — diff the templates", "verdict": "wrong", "reason": "Templates are identical (26 cards, first card 392px, same controls). Gap is traffic source: Paid Social bounces 62-100% everywhere.", "corrected_in": "run-004" }
   ],
 

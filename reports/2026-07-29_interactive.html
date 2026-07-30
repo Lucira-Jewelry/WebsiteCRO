@@ -1,0 +1,994 @@
+﻿<style>
+  :root{
+    --bg:#EEF0ED; --surface:#FFFFFF; --raise:#F7F8F6; --ink:#1B2320; --muted:#5B6560; --faint:#8A938E;
+    --accent:#A9813F; --accent-ink:#5E4520;
+    --critical:#A23B2E; --critical-bg:#F7E7E4;
+    --high:#B0722A; --high-bg:#F8EDDC;
+    --good:#48684C; --good-bg:#E5EDE5;
+    --medium:#3D5A73;
+    --line:rgba(27,35,32,0.13); --line-strong:rgba(27,35,32,0.26);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#111412; --surface:#191E1A; --raise:#1F2521; --ink:#EDEFEA; --muted:#9AA69E; --faint:#6E786F;
+      --accent:#C79B4E; --accent-ink:#D8B87A;
+      --critical:#E4695C; --critical-bg:#3B2320;
+      --high:#DFA555; --high-bg:#392D19;
+      --good:#8CBC92; --good-bg:#1C2A1E;
+      --medium:#8FB3D2;
+      --line:rgba(237,239,234,0.14); --line-strong:rgba(237,239,234,0.28);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#111412; --surface:#191E1A; --raise:#1F2521; --ink:#EDEFEA; --muted:#9AA69E; --faint:#6E786F;
+    --accent:#C79B4E; --accent-ink:#D8B87A; --critical:#E4695C; --critical-bg:#3B2320;
+    --high:#DFA555; --high-bg:#392D19; --good:#8CBC92; --good-bg:#1C2A1E; --medium:#8FB3D2;
+    --line:rgba(237,239,234,0.14); --line-strong:rgba(237,239,234,0.28);
+  }
+  :root[data-theme="light"]{
+    --bg:#EEF0ED; --surface:#FFFFFF; --raise:#F7F8F6; --ink:#1B2320; --muted:#5B6560; --faint:#8A938E;
+    --accent:#A9813F; --accent-ink:#5E4520; --critical:#A23B2E; --critical-bg:#F7E7E4;
+    --high:#B0722A; --high-bg:#F8EDDC; --good:#48684C; --good-bg:#E5EDE5; --medium:#3D5A73;
+    --line:rgba(27,35,32,0.13); --line-strong:rgba(27,35,32,0.26);
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{background:var(--bg);color:var(--ink);
+    font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.55;-webkit-font-smoothing:antialiased;}
+  .page{max-width:1080px;margin:0 auto;padding:44px 22px 80px;}
+  h1,h2{font-family:Iowan Old Style,"Palatino Linotype","Book Antiqua",Georgia,serif;font-weight:600;margin:0;text-wrap:balance;}
+  code{font-family:ui-monospace,"SF Mono",monospace;font-size:.86em;background:var(--line);padding:1px 5px;border-radius:3px;}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+
+  .masthead{display:flex;flex-direction:column;gap:8px;padding-bottom:20px;margin-bottom:20px;
+    border-bottom:1px solid var(--line-strong);}
+  .eyebrow{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-ink);font-weight:700;}
+  .masthead h1{font-size:36px;line-height:1.1;}
+  .masthead .meta{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums;}
+
+  /* ---- control bar ---- */
+  .controls{position:sticky;top:0;z-index:20;background:var(--bg);
+    padding:12px 0 13px;margin-bottom:26px;border-bottom:1px solid var(--line);}
+  .ctrl-row{display:flex;flex-wrap:wrap;gap:9px 14px;align-items:center;}
+  .ctrl-row + .ctrl-row{margin-top:10px;}
+  .ctrl-label{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;}
+  input[type=date]{font:inherit;font-size:13px;padding:5px 8px;border:1px solid var(--line-strong);
+    border-radius:5px;background:var(--surface);color:var(--ink);font-variant-numeric:tabular-nums;}
+  .seg{display:inline-flex;border:1px solid var(--line-strong);border-radius:6px;overflow:hidden;}
+  .seg button{font:inherit;font-size:12.5px;padding:5px 11px;border:0;background:var(--surface);
+    color:var(--muted);cursor:pointer;border-right:1px solid var(--line);}
+  .seg button:last-child{border-right:0;}
+  .seg button[aria-pressed=true]{background:var(--accent);color:#fff;font-weight:600;}
+  .seg button:hover:not([aria-pressed=true]){background:var(--raise);color:var(--ink);}
+  .chk{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--muted);cursor:pointer;}
+  .rangenote{font-size:12px;color:var(--faint);font-variant-numeric:tabular-nums;}
+  .warn-inline{font-size:12px;color:var(--critical);font-weight:600;}
+
+  /* ---- KPI ---- */
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(152px,1fr));gap:1px;
+    background:var(--line);border:1px solid var(--line);border-radius:6px;overflow:hidden;margin-bottom:26px;}
+  .kpi{background:var(--surface);padding:14px 15px;}
+  .kpi .lbl{font-size:11px;color:var(--muted);}
+  .kpi .num{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.01em;margin-top:2px;}
+  .kpi .dl{font-size:11.5px;margin-top:3px;font-variant-numeric:tabular-nums;font-weight:600;}
+  .dl.up{color:var(--good);} .dl.down{color:var(--critical);} .dl.flat{color:var(--faint);font-weight:500;}
+
+  /* ---- pulse: fixed day-over-day / week-over-week, independent of the range picker ---- */
+  .pulse{margin-bottom:26px;}
+  .pulse-block{margin-bottom:14px;} .pulse-block:last-child{margin-bottom:0;}
+  .pulse-label{font-size:11.5px;letter-spacing:.04em;color:var(--muted);font-weight:600;margin-bottom:8px;
+    font-variant-numeric:tabular-nums;}
+  .pulse-label b{color:var(--ink);}
+  .pulse .kpis{margin-bottom:0;}
+
+  section{margin-bottom:38px;}
+  .sec-head{display:flex;align-items:baseline;gap:12px;margin-bottom:14px;padding-bottom:8px;
+    border-bottom:1px solid var(--line);}
+  .sec-head .tag{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700;}
+  .sec-head h2{font-size:20px;}
+
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  .twrap{overflow-x:auto;border:1px solid var(--line);border-radius:6px;}
+  th{text-align:left;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);
+    font-weight:700;padding:9px 11px;background:var(--raise);border-bottom:1px solid var(--line-strong);white-space:nowrap;}
+  td{padding:8px 11px;border-bottom:1px solid var(--line);background:var(--surface);font-variant-numeric:tabular-nums;}
+  tr:last-child td{border-bottom:none;}
+  th.num,td.num{text-align:right;}
+  td.bad{color:var(--critical);font-weight:700;} td.warn{color:var(--high);font-weight:600;}
+  td.ok{color:var(--good);font-weight:600;} td.dim{color:var(--faint);}
+  .bar-cell{position:relative;min-width:90px;}
+  .bar-cell .b{position:absolute;left:0;top:50%;transform:translateY(-50%);height:15px;
+    background:var(--accent);opacity:.22;border-radius:2px;}
+  .bar-cell span{position:relative;}
+
+  .chartbox{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px 18px;}
+  .chartbox svg{width:100%;height:230px;display:block;overflow:visible;}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;color:var(--muted);margin-top:10px;}
+  .legend i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px;vertical-align:middle;}
+
+  .note{font-size:12px;color:var(--faint);margin-top:9px;}
+  .banner{background:var(--surface);border:1px solid var(--line-strong);border-left:4px solid var(--accent);
+    border-radius:6px;padding:15px 18px;font-size:13.5px;}
+  .banner.alarm{border-color:var(--critical);border-left-color:var(--critical);}
+  .banner b{color:var(--ink);}
+  .empty{padding:26px;text-align:center;color:var(--faint);font-size:13.5px;
+    border:1px dashed var(--line-strong);border-radius:6px;}
+  .foot{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);font-size:11.5px;color:var(--faint);}
+
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px 18px;}
+  .card h3{font-family:inherit;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;
+    color:var(--muted);font-weight:700;margin:0 0 11px;}
+  .health{border-radius:8px;padding:13px 17px;margin-bottom:18px;display:flex;
+    flex-wrap:wrap;gap:6px 20px;align-items:baseline;border:1px solid;}
+  .health .hl{font-size:13.5px;font-weight:700;letter-spacing:.02em;}
+  .health .hd{font-size:12.5px;}
+  .health.current{background:var(--good-bg);border-color:var(--good);}
+  .health.current .hl{color:var(--good);}
+  .health.current .hd{color:var(--muted);}
+  .health.lagging{background:var(--high-bg);border-color:var(--high);}
+  .health.lagging .hl{color:var(--high);}
+  .health.lagging .hd{color:var(--ink);}
+  .health.stale{background:var(--critical-bg);border-color:var(--critical);border-width:2px;}
+  .health.stale .hl{color:var(--critical);font-size:15px;}
+  .health.stale .hd{color:var(--ink);}
+  .divider{margin:46px 0 30px;border-top:2px solid var(--critical);}
+  .divider-inner{padding-top:16px;}
+  .divider h2{font-family:Iowan Old Style,Georgia,serif;}
+  .chip{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+    padding:2px 7px;border-radius:100px;white-space:nowrap;}
+  .chip.critical{background:var(--critical-bg);color:var(--critical);}
+  .chip.high{background:var(--high-bg);color:var(--high);}
+  .chip.medium{background:var(--raise);color:var(--medium);}
+  .chip.low{background:var(--raise);color:var(--faint);}
+  .chip.open{background:var(--critical-bg);color:var(--critical);}
+  .chip.wrong{background:var(--critical-bg);color:var(--critical);}
+  .fold-row{display:grid;grid-template-columns:190px 1fr 58px;align-items:center;gap:11px;
+    padding:6px 14px;font-size:12.5px;border-bottom:1px solid var(--line);}
+  .fold-row:last-child{border-bottom:none;}
+  .fold-row.unseen{background:var(--critical-bg);}
+  .fold-row .m{position:relative;height:14px;background:var(--line);border-radius:3px;}
+  .fold-row .m i{position:absolute;top:0;height:14px;width:4px;border-radius:2px;background:var(--accent);}
+  .fold-row .m i.out{background:var(--critical);}
+  .fold-row .p{text-align:right;font-variant-numeric:tabular-nums;color:var(--muted);}
+  .foldmark{margin:0 14px;border-top:2px dashed var(--critical);padding-top:4px;
+    font-size:10px;letter-spacing:.05em;text-transform:uppercase;font-weight:700;color:var(--critical);}
+  .kv{display:flex;justify-content:space-between;gap:10px;padding:5px 0;
+    border-bottom:1px solid var(--line);font-size:13px;}
+  .kv:last-child{border-bottom:none;}
+  .kv b{font-variant-numeric:tabular-nums;}
+  .kv b.pop{color:var(--critical);}
+  .hm-row{display:grid;grid-template-columns:1fr 130px 62px;align-items:center;gap:10px;
+    padding:3px 0;font-size:12.5px;}
+  .hm-t{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted);
+    font-family:ui-monospace,"SF Mono",monospace;font-size:11.5px;}
+  .hm-t.pop{color:var(--critical);font-weight:700;}
+  .hm-b{background:var(--line);border-radius:3px;height:13px;overflow:hidden;}
+  .hm-b i{display:block;height:13px;border-radius:3px 0 0 3px;background:var(--medium);}
+  .hm-b i.popup{background:var(--critical);}
+  .hm-b i.nav,.hm-b i.product{background:var(--accent);}
+  .hm-b i.checkout{background:var(--good);}
+  .hm-b i.untagged,.hm-b i.chrome{background:var(--faint);opacity:.55;}
+  .hm-n{text-align:right;font-variant-numeric:tabular-nums;}
+  @media (max-width:760px){ .hm-row{grid-template-columns:1fr 62px;} .hm-b{display:none;} }
+  @media (max-width:760px){ .split{grid-template-columns:1fr;} .fold-row{grid-template-columns:1fr 58px;} .fold-row .m{display:none;} }
+  @media (max-width:640px){ .masthead h1{font-size:28px;} .controls{position:static;} }
+  .hubnav{background:var(--surface);border-bottom:1px solid var(--line-strong);}
+  .hubnav .inner{max-width:1080px;margin:0 auto;padding:11px 22px;display:flex;flex-wrap:wrap;align-items:center;gap:5px;}
+  .hubnav a{font-size:12.5px;font-weight:600;color:var(--muted);text-decoration:none;padding:6px 13px;border-radius:100px;white-space:nowrap;}
+  .hubnav a:hover{background:var(--raise);color:var(--ink);}
+  .hubnav a.active{background:var(--accent);color:#fff;}
+  .hubnav .sep{color:var(--faint);font-size:12px;margin:0 2px;}
+</style>
+
+<nav class="hubnav"><div class="inner">
+  <a href="index.html">Reports Home</a><span class="sep">&middot;</span>
+  <a href="insights.html">Insights</a>
+  <a href="action_plan.html">Action Plan</a>
+  <a href="interactive.html" class="active">Interactive Dashboard</a>
+</div></nav>
+
+<div class="page">
+  <div class="masthead">
+    <div class="eyebrow">AI CRO Analyst · Interactive</div>
+    <h1>Lucira Jewelry</h1>
+    <div class="meta" id="meta"></div>
+  </div>
+
+  <div id="health"></div>
+
+  <div class="pulse" id="pulse"></div>
+
+  <div class="controls">
+    <div class="ctrl-row">
+      <span class="ctrl-label">Range</span>
+      <input type="date" id="from" aria-label="From date">
+      <span style="color:var(--faint)">→</span>
+      <input type="date" id="to" aria-label="To date">
+      <div class="seg" role="group" aria-label="Quick ranges">
+        <button data-preset="1">1d</button><button data-preset="7">7d</button>
+        <button data-preset="14">14d</button><button data-preset="30">30d</button>
+        <button data-preset="60">All</button>
+      </div>
+      <span class="rangenote" id="rangenote"></span>
+    </div>
+    <div class="ctrl-row">
+      <span class="ctrl-label">Device</span>
+      <div class="seg" role="group" aria-label="Device filter">
+        <button data-dev="all" aria-pressed="true">All</button>
+        <button data-dev="mobile">Mobile</button>
+        <button data-dev="desktop">Desktop</button>
+        <button data-dev="tablet">Tablet</button>
+      </div>
+      <label class="chk"><input type="checkbox" id="cmp" checked> Compare to previous period</label>
+      <span class="rangenote" id="cmpnote"></span>
+    </div>
+  </div>
+
+  <div class="kpis" id="kpis"></div>
+
+  <section>
+    <div class="sec-head"><span class="tag">Funnel</span><h2>view_item → purchase</h2></div>
+    <div class="twrap"><table>
+      <thead><tr>
+        <th>Step</th><th class="num">Events</th><th class="num">Step rate</th>
+        <th class="num">Drop-off</th><th class="num">vs prev</th><th>Volume</th>
+      </tr></thead>
+      <tbody id="funnelbody"></tbody>
+    </table></div>
+    <p class="note">Event counts, not unique users — one visitor can fire a step more than once, so rates differ slightly from a user-based funnel. Drop-off is the share lost between this step and the next.</p>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Trend</span><h2>Daily movement</h2></div>
+    <div class="ctrl-row" style="margin-bottom:12px;">
+      <div class="seg" role="group" aria-label="Metric">
+        <button data-metric="sessions" aria-pressed="true">Sessions</button>
+        <button data-metric="atcRate">ATC rate</button>
+        <button data-metric="checkoutRate">Cart→checkout</button>
+        <button data-metric="bounce">Bounce</button>
+        <button data-metric="rage">Rage clicks</button>
+        <button data-metric="scroll">Scroll depth</button>
+      </div>
+    </div>
+    <div class="chartbox"><svg id="chart" role="img" aria-label="Daily trend chart"></svg>
+      <div class="legend" id="legend"></div></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Behaviour</span><h2>Clarity signals</h2></div>
+    <div id="claritywrap"></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Read</span><h2>What changed</h2></div>
+    <div id="insight"></div>
+  </section>
+
+  <div class="divider">
+    <div class="divider-inner">
+      <div class="eyebrow" style="color:var(--critical)">Fixed window · does not respond to the filter above</div>
+      <h2 style="font-size:24px;margin:6px 0 6px;">Deep-dive snapshot</h2>
+      <p style="margin:0;font-size:13.5px;color:var(--muted);max-width:70ch;">
+        Everything below is measured once per deep-dive run, not daily — page-level tables, live DOM
+        measurement, click-element breakdowns and the findings log. The window is
+        <b id="snapwin"></b>. The date picker above has no effect here.
+      </p>
+    </div>
+  </div>
+
+  <section>
+    <div class="sec-head"><span class="tag">Snapshot</span><h2>Page performance</h2></div>
+    <div class="ctrl-row" style="margin-bottom:12px;">
+      <div class="seg" role="group" aria-label="Snapshot device">
+        <button data-sdev="mobile" aria-pressed="true">Mobile</button>
+        <button data-sdev="desktop">Desktop</button>
+        <button data-sdev="tablet">Tablet</button>
+      </div>
+    </div>
+    <div id="snapPages"></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Snapshot</span><h2>Funnel by unique users</h2></div>
+    <div id="snapFunnel"></div>
+    <p class="note">This is the <b>user-based</b> funnel from GA4's funnel report — distinct from the
+      event-count funnel above, which counts repeat fires. Both are correct; they answer different
+      questions. Never quote them interchangeably.</p>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Snapshot</span><h2>Homepage journey funnel</h2></div>
+    <div id="snapHomeFunnel"></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Snapshot</span><h2>Clarity heatmap data against the funnel</h2></div>
+    <div id="snapHeatmap"></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Snapshot</span><h2>The cart cliff</h2></div>
+    <div id="snapCart"></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Snapshot</span><h2>Fold analysis — what a mobile visitor sees</h2></div>
+    <div id="snapFold"></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Snapshot</span><h2>What is being rage-clicked</h2></div>
+    <div class="split" id="snapElements"></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Snapshot</span><h2>Core Web Vitals</h2></div>
+    <div class="split" id="snapVitals"></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Snapshot</span><h2>Traffic quality — bounce is channel, not template</h2></div>
+    <div id="snapTraffic"></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Snapshot</span><h2>JavaScript errors</h2></div>
+    <div id="snapErrors"></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Commerce</span><h2>Order segmentation — 30 days</h2></div>
+    <div id="snapCommerce"></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Blocking</span><h2>Open tracking issues</h2></div>
+    <div id="snapTracking"></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Actions</span><h2>Findings</h2></div>
+    <div id="snapFindings"></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Integrity</span><h2>Corrections log</h2></div>
+    <div id="snapCorrections"></div>
+    <p class="note">Claims that later measurement disproved. Kept visible so a wrong conclusion
+      isn't carried forward as an assumption after the reasoning behind it is forgotten.</p>
+  </section>
+
+  <div class="foot">
+    <div id="footmeta"></div>
+    <div style="margin-top:7px;">Scope: online storefront only — ERP/store orders excluded. Window rule: data through T-2 (analytics is incomplete for the most recent two days). GA4 sessions are not bot-filtered; Clarity figures are.</div>
+  </div>
+</div>
+
+<script>
+const DATA = {"meta":{"generated":"2026-07-29 17:06","minDate":"2026-05-27","maxDate":"2026-07-27","totalDays":62,"ga4":"478308692","clarity":"ro0m9zh071","rows":955,"clarityFrom":"2026-07-12","clarityTo":"2026-07-27","expectedMax":"2026-07-27","daysBehind":0,"clarityBehind":0,"health":"current","lastRunAt":"2026-07-29 15:57","lastRunNotes":"GA4 device for 07-27 was already loaded from a prior manual pull; added GA4 funnel (12 rows) + Clarity (3 rows). Deep-dive 7d snapshot (latest.json) not refreshed this run -- daily numbers only.","lastRunStatus":"GA4 device: skipped | GA4 funnel: ok | Clarity: ok | Snapshot: skipped"},"device":[{"d":"2026-05-27","dev":"desktop","s":882,"u":744,"br":54.88,"eng":34395,"pv":1722},{"d":"2026-05-27","dev":"mobile","s":8877,"u":7840,"br":48.41,"eng":231690,"pv":14933},{"d":"2026-05-27","dev":"tablet","s":30,"u":29,"br":50,"eng":1102,"pv":64},{"d":"2026-05-28","dev":"desktop","s":1007,"u":893,"br":54.52,"eng":32395,"pv":1741},{"d":"2026-05-28","dev":"mobile","s":9582,"u":8517,"br":45.21,"eng":275348,"pv":16467},{"d":"2026-05-28","dev":"tablet","s":44,"u":42,"br":70.45,"eng":255,"pv":51},{"d":"2026-05-29","dev":"desktop","s":883,"u":768,"br":43.49,"eng":36365,"pv":2635},{"d":"2026-05-29","dev":"mobile","s":9742,"u":8373,"br":48.87,"eng":246911,"pv":15822},{"d":"2026-05-29","dev":"tablet","s":23,"u":20,"br":69.57,"eng":123,"pv":30},{"d":"2026-05-30","dev":"desktop","s":525,"u":426,"br":45.71,"eng":31130,"pv":1214},{"d":"2026-05-30","dev":"mobile","s":9257,"u":8119,"br":44.6,"eng":251517,"pv":15354},{"d":"2026-05-30","dev":"tablet","s":27,"u":24,"br":55.56,"eng":413,"pv":37},{"d":"2026-05-31","dev":"desktop","s":277,"u":222,"br":51.26,"eng":14064,"pv":887},{"d":"2026-05-31","dev":"mobile","s":7649,"u":6622,"br":47.54,"eng":251836,"pv":13364},{"d":"2026-05-31","dev":"tablet","s":20,"u":19,"br":25,"eng":2470,"pv":83},{"d":"2026-06-01","dev":"desktop","s":1007,"u":864,"br":42.4,"eng":36980,"pv":1749},{"d":"2026-06-01","dev":"mobile","s":9436,"u":8120,"br":47.24,"eng":276851,"pv":15658},{"d":"2026-06-01","dev":"tablet","s":19,"u":17,"br":52.63,"eng":167,"pv":25},{"d":"2026-06-02","dev":"desktop","s":730,"u":571,"br":40.68,"eng":42606,"pv":1688},{"d":"2026-06-02","dev":"mobile","s":9802,"u":8482,"br":46.5,"eng":281482,"pv":16947},{"d":"2026-06-02","dev":"tablet","s":32,"u":31,"br":62.5,"eng":795,"pv":65},{"d":"2026-06-03","dev":"desktop","s":2326,"u":2176,"br":48.11,"eng":45186,"pv":3399},{"d":"2026-06-03","dev":"mobile","s":10560,"u":9208,"br":46.8,"eng":281738,"pv":17149},{"d":"2026-06-03","dev":"tablet","s":41,"u":37,"br":58.54,"eng":666,"pv":58},{"d":"2026-06-04","dev":"desktop","s":1810,"u":1676,"br":43.26,"eng":49855,"pv":3731},{"d":"2026-06-04","dev":"mobile","s":11427,"u":9984,"br":45.29,"eng":301650,"pv":18828},{"d":"2026-06-04","dev":"tablet","s":48,"u":45,"br":60.42,"eng":1172,"pv":68},{"d":"2026-06-05","dev":"desktop","s":900,"u":773,"br":44.44,"eng":44045,"pv":1662},{"d":"2026-06-05","dev":"mobile","s":11322,"u":9844,"br":46.14,"eng":311237,"pv":18786},{"d":"2026-06-05","dev":"tablet","s":36,"u":33,"br":61.11,"eng":468,"pv":54},{"d":"2026-06-06","dev":"desktop","s":742,"u":639,"br":44.07,"eng":29515,"pv":1348},{"d":"2026-06-06","dev":"mobile","s":11160,"u":9936,"br":45,"eng":321371,"pv":18911},{"d":"2026-06-06","dev":"tablet","s":29,"u":28,"br":48.28,"eng":1414,"pv":77},{"d":"2026-06-07","dev":"desktop","s":344,"u":297,"br":49.13,"eng":14146,"pv":568},{"d":"2026-06-07","dev":"mobile","s":11432,"u":10120,"br":45.48,"eng":332435,"pv":19718},{"d":"2026-06-07","dev":"tablet","s":41,"u":41,"br":53.66,"eng":1235,"pv":53},{"d":"2026-06-08","dev":"desktop","s":768,"u":627,"br":42.84,"eng":42403,"pv":1523},{"d":"2026-06-08","dev":"mobile","s":11160,"u":9654,"br":46.77,"eng":342113,"pv":19463},{"d":"2026-06-08","dev":"tablet","s":37,"u":36,"br":54.05,"eng":629,"pv":51},{"d":"2026-06-09","dev":"desktop","s":801,"u":645,"br":43.2,"eng":41464,"pv":1597},{"d":"2026-06-09","dev":"mobile","s":11346,"u":9954,"br":44.92,"eng":313172,"pv":19239},{"d":"2026-06-09","dev":"tablet","s":28,"u":28,"br":28.57,"eng":1395,"pv":80},{"d":"2026-06-10","dev":"desktop","s":1133,"u":982,"br":45.37,"eng":43009,"pv":2047},{"d":"2026-06-10","dev":"mobile","s":11841,"u":10526,"br":45.08,"eng":325074,"pv":20261},{"d":"2026-06-10","dev":"smart tv","s":1,"u":1,"br":0,"eng":0,"pv":1},{"d":"2026-06-10","dev":"tablet","s":27,"u":27,"br":48.15,"eng":630,"pv":41},{"d":"2026-06-11","dev":"desktop","s":1102,"u":958,"br":46.37,"eng":44165,"pv":1903},{"d":"2026-06-11","dev":"mobile","s":12568,"u":11110,"br":43.77,"eng":342801,"pv":20794},{"d":"2026-06-11","dev":"tablet","s":25,"u":22,"br":32,"eng":707,"pv":45},{"d":"2026-06-12","dev":"desktop","s":932,"u":713,"br":42.81,"eng":56573,"pv":2168},{"d":"2026-06-12","dev":"mobile","s":12162,"u":10856,"br":44.62,"eng":332731,"pv":19845},{"d":"2026-06-12","dev":"tablet","s":35,"u":34,"br":71.43,"eng":631,"pv":35},{"d":"2026-06-13","dev":"desktop","s":1056,"u":870,"br":46.69,"eng":70411,"pv":2149},{"d":"2026-06-13","dev":"mobile","s":11975,"u":10860,"br":43.12,"eng":344991,"pv":19959},{"d":"2026-06-13","dev":"tablet","s":32,"u":31,"br":50,"eng":868,"pv":48},{"d":"2026-06-14","dev":"desktop","s":607,"u":556,"br":52.88,"eng":23275,"pv":1215},{"d":"2026-06-14","dev":"mobile","s":12329,"u":11275,"br":44.16,"eng":358779,"pv":20636},{"d":"2026-06-14","dev":"tablet","s":30,"u":29,"br":33.33,"eng":1484,"pv":77},{"d":"2026-06-15","dev":"desktop","s":1713,"u":1446,"br":46.23,"eng":70480,"pv":3281},{"d":"2026-06-15","dev":"mobile","s":11694,"u":10492,"br":44.87,"eng":351371,"pv":19328},{"d":"2026-06-15","dev":"tablet","s":20,"u":19,"br":50,"eng":311,"pv":26},{"d":"2026-06-16","dev":"desktop","s":1054,"u":815,"br":44.31,"eng":54867,"pv":2436},{"d":"2026-06-16","dev":"mobile","s":11737,"u":10087,"br":46.43,"eng":309461,"pv":18979},{"d":"2026-06-16","dev":"tablet","s":37,"u":35,"br":40.54,"eng":2534,"pv":113},{"d":"2026-06-17","dev":"desktop","s":1121,"u":857,"br":45.5,"eng":65895,"pv":2958},{"d":"2026-06-17","dev":"mobile","s":11579,"u":10241,"br":45.19,"eng":319419,"pv":19230},{"d":"2026-06-17","dev":"smart tv","s":1,"u":1,"br":100,"eng":0,"pv":1},{"d":"2026-06-17","dev":"tablet","s":36,"u":36,"br":44.44,"eng":2169,"pv":76},{"d":"2026-06-18","dev":"desktop","s":1145,"u":882,"br":47.16,"eng":51004,"pv":2477},{"d":"2026-06-18","dev":"mobile","s":11914,"u":10729,"br":44.71,"eng":301093,"pv":19606},{"d":"2026-06-18","dev":"tablet","s":32,"u":30,"br":56.25,"eng":2299,"pv":53},{"d":"2026-06-19","dev":"desktop","s":1174,"u":946,"br":46.25,"eng":59324,"pv":2582},{"d":"2026-06-19","dev":"mobile","s":12257,"u":11101,"br":44.7,"eng":316270,"pv":20462},{"d":"2026-06-19","dev":"tablet","s":36,"u":35,"br":61.11,"eng":610,"pv":60},{"d":"2026-06-20","dev":"desktop","s":1103,"u":879,"br":46.51,"eng":55943,"pv":2567},{"d":"2026-06-20","dev":"mobile","s":12152,"u":10788,"br":45.82,"eng":321726,"pv":19817},{"d":"2026-06-20","dev":"tablet","s":43,"u":40,"br":44.19,"eng":3304,"pv":77},{"d":"2026-06-21","dev":"desktop","s":554,"u":453,"br":47.65,"eng":35138,"pv":1643},{"d":"2026-06-21","dev":"mobile","s":11895,"u":10719,"br":46.73,"eng":298439,"pv":19394},{"d":"2026-06-21","dev":"tablet","s":23,"u":23,"br":65.22,"eng":136,"pv":34},{"d":"2026-06-22","dev":"desktop","s":1545,"u":1306,"br":42.98,"eng":49552,"pv":2798},{"d":"2026-06-22","dev":"mobile","s":11160,"u":10113,"br":47.78,"eng":279230,"pv":18472},{"d":"2026-06-22","dev":"tablet","s":25,"u":24,"br":56,"eng":303,"pv":33},{"d":"2026-06-23","dev":"desktop","s":1043,"u":776,"br":41.61,"eng":48567,"pv":2377},{"d":"2026-06-23","dev":"mobile","s":10422,"u":9278,"br":48.15,"eng":272235,"pv":17370},{"d":"2026-06-23","dev":"tablet","s":27,"u":23,"br":44.44,"eng":713,"pv":35},{"d":"2026-06-24","dev":"desktop","s":1104,"u":850,"br":41.85,"eng":62494,"pv":2606},{"d":"2026-06-24","dev":"mobile","s":10722,"u":9511,"br":47.36,"eng":283750,"pv":18006},{"d":"2026-06-24","dev":"tablet","s":32,"u":31,"br":53.12,"eng":721,"pv":47},{"d":"2026-06-25","dev":"desktop","s":1373,"u":1126,"br":41.22,"eng":65440,"pv":2917},{"d":"2026-06-25","dev":"mobile","s":12085,"u":10850,"br":47.23,"eng":323488,"pv":19899},{"d":"2026-06-25","dev":"tablet","s":45,"u":44,"br":57.78,"eng":895,"pv":82},{"d":"2026-06-26","dev":"desktop","s":1291,"u":1081,"br":43.3,"eng":54727,"pv":2861},{"d":"2026-06-26","dev":"mobile","s":12665,"u":11103,"br":49.3,"eng":351388,"pv":20448},{"d":"2026-06-26","dev":"tablet","s":39,"u":36,"br":56.41,"eng":902,"pv":75},{"d":"2026-06-27","dev":"desktop","s":1085,"u":902,"br":44.52,"eng":38628,"pv":1843},{"d":"2026-06-27","dev":"mobile","s":12385,"u":10969,"br":48.03,"eng":389811,"pv":20865},{"d":"2026-06-27","dev":"tablet","s":39,"u":36,"br":23.08,"eng":1275,"pv":72},{"d":"2026-06-28","dev":"desktop","s":491,"u":440,"br":40.33,"eng":16179,"pv":782},{"d":"2026-06-28","dev":"mobile","s":12780,"u":11427,"br":46.94,"eng":371777,"pv":21268},{"d":"2026-06-28","dev":"tablet","s":41,"u":40,"br":58.54,"eng":549,"pv":49},{"d":"2026-06-29","dev":"desktop","s":867,"u":700,"br":42.79,"eng":56674,"pv":2243},{"d":"2026-06-29","dev":"mobile","s":11361,"u":10052,"br":49.46,"eng":284864,"pv":18045},{"d":"2026-06-29","dev":"tablet","s":35,"u":35,"br":42.86,"eng":649,"pv":52},{"d":"2026-06-30","dev":"desktop","s":1395,"u":1164,"br":41.51,"eng":55283,"pv":2549},{"d":"2026-06-30","dev":"mobile","s":11510,"u":10358,"br":46.19,"eng":347255,"pv":19286},{"d":"2026-06-30","dev":"tablet","s":34,"u":31,"br":41.18,"eng":1243,"pv":51},{"d":"2026-07-01","dev":"desktop","s":1676,"u":1436,"br":38.37,"eng":65687,"pv":3207},{"d":"2026-07-01","dev":"mobile","s":11649,"u":10251,"br":46.66,"eng":336296,"pv":19353},{"d":"2026-07-01","dev":"tablet","s":39,"u":38,"br":69.23,"eng":126,"pv":43},{"d":"2026-07-02","dev":"desktop","s":1081,"u":833,"br":38.48,"eng":58178,"pv":2390},{"d":"2026-07-02","dev":"mobile","s":12078,"u":10619,"br":47.46,"eng":335971,"pv":19748},{"d":"2026-07-02","dev":"tablet","s":49,"u":47,"br":48.98,"eng":2133,"pv":96},{"d":"2026-07-03","dev":"desktop","s":1560,"u":1351,"br":40.06,"eng":50037,"pv":2705},{"d":"2026-07-03","dev":"mobile","s":12240,"u":10887,"br":46.4,"eng":344808,"pv":20371},{"d":"2026-07-03","dev":"tablet","s":45,"u":32,"br":33.33,"eng":2729,"pv":122},{"d":"2026-07-04","dev":"desktop","s":795,"u":640,"br":37.11,"eng":45125,"pv":1766},{"d":"2026-07-04","dev":"mobile","s":11155,"u":9951,"br":46.07,"eng":323349,"pv":18707},{"d":"2026-07-04","dev":"tablet","s":35,"u":33,"br":48.57,"eng":550,"pv":67},{"d":"2026-07-05","dev":"desktop","s":375,"u":319,"br":42.4,"eng":18518,"pv":743},{"d":"2026-07-05","dev":"mobile","s":12184,"u":10771,"br":47.99,"eng":343324,"pv":20383},{"d":"2026-07-05","dev":"tablet","s":45,"u":43,"br":73.33,"eng":218,"pv":52},{"d":"2026-07-06","dev":"desktop","s":667,"u":522,"br":40.18,"eng":43838,"pv":1615},{"d":"2026-07-06","dev":"mobile","s":11464,"u":10234,"br":48.1,"eng":330779,"pv":19212},{"d":"2026-07-06","dev":"tablet","s":40,"u":40,"br":57.5,"eng":778,"pv":60},{"d":"2026-07-07","dev":"desktop","s":894,"u":686,"br":42.73,"eng":60269,"pv":2123},{"d":"2026-07-07","dev":"mobile","s":12067,"u":10390,"br":48.95,"eng":316185,"pv":19256},{"d":"2026-07-07","dev":"tablet","s":38,"u":38,"br":71.05,"eng":1180,"pv":63},{"d":"2026-07-08","dev":"desktop","s":1582,"u":1362,"br":38.94,"eng":56945,"pv":2909},{"d":"2026-07-08","dev":"mobile","s":12281,"u":11101,"br":47.24,"eng":329095,"pv":20277},{"d":"2026-07-08","dev":"tablet","s":36,"u":34,"br":58.33,"eng":1669,"pv":65},{"d":"2026-07-09","dev":"desktop","s":1944,"u":1742,"br":38.58,"eng":64235,"pv":2983},{"d":"2026-07-09","dev":"mobile","s":14150,"u":12441,"br":46.01,"eng":361426,"pv":22179},{"d":"2026-07-09","dev":"tablet","s":42,"u":41,"br":54.76,"eng":2017,"pv":88},{"d":"2026-07-10","dev":"desktop","s":1094,"u":845,"br":43.78,"eng":77755,"pv":2789},{"d":"2026-07-10","dev":"mobile","s":12942,"u":11459,"br":47.53,"eng":351899,"pv":21159},{"d":"2026-07-10","dev":"tablet","s":25,"u":25,"br":52,"eng":1900,"pv":105},{"d":"2026-07-11","dev":"desktop","s":873,"u":680,"br":39.06,"eng":46416,"pv":1987},{"d":"2026-07-11","dev":"mobile","s":12769,"u":11363,"br":45.44,"eng":330818,"pv":20549},{"d":"2026-07-11","dev":"tablet","s":28,"u":28,"br":39.29,"eng":3085,"pv":87},{"d":"2026-07-12","dev":"desktop","s":412,"u":326,"br":40.78,"eng":21279,"pv":885},{"d":"2026-07-12","dev":"mobile","s":13894,"u":12351,"br":45.02,"eng":378910,"pv":22445},{"d":"2026-07-12","dev":"tablet","s":25,"u":25,"br":60,"eng":1416,"pv":52},{"d":"2026-07-13","dev":"desktop","s":2953,"u":2780,"br":34.95,"eng":107694,"pv":6126},{"d":"2026-07-13","dev":"mobile","s":13268,"u":11728,"br":47.2,"eng":369578,"pv":20774},{"d":"2026-07-13","dev":"tablet","s":27,"u":26,"br":40.74,"eng":1419,"pv":39},{"d":"2026-07-14","dev":"desktop","s":3868,"u":3703,"br":32.78,"eng":76374,"pv":5439},{"d":"2026-07-14","dev":"mobile","s":13369,"u":11752,"br":47.91,"eng":332112,"pv":20915},{"d":"2026-07-14","dev":"tablet","s":27,"u":27,"br":66.67,"eng":675,"pv":42},{"d":"2026-07-15","dev":"desktop","s":1350,"u":1131,"br":37.48,"eng":80561,"pv":3270},{"d":"2026-07-15","dev":"mobile","s":13034,"u":11506,"br":45.96,"eng":366086,"pv":21360},{"d":"2026-07-15","dev":"tablet","s":22,"u":21,"br":59.09,"eng":749,"pv":32},{"d":"2026-07-16","dev":"desktop","s":1194,"u":986,"br":37.02,"eng":60244,"pv":2661},{"d":"2026-07-16","dev":"mobile","s":12976,"u":11635,"br":46.52,"eng":362690,"pv":21652},{"d":"2026-07-16","dev":"tablet","s":27,"u":27,"br":48.15,"eng":3181,"pv":54},{"d":"2026-07-17","dev":"desktop","s":1198,"u":953,"br":34.89,"eng":69357,"pv":2781},{"d":"2026-07-17","dev":"mobile","s":13808,"u":12384,"br":44.87,"eng":410279,"pv":23319},{"d":"2026-07-17","dev":"tablet","s":34,"u":33,"br":41.18,"eng":961,"pv":45},{"d":"2026-07-18","dev":"desktop","s":1042,"u":816,"br":36.37,"eng":47628,"pv":2544},{"d":"2026-07-18","dev":"mobile","s":12825,"u":11693,"br":43.36,"eng":376187,"pv":21577},{"d":"2026-07-18","dev":"tablet","s":21,"u":21,"br":52.38,"eng":2055,"pv":42},{"d":"2026-07-19","dev":"desktop","s":452,"u":388,"br":39.6,"eng":20545,"pv":928},{"d":"2026-07-19","dev":"mobile","s":14722,"u":12918,"br":45.12,"eng":426318,"pv":24404},{"d":"2026-07-19","dev":"tablet","s":28,"u":27,"br":35.71,"eng":1060,"pv":49},{"d":"2026-07-20","dev":"desktop","s":1009,"u":785,"br":36.97,"eng":44346,"pv":2201},{"d":"2026-07-20","dev":"mobile","s":13611,"u":12212,"br":46.1,"eng":355477,"pv":22118},{"d":"2026-07-20","dev":"tablet","s":38,"u":36,"br":63.16,"eng":836,"pv":53},{"d":"2026-07-21","dev":"desktop","s":1264,"u":1027,"br":38.29,"eng":60739,"pv":2912},{"d":"2026-07-21","dev":"mobile","s":13004,"u":12013,"br":45.22,"eng":372296,"pv":21753},{"d":"2026-07-21","dev":"tablet","s":36,"u":32,"br":47.22,"eng":1650,"pv":90},{"d":"2026-07-22","dev":"desktop","s":1183,"u":966,"br":37.95,"eng":50900,"pv":2449},{"d":"2026-07-22","dev":"mobile","s":14059,"u":12324,"br":45.91,"eng":364310,"pv":22447},{"d":"2026-07-22","dev":"tablet","s":36,"u":31,"br":61.11,"eng":291,"pv":41},{"d":"2026-07-23","dev":"desktop","s":1835,"u":1636,"br":37.38,"eng":57930,"pv":3254},{"d":"2026-07-23","dev":"mobile","s":11940,"u":11172,"br":43.39,"eng":358805,"pv":21378},{"d":"2026-07-23","dev":"tablet","s":45,"u":41,"br":48.89,"eng":1412,"pv":91},{"d":"2026-07-24","dev":"desktop","s":743,"u":568,"br":39.97,"eng":49895,"pv":2041},{"d":"2026-07-24","dev":"mobile","s":13054,"u":11457,"br":44.51,"eng":367573,"pv":21834},{"d":"2026-07-24","dev":"tablet","s":32,"u":31,"br":37.5,"eng":1268,"pv":66},{"d":"2026-07-25","dev":"desktop","s":1709,"u":1505,"br":33.59,"eng":54882,"pv":2825},{"d":"2026-07-25","dev":"mobile","s":13056,"u":11752,"br":45,"eng":382435,"pv":22370},{"d":"2026-07-25","dev":"tablet","s":40,"u":36,"br":75,"eng":542,"pv":48},{"d":"2026-07-26","dev":"desktop","s":366,"u":266,"br":46.45,"eng":28501,"pv":1171},{"d":"2026-07-26","dev":"mobile","s":14613,"u":12912,"br":44.97,"eng":406788,"pv":24190},{"d":"2026-07-26","dev":"tablet","s":48,"u":46,"br":64.58,"eng":1038,"pv":95},{"d":"2026-07-27","dev":"desktop","s":3598,"u":3316,"br":20.98,"eng":126693,"pv":5260},{"d":"2026-07-27","dev":"mobile","s":13466,"u":12113,"br":46.37,"eng":358253,"pv":22792},{"d":"2026-07-27","dev":"tablet","s":65,"u":62,"br":73.85,"eng":690,"pv":107}],"funnel":[{"d":"2026-05-27","dev":"desktop","e":"add_to_cart","n":7},{"d":"2026-05-27","dev":"desktop","e":"begin_checkout","n":6},{"d":"2026-05-27","dev":"desktop","e":"view_item","n":837},{"d":"2026-05-27","dev":"mobile","e":"add_payment_info","n":3},{"d":"2026-05-27","dev":"mobile","e":"add_shipping_info","n":14},{"d":"2026-05-27","dev":"mobile","e":"add_to_cart","n":184},{"d":"2026-05-27","dev":"mobile","e":"begin_checkout","n":60},{"d":"2026-05-27","dev":"mobile","e":"view_item","n":9403},{"d":"2026-05-27","dev":"tablet","e":"add_to_cart","n":1},{"d":"2026-05-27","dev":"tablet","e":"view_item","n":34},{"d":"2026-05-28","dev":"desktop","e":"add_to_cart","n":6},{"d":"2026-05-28","dev":"desktop","e":"begin_checkout","n":1},{"d":"2026-05-28","dev":"desktop","e":"view_item","n":824},{"d":"2026-05-28","dev":"mobile","e":"add_payment_info","n":4},{"d":"2026-05-28","dev":"mobile","e":"add_shipping_info","n":29},{"d":"2026-05-28","dev":"mobile","e":"add_to_cart","n":271},{"d":"2026-05-28","dev":"mobile","e":"begin_checkout","n":97},{"d":"2026-05-28","dev":"mobile","e":"purchase","n":2},{"d":"2026-05-28","dev":"mobile","e":"view_item","n":10709},{"d":"2026-05-28","dev":"tablet","e":"add_to_cart","n":2},{"d":"2026-05-28","dev":"tablet","e":"begin_checkout","n":1},{"d":"2026-05-28","dev":"tablet","e":"view_item","n":26},{"d":"2026-05-29","dev":"desktop","e":"add_shipping_info","n":2},{"d":"2026-05-29","dev":"desktop","e":"add_to_cart","n":23},{"d":"2026-05-29","dev":"desktop","e":"begin_checkout","n":19},{"d":"2026-05-29","dev":"desktop","e":"view_item","n":1468},{"d":"2026-05-29","dev":"mobile","e":"add_payment_info","n":9},{"d":"2026-05-29","dev":"mobile","e":"add_shipping_info","n":26},{"d":"2026-05-29","dev":"mobile","e":"add_to_cart","n":270},{"d":"2026-05-29","dev":"mobile","e":"begin_checkout","n":99},{"d":"2026-05-29","dev":"mobile","e":"purchase","n":1},{"d":"2026-05-29","dev":"mobile","e":"view_item","n":10301},{"d":"2026-05-29","dev":"tablet","e":"view_item","n":22},{"d":"2026-05-30","dev":"desktop","e":"add_payment_info","n":4},{"d":"2026-05-30","dev":"desktop","e":"add_shipping_info","n":6},{"d":"2026-05-30","dev":"desktop","e":"add_to_cart","n":5},{"d":"2026-05-30","dev":"desktop","e":"begin_checkout","n":2},{"d":"2026-05-30","dev":"desktop","e":"view_item","n":658},{"d":"2026-05-30","dev":"mobile","e":"add_payment_info","n":3},{"d":"2026-05-30","dev":"mobile","e":"add_shipping_info","n":10},{"d":"2026-05-30","dev":"mobile","e":"add_to_cart","n":180},{"d":"2026-05-30","dev":"mobile","e":"begin_checkout","n":18},{"d":"2026-05-30","dev":"mobile","e":"view_item","n":10089},{"d":"2026-05-30","dev":"tablet","e":"view_item","n":25},{"d":"2026-05-31","dev":"desktop","e":"add_to_cart","n":3},{"d":"2026-05-31","dev":"desktop","e":"view_item","n":244},{"d":"2026-05-31","dev":"mobile","e":"add_to_cart","n":184},{"d":"2026-05-31","dev":"mobile","e":"begin_checkout","n":5},{"d":"2026-05-31","dev":"mobile","e":"view_item","n":8337},{"d":"2026-05-31","dev":"tablet","e":"add_to_cart","n":2},{"d":"2026-05-31","dev":"tablet","e":"view_item","n":38},{"d":"2026-06-01","dev":"desktop","e":"add_to_cart","n":3},{"d":"2026-06-01","dev":"desktop","e":"view_item","n":1062},{"d":"2026-06-01","dev":"mobile","e":"add_payment_info","n":2},{"d":"2026-06-01","dev":"mobile","e":"add_shipping_info","n":4},{"d":"2026-06-01","dev":"mobile","e":"add_to_cart","n":257},{"d":"2026-06-01","dev":"mobile","e":"begin_checkout","n":41},{"d":"2026-06-01","dev":"mobile","e":"view_item","n":10572},{"d":"2026-06-01","dev":"tablet","e":"add_to_cart","n":1},{"d":"2026-06-01","dev":"tablet","e":"view_item","n":15},{"d":"2026-06-02","dev":"desktop","e":"add_shipping_info","n":2},{"d":"2026-06-02","dev":"desktop","e":"add_to_cart","n":20},{"d":"2026-06-02","dev":"desktop","e":"begin_checkout","n":9},{"d":"2026-06-02","dev":"desktop","e":"view_item","n":1008},{"d":"2026-06-02","dev":"mobile","e":"add_payment_info","n":13},{"d":"2026-06-02","dev":"mobile","e":"add_shipping_info","n":22},{"d":"2026-06-02","dev":"mobile","e":"add_to_cart","n":296},{"d":"2026-06-02","dev":"mobile","e":"begin_checkout","n":70},{"d":"2026-06-02","dev":"mobile","e":"purchase","n":2},{"d":"2026-06-02","dev":"mobile","e":"view_item","n":13135},{"d":"2026-06-02","dev":"tablet","e":"add_to_cart","n":1},{"d":"2026-06-02","dev":"tablet","e":"view_item","n":44},{"d":"2026-06-03","dev":"desktop","e":"add_shipping_info","n":2},{"d":"2026-06-03","dev":"desktop","e":"add_to_cart","n":9},{"d":"2026-06-03","dev":"desktop","e":"begin_checkout","n":3},{"d":"2026-06-03","dev":"desktop","e":"view_item","n":2762},{"d":"2026-06-03","dev":"mobile","e":"add_payment_info","n":14},{"d":"2026-06-03","dev":"mobile","e":"add_shipping_info","n":15},{"d":"2026-06-03","dev":"mobile","e":"add_to_cart","n":265},{"d":"2026-06-03","dev":"mobile","e":"begin_checkout","n":70},{"d":"2026-06-03","dev":"mobile","e":"purchase","n":1},{"d":"2026-06-03","dev":"mobile","e":"view_item","n":13577},{"d":"2026-06-03","dev":"tablet","e":"view_item","n":38},{"d":"2026-06-04","dev":"desktop","e":"add_shipping_info","n":3},{"d":"2026-06-04","dev":"desktop","e":"add_to_cart","n":24},{"d":"2026-06-04","dev":"desktop","e":"begin_checkout","n":42},{"d":"2026-06-04","dev":"desktop","e":"view_item","n":2879},{"d":"2026-06-04","dev":"mobile","e":"add_payment_info","n":9},{"d":"2026-06-04","dev":"mobile","e":"add_shipping_info","n":10},{"d":"2026-06-04","dev":"mobile","e":"add_to_cart","n":360},{"d":"2026-06-04","dev":"mobile","e":"begin_checkout","n":54},{"d":"2026-06-04","dev":"mobile","e":"purchase","n":1},{"d":"2026-06-04","dev":"mobile","e":"view_item","n":14898},{"d":"2026-06-04","dev":"tablet","e":"add_to_cart","n":1},{"d":"2026-06-04","dev":"tablet","e":"view_item","n":47},{"d":"2026-06-05","dev":"desktop","e":"add_payment_info","n":2},{"d":"2026-06-05","dev":"desktop","e":"add_shipping_info","n":2},{"d":"2026-06-05","dev":"desktop","e":"add_to_cart","n":11},{"d":"2026-06-05","dev":"desktop","e":"begin_checkout","n":2},{"d":"2026-06-05","dev":"desktop","e":"view_item","n":1476},{"d":"2026-06-05","dev":"mobile","e":"add_payment_info","n":22},{"d":"2026-06-05","dev":"mobile","e":"add_shipping_info","n":19},{"d":"2026-06-05","dev":"mobile","e":"add_to_cart","n":853},{"d":"2026-06-05","dev":"mobile","e":"begin_checkout","n":62},{"d":"2026-06-05","dev":"mobile","e":"purchase","n":4},{"d":"2026-06-05","dev":"mobile","e":"view_item","n":15180},{"d":"2026-06-05","dev":"tablet","e":"view_item","n":33},{"d":"2026-06-06","dev":"desktop","e":"add_to_cart","n":9},{"d":"2026-06-06","dev":"desktop","e":"view_item","n":903},{"d":"2026-06-06","dev":"mobile","e":"add_payment_info","n":2},{"d":"2026-06-06","dev":"mobile","e":"add_shipping_info","n":6},{"d":"2026-06-06","dev":"mobile","e":"add_to_cart","n":321},{"d":"2026-06-06","dev":"mobile","e":"begin_checkout","n":51},{"d":"2026-06-06","dev":"mobile","e":"purchase","n":1},{"d":"2026-06-06","dev":"mobile","e":"view_item","n":14981},{"d":"2026-06-06","dev":"tablet","e":"add_to_cart","n":1},{"d":"2026-06-06","dev":"tablet","e":"view_item","n":44},{"d":"2026-06-07","dev":"desktop","e":"add_to_cart","n":2},{"d":"2026-06-07","dev":"desktop","e":"view_item","n":329},{"d":"2026-06-07","dev":"mobile","e":"add_payment_info","n":39},{"d":"2026-06-07","dev":"mobile","e":"add_shipping_info","n":38},{"d":"2026-06-07","dev":"mobile","e":"add_to_cart","n":427},{"d":"2026-06-07","dev":"mobile","e":"begin_checkout","n":122},{"d":"2026-06-07","dev":"mobile","e":"purchase","n":3},{"d":"2026-06-07","dev":"mobile","e":"view_item","n":15723},{"d":"2026-06-07","dev":"tablet","e":"view_item","n":41},{"d":"2026-06-08","dev":"desktop","e":"add_payment_info","n":2},{"d":"2026-06-08","dev":"desktop","e":"add_shipping_info","n":4},{"d":"2026-06-08","dev":"desktop","e":"add_to_cart","n":5},{"d":"2026-06-08","dev":"desktop","e":"begin_checkout","n":4},{"d":"2026-06-08","dev":"desktop","e":"purchase","n":1},{"d":"2026-06-08","dev":"desktop","e":"view_item","n":928},{"d":"2026-06-08","dev":"mobile","e":"add_payment_info","n":6},{"d":"2026-06-08","dev":"mobile","e":"add_shipping_info","n":18},{"d":"2026-06-08","dev":"mobile","e":"add_to_cart","n":398},{"d":"2026-06-08","dev":"mobile","e":"begin_checkout","n":77},{"d":"2026-06-08","dev":"mobile","e":"purchase","n":1},{"d":"2026-06-08","dev":"mobile","e":"view_item","n":15231},{"d":"2026-06-08","dev":"tablet","e":"add_to_cart","n":1},{"d":"2026-06-08","dev":"tablet","e":"view_item","n":37},{"d":"2026-06-09","dev":"desktop","e":"add_to_cart","n":10},{"d":"2026-06-09","dev":"desktop","e":"begin_checkout","n":1},{"d":"2026-06-09","dev":"desktop","e":"view_item","n":1006},{"d":"2026-06-09","dev":"mobile","e":"add_payment_info","n":25},{"d":"2026-06-09","dev":"mobile","e":"add_shipping_info","n":34},{"d":"2026-06-09","dev":"mobile","e":"add_to_cart","n":443},{"d":"2026-06-09","dev":"mobile","e":"begin_checkout","n":93},{"d":"2026-06-09","dev":"mobile","e":"purchase","n":3},{"d":"2026-06-09","dev":"mobile","e":"view_item","n":14651},{"d":"2026-06-09","dev":"tablet","e":"add_to_cart","n":1},{"d":"2026-06-09","dev":"tablet","e":"view_item","n":65},{"d":"2026-06-10","dev":"desktop","e":"add_payment_info","n":5},{"d":"2026-06-10","dev":"desktop","e":"add_shipping_info","n":4},{"d":"2026-06-10","dev":"desktop","e":"add_to_cart","n":19},{"d":"2026-06-10","dev":"desktop","e":"begin_checkout","n":9},{"d":"2026-06-10","dev":"desktop","e":"view_item","n":1456},{"d":"2026-06-10","dev":"mobile","e":"add_payment_info","n":23},{"d":"2026-06-10","dev":"mobile","e":"add_shipping_info","n":18},{"d":"2026-06-10","dev":"mobile","e":"add_to_cart","n":378},{"d":"2026-06-10","dev":"mobile","e":"begin_checkout","n":50},{"d":"2026-06-10","dev":"mobile","e":"purchase","n":2},{"d":"2026-06-10","dev":"mobile","e":"view_item","n":14872},{"d":"2026-06-10","dev":"smart tv","e":"view_item","n":1},{"d":"2026-06-10","dev":"tablet","e":"view_item","n":26},{"d":"2026-06-11","dev":"desktop","e":"add_payment_info","n":1},{"d":"2026-06-11","dev":"desktop","e":"add_shipping_info","n":1},{"d":"2026-06-11","dev":"desktop","e":"add_to_cart","n":5},{"d":"2026-06-11","dev":"desktop","e":"begin_checkout","n":1},{"d":"2026-06-11","dev":"desktop","e":"view_item","n":1335},{"d":"2026-06-11","dev":"mobile","e":"add_payment_info","n":9},{"d":"2026-06-11","dev":"mobile","e":"add_shipping_info","n":13},{"d":"2026-06-11","dev":"mobile","e":"add_to_cart","n":327},{"d":"2026-06-11","dev":"mobile","e":"begin_checkout","n":52},{"d":"2026-06-11","dev":"mobile","e":"purchase","n":2},{"d":"2026-06-11","dev":"mobile","e":"view_item","n":15677},{"d":"2026-06-11","dev":"tablet","e":"add_to_cart","n":1},{"d":"2026-06-11","dev":"tablet","e":"view_item","n":28},{"d":"2026-06-12","dev":"desktop","e":"add_payment_info","n":3},{"d":"2026-06-12","dev":"desktop","e":"add_shipping_info","n":7},{"d":"2026-06-12","dev":"desktop","e":"add_to_cart","n":14},{"d":"2026-06-12","dev":"desktop","e":"begin_checkout","n":13},{"d":"2026-06-12","dev":"desktop","e":"view_item","n":1142},{"d":"2026-06-12","dev":"mobile","e":"add_payment_info","n":4},{"d":"2026-06-12","dev":"mobile","e":"add_shipping_info","n":13},{"d":"2026-06-12","dev":"mobile","e":"add_to_cart","n":367},{"d":"2026-06-12","dev":"mobile","e":"begin_checkout","n":53},{"d":"2026-06-12","dev":"mobile","e":"view_item","n":14882},{"d":"2026-06-12","dev":"tablet","e":"add_to_cart","n":1},{"d":"2026-06-12","dev":"tablet","e":"view_item","n":27},{"d":"2026-06-13","dev":"desktop","e":"add_shipping_info","n":2},{"d":"2026-06-13","dev":"desktop","e":"add_to_cart","n":9},{"d":"2026-06-13","dev":"desktop","e":"begin_checkout","n":4},{"d":"2026-06-13","dev":"desktop","e":"view_item","n":1406},{"d":"2026-06-13","dev":"mobile","e":"add_payment_info","n":7},{"d":"2026-06-13","dev":"mobile","e":"add_shipping_info","n":12},{"d":"2026-06-13","dev":"mobile","e":"add_to_cart","n":433},{"d":"2026-06-13","dev":"mobile","e":"begin_checkout","n":61},{"d":"2026-06-13","dev":"mobile","e":"purchase","n":2},{"d":"2026-06-13","dev":"mobile","e":"view_item","n":14986},{"d":"2026-06-13","dev":"tablet","e":"view_item","n":19},{"d":"2026-06-14","dev":"desktop","e":"add_payment_info","n":5},{"d":"2026-06-14","dev":"desktop","e":"add_shipping_info","n":13},{"d":"2026-06-14","dev":"desktop","e":"add_to_cart","n":40},{"d":"2026-06-14","dev":"desktop","e":"begin_checkout","n":45},{"d":"2026-06-14","dev":"desktop","e":"view_item","n":646},{"d":"2026-06-14","dev":"mobile","e":"add_payment_info","n":14},{"d":"2026-06-14","dev":"mobile","e":"add_shipping_info","n":10},{"d":"2026-06-14","dev":"mobile","e":"add_to_cart","n":385},{"d":"2026-06-14","dev":"mobile","e":"begin_checkout","n":42},{"d":"2026-06-14","dev":"mobile","e":"view_item","n":15697},{"d":"2026-06-14","dev":"tablet","e":"view_item","n":57},{"d":"2026-06-15","dev":"desktop","e":"add_shipping_info","n":3},{"d":"2026-06-15","dev":"desktop","e":"add_to_cart","n":12},{"d":"2026-06-15","dev":"desktop","e":"begin_checkout","n":10},{"d":"2026-06-15","dev":"desktop","e":"view_item","n":2100},{"d":"2026-06-15","dev":"mobile","e":"add_payment_info","n":16},{"d":"2026-06-15","dev":"mobile","e":"add_shipping_info","n":18},{"d":"2026-06-15","dev":"mobile","e":"add_to_cart","n":467},{"d":"2026-06-15","dev":"mobile","e":"begin_checkout","n":68},{"d":"2026-06-15","dev":"mobile","e":"view_item","n":14476},{"d":"2026-06-15","dev":"tablet","e":"view_item","n":13},{"d":"2026-06-16","dev":"desktop","e":"add_payment_info","n":7},{"d":"2026-06-16","dev":"desktop","e":"add_shipping_info","n":20},{"d":"2026-06-16","dev":"desktop","e":"add_to_cart","n":24},{"d":"2026-06-16","dev":"desktop","e":"begin_checkout","n":37},{"d":"2026-06-16","dev":"desktop","e":"view_item","n":1275},{"d":"2026-06-16","dev":"mobile","e":"add_payment_info","n":2},{"d":"2026-06-16","dev":"mobile","e":"add_shipping_info","n":8},{"d":"2026-06-16","dev":"mobile","e":"add_to_cart","n":303},{"d":"2026-06-16","dev":"mobile","e":"begin_checkout","n":41},{"d":"2026-06-16","dev":"mobile","e":"view_item","n":13707},{"d":"2026-06-16","dev":"tablet","e":"view_item","n":66},{"d":"2026-06-17","dev":"desktop","e":"add_payment_info","n":5},{"d":"2026-06-17","dev":"desktop","e":"add_shipping_info","n":5},{"d":"2026-06-17","dev":"desktop","e":"add_to_cart","n":15},{"d":"2026-06-17","dev":"desktop","e":"begin_checkout","n":12},{"d":"2026-06-17","dev":"desktop","e":"purchase","n":2},{"d":"2026-06-17","dev":"desktop","e":"view_item","n":1660},{"d":"2026-06-17","dev":"mobile","e":"add_payment_info","n":8},{"d":"2026-06-17","dev":"mobile","e":"add_shipping_info","n":20},{"d":"2026-06-17","dev":"mobile","e":"add_to_cart","n":407},{"d":"2026-06-17","dev":"mobile","e":"begin_checkout","n":62},{"d":"2026-06-17","dev":"mobile","e":"purchase","n":2},{"d":"2026-06-17","dev":"mobile","e":"view_item","n":13809},{"d":"2026-06-17","dev":"tablet","e":"view_item","n":43},{"d":"2026-06-18","dev":"desktop","e":"add_shipping_info","n":1},{"d":"2026-06-18","dev":"desktop","e":"add_to_cart","n":4},{"d":"2026-06-18","dev":"desktop","e":"begin_checkout","n":1},{"d":"2026-06-18","dev":"desktop","e":"view_item","n":1426},{"d":"2026-06-18","dev":"mobile","e":"add_payment_info","n":3},{"d":"2026-06-18","dev":"mobile","e":"add_shipping_info","n":5},{"d":"2026-06-18","dev":"mobile","e":"add_to_cart","n":293},{"d":"2026-06-18","dev":"mobile","e":"begin_checkout","n":31},{"d":"2026-06-18","dev":"mobile","e":"view_item","n":13735},{"d":"2026-06-18","dev":"tablet","e":"view_item","n":38},{"d":"2026-06-19","dev":"desktop","e":"add_payment_info","n":4},{"d":"2026-06-19","dev":"desktop","e":"add_shipping_info","n":8},{"d":"2026-06-19","dev":"desktop","e":"add_to_cart","n":22},{"d":"2026-06-19","dev":"desktop","e":"begin_checkout","n":12},{"d":"2026-06-19","dev":"desktop","e":"view_item","n":1595},{"d":"2026-06-19","dev":"mobile","e":"add_payment_info","n":9},{"d":"2026-06-19","dev":"mobile","e":"add_shipping_info","n":14},{"d":"2026-06-19","dev":"mobile","e":"add_to_cart","n":299},{"d":"2026-06-19","dev":"mobile","e":"begin_checkout","n":30},{"d":"2026-06-19","dev":"mobile","e":"purchase","n":5},{"d":"2026-06-19","dev":"mobile","e":"view_item","n":14081},{"d":"2026-06-19","dev":"tablet","e":"add_to_cart","n":1},{"d":"2026-06-19","dev":"tablet","e":"begin_checkout","n":2},{"d":"2026-06-19","dev":"tablet","e":"view_item","n":36},{"d":"2026-06-20","dev":"desktop","e":"add_payment_info","n":1},{"d":"2026-06-20","dev":"desktop","e":"add_shipping_info","n":1},{"d":"2026-06-20","dev":"desktop","e":"add_to_cart","n":8},{"d":"2026-06-20","dev":"desktop","e":"begin_checkout","n":5},{"d":"2026-06-20","dev":"desktop","e":"view_item","n":1681},{"d":"2026-06-20","dev":"mobile","e":"add_payment_info","n":5},{"d":"2026-06-20","dev":"mobile","e":"add_shipping_info","n":8},{"d":"2026-06-20","dev":"mobile","e":"add_to_cart","n":252},{"d":"2026-06-20","dev":"mobile","e":"begin_checkout","n":35},{"d":"2026-06-20","dev":"mobile","e":"view_item","n":13461},{"d":"2026-06-20","dev":"tablet","e":"view_item","n":46},{"d":"2026-06-21","dev":"desktop","e":"add_payment_info","n":1},{"d":"2026-06-21","dev":"desktop","e":"add_shipping_info","n":3},{"d":"2026-06-21","dev":"desktop","e":"add_to_cart","n":13},{"d":"2026-06-21","dev":"desktop","e":"begin_checkout","n":5},{"d":"2026-06-21","dev":"desktop","e":"purchase","n":1},{"d":"2026-06-21","dev":"desktop","e":"view_item","n":1272},{"d":"2026-06-21","dev":"mobile","e":"add_payment_info","n":4},{"d":"2026-06-21","dev":"mobile","e":"add_shipping_info","n":13},{"d":"2026-06-21","dev":"mobile","e":"add_to_cart","n":275},{"d":"2026-06-21","dev":"mobile","e":"begin_checkout","n":29},{"d":"2026-06-21","dev":"mobile","e":"purchase","n":2},{"d":"2026-06-21","dev":"mobile","e":"view_item","n":13262},{"d":"2026-06-21","dev":"tablet","e":"view_item","n":25},{"d":"2026-06-22","dev":"desktop","e":"add_shipping_info","n":3},{"d":"2026-06-22","dev":"desktop","e":"add_to_cart","n":10},{"d":"2026-06-22","dev":"desktop","e":"begin_checkout","n":12},{"d":"2026-06-22","dev":"desktop","e":"view_item","n":1727},{"d":"2026-06-22","dev":"mobile","e":"add_payment_info","n":4},{"d":"2026-06-22","dev":"mobile","e":"add_shipping_info","n":7},{"d":"2026-06-22","dev":"mobile","e":"add_to_cart","n":353},{"d":"2026-06-22","dev":"mobile","e":"begin_checkout","n":26},{"d":"2026-06-22","dev":"mobile","e":"view_item","n":12220},{"d":"2026-06-22","dev":"tablet","e":"view_item","n":23},{"d":"2026-06-23","dev":"desktop","e":"add_shipping_info","n":1},{"d":"2026-06-23","dev":"desktop","e":"add_to_cart","n":11},{"d":"2026-06-23","dev":"desktop","e":"begin_checkout","n":5},{"d":"2026-06-23","dev":"desktop","e":"view_item","n":1383},{"d":"2026-06-23","dev":"mobile","e":"add_payment_info","n":11},{"d":"2026-06-23","dev":"mobile","e":"add_shipping_info","n":19},{"d":"2026-06-23","dev":"mobile","e":"add_to_cart","n":435},{"d":"2026-06-23","dev":"mobile","e":"begin_checkout","n":52},{"d":"2026-06-23","dev":"mobile","e":"purchase","n":4},{"d":"2026-06-23","dev":"mobile","e":"view_item","n":11262},{"d":"2026-06-23","dev":"tablet","e":"view_item","n":20},{"d":"2026-06-24","dev":"desktop","e":"add_payment_info","n":1},{"d":"2026-06-24","dev":"desktop","e":"add_shipping_info","n":1},{"d":"2026-06-24","dev":"desktop","e":"add_to_cart","n":9},{"d":"2026-06-24","dev":"desktop","e":"begin_checkout","n":3},{"d":"2026-06-24","dev":"desktop","e":"purchase","n":1},{"d":"2026-06-24","dev":"desktop","e":"view_item","n":1580},{"d":"2026-06-24","dev":"mobile","e":"add_payment_info","n":6},{"d":"2026-06-24","dev":"mobile","e":"add_shipping_info","n":33},{"d":"2026-06-24","dev":"mobile","e":"add_to_cart","n":306},{"d":"2026-06-24","dev":"mobile","e":"begin_checkout","n":36},{"d":"2026-06-24","dev":"mobile","e":"purchase","n":2},{"d":"2026-06-24","dev":"mobile","e":"view_item","n":11890},{"d":"2026-06-24","dev":"tablet","e":"view_item","n":32},{"d":"2026-06-25","dev":"desktop","e":"add_payment_info","n":4},{"d":"2026-06-25","dev":"desktop","e":"add_shipping_info","n":9},{"d":"2026-06-25","dev":"desktop","e":"add_to_cart","n":17},{"d":"2026-06-25","dev":"desktop","e":"begin_checkout","n":17},{"d":"2026-06-25","dev":"desktop","e":"purchase","n":1},{"d":"2026-06-25","dev":"desktop","e":"view_item","n":1971},{"d":"2026-06-25","dev":"mobile","e":"add_payment_info","n":3},{"d":"2026-06-25","dev":"mobile","e":"add_shipping_info","n":9},{"d":"2026-06-25","dev":"mobile","e":"add_to_cart","n":322},{"d":"2026-06-25","dev":"mobile","e":"begin_checkout","n":25},{"d":"2026-06-25","dev":"mobile","e":"purchase","n":1},{"d":"2026-06-25","dev":"mobile","e":"view_item","n":13319},{"d":"2026-06-25","dev":"tablet","e":"view_item","n":61},{"d":"2026-06-26","dev":"desktop","e":"add_payment_info","n":1},{"d":"2026-06-26","dev":"desktop","e":"add_shipping_info","n":1},{"d":"2026-06-26","dev":"desktop","e":"add_to_cart","n":12},{"d":"2026-06-26","dev":"desktop","e":"begin_checkout","n":7},{"d":"2026-06-26","dev":"desktop","e":"view_item","n":1863},{"d":"2026-06-26","dev":"mobile","e":"add_payment_info","n":6},{"d":"2026-06-26","dev":"mobile","e":"add_shipping_info","n":11},{"d":"2026-06-26","dev":"mobile","e":"add_to_cart","n":416},{"d":"2026-06-26","dev":"mobile","e":"begin_checkout","n":29},{"d":"2026-06-26","dev":"mobile","e":"view_item","n":13541},{"d":"2026-06-26","dev":"tablet","e":"add_to_cart","n":2},{"d":"2026-06-26","dev":"tablet","e":"view_item","n":51},{"d":"2026-06-27","dev":"desktop","e":"add_payment_info","n":2},{"d":"2026-06-27","dev":"desktop","e":"add_shipping_info","n":3},{"d":"2026-06-27","dev":"desktop","e":"add_to_cart","n":9},{"d":"2026-06-27","dev":"desktop","e":"begin_checkout","n":6},{"d":"2026-06-27","dev":"desktop","e":"view_item","n":1254},{"d":"2026-06-27","dev":"mobile","e":"add_payment_info","n":9},{"d":"2026-06-27","dev":"mobile","e":"add_shipping_info","n":32},{"d":"2026-06-27","dev":"mobile","e":"add_to_cart","n":402},{"d":"2026-06-27","dev":"mobile","e":"begin_checkout","n":39},{"d":"2026-06-27","dev":"mobile","e":"purchase","n":2},{"d":"2026-06-27","dev":"mobile","e":"view_item","n":13680},{"d":"2026-06-27","dev":"tablet","e":"add_to_cart","n":1},{"d":"2026-06-27","dev":"tablet","e":"view_item","n":39},{"d":"2026-06-28","dev":"desktop","e":"add_to_cart","n":3},{"d":"2026-06-28","dev":"desktop","e":"view_item","n":572},{"d":"2026-06-28","dev":"mobile","e":"add_payment_info","n":5},{"d":"2026-06-28","dev":"mobile","e":"add_shipping_info","n":11},{"d":"2026-06-28","dev":"mobile","e":"add_to_cart","n":498},{"d":"2026-06-28","dev":"mobile","e":"begin_checkout","n":35},{"d":"2026-06-28","dev":"mobile","e":"view_item","n":14300},{"d":"2026-06-28","dev":"tablet","e":"view_item","n":23},{"d":"2026-06-29","dev":"desktop","e":"add_payment_info","n":2},{"d":"2026-06-29","dev":"desktop","e":"add_shipping_info","n":8},{"d":"2026-06-29","dev":"desktop","e":"add_to_cart","n":16},{"d":"2026-06-29","dev":"desktop","e":"begin_checkout","n":20},{"d":"2026-06-29","dev":"desktop","e":"view_item","n":1292},{"d":"2026-06-29","dev":"mobile","e":"add_payment_info","n":4},{"d":"2026-06-29","dev":"mobile","e":"add_shipping_info","n":7},{"d":"2026-06-29","dev":"mobile","e":"add_to_cart","n":349},{"d":"2026-06-29","dev":"mobile","e":"begin_checkout","n":27},{"d":"2026-06-29","dev":"mobile","e":"purchase","n":1},{"d":"2026-06-29","dev":"mobile","e":"view_item","n":11529},{"d":"2026-06-29","dev":"tablet","e":"view_item","n":27},{"d":"2026-06-30","dev":"desktop","e":"add_shipping_info","n":3},{"d":"2026-06-30","dev":"desktop","e":"add_to_cart","n":17},{"d":"2026-06-30","dev":"desktop","e":"begin_checkout","n":6},{"d":"2026-06-30","dev":"desktop","e":"view_item","n":1595},{"d":"2026-06-30","dev":"mobile","e":"add_payment_info","n":2},{"d":"2026-06-30","dev":"mobile","e":"add_shipping_info","n":9},{"d":"2026-06-30","dev":"mobile","e":"add_to_cart","n":396},{"d":"2026-06-30","dev":"mobile","e":"begin_checkout","n":29},{"d":"2026-06-30","dev":"mobile","e":"purchase","n":1},{"d":"2026-06-30","dev":"mobile","e":"view_item","n":12654},{"d":"2026-06-30","dev":"tablet","e":"add_to_cart","n":1},{"d":"2026-06-30","dev":"tablet","e":"view_item","n":32},{"d":"2026-07-01","dev":"desktop","e":"add_payment_info","n":1},{"d":"2026-07-01","dev":"desktop","e":"add_shipping_info","n":4},{"d":"2026-07-01","dev":"desktop","e":"add_to_cart","n":19},{"d":"2026-07-01","dev":"desktop","e":"begin_checkout","n":20},{"d":"2026-07-01","dev":"desktop","e":"view_item","n":2289},{"d":"2026-07-01","dev":"mobile","e":"add_payment_info","n":10},{"d":"2026-07-01","dev":"mobile","e":"add_shipping_info","n":20},{"d":"2026-07-01","dev":"mobile","e":"add_to_cart","n":383},{"d":"2026-07-01","dev":"mobile","e":"begin_checkout","n":58},{"d":"2026-07-01","dev":"mobile","e":"purchase","n":4},{"d":"2026-07-01","dev":"mobile","e":"view_item","n":12159},{"d":"2026-07-01","dev":"tablet","e":"view_item","n":20},{"d":"2026-07-02","dev":"desktop","e":"add_payment_info","n":4},{"d":"2026-07-02","dev":"desktop","e":"add_shipping_info","n":5},{"d":"2026-07-02","dev":"desktop","e":"add_to_cart","n":18},{"d":"2026-07-02","dev":"desktop","e":"begin_checkout","n":7},{"d":"2026-07-02","dev":"desktop","e":"view_item","n":1381},{"d":"2026-07-02","dev":"mobile","e":"add_payment_info","n":6},{"d":"2026-07-02","dev":"mobile","e":"add_shipping_info","n":16},{"d":"2026-07-02","dev":"mobile","e":"add_to_cart","n":362},{"d":"2026-07-02","dev":"mobile","e":"begin_checkout","n":24},{"d":"2026-07-02","dev":"mobile","e":"purchase","n":1},{"d":"2026-07-02","dev":"mobile","e":"view_item","n":12550},{"d":"2026-07-02","dev":"tablet","e":"view_item","n":43},{"d":"2026-07-03","dev":"desktop","e":"add_payment_info","n":2},{"d":"2026-07-03","dev":"desktop","e":"add_shipping_info","n":4},{"d":"2026-07-03","dev":"desktop","e":"add_to_cart","n":22},{"d":"2026-07-03","dev":"desktop","e":"begin_checkout","n":15},{"d":"2026-07-03","dev":"desktop","e":"view_item","n":1779},{"d":"2026-07-03","dev":"mobile","e":"add_payment_info","n":4},{"d":"2026-07-03","dev":"mobile","e":"add_shipping_info","n":9},{"d":"2026-07-03","dev":"mobile","e":"add_to_cart","n":389},{"d":"2026-07-03","dev":"mobile","e":"begin_checkout","n":31},{"d":"2026-07-03","dev":"mobile","e":"purchase","n":1},{"d":"2026-07-03","dev":"mobile","e":"view_item","n":13011},{"d":"2026-07-03","dev":"tablet","e":"view_item","n":37},{"d":"2026-07-04","dev":"desktop","e":"add_shipping_info","n":1},{"d":"2026-07-04","dev":"desktop","e":"add_to_cart","n":5},{"d":"2026-07-04","dev":"desktop","e":"begin_checkout","n":3},{"d":"2026-07-04","dev":"desktop","e":"view_item","n":1099},{"d":"2026-07-04","dev":"mobile","e":"add_payment_info","n":10},{"d":"2026-07-04","dev":"mobile","e":"add_shipping_info","n":15},{"d":"2026-07-04","dev":"mobile","e":"add_to_cart","n":378},{"d":"2026-07-04","dev":"mobile","e":"begin_checkout","n":34},{"d":"2026-07-04","dev":"mobile","e":"purchase","n":3},{"d":"2026-07-04","dev":"mobile","e":"view_item","n":12229},{"d":"2026-07-04","dev":"tablet","e":"view_item","n":24},{"d":"2026-07-05","dev":"desktop","e":"add_shipping_info","n":1},{"d":"2026-07-05","dev":"desktop","e":"add_to_cart","n":3},{"d":"2026-07-05","dev":"desktop","e":"begin_checkout","n":2},{"d":"2026-07-05","dev":"desktop","e":"view_item","n":425},{"d":"2026-07-05","dev":"mobile","e":"add_shipping_info","n":9},{"d":"2026-07-05","dev":"mobile","e":"add_to_cart","n":334},{"d":"2026-07-05","dev":"mobile","e":"begin_checkout","n":30},{"d":"2026-07-05","dev":"mobile","e":"view_item","n":13194},{"d":"2026-07-05","dev":"tablet","e":"view_item","n":33},{"d":"2026-07-06","dev":"desktop","e":"add_payment_info","n":2},{"d":"2026-07-06","dev":"desktop","e":"add_shipping_info","n":3},{"d":"2026-07-06","dev":"desktop","e":"add_to_cart","n":2},{"d":"2026-07-06","dev":"desktop","e":"begin_checkout","n":12},{"d":"2026-07-06","dev":"desktop","e":"view_item","n":779},{"d":"2026-07-06","dev":"mobile","e":"add_payment_info","n":1},{"d":"2026-07-06","dev":"mobile","e":"add_shipping_info","n":3},{"d":"2026-07-06","dev":"mobile","e":"add_to_cart","n":389},{"d":"2026-07-06","dev":"mobile","e":"begin_checkout","n":22},{"d":"2026-07-06","dev":"mobile","e":"purchase","n":1},{"d":"2026-07-06","dev":"mobile","e":"view_item","n":11837},{"d":"2026-07-06","dev":"tablet","e":"view_item","n":37},{"d":"2026-07-07","dev":"desktop","e":"add_payment_info","n":6},{"d":"2026-07-07","dev":"desktop","e":"add_shipping_info","n":4},{"d":"2026-07-07","dev":"desktop","e":"add_to_cart","n":16},{"d":"2026-07-07","dev":"desktop","e":"begin_checkout","n":5},{"d":"2026-07-07","dev":"desktop","e":"view_item","n":1031},{"d":"2026-07-07","dev":"mobile","e":"add_payment_info","n":5},{"d":"2026-07-07","dev":"mobile","e":"add_shipping_info","n":9},{"d":"2026-07-07","dev":"mobile","e":"add_to_cart","n":354},{"d":"2026-07-07","dev":"mobile","e":"begin_checkout","n":32},{"d":"2026-07-07","dev":"mobile","e":"purchase","n":1},{"d":"2026-07-07","dev":"mobile","e":"view_item","n":12127},{"d":"2026-07-07","dev":"tablet","e":"begin_checkout","n":2},{"d":"2026-07-07","dev":"tablet","e":"view_item","n":31},{"d":"2026-07-08","dev":"desktop","e":"add_payment_info","n":7},{"d":"2026-07-08","dev":"desktop","e":"add_shipping_info","n":13},{"d":"2026-07-08","dev":"desktop","e":"add_to_cart","n":32},{"d":"2026-07-08","dev":"desktop","e":"begin_checkout","n":33},{"d":"2026-07-08","dev":"desktop","e":"view_item","n":1711},{"d":"2026-07-08","dev":"mobile","e":"add_payment_info","n":7},{"d":"2026-07-08","dev":"mobile","e":"add_shipping_info","n":9},{"d":"2026-07-08","dev":"mobile","e":"add_to_cart","n":356},{"d":"2026-07-08","dev":"mobile","e":"begin_checkout","n":34},{"d":"2026-07-08","dev":"mobile","e":"view_item","n":13009},{"d":"2026-07-08","dev":"tablet","e":"add_to_cart","n":1},{"d":"2026-07-08","dev":"tablet","e":"view_item","n":43},{"d":"2026-07-09","dev":"desktop","e":"add_payment_info","n":1},{"d":"2026-07-09","dev":"desktop","e":"add_shipping_info","n":3},{"d":"2026-07-09","dev":"desktop","e":"add_to_cart","n":14},{"d":"2026-07-09","dev":"desktop","e":"begin_checkout","n":6},{"d":"2026-07-09","dev":"desktop","e":"purchase","n":1},{"d":"2026-07-09","dev":"desktop","e":"view_item","n":2142},{"d":"2026-07-09","dev":"mobile","e":"add_payment_info","n":11},{"d":"2026-07-09","dev":"mobile","e":"add_shipping_info","n":17},{"d":"2026-07-09","dev":"mobile","e":"add_to_cart","n":313},{"d":"2026-07-09","dev":"mobile","e":"begin_checkout","n":45},{"d":"2026-07-09","dev":"mobile","e":"purchase","n":1},{"d":"2026-07-09","dev":"mobile","e":"view_item","n":15082},{"d":"2026-07-09","dev":"tablet","e":"add_to_cart","n":3},{"d":"2026-07-09","dev":"tablet","e":"view_item","n":55},{"d":"2026-07-10","dev":"desktop","e":"add_payment_info","n":4},{"d":"2026-07-10","dev":"desktop","e":"add_shipping_info","n":8},{"d":"2026-07-10","dev":"desktop","e":"add_to_cart","n":52},{"d":"2026-07-10","dev":"desktop","e":"begin_checkout","n":54},{"d":"2026-07-10","dev":"desktop","e":"view_item","n":1352},{"d":"2026-07-10","dev":"mobile","e":"add_payment_info","n":9},{"d":"2026-07-10","dev":"mobile","e":"add_shipping_info","n":14},{"d":"2026-07-10","dev":"mobile","e":"add_to_cart","n":331},{"d":"2026-07-10","dev":"mobile","e":"begin_checkout","n":35},{"d":"2026-07-10","dev":"mobile","e":"view_item","n":14093},{"d":"2026-07-10","dev":"tablet","e":"view_item","n":67},{"d":"2026-07-11","dev":"desktop","e":"add_payment_info","n":3},{"d":"2026-07-11","dev":"desktop","e":"add_shipping_info","n":6},{"d":"2026-07-11","dev":"desktop","e":"add_to_cart","n":16},{"d":"2026-07-11","dev":"desktop","e":"begin_checkout","n":21},{"d":"2026-07-11","dev":"desktop","e":"purchase","n":1},{"d":"2026-07-11","dev":"desktop","e":"view_item","n":1054},{"d":"2026-07-11","dev":"mobile","e":"add_payment_info","n":6},{"d":"2026-07-11","dev":"mobile","e":"add_shipping_info","n":8},{"d":"2026-07-11","dev":"mobile","e":"add_to_cart","n":303},{"d":"2026-07-11","dev":"mobile","e":"begin_checkout","n":18},{"d":"2026-07-11","dev":"mobile","e":"view_item","n":13782},{"d":"2026-07-11","dev":"tablet","e":"add_to_cart","n":2},{"d":"2026-07-11","dev":"tablet","e":"view_item","n":39},{"d":"2026-07-12","dev":"desktop","e":"add_to_cart","n":6},{"d":"2026-07-12","dev":"desktop","e":"begin_checkout","n":1},{"d":"2026-07-12","dev":"desktop","e":"view_item","n":557},{"d":"2026-07-12","dev":"mobile","e":"add_payment_info","n":25},{"d":"2026-07-12","dev":"mobile","e":"add_shipping_info","n":23},{"d":"2026-07-12","dev":"mobile","e":"add_to_cart","n":320},{"d":"2026-07-12","dev":"mobile","e":"begin_checkout","n":43},{"d":"2026-07-12","dev":"mobile","e":"view_item","n":15190},{"d":"2026-07-12","dev":"tablet","e":"view_item","n":26},{"d":"2026-07-13","dev":"desktop","e":"add_payment_info","n":4},{"d":"2026-07-13","dev":"desktop","e":"add_shipping_info","n":16},{"d":"2026-07-13","dev":"desktop","e":"add_to_cart","n":26},{"d":"2026-07-13","dev":"desktop","e":"begin_checkout","n":36},{"d":"2026-07-13","dev":"desktop","e":"view_item","n":5260},{"d":"2026-07-13","dev":"mobile","e":"add_payment_info","n":29},{"d":"2026-07-13","dev":"mobile","e":"add_shipping_info","n":22},{"d":"2026-07-13","dev":"mobile","e":"add_to_cart","n":317},{"d":"2026-07-13","dev":"mobile","e":"begin_checkout","n":46},{"d":"2026-07-13","dev":"mobile","e":"purchase","n":1},{"d":"2026-07-13","dev":"mobile","e":"view_item","n":13617},{"d":"2026-07-13","dev":"tablet","e":"view_item","n":21},{"d":"2026-07-14","dev":"desktop","e":"add_payment_info","n":4},{"d":"2026-07-14","dev":"desktop","e":"add_shipping_info","n":10},{"d":"2026-07-14","dev":"desktop","e":"add_to_cart","n":20},{"d":"2026-07-14","dev":"desktop","e":"begin_checkout","n":21},{"d":"2026-07-14","dev":"desktop","e":"purchase","n":2},{"d":"2026-07-14","dev":"desktop","e":"view_item","n":4418},{"d":"2026-07-14","dev":"mobile","e":"add_payment_info","n":4},{"d":"2026-07-14","dev":"mobile","e":"add_shipping_info","n":9},{"d":"2026-07-14","dev":"mobile","e":"add_to_cart","n":305},{"d":"2026-07-14","dev":"mobile","e":"begin_checkout","n":26},{"d":"2026-07-14","dev":"mobile","e":"view_item","n":13880},{"d":"2026-07-14","dev":"tablet","e":"view_item","n":41},{"d":"2026-07-15","dev":"desktop","e":"add_shipping_info","n":9},{"d":"2026-07-15","dev":"desktop","e":"add_to_cart","n":62},{"d":"2026-07-15","dev":"desktop","e":"begin_checkout","n":83},{"d":"2026-07-15","dev":"desktop","e":"view_item","n":2684},{"d":"2026-07-15","dev":"mobile","e":"add_payment_info","n":24},{"d":"2026-07-15","dev":"mobile","e":"add_shipping_info","n":37},{"d":"2026-07-15","dev":"mobile","e":"add_to_cart","n":341},{"d":"2026-07-15","dev":"mobile","e":"begin_checkout","n":76},{"d":"2026-07-15","dev":"mobile","e":"purchase","n":3},{"d":"2026-07-15","dev":"mobile","e":"view_item","n":14026},{"d":"2026-07-15","dev":"tablet","e":"view_item","n":22},{"d":"2026-07-16","dev":"desktop","e":"add_payment_info","n":15},{"d":"2026-07-16","dev":"desktop","e":"add_shipping_info","n":15},{"d":"2026-07-16","dev":"desktop","e":"add_to_cart","n":25},{"d":"2026-07-16","dev":"desktop","e":"begin_checkout","n":35},{"d":"2026-07-16","dev":"desktop","e":"view_item","n":1797},{"d":"2026-07-16","dev":"mobile","e":"add_payment_info","n":53},{"d":"2026-07-16","dev":"mobile","e":"add_shipping_info","n":56},{"d":"2026-07-16","dev":"mobile","e":"add_to_cart","n":380},{"d":"2026-07-16","dev":"mobile","e":"begin_checkout","n":89},{"d":"2026-07-16","dev":"mobile","e":"purchase","n":2},{"d":"2026-07-16","dev":"mobile","e":"view_item","n":14373},{"d":"2026-07-16","dev":"tablet","e":"view_item","n":22},{"d":"2026-07-17","dev":"desktop","e":"add_payment_info","n":7},{"d":"2026-07-17","dev":"desktop","e":"add_shipping_info","n":9},{"d":"2026-07-17","dev":"desktop","e":"add_to_cart","n":47},{"d":"2026-07-17","dev":"desktop","e":"begin_checkout","n":22},{"d":"2026-07-17","dev":"desktop","e":"purchase","n":1},{"d":"2026-07-17","dev":"desktop","e":"view_item","n":1596},{"d":"2026-07-17","dev":"mobile","e":"add_payment_info","n":23},{"d":"2026-07-17","dev":"mobile","e":"add_shipping_info","n":81},{"d":"2026-07-17","dev":"mobile","e":"add_to_cart","n":439},{"d":"2026-07-17","dev":"mobile","e":"begin_checkout","n":95},{"d":"2026-07-17","dev":"mobile","e":"purchase","n":1},{"d":"2026-07-17","dev":"mobile","e":"view_item","n":15430},{"d":"2026-07-17","dev":"tablet","e":"view_item","n":32},{"d":"2026-07-18","dev":"desktop","e":"add_payment_info","n":2},{"d":"2026-07-18","dev":"desktop","e":"add_shipping_info","n":8},{"d":"2026-07-18","dev":"desktop","e":"add_to_cart","n":15},{"d":"2026-07-18","dev":"desktop","e":"begin_checkout","n":20},{"d":"2026-07-18","dev":"desktop","e":"view_item","n":1168},{"d":"2026-07-18","dev":"mobile","e":"add_payment_info","n":5},{"d":"2026-07-18","dev":"mobile","e":"add_shipping_info","n":16},{"d":"2026-07-18","dev":"mobile","e":"add_to_cart","n":385},{"d":"2026-07-18","dev":"mobile","e":"begin_checkout","n":38},{"d":"2026-07-18","dev":"mobile","e":"view_item","n":14863},{"d":"2026-07-18","dev":"tablet","e":"view_item","n":17},{"d":"2026-07-19","dev":"desktop","e":"add_payment_info","n":4},{"d":"2026-07-19","dev":"desktop","e":"add_shipping_info","n":4},{"d":"2026-07-19","dev":"desktop","e":"add_to_cart","n":10},{"d":"2026-07-19","dev":"desktop","e":"begin_checkout","n":7},{"d":"2026-07-19","dev":"desktop","e":"view_item","n":608},{"d":"2026-07-19","dev":"mobile","e":"add_payment_info","n":4},{"d":"2026-07-19","dev":"mobile","e":"add_shipping_info","n":20},{"d":"2026-07-19","dev":"mobile","e":"add_to_cart","n":424},{"d":"2026-07-19","dev":"mobile","e":"begin_checkout","n":45},{"d":"2026-07-19","dev":"mobile","e":"purchase","n":2},{"d":"2026-07-19","dev":"mobile","e":"view_item","n":16800},{"d":"2026-07-19","dev":"tablet","e":"view_item","n":27},{"d":"2026-07-20","dev":"desktop","e":"add_payment_info","n":4},{"d":"2026-07-20","dev":"desktop","e":"add_shipping_info","n":10},{"d":"2026-07-20","dev":"desktop","e":"add_to_cart","n":16},{"d":"2026-07-20","dev":"desktop","e":"begin_checkout","n":15},{"d":"2026-07-20","dev":"desktop","e":"purchase","n":2},{"d":"2026-07-20","dev":"desktop","e":"view_item","n":1161},{"d":"2026-07-20","dev":"mobile","e":"add_payment_info","n":9},{"d":"2026-07-20","dev":"mobile","e":"add_shipping_info","n":17},{"d":"2026-07-20","dev":"mobile","e":"add_to_cart","n":410},{"d":"2026-07-20","dev":"mobile","e":"begin_checkout","n":37},{"d":"2026-07-20","dev":"mobile","e":"purchase","n":3},{"d":"2026-07-20","dev":"mobile","e":"view_item","n":15041},{"d":"2026-07-20","dev":"tablet","e":"view_item","n":33},{"d":"2026-07-21","dev":"desktop","e":"add_payment_info","n":3},{"d":"2026-07-21","dev":"desktop","e":"add_shipping_info","n":5},{"d":"2026-07-21","dev":"desktop","e":"add_to_cart","n":13},{"d":"2026-07-21","dev":"desktop","e":"begin_checkout","n":8},{"d":"2026-07-21","dev":"desktop","e":"purchase","n":1},{"d":"2026-07-21","dev":"desktop","e":"view_item","n":1718},{"d":"2026-07-21","dev":"mobile","e":"add_payment_info","n":5},{"d":"2026-07-21","dev":"mobile","e":"add_shipping_info","n":12},{"d":"2026-07-21","dev":"mobile","e":"add_to_cart","n":438},{"d":"2026-07-21","dev":"mobile","e":"begin_checkout","n":35},{"d":"2026-07-21","dev":"mobile","e":"purchase","n":1},{"d":"2026-07-21","dev":"mobile","e":"view_item","n":14844},{"d":"2026-07-21","dev":"tablet","e":"view_item","n":42},{"d":"2026-07-22","dev":"desktop","e":"add_to_cart","n":6},{"d":"2026-07-22","dev":"desktop","e":"begin_checkout","n":1},{"d":"2026-07-22","dev":"desktop","e":"view_item","n":1494},{"d":"2026-07-22","dev":"mobile","e":"add_payment_info","n":3},{"d":"2026-07-22","dev":"mobile","e":"add_shipping_info","n":6},{"d":"2026-07-22","dev":"mobile","e":"add_to_cart","n":382},{"d":"2026-07-22","dev":"mobile","e":"begin_checkout","n":33},{"d":"2026-07-22","dev":"mobile","e":"purchase","n":2},{"d":"2026-07-22","dev":"mobile","e":"view_item","n":15958},{"d":"2026-07-22","dev":"tablet","e":"view_item","n":22},{"d":"2026-07-23","dev":"desktop","e":"add_payment_info","n":2},{"d":"2026-07-23","dev":"desktop","e":"add_shipping_info","n":3},{"d":"2026-07-23","dev":"desktop","e":"add_to_cart","n":9},{"d":"2026-07-23","dev":"desktop","e":"begin_checkout","n":12},{"d":"2026-07-23","dev":"desktop","e":"view_item","n":2172},{"d":"2026-07-23","dev":"mobile","e":"add_payment_info","n":5},{"d":"2026-07-23","dev":"mobile","e":"add_shipping_info","n":5},{"d":"2026-07-23","dev":"mobile","e":"add_to_cart","n":344},{"d":"2026-07-23","dev":"mobile","e":"begin_checkout","n":24},{"d":"2026-07-23","dev":"mobile","e":"purchase","n":1},{"d":"2026-07-23","dev":"mobile","e":"view_item","n":14623},{"d":"2026-07-23","dev":"tablet","e":"view_item","n":46},{"d":"2026-07-24","dev":"desktop","e":"add_payment_info","n":3},{"d":"2026-07-24","dev":"desktop","e":"add_shipping_info","n":7},{"d":"2026-07-24","dev":"desktop","e":"add_to_cart","n":11},{"d":"2026-07-24","dev":"desktop","e":"begin_checkout","n":10},{"d":"2026-07-24","dev":"desktop","e":"purchase","n":1},{"d":"2026-07-24","dev":"desktop","e":"view_item","n":1100},{"d":"2026-07-24","dev":"mobile","e":"add_payment_info","n":13},{"d":"2026-07-24","dev":"mobile","e":"add_shipping_info","n":33},{"d":"2026-07-24","dev":"mobile","e":"add_to_cart","n":406},{"d":"2026-07-24","dev":"mobile","e":"begin_checkout","n":86},{"d":"2026-07-24","dev":"mobile","e":"purchase","n":2},{"d":"2026-07-24","dev":"mobile","e":"view_item","n":15410},{"d":"2026-07-24","dev":"tablet","e":"add_to_cart","n":6},{"d":"2026-07-24","dev":"tablet","e":"view_item","n":63},{"d":"2026-07-25","dev":"desktop","e":"add_payment_info","n":2},{"d":"2026-07-25","dev":"desktop","e":"add_shipping_info","n":2},{"d":"2026-07-25","dev":"desktop","e":"add_to_cart","n":11},{"d":"2026-07-25","dev":"desktop","e":"begin_checkout","n":7},{"d":"2026-07-25","dev":"desktop","e":"view_item","n":2052},{"d":"2026-07-25","dev":"mobile","e":"add_payment_info","n":14},{"d":"2026-07-25","dev":"mobile","e":"add_shipping_info","n":21},{"d":"2026-07-25","dev":"mobile","e":"add_to_cart","n":362},{"d":"2026-07-25","dev":"mobile","e":"begin_checkout","n":51},{"d":"2026-07-25","dev":"mobile","e":"purchase","n":2},{"d":"2026-07-25","dev":"mobile","e":"view_item","n":15398},{"d":"2026-07-25","dev":"tablet","e":"view_item","n":35},{"d":"2026-07-26","dev":"desktop","e":"add_payment_info","n":1},{"d":"2026-07-26","dev":"desktop","e":"add_shipping_info","n":11},{"d":"2026-07-26","dev":"desktop","e":"add_to_cart","n":15},{"d":"2026-07-26","dev":"desktop","e":"begin_checkout","n":22},{"d":"2026-07-26","dev":"desktop","e":"purchase","n":1},{"d":"2026-07-26","dev":"desktop","e":"view_item","n":729},{"d":"2026-07-26","dev":"mobile","e":"add_payment_info","n":15},{"d":"2026-07-26","dev":"mobile","e":"add_shipping_info","n":17},{"d":"2026-07-26","dev":"mobile","e":"add_to_cart","n":396},{"d":"2026-07-26","dev":"mobile","e":"begin_checkout","n":41},{"d":"2026-07-26","dev":"mobile","e":"purchase","n":2},{"d":"2026-07-26","dev":"mobile","e":"view_item","n":16855},{"d":"2026-07-26","dev":"tablet","e":"view_item","n":40},{"d":"2026-07-27","dev":"desktop","e":"add_payment_info","n":6},{"d":"2026-07-27","dev":"desktop","e":"add_shipping_info","n":11},{"d":"2026-07-27","dev":"desktop","e":"add_to_cart","n":30},{"d":"2026-07-27","dev":"desktop","e":"begin_checkout","n":25},{"d":"2026-07-27","dev":"desktop","e":"view_item","n":3750},{"d":"2026-07-27","dev":"mobile","e":"add_payment_info","n":13},{"d":"2026-07-27","dev":"mobile","e":"add_shipping_info","n":20},{"d":"2026-07-27","dev":"mobile","e":"add_to_cart","n":384},{"d":"2026-07-27","dev":"mobile","e":"begin_checkout","n":44},{"d":"2026-07-27","dev":"mobile","e":"purchase","n":2},{"d":"2026-07-27","dev":"mobile","e":"view_item","n":15551},{"d":"2026-07-27","dev":"tablet","e":"view_item","n":59}],"clarity":[{"d":"2026-07-12","dev":"desktop","rage":0,"dead":7,"scroll":37.48},{"d":"2026-07-12","dev":"mobile","rage":608,"dead":1689,"scroll":25.76},{"d":"2026-07-12","dev":"tablet","rage":0,"dead":0,"scroll":42.81},{"d":"2026-07-13","dev":"desktop","rage":3,"dead":51,"scroll":39.81},{"d":"2026-07-13","dev":"mobile","rage":853,"dead":1821,"scroll":25.63},{"d":"2026-07-13","dev":"tablet","rage":0,"dead":1,"scroll":44.69},{"d":"2026-07-14","dev":"desktop","rage":1,"dead":44,"scroll":37.38},{"d":"2026-07-14","dev":"mobile","rage":246,"dead":1042,"scroll":25.74},{"d":"2026-07-14","dev":"tablet","rage":0,"dead":0,"scroll":36.91},{"d":"2026-07-15","dev":"desktop","rage":8,"dead":49,"scroll":41.2},{"d":"2026-07-15","dev":"mobile","rage":283,"dead":1538,"scroll":26.79},{"d":"2026-07-15","dev":"tablet","rage":0,"dead":0,"scroll":28.08},{"d":"2026-07-16","dev":"desktop","rage":6,"dead":43,"scroll":37.79},{"d":"2026-07-16","dev":"mobile","rage":565,"dead":1691,"scroll":26.93},{"d":"2026-07-16","dev":"tablet","rage":0,"dead":0,"scroll":38.7},{"d":"2026-07-17","dev":"desktop","rage":12,"dead":74,"scroll":41.04},{"d":"2026-07-17","dev":"mobile","rage":863,"dead":1902,"scroll":25.93},{"d":"2026-07-17","dev":"tablet","rage":0,"dead":1,"scroll":39.82},{"d":"2026-07-18","dev":"desktop","rage":4,"dead":45,"scroll":39.67},{"d":"2026-07-18","dev":"mobile","rage":148,"dead":1135,"scroll":25.98},{"d":"2026-07-18","dev":"tablet","rage":0,"dead":0,"scroll":38.67},{"d":"2026-07-19","dev":"desktop","rage":1,"dead":16,"scroll":37.72},{"d":"2026-07-19","dev":"mobile","rage":495,"dead":1594,"scroll":26.58},{"d":"2026-07-19","dev":"tablet","rage":0,"dead":0,"scroll":33.74},{"d":"2026-07-20","dev":"desktop","rage":0,"dead":28,"scroll":39.26},{"d":"2026-07-20","dev":"mobile","rage":176,"dead":982,"scroll":25.07},{"d":"2026-07-20","dev":"tablet","rage":0,"dead":0,"scroll":37.02},{"d":"2026-07-21","dev":"desktop","rage":0,"dead":49,"scroll":39.93},{"d":"2026-07-21","dev":"mobile","rage":350,"dead":1314,"scroll":25.33},{"d":"2026-07-21","dev":"tablet","rage":0,"dead":0,"scroll":37.83},{"d":"2026-07-22","dev":"desktop","rage":7,"dead":35,"scroll":38.26},{"d":"2026-07-22","dev":"mobile","rage":232,"dead":1378,"scroll":24.98},{"d":"2026-07-22","dev":"tablet","rage":0,"dead":0,"scroll":39.49},{"d":"2026-07-23","dev":"desktop","rage":0,"dead":13,"scroll":38.37},{"d":"2026-07-23","dev":"mobile","rage":305,"dead":1108,"scroll":25.45},{"d":"2026-07-23","dev":"tablet","rage":0,"dead":2,"scroll":31.6},{"d":"2026-07-24","dev":"desktop","rage":0,"dead":16,"scroll":37.58},{"d":"2026-07-24","dev":"mobile","rage":173,"dead":958,"scroll":25.31},{"d":"2026-07-24","dev":"tablet","rage":0,"dead":3,"scroll":39.73},{"d":"2026-07-25","dev":"desktop","rage":5,"dead":39,"scroll":39.58},{"d":"2026-07-25","dev":"mobile","rage":439,"dead":1378,"scroll":25.79},{"d":"2026-07-25","dev":"tablet","rage":0,"dead":0,"scroll":25.7},{"d":"2026-07-26","dev":"desktop","rage":1,"dead":33,"scroll":40.98},{"d":"2026-07-26","dev":"mobile","rage":270,"dead":1136,"scroll":26.24},{"d":"2026-07-26","dev":"tablet","rage":0,"dead":0,"scroll":39.36},{"d":"2026-07-27","dev":"desktop","rage":4,"dead":40,"scroll":39.67},{"d":"2026-07-27","dev":"mobile","rage":302,"dead":1105,"scroll":26.16},{"d":"2026-07-27","dev":"tablet","rage":0,"dead":0,"scroll":25.33}]};
+const SNAP = {"schema_version":"1.0","run":{"id":"run-004","generated_at":"2026-07-27","window":{"start":"2026-07-19","end":"2026-07-25","days":7,"cutoff_rule":"T-2"},"scope":"Online storefront only. ERP/store orders and Shopify native session analytics excluded (headless).","previous_run":"run-003","report_file":"reports/2026-07-27_run-004.html"},"sources":{"ga4":{"property_id":"478308692","measurement_id":"G-K6H0NZ4YJ8","gtm":"GTM-MKZBJB8M","bot_filtered":false},"clarity":{"project_id":"ro0m9zh071","bot_filtered":true},"shopify":{"domain":"luciraonline.myshopify.com","plan":"Advanced","currency":"INR","headless":true},"google_ads":{"manager":"1034627191","account":"2348623547","currency":"INR","ads_gtag":"AW-16876673916"}},"commerce_30d":{"note":"30-day context window 2026-06-27 to 2026-07-27. Order segmentation is the authoritative baseline.","orders_total":211,"revenue_total_inr":7990873.26,"segments":{"erp_store":{"orders":127,"revenue_inr":5849604,"aov_inr":46060,"source_name":"283870494721","app":"OrnaVerse ERP","tag_prefixes":["HO-LJ-","PV1-LJ-","PN1-LJ-","BO1-LJ-","FCS-LJ-","N18-LJ-"],"include_in_cro":false,"reason":"Physical store / offline orders written back via ERP. Not attributable to website conversion."},"online_headless":{"orders":64,"revenue_inr":1637951,"aov_inr":25593,"source_name":"307193511937","app":"Shopify Admin API","tag_markers":["Razorpay","Partial COD","nector_redeem"],"include_in_cro":true,"ga4_trackable":true},"salesperson_assisted":{"orders":22,"revenue_inr":538147,"aov_inr":24461,"source_name":"shopify_draft_order","app":"Draft Orders","include_in_cro":true,"ga4_trackable":false,"reason":"Counted as online sales by the business, but GA4 tag does not fire on backend-created orders."}},"online_combined":{"orders":84,"revenue_inr":2141269,"aov_inr":25491,"overlap_orders_deduped":2}},"funnel_7d":{"steps":["view_item","add_to_cart","begin_checkout","add_shipping_info","add_payment_info","purchase"],"totals":{"view_item":58734,"add_to_cart":1876,"begin_checkout":165,"add_shipping_info":75,"add_payment_info":45,"purchase":14},"by_device":{"mobile":{"view_item":53597,"add_to_cart":1818,"begin_checkout":144,"add_shipping_info":61,"add_payment_info":35,"purchase":13},"desktop":{"view_item":5178,"add_to_cart":57,"begin_checkout":21,"add_shipping_info":14,"add_payment_info":10,"purchase":1},"tablet":{"view_item":130,"add_to_cart":1,"begin_checkout":0,"add_shipping_info":0,"add_payment_info":0,"purchase":0}},"step_completion_rate_pct":{"mobile":{"view_to_atc":3.39,"atc_to_checkout":7.92,"checkout_to_shipping":42.36,"shipping_to_payment":57.38,"payment_to_purchase":37.14,"end_to_end":0.024},"desktop":{"view_to_atc":1.10,"atc_to_checkout":36.84,"checkout_to_shipping":66.67,"shipping_to_payment":71.43,"payment_to_purchase":10.00,"end_to_end":0.019},"tablet":{"view_to_atc":0.77,"atc_to_checkout":0.00}},"ga4_capture_rate":{"ga4_purchases":14,"real_razorpay_orders_same_week":18,"capture_pct":78}},"cart_cliff_7d":{"mobile":{"cart_page_users":1964,"began_checkout":144,"progression_pct":7.3,"bounce_pct":2.8,"avg_engagement_s":27.5,"scroll_depth_pct":80.9,"rage_clicks":538,"dead_clicks":2545},"desktop":{"cart_page_users":68,"began_checkout":21,"progression_pct":30.9,"bounce_pct":7.8,"avg_engagement_s":35.5,"rage_clicks":0,"dead_clicks":5},"gap_multiple":4.2,"interpretation":"Low bounce + high scroll + high rage clicks = users are stuck, not leaving. Mobile-specific overlay failure."},"sessions_7d":{"total":101494,"by_device":{"mobile":{"sessions":93002,"users":73628,"bounce_pct":44.85,"engagement_rate_pct":55.15,"avg_session_duration_s":114.12,"ga4_conversions":127,"ga4_revenue_inr":96887},"desktop":{"sessions":8238,"users":6300,"bounce_pct":36.65,"engagement_rate_pct":63.35,"avg_session_duration_s":208.12,"ga4_conversions":35,"ga4_revenue_inr":11528},"tablet":{"sessions":254,"users":212,"bounce_pct":53.94,"engagement_rate_pct":46.06,"avg_session_duration_s":84.84,"ga4_conversions":0,"ga4_revenue_inr":0}},"bot_share_pct_clarity":34.4},"pages_7d":{"metric_definitions":{"avg_engagement_s":"GA4 userEngagementDuration / activeUsers","bounce_pct":"GA4 bounceRate (session-scoped; unreliable on mid-funnel pages)","scroll_depth_pct":"Clarity average scroll depth, bot-filtered","lcp_ms":"Clarity median LCP"},"mobile":[{"path":"/","type":"home","views":10076,"users":5656,"avg_engagement_s":23.8,"bounce_pct":44.8,"scroll_depth_pct":27.8,"lcp_ms":3796,"rage_clicks":23,"dead_clicks":86},{"path":"/collections/eterna","type":"plp","views":7220,"users":4037,"avg_engagement_s":35.8,"bounce_pct":37.7,"scroll_depth_pct":27.66,"lcp_ms":2872,"rage_clicks":120,"dead_clicks":510},{"path":"/checkout/cart","type":"cart","views":3284,"users":1964,"avg_engagement_s":27.5,"bounce_pct":2.8,"scroll_depth_pct":80.9,"lcp_ms":3568,"rage_clicks":538,"dead_clicks":2545},{"path":"/products/corinthian-pave-diamond-mens-ring","type":"pdp","views":2938,"users":2289,"avg_engagement_s":19.3,"bounce_pct":34.6,"scroll_depth_pct":18.26,"lcp_ms":3392},{"path":"/products/paramount-pave-diamond-mens-ring","type":"pdp","views":2721,"users":2113,"avg_engagement_s":16.2,"bounce_pct":36.4,"scroll_depth_pct":21.45,"lcp_ms":4200,"dead_clicks":93},{"path":"/schemes","type":"other","views":2669,"users":2010,"avg_engagement_s":23.8,"bounce_pct":54.3,"scroll_depth_pct":27.01,"lcp_ms":2464,"rage_clicks":135,"dead_clicks":334},{"path":"/products/mens-classic-solitaire-engagement-ring","type":"pdp","views":2210,"users":1614,"avg_engagement_s":20.5,"bounce_pct":35.7,"scroll_depth_pct":20.96,"lcp_ms":3432},{"path":"/products/men-s-bezel-set-solitaire-lab-grown-diamond-ring","type":"pdp","views":2165,"users":1739,"avg_engagement_s":12.4,"bounce_pct":41.0,"scroll_depth_pct":19.64,"lcp_ms":5072},{"path":"/products/gemstone-and-diamond-chandelier-earrings","type":"pdp","views":2001,"users":747,"avg_engagement_s":44.3,"bounce_pct":29.0,"dead_clicks":82},{"path":"/collections/all-earrings","type":"plp","views":1843,"users":975,"avg_engagement_s":14.1,"bounce_pct":61.0,"scroll_depth_pct":25.73,"lcp_ms":3596},{"path":"/products/four-prong-round-solitaire-ring-7-50mm","type":"pdp","views":1743,"users":1285,"avg_engagement_s":22.2,"bounce_pct":36.7,"scroll_depth_pct":18.85,"lcp_ms":3680},{"path":"/collections/bestsellers","type":"plp","views":1347,"users":939,"avg_engagement_s":26.8,"bounce_pct":52.4},{"path":"/collections/jewelry","type":"plp","views":1345,"users":830,"avg_engagement_s":39.8,"bounce_pct":20.3},{"path":"/collections/all-rings","type":"plp","views":1314,"users":728,"avg_engagement_s":10.7,"bounce_pct":65.4},{"path":"/collections/gifts-for-her","type":"plp","views":1070,"users":716,"avg_engagement_s":11.1,"bounce_pct":58.4},{"path":"/collections/rings","type":"plp","views":962,"users":478,"avg_engagement_s":53.4,"bounce_pct":12.7},{"path":"/search","type":"search","views":885,"users":375,"avg_engagement_s":57.0,"bounce_pct":5.2},{"path":"/checkout/shipping","type":"shipping","views":276,"users":149,"avg_engagement_s":65.3,"bounce_pct":3.4,"rage_clicks":0,"dead_clicks":95},{"path":"/checkout/payment","type":"payment","views":119,"users":63,"avg_engagement_s":28.3,"bounce_pct":1.3,"rage_clicks":0,"dead_clicks":60},{"path":"/products/box-gold-neck-chain","type":"pdp","views":1604,"users":1313,"avg_engagement_s":15.9,"bounce_pct":41.6,"scroll_depth_pct":18.32},{"path":"/products/princess-cut-diamond-mens-classic-ring","type":"pdp","views":1662,"users":1150,"avg_engagement_s":26.8,"bounce_pct":28.0,"scroll_depth_pct":18.59}],"desktop":[{"path":"/","type":"home","views":1740,"users":716,"avg_engagement_s":49.3,"bounce_pct":28.4,"rage_clicks":0,"dead_clicks":9},{"path":"/search","type":"search","views":1275,"users":113,"avg_engagement_s":152.4,"bounce_pct":13.5,"dead_clicks":5},{"path":"/collections/rings","type":"plp","views":427,"users":149,"avg_engagement_s":97.1,"bounce_pct":16.8},{"path":"/collections/eterna","type":"plp","views":255,"users":177,"avg_engagement_s":23.3,"bounce_pct":41.6},{"path":"/collections/9kt-collection","type":"plp","views":180,"users":54,"avg_engagement_s":111.8,"bounce_pct":5.4},{"path":"/checkout/cart","type":"cart","views":176,"users":68,"avg_engagement_s":35.5,"bounce_pct":7.8,"rage_clicks":0,"dead_clicks":5},{"path":"/collections/bestsellers","type":"plp","views":160,"users":97,"avg_engagement_s":77.0,"bounce_pct":10.5},{"path":"/build-your-jewelry","type":"other","views":159,"users":57,"avg_engagement_s":36.5,"bounce_pct":6.9,"rage_clicks":1,"dead_clicks":17},{"path":"/collections/earrings","type":"plp","views":153,"users":73,"avg_engagement_s":79.4,"bounce_pct":16.8},{"path":"/collections/jewelry","type":"plp","views":137,"users":77,"avg_engagement_s":52.6,"bounce_pct":10.7},{"path":"/products/bellara-round-diamond-ring","type":"pdp","views":121,"users":114,"avg_engagement_s":8.3,"bounce_pct":30.8},{"path":"/schemes","type":"other","views":109,"users":68,"avg_engagement_s":52.9,"bounce_pct":20.9},{"path":"/products/paramount-pave-diamond-mens-ring","type":"pdp","views":99,"users":64,"avg_engagement_s":67.1,"bounce_pct":30.0},{"path":"/products/1-06-ct-classic-round-diamond-tennis-bracelet","type":"pdp","views":97,"users":68,"avg_engagement_s":46.8,"bounce_pct":28.1},{"path":"/collections/rings-for-men","type":"plp","views":95,"users":20,"avg_engagement_s":125.7,"bounce_pct":0.0},{"path":"/checkout/shipping","type":"shipping","views":56,"users":26,"avg_engagement_s":40.5,"bounce_pct":7.9},{"path":"/checkout/payment","type":"payment","views":32,"users":17,"avg_engagement_s":37.1,"bounce_pct":0.0,"dead_clicks":6},{"path":"/pages/contact-us","type":"other","views":null,"rage_clicks":3,"dead_clicks":13},{"path":"/pages/size-guide-1","type":"other","views":null,"rage_clicks":5,"dead_clicks":11}],"tablet":[{"path":"/checkout/cart","type":"cart","views":6,"users":1,"avg_engagement_s":103,"bounce_pct":0}]},"clarity_7d":{"device_totals":{"mobile":{"rage_clicks":2170,"dead_clicks":8714,"scroll_depth_pct":26.21},"desktop":{"rage_clicks":13,"dead_clicks":196,"scroll_depth_pct":40.07},"tablet":{"rage_clicks":0,"dead_clicks":5,"scroll_depth_pct":31.57}},"rage_click_by_element_sitewide":[{"text":"Register to Win a Reward","weight":139875,"identified_as":"NitroCommerce spin-wheel popup"},{"text":"(blank)","weight":75850,"identified_as":"Overlay backdrop"},{"text":"Spin the Wheel","weight":43762,"identified_as":"Popup CTA"},{"text":"Something went wrong!Try","weight":31595,"identified_as":"Error state — page not yet attributed"},{"text":"WELCOME TO LUCIRAWelcome","weight":24646,"identified_as":"Login / OTP modal"},{"text":"+91","weight":16109,"identified_as":"Phone country code field"},{"text":"Love, Joy \u0026 Comfort.Conta","weight":12310},{"text":"Adjust your monthly premi","weight":6973,"identified_as":"/schemes premium slider"},{"text":"Your cart is emptyLooks l","weight":6415,"identified_as":"Empty cart state"},{"text":"New user? Register","weight":5001}],"rage_click_by_element_cart":[{"text":"WELCOME TO LUCIRAWelcome","weight":16483},{"text":"(blank)","weight":14556},{"text":"Your cart is emptyLooks l","weight":6415},{"text":"Subtotal INR 2,84,917 Savings","weight":4950},{"text":"Cart1/3","weight":4654},{"text":"Cart Offer Banner","weight":3269},{"text":"lucira jewelry logo","weight":2826},{"text":"100% Secured \u0026 Spam Free","weight":1835},{"text":"REQUEST OTP","weight":1201},{"text":"Insurance","weight":995}],"element_weight_caveat":"Clicked-text weights aggregate on a different basis than per-page click totals. Use as ranking, not counts.","javascript_errors":[{"message":"undefined is not an object (evaluating \u0027window.webkit.messageHandlers\u0027)","sessions":817,"signature":"iOS in-app WebView (Meta)"},{"message":"Script error.","sessions":809},{"message":"Error invoking postMessage: Java object is gone","sessions":694,"signature":"Android in-app WebView (Meta)"},{"message":"Error invoking enableDidUserTypeOnKeyboardLogging: Java object is gone","sessions":143},{"message":"Error invoking enableButtonsClickedMetaDataLogging: Java object is gone","sessions":61},{"message":"document.documentElement.requestFullscreen is not a function","sessions":15},{"message":"Failed to execute \u0027postMessage\u0027 on \u0027Window\u0027: HTMLIFrameElement object could not be cloned.","sessions":12},{"message":"product_image is not defined","sessions":8}]},"performance_7d":{"lcp_median_ms":{"desktop":2148,"tablet":2968,"mobile":3792},"lcp_mean_ms_discarded":{"desktop":73465.17,"mobile":6532.34,"tablet":5830.58,"reason":"Outlier-corrupted; medians used instead."},"cls_avg":{"desktop":0.113,"mobile":0.095,"tablet":0.081,"caveat":"Clarity returned these scaled (112.96/94.68/80.77); unit scaling ambiguous. Indicative only."},"lcp_median_by_page_mobile_ms":{"/products/men-s-bezel-set-solitaire-lab-grown-diamond-ring":5072,"/products/paramount-pave-diamond-mens-ring":4200,"/":3796,"/products/four-prong-round-solitaire-ring-7-50mm":3680,"/collections/all-earrings":3596,"/checkout/cart":3568,"/products/mens-classic-solitaire-engagement-ring":3432,"/products/corinthian-pave-diamond-mens-ring":3392,"/collections/eterna":2872,"/schemes":2464},"thresholds":{"lcp_good_ms":2500,"lcp_poor_ms":4000,"cls_good":0.1,"cls_poor":0.25}},"traffic_quality_7d":{"root_cause_finding":"Bounce differences between landing pages are driven by channel, not page template. Paid Social bounces 62-100% on every page it touches, including pages that perform well from other channels.","landing_page_by_channel":[{"landing_page":"/collections/rings","channel":"Organic Search","sessions":18,"bounce_pct":33.3,"avg_duration_s":582.3},{"landing_page":"/collections/rings","channel":"Paid Shopping","sessions":7,"bounce_pct":14.3,"avg_duration_s":761.8},{"landing_page":"/collections/rings","channel":"Cross-network","sessions":137,"bounce_pct":44.5,"avg_duration_s":122.4},{"landing_page":"/collections/rings","channel":"Direct","sessions":11,"bounce_pct":27.3,"avg_duration_s":80.3},{"landing_page":"/collections/rings","channel":"Paid Social","sessions":10,"bounce_pct":100.0,"avg_duration_s":5.8},{"landing_page":"/collections/jewelry","channel":"Organic Search","sessions":25,"bounce_pct":32.0,"avg_duration_s":469.9},{"landing_page":"/collections/jewelry","channel":"Paid Social","sessions":125,"bounce_pct":64.8,"avg_duration_s":59.6},{"landing_page":"/collections/jewelry","channel":"Unassigned","sessions":133,"bounce_pct":50.4,"avg_duration_s":161.3},{"landing_page":"/collections/all-rings","channel":"Paid Social","sessions":1032,"bounce_pct":66.1,"avg_duration_s":46.6},{"landing_page":"/collections/all-rings","channel":"Organic Social","sessions":95,"bounce_pct":72.6,"avg_duration_s":19.8},{"landing_page":"/collections/all-earrings","channel":"Paid Social","sessions":787,"bounce_pct":61.6,"avg_duration_s":48.1},{"landing_page":"/collections/all-earrings","channel":"Organic Social","sessions":773,"bounce_pct":62.0,"avg_duration_s":48.6}],"collection_template_diff":{"verdict":"identical","/collections/rings":{"doc_height_px":12673,"folds":15.6,"product_cards":26,"first_card_top_px":392,"controls":["Sort","Filter"],"images":130},"/collections/all-rings":{"doc_height_px":11479,"folds":14.1,"product_cards":26,"first_card_top_px":392,"controls":["Sort","Filter"],"images":118}}},"fold_analysis":{"measured_at":"2026-07-27","viewport":{"width":375,"height":812},"page":"/products/corinthian-pave-diamond-mens-ring","doc_height_px":15804,"screens_tall":19.5,"avg_scroll_depth_pct":18.26,"avg_scroll_reach_px":2886,"page_never_seen_pct":81.7,"elements":[{"label":"Add to Cart","top_px":-51,"position":"sticky","seen_by_avg_user":true},{"label":"Price (INR 44,560)","top_px":-42,"position":"sticky","seen_by_avg_user":true},{"label":"Try at Home","top_px":160,"pct_down":1.0,"seen_by_avg_user":true},{"label":"Fast Shipping","top_px":181,"pct_down":1.1,"seen_by_avg_user":true},{"label":"Size Guide","top_px":962,"pct_down":6.1,"seen_by_avg_user":true},{"label":"Certification","top_px":1511,"pct_down":9.6,"seen_by_avg_user":true},{"label":"Lifetime exchange / 100% value guarantee","top_px":1511,"pct_down":9.6,"seen_by_avg_user":true},{"label":"Product Details","top_px":2521,"pct_down":16.0,"seen_by_avg_user":true},{"label":"Customer Reviews","top_px":6536,"pct_down":41.4,"fold":8.05,"seen_by_avg_user":false}],"caveat":"One PDP measured directly. Scroll depth clusters at 18-21% across all 12 top PDPs, suggesting the template generalises."},"third_party_scripts":{"note":"Confirmed live on cart page 2026-07-27.","popup_marketing":["x.nitrocommerce.ai/nitro-popup-sdk.js","ssl.widgets.webengage.com"],"chat":["salesiq.zohopublic.in"],"chat_zindex":2147483647,"chat_risk":"Max z-index on a 375px viewport — verify no overlap with sticky Add-to-Cart bar.","analytics_and_ads":["scripts.clarity.ms","googletagmanager.com","connect.facebook.net","dynamic.criteo.com","tags.creativecdn.com","c.webengage.com"]},"tracking_issues":{"ga4_under_count":{"status":"open","detail":"GA4 recorded 14 purchases vs 18 real Razorpay orders in the 7-day window (78% capture). Over 30 days: 42 vs ~64 trackable (66%).","likely_causes":["Consent mode defaults","Ad blockers","iOS ITP","In-app WebView failures"],"blocked_on":"read_pixels scope not granted — cannot inspect Web Pixel config via API."},"google_ads_over_count":{"status":"open","detail":"Campaign \u0027conversions\u0027 blends multiple counted actions, inflating totals ~7x vs real orders.","misconfigured_actions":[{"name":"Begin Checkout","category":"BEGIN_CHECKOUT","include_in_conversions_metric":true,"should_be":false},{"name":"Offline Purchase","type":"UPLOAD_CLICKS","include_in_conversions_metric":true,"note":"May be intentional for O2O attribution — confirm with team."},{"name":"CRM Online Conversion","type":"UPLOAD_CLICKS","include_in_conversions_metric":true,"note":"May be intentional for O2O attribution — confirm with team."}],"correctly_wired_but_excluded":[{"name":"Lucira (web) purchase","type":"GOOGLE_ANALYTICS_4_PURCHASE","include_in_conversions_metric":false,"should_be":true}]},"shopify_native_sessions":{"status":"wont_fix","detail":"Shopify native session analytics reports ~670 sessions/30d vs 425,524 in GA4. Expected — the storefront is headless. Ignore this metric."}},"homepage_funnel_7d":{"note":"Journey funnel for users who reached the homepage, using unifiedPagePathScreen for page-type steps (pagePath is not permitted inside GA4 funnel steps). User-based, not event counts.","steps":["Homepage","Collection (PLP)","Product (PDP)","Add to Cart","Begin Checkout","Purchase"],"by_device":{"total":{"homepage":6455,"plp":2192,"pdp":1210,"add_to_cart":224,"begin_checkout":38,"purchase":7},"mobile":{"homepage":5743,"plp":1848,"pdp":992,"add_to_cart":194,"begin_checkout":25,"purchase":6},"desktop":{"homepage":711,"plp":339,"pdp":213,"add_to_cart":30,"begin_checkout":13,"purchase":1},"tablet":{"homepage":21,"plp":5,"pdp":5,"add_to_cart":0,"begin_checkout":0,"purchase":0}},"step_completion_rate_pct":{"total":{"home_to_plp":33.96,"plp_to_pdp":55.20,"pdp_to_atc":18.51,"atc_to_checkout":16.96,"checkout_to_purchase":18.42,"end_to_end":0.108},"mobile":{"home_to_plp":32.18,"plp_to_pdp":53.68,"pdp_to_atc":19.56,"atc_to_checkout":12.89,"checkout_to_purchase":24.00,"end_to_end":0.104},"desktop":{"home_to_plp":47.68,"plp_to_pdp":62.83,"pdp_to_atc":14.08,"atc_to_checkout":43.33,"checkout_to_purchase":7.69,"end_to_end":0.141},"tablet":{"home_to_plp":23.81,"plp_to_pdp":100.0,"pdp_to_atc":0.0}},"biggest_leak":{"step":"Homepage → Collection","users_lost":4263,"loss_pct":66.04,"detail":"Two-thirds of homepage visitors never reach a collection page. Largest absolute loss in the homepage journey, and mobile (67.8% lost) is materially worse than desktop (52.3%)."},"comparison_vs_sitewide":{"note":"Like-for-like, both user-based. Homepage-originating traffic is far higher intent than the site blend, which is dominated by paid traffic landing deep.","pdp_to_atc":{"homepage_origin":18.51,"sitewide":3.19,"multiple":5.8},"atc_to_checkout":{"homepage_origin":16.96,"sitewide":8.80,"multiple":1.9}}},"heatmap_7d":{"note":"Clarity\u0027s API does not expose heatmap images. It does expose the underlying data those images visualise: click distribution by element and scroll depth per page. That is what is recorded here.","click_kinds":{"popup":"spin-wheel / login-OTP overlay","nav":"navigation or category link","product":"variant, customise, try-on","checkout":"checkout control","chrome":"logo, banner, promo strip","untagged":"element with no text - image, icon or blank backdrop"},"by_funnel_stage":[{"stage":"1. Homepage","path":"/","users":5656,"scroll_depth_pct":27.8,"rage_clicks":23,"dead_clicks":86,"popup_clicks":2221,"top_genuine_nav":{"text":"Rings","clicks":215},"popup_to_nav_ratio":10.3,"top_clicks":[{"text":"(untagged)","clicks":6518,"kind":"untagged"},{"text":"(blank backdrop)","clicks":2626,"kind":"untagged"},{"text":"Register to Win a Reward","clicks":703,"kind":"popup"},{"text":"REQUEST OTP","clicks":428,"kind":"popup"},{"text":"Spin the Wheel","clicks":400,"kind":"popup"},{"text":"New user? Register","clicks":262,"kind":"popup"},{"text":"WELCOME TO LUCIRA","clicks":259,"kind":"popup"},{"text":"Rings","clicks":215,"kind":"nav"},{"text":"100% Secured \u0026 Spam Free","clicks":169,"kind":"popup"},{"text":"Lucira Jewelry","clicks":146,"kind":"chrome"}]},{"stage":"2. Collection (PLP)","path":"/collections/eterna","users":4037,"scroll_depth_pct":27.66,"rage_clicks":120,"dead_clicks":510,"popup_clicks":3331,"top_genuine_nav":{"text":"Eterna","clicks":3008},"popup_to_nav_ratio":1.1,"top_clicks":[{"text":"(untagged)","clicks":3275,"kind":"untagged"},{"text":"Eterna","clicks":3008,"kind":"nav"},{"text":"(blank backdrop)","clicks":2589,"kind":"untagged"},{"text":"Register to Win a Reward","clicks":1618,"kind":"popup"},{"text":"Spin the Wheel","clicks":915,"kind":"popup"},{"text":"REQUEST OTP","clicks":490,"kind":"popup"},{"text":"New user? Register","clicks":308,"kind":"popup"},{"text":"Eterna Collection (description)","clicks":251,"kind":"chrome"},{"text":"Extraaa 3% Bank Discount","clicks":192,"kind":"chrome"},{"text":"A small reminder: Embrace","clicks":169,"kind":"chrome"}]},{"stage":"3. Product (PDP)","path":"/products/corinthian-pave-diamond-mens-ring","users":2289,"scroll_depth_pct":18.26,"rage_clicks":null,"dead_clicks":null,"popup_clicks":111,"top_genuine_nav":{"text":"Yellow (metal variant)","clicks":638},"popup_to_nav_ratio":0.17,"top_clicks":[{"text":"(blank backdrop)","clicks":2042,"kind":"untagged"},{"text":"(untagged)","clicks":1403,"kind":"untagged"},{"text":"Yellow","clicks":638,"kind":"product"},{"text":"MH","clicks":295,"kind":"product"},{"text":"MQ","clicks":225,"kind":"product"},{"text":"Spin the Wheel","clicks":77,"kind":"popup"},{"text":"CI","clicks":68,"kind":"product"},{"text":"CUSTOMIZE","clicks":55,"kind":"product"},{"text":"Virtual try on / Similar Items","clicks":36,"kind":"product"},{"text":"REQUEST OTP","clicks":34,"kind":"popup"}],"observation":"Add to Cart does not appear in the top 10 clicked elements despite 2,289 users. It may be captured under the untagged rows, but variant selection (\u0027Yellow\u0027, \u0027MH\u0027, \u0027MQ\u0027, \u0027CI\u0027) dominates real interaction — visitors are configuring, not committing."},{"stage":"4. Cart","path":"/checkout/cart","users":1964,"scroll_depth_pct":80.9,"rage_clicks":538,"dead_clicks":2545,"popup_clicks":null,"top_genuine_nav":null,"popup_to_nav_ratio":null,"top_clicks":[],"observation":"Element-level data for the cart is captured as rage clicks rather than raw clicks - see clarity_7d.rage_click_by_element_cart. The login modal (\u0027WELCOME TO LUCIRA\u0027, \u0027REQUEST OTP\u0027, \u0027100% Secured \u0026 Spam Free\u0027) dominates there."},{"stage":"5. Shipping","path":"/checkout/shipping","users":149,"scroll_depth_pct":null,"rage_clicks":0,"dead_clicks":95,"popup_clicks":0,"top_genuine_nav":{"text":"Continue to payment","clicks":75},"popup_to_nav_ratio":0,"top_clicks":[{"text":"(blank backdrop)","clicks":285,"kind":"untagged"},{"text":"Continue to payment","clicks":75,"kind":"checkout"},{"text":"Save address","clicks":71,"kind":"checkout"},{"text":"(untagged)","clicks":69,"kind":"untagged"},{"text":"(masked field)","clicks":52,"kind":"checkout"},{"text":"(masked field)","clicks":50,"kind":"checkout"},{"text":"Ship","clicks":45,"kind":"checkout"},{"text":"Pickup","clicks":29,"kind":"checkout"},{"text":"CONTINUE TO PAYMENT","clicks":22,"kind":"checkout"}]},{"stage":"6. Payment","path":"/checkout/payment","users":63,"scroll_depth_pct":null,"rage_clicks":0,"dead_clicks":60,"popup_clicks":0,"top_genuine_nav":{"text":"Pay Now","clicks":36},"popup_to_nav_ratio":0,"top_clicks":[{"text":"Pay Now","clicks":36,"kind":"checkout"},{"text":"Razorpay Secure (UPI, Card)","clicks":26,"kind":"checkout"},{"text":"(blank backdrop)","clicks":23,"kind":"untagged"},{"text":"Apply Points","clicks":21,"kind":"checkout"},{"text":"partial_cod","clicks":20,"kind":"checkout"},{"text":"razorpay","clicks":14,"kind":"checkout"},{"text":"View Order Summary","clicks":10,"kind":"checkout"}]}],"headline":"Popup pressure is concentrated exactly where the funnel leaks hardest. Homepage and PLP carry 2,221 and 3,331 popup clicks respectively; the PDP carries 111 and the checkout stages zero. Homepage → Collection loses 66% of users, and on the homepage the overlay stack absorbs 10.3 clicks for every click on the top navigation link."},"findings":[{"id":"F9","priority":"critical","title":"Popups absorb 10x more homepage clicks than navigation","evidence":"Homepage: 2,221 clicks on spin-wheel/login overlays vs 215 on \u0027Rings\u0027, the top nav link. Top 7 clicked elements are all popup or backdrop. Homepage → Collection loses 66% of users (4,263).","confidence":0.93,"status":"open"},{"id":"F10","priority":"high","title":"Homepage-origin traffic converts 5.8x better than site blend but is starved at the first step","evidence":"Homepage-origin PDP→ATC 18.51% vs 3.19% site-wide; ATC→checkout 16.96% vs 8.80%. Yet only 33.96% of homepage users reach a PLP.","confidence":0.9,"status":"open"},{"id":"F1","priority":"critical","title":"Login modal blocks mobile cart","evidence":"7.3% vs 30.9% progression; 538 vs 0 rage clicks; 2.8% bounce; 80.9% scroll","confidence":0.96,"status":"open"},{"id":"F2","priority":"high","title":"Spin-wheel popup is top rage-click target sitewide","evidence":"NitroCommerce popup SDK confirmed loading on cart; \u0027Register to Win a Reward\u0027 ranks #1","confidence":0.9,"status":"open"},{"id":"F3","priority":"high","title":"Customer Reviews buried at 41.4% page depth","evidence":"Reviews at 6,536px on a 15,804px page; avg visitor stops at 2,886px","confidence":0.92,"status":"open"},{"id":"F4","priority":"high","title":"Paid Social traffic bounces 62-100% regardless of landing page","evidence":"/collections/rings: 33% Organic Search vs 100% Paid Social, same page/week; corroborated across 4 pages, ~2,800 sessions; Meta WebView JS errors in 1,511 sessions","confidence":0.88,"status":"open"},{"id":"F5","priority":"medium","title":"PDP template is 19.5 screens against an 18% scroll ceiling","evidence":"15,804px doc height; all 12 top PDPs scroll 18-21%","confidence":0.9,"status":"open"},{"id":"F6","priority":"medium","title":"Two slowest PDPs also have lowest engagement","evidence":"bezel-set 5,072ms/12.4s; paramount 4,200ms/16.2s","confidence":0.75,"status":"open"},{"id":"F7","priority":"medium","title":"/schemes mobile slider generates 135 rage + 334 dead clicks","evidence":"54.3% bounce mobile vs 52.9s engagement desktop","confidence":0.8,"status":"open"},{"id":"F8","priority":"low","title":"\u0027Something went wrong!\u0027 is 4th most rage-clicked element","evidence":"31,595 weight, page not yet attributed","confidence":0.7,"status":"needs_investigation"},{"id":"F11","priority":"critical","title":"PDP desktop LCP is ~17s (poor), confirmed not a cold-start artifact","evidence":"cro_vitals runs=3 on /products/corinthian-pave-diamond-mens-ring desktop: 16,604 / 16,988 / 17,164 ms (median 16,988, ~3% spread) against ~10.2MB transfer over 181 requests. Same URL on mobile medians 2,520ms (needs-improvement), ~9.6MB. Resolves T19\u0027s open question about the earlier single-run 19s reading -- confirmed real and reproducible, not noise. Opened as T21.","confidence":0.95,"status":"open"}],"corrections_log":[{"run":"run-002","claim":"Move trust signals above the fold on mobile PDPs","verdict":"wrong","reason":"Shipping at 1.1%, certification and lifetime-exchange at 9.6% page depth — already inside the 18% visitors reach. Real casualty is Customer Reviews at 41.4%.","corrected_in":"run-004"},{"run":"run-002","claim":"GA4 under-counts orders by ~80% (42 vs 211)","verdict":"wrong","reason":"211 included 127 ERP/store orders and 22 salesperson-assisted draft orders. True GA4-trackable base is ~64; capture rate is ~66%, not 20%.","corrected_in":"run-003"},{"run":"run-002","claim":"Shopify native session analytics is broken","verdict":"wrong","reason":"Storefront is headless — Shopify native sessions are expected to be near-zero. Not a defect.","corrected_in":"run-003"},{"run":"run-003","claim":"Curated collections beat generic ones — diff the templates","verdict":"wrong","reason":"Templates are identical (26 cards, first card 392px, same controls). Gap is traffic source: Paid Social bounces 62-100% everywhere.","corrected_in":"run-004"}],"next_run":{"due":"2026-07-28","window_rule":"7 days ending T-2","watch":["cart_cliff_7d.mobile.progression_pct","clarity_7d.device_totals.mobile.rage_clicks","funnel_7d.step_completion_rate_pct.mobile.atc_to_checkout","performance_7d.lcp_median_ms.mobile","tracking_issues.google_ads_over_count.status"]}};
+
+// This file is a BUILD INPUT, not the report. Opened directly, the placeholders above are
+// still empty objects and the page would render as bare headings with no numbers — which
+// looks like a broken report. Fail loudly with instructions instead.
+if (!DATA || !DATA.meta) {
+  document.querySelector(".page").innerHTML =
+    '<div style="max-width:64ch;margin:8vh auto;padding:28px 30px;border:2px solid var(--critical);' +
+    'border-radius:10px;background:var(--critical-bg)">' +
+    '<div style="font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;' +
+    'color:var(--critical)">Not the report</div>' +
+    '<h1 style="font-size:26px;margin:8px 0 12px">You have opened the template</h1>' +
+    '<p style="margin:0 0 14px;font-size:14.5px">This is <code>tools/report_template.html</code> — the ' +
+    'layout and logic that the build script fills with data. On its own it contains no numbers, ' +
+    'which is why the page looks empty.</p>' +
+    '<p style="margin:0 0 8px;font-size:14.5px"><b>Open this instead:</b></p>' +
+    '<p style="margin:0 0 18px;font-family:ui-monospace,monospace;font-size:13px;background:var(--surface);' +
+    'padding:10px 12px;border-radius:6px">reports\\interactive.html</p>' +
+    '<p style="margin:0;font-size:13.5px;color:var(--muted)">If that file is missing or stale, rebuild it:<br>' +
+    '<span style="font-family:ui-monospace,monospace;font-size:12.5px">powershell -ExecutionPolicy Bypass ' +
+    '-File tools\\build_report.ps1</span></p></div>';
+  throw new Error("report_template.html opened directly — open reports/interactive.html instead.");
+}
+
+const $ = s => document.querySelector(s);
+const fmt = n => n === null || n === undefined || isNaN(n) ? "—" : Math.round(n).toLocaleString("en-IN");
+const pct = (n,d=2) => n === null || isNaN(n) ? "—" : n.toFixed(d) + "%";
+const STEPS = ["view_item","add_to_cart","begin_checkout","add_shipping_info","add_payment_info","purchase"];
+const LABEL = {view_item:"View Item", add_to_cart:"Add to Cart", begin_checkout:"Begin Checkout",
+  add_shipping_info:"Add Shipping", add_payment_info:"Add Payment", purchase:"Purchase"};
+
+let state = { from:null, to:null, dev:"all", cmp:true, metric:"sessions" };
+
+const days = (a,b) => Math.round((new Date(b) - new Date(a))/864e5) + 1;
+const shift = (d,n) => { const x = new Date(d); x.setDate(x.getDate()+n); return x.toISOString().slice(0,10); };
+
+function slice(from, to, dev){
+  const inR = r => r.d >= from && r.d <= to;
+  const inD = r => dev === "all" || r.dev === dev;
+  const dv = DATA.device.filter(r => inR(r) && inD(r));
+  const fn = DATA.funnel.filter(r => inR(r) && inD(r));
+  const cl = DATA.clarity.filter(r => inR(r) && inD(r));
+  const sessions = dv.reduce((s,r)=>s+r.s,0), users = dv.reduce((s,r)=>s+r.u,0);
+  const eng = dv.reduce((s,r)=>s+r.eng,0), pv = dv.reduce((s,r)=>s+r.pv,0);
+  // bounce is a per-day-per-device rate: weight by sessions
+  const bounce = sessions ? dv.reduce((s,r)=>s+r.br*r.s,0)/sessions : null;
+  const steps = {}; STEPS.forEach(e => steps[e] = fn.filter(r=>r.e===e).reduce((s,r)=>s+r.n,0));
+  const rage = cl.reduce((s,r)=>s+r.rage,0), dead = cl.reduce((s,r)=>s+r.dead,0);
+  // scroll is a per-day-per-device average: weight by that device's sessions on that day
+  let sw = 0, ss = 0;
+  cl.forEach(r => { const m = dv.find(x=>x.d===r.d && x.dev===r.dev); if(m){ sw += r.scroll*m.s; ss += m.s; } });
+  return { sessions, users, eng, pv, bounce, steps, rage, dead,
+    scroll: ss ? sw/ss : null, hasClarity: cl.length>0,
+    clSessions: ss, clDays: new Set(cl.map(r=>r.d)).size,
+    engPerUser: users ? eng/users : null,
+    atcRate: steps.view_item ? steps.add_to_cart/steps.view_item*100 : null,
+    checkoutRate: steps.add_to_cart ? steps.begin_checkout/steps.add_to_cart*100 : null,
+    payRate: steps.add_payment_info ? steps.purchase/steps.add_payment_info*100 : null,
+    endToEnd: steps.view_item ? steps.purchase/steps.view_item*100 : null };
+}
+
+function delta(cur, prev, invert){
+  if(prev === null || prev === undefined || cur === null || !isFinite(prev) || prev === 0) return null;
+  const p = (cur - prev)/prev*100;
+  return { p, cls: Math.abs(p) < 1 ? "flat" : ((p > 0) !== !!invert ? "up" : "down") };
+}
+function dEl(d, suffix){
+  if(!d) return '<div class="dl flat">no comparison</div>';
+  const s = (d.p>0?"+":"") + d.p.toFixed(1) + "%";
+  return '<div class="dl '+d.cls+'">'+s+(suffix||" vs prev")+'</div>';
+}
+
+function render(){
+  const {from,to,dev,cmp} = state;
+  const n = days(from,to);
+  const cur = slice(from,to,dev);
+  const pFrom = shift(from,-n), pTo = shift(to,-n);
+  const hasPrev = pFrom >= DATA.meta.minDate;
+  const prev = (cmp && hasPrev) ? slice(pFrom,pTo,dev) : null;
+
+  $("#rangenote").textContent = n + (n===1?" day":" days");
+  $("#cmpnote").innerHTML = cmp ? (hasPrev
+    ? '<span class="rangenote">baseline '+pFrom+' → '+pTo+'</span>'
+    : '<span class="warn-inline">no history before '+DATA.meta.minDate+'</span>') : "";
+
+  const K = [
+    ["Sessions", fmt(cur.sessions), delta(cur.sessions, prev&&prev.sessions)],
+    ["Users", fmt(cur.users), delta(cur.users, prev&&prev.users)],
+    ["Bounce rate", pct(cur.bounce,1), delta(cur.bounce, prev&&prev.bounce, true)],
+    ["Avg engagement", cur.engPerUser?cur.engPerUser.toFixed(1)+" s":"—", delta(cur.engPerUser, prev&&prev.engPerUser)],
+    ["Add-to-cart rate", pct(cur.atcRate), delta(cur.atcRate, prev&&prev.atcRate)],
+    ["Cart → checkout", pct(cur.checkoutRate), delta(cur.checkoutRate, prev&&prev.checkoutRate)],
+    ["Purchases", fmt(cur.steps.purchase), delta(cur.steps.purchase, prev&&prev.steps.purchase)],
+    ["View → purchase", pct(cur.endToEnd,3), delta(cur.endToEnd, prev&&prev.endToEnd)]
+  ];
+  $("#kpis").innerHTML = K.map(([l,v,d]) =>
+    '<div class="kpi"><div class="lbl">'+l+'</div><div class="num">'+v+'</div>'+dEl(d)+'</div>').join("");
+
+  // funnel
+  const top = cur.steps.view_item || 1;
+  $("#funnelbody").innerHTML = STEPS.map((e,i) => {
+    const v = cur.steps[e], nx = STEPS[i+1] ? cur.steps[STEPS[i+1]] : null;
+    const rate = i===0 ? 100 : (cur.steps[STEPS[i-1]] ? v/cur.steps[STEPS[i-1]]*100 : null);
+    const drop = nx !== null && v ? (1 - nx/v)*100 : null;
+    const pr = prev && prev.steps[e];
+    const prate = prev && i>0 && prev.steps[STEPS[i-1]] ? prev.steps[STEPS[i-1]] && prev.steps[e]/prev.steps[STEPS[i-1]]*100 : null;
+    const d = i===0 ? delta(v, pr) : delta(rate, prate);
+    const w = Math.max(0.6, v/top*100);
+    const rc = rate===null?"":(rate<10?"bad":rate<45?"warn":"ok");
+    const dc = drop===null?"":(drop>90?"bad":drop>50?"warn":"");
+    return '<tr><td>'+LABEL[e]+'</td><td class="num">'+fmt(v)+'</td>'+
+      '<td class="num '+rc+'">'+(i===0?"—":pct(rate))+'</td>'+
+      '<td class="num '+dc+'">'+(drop===null?"—":pct(drop,1))+'</td>'+
+      '<td class="num">'+(d?'<span class="dl '+d.cls+'" style="font-size:12px">'+(d.p>0?"+":"")+d.p.toFixed(1)+'%</span>':'<span class="dim">—</span>')+'</td>'+
+      '<td class="bar-cell"><div class="b" style="width:'+w+'%"></div><span></span></td></tr>';
+  }).join("");
+
+  renderClarity(cur, prev);
+  renderInsight(cur, prev, n, hasPrev);
+  renderChart();
+  $("#meta").textContent = "Generated " + DATA.meta.generated + " · data " + DATA.meta.minDate + " → " + DATA.meta.maxDate;
+  $("#footmeta").textContent = "Sources: GA4 " + DATA.meta.ga4 + " · Clarity " + DATA.meta.clarity + " · " + DATA.meta.rows + " daily rows embedded.";
+}
+
+function renderClarity(cur, prev){
+  if(!cur.hasClarity){
+    $("#claritywrap").innerHTML = '<div class="empty">No Clarity data in this range. Clarity\'s API only returns one day at a time, so history builds up from '+DATA.meta.clarityFrom+' onward as the daily job runs.</div>';
+    return;
+  }
+  // Rate metrics must use only sessions from days that actually have Clarity data,
+  // otherwise a wide range divides partial click data by full-range sessions.
+  const r1k  = cur.clSessions ? cur.rage/cur.clSessions*1000 : null;
+  const pr1k = prev && prev.clSessions ? prev.rage/prev.clSessions*1000 : null;
+  const rows = [
+    ["Rage clicks", fmt(cur.rage), delta(cur.rage, prev&&prev.rage, true)],
+    ["Dead clicks", fmt(cur.dead), delta(cur.dead, prev&&prev.dead, true)],
+    ["Avg scroll depth", cur.scroll?cur.scroll.toFixed(2)+"%":"—", delta(cur.scroll, prev&&prev.scroll)],
+    ["Rage per 1k sessions", r1k!==null?r1k.toFixed(1):"—", delta(r1k, pr1k, true)]
+  ];
+  const rangeDays = days(state.from, state.to);
+  const partial = cur.clDays < rangeDays;
+  $("#claritywrap").innerHTML = '<div class="kpis" style="margin-bottom:0">' + rows.map(([l,v,d]) =>
+    '<div class="kpi"><div class="lbl">'+l+'</div><div class="num">'+v+'</div>'+dEl(d)+'</div>').join("") + '</div>' +
+    (partial ? '<div class="banner alarm" style="margin-top:12px"><b>Partial Clarity coverage.</b> '+
+      cur.clDays+' of '+rangeDays+' days in this range have Clarity data ('+DATA.meta.clarityFrom+' → '+
+      DATA.meta.clarityTo+'). Click totals above cover only those '+cur.clDays+' days, so they are '+
+      '<b>not comparable</b> to the GA4 figures above, which cover all '+rangeDays+'. Rates are normalised to the covered days only.</div>'
+    : '<p class="note">Clarity coverage is complete for this range. History grows one day per run — Clarity\'s API returns a single day at a time.</p>');
+}
+
+function renderInsight(cur, prev, n, hasPrev){
+  const out = [];
+  if(cur.checkoutRate !== null && cur.checkoutRate < 15)
+    out.push('<b>Cart → checkout is '+pct(cur.checkoutRate)+'</b> in this range. The cart step remains the single largest structural loss in the funnel.');
+  if(cur.atcRate !== null && cur.atcRate < 4)
+    out.push('Add-to-cart rate of <b>'+pct(cur.atcRate)+'</b> is well below the 8–12% typical for this category.');
+  if(prev){
+    const d = delta(cur.checkoutRate, prev.checkoutRate);
+    if(d && Math.abs(d.p) >= 10) out.push('Cart → checkout moved <b>'+(d.p>0?"+":"")+d.p.toFixed(1)+'%</b> against the previous '+n+' days.');
+    const s = delta(cur.sessions, prev.sessions);
+    if(s && Math.abs(s.p) >= 15) out.push('Session volume moved <b>'+(s.p>0?"+":"")+s.p.toFixed(1)+'%</b> — check whether funnel-rate shifts are real or a traffic-mix effect.');
+  } else if(!hasPrev){
+    out.push('No comparison period available — the embedded history starts '+DATA.meta.minDate+'.');
+  }
+  if(n <= 2) out.push('Short ranges are volatile. Day-level rates on a low purchase base swing heavily; prefer 7 days or more for decisions.');
+  $("#insight").innerHTML = out.length
+    ? '<div class="banner'+(cur.checkoutRate<15?' alarm':'')+'">'+out.map(t=>'<div style="margin-bottom:7px">'+t+'</div>').join("")+'</div>'
+    : '<div class="empty">Nothing notable flagged for this range.</div>';
+}
+
+function renderChart(){
+  const {from,to,dev,metric} = state;
+  const dates = []; for(let d=from; d<=to; d=shift(d,1)) dates.push(d);
+  const vals = dates.map(d => { const x = slice(d,d,dev);
+    switch(metric){
+      case "sessions": return x.sessions;
+      case "atcRate": return x.atcRate;
+      case "checkoutRate": return x.checkoutRate;
+      case "bounce": return x.bounce;
+      case "rage": return x.hasClarity ? x.rage : null;
+      case "scroll": return x.hasClarity ? x.scroll : null;
+    }});
+  const svg = $("#chart"), W = 1000, H = 230, pad = {l:46,r:12,t:12,b:26};
+  const okv = vals.filter(v => v !== null && !isNaN(v));
+  if(!okv.length){ svg.innerHTML = '<text x="500" y="115" text-anchor="middle" fill="var(--faint)" font-size="15">No data for this metric in range</text>';
+    svg.setAttribute("viewBox","0 0 "+W+" "+H); $("#legend").innerHTML=""; return; }
+  const max = Math.max(...okv), min = Math.min(0, Math.min(...okv));
+  const x = i => pad.l + (dates.length===1 ? (W-pad.l-pad.r)/2 : i*(W-pad.l-pad.r)/(dates.length-1));
+  const y = v => pad.t + (1-(v-min)/((max-min)||1))*(H-pad.t-pad.b);
+  let g = "";
+  for(let i=0;i<=4;i++){ const v = min + (max-min)*i/4, yy = y(v);
+    g += '<line x1="'+pad.l+'" x2="'+(W-pad.r)+'" y1="'+yy+'" y2="'+yy+'" stroke="var(--line)" stroke-width="1"/>'+
+         '<text x="'+(pad.l-7)+'" y="'+(yy+4)+'" text-anchor="end" font-size="10" fill="var(--faint)">'+
+         (max>=1000?Math.round(v).toLocaleString("en-IN"):v.toFixed(max<10?2:0))+'</text>'; }
+  const segs = []; let curSeg = [];
+  vals.forEach((v,i)=>{ if(v===null||isNaN(v)){ if(curSeg.length)segs.push(curSeg); curSeg=[]; } else curSeg.push([x(i),y(v)]); });
+  if(curSeg.length) segs.push(curSeg);
+  segs.forEach(s=>{
+    if(s.length>1){
+      g += '<polyline fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round" points="'+s.map(p=>p.join(",")).join(" ")+'"/>';
+      g += '<polygon fill="var(--accent)" opacity="0.10" points="'+s[0][0]+','+y(min)+' '+s.map(p=>p.join(",")).join(" ")+' '+s[s.length-1][0]+','+y(min)+'"/>';
+    }
+    s.forEach((p,i)=>{ if(s.length<=1||i===s.length-1) g += '<circle cx="'+p[0]+'" cy="'+p[1]+'" r="3.5" fill="var(--accent)"/>'; });
+  });
+  const every = Math.max(1, Math.ceil(dates.length/9));
+  dates.forEach((d,i)=>{ if(i%every===0||i===dates.length-1)
+    g += '<text x="'+x(i)+'" y="'+(H-7)+'" text-anchor="middle" font-size="10" fill="var(--faint)">'+d.slice(5)+'</text>'; });
+  svg.setAttribute("viewBox","0 0 "+W+" "+H); svg.innerHTML = g;
+  const names = {sessions:"Sessions",atcRate:"Add-to-cart rate",checkoutRate:"Cart → checkout rate",
+    bounce:"Bounce rate",rage:"Rage clicks",scroll:"Avg scroll depth"};
+  const gap = vals.some(v=>v===null);
+  $("#legend").innerHTML = '<span><i style="background:var(--accent)"></i>'+names[metric]+
+    ' · '+state.dev+'</span>' + (gap?'<span style="color:var(--critical)">gaps = no data that day</span>':'');
+}
+
+function setPreset(nDays){
+  state.to = DATA.meta.maxDate;
+  state.from = nDays >= DATA.meta.totalDays ? DATA.meta.minDate : shift(state.to, -(nDays-1));
+  if(state.from < DATA.meta.minDate) state.from = DATA.meta.minDate;
+  $("#from").value = state.from; $("#to").value = state.to;
+}
+function press(sel, attr, val){
+  document.querySelectorAll(sel).forEach(b =>
+    b.setAttribute("aria-pressed", String(b.dataset[attr] === val)));
+}
+
+document.querySelectorAll("[data-preset]").forEach(b => b.addEventListener("click", () => {
+  setPreset(+b.dataset.preset); press("[data-preset]","preset",b.dataset.preset); render(); }));
+document.querySelectorAll("[data-dev]").forEach(b => b.addEventListener("click", () => {
+  state.dev = b.dataset.dev; press("[data-dev]","dev",state.dev); render(); }));
+document.querySelectorAll("[data-metric]").forEach(b => b.addEventListener("click", () => {
+  state.metric = b.dataset.metric; press("[data-metric]","metric",state.metric); renderChart(); }));
+$("#from").addEventListener("change", e => { state.from = e.target.value;
+  if(state.from > state.to){ state.to = state.from; $("#to").value = state.to; }
+  press("[data-preset]","preset","__none__"); render(); });
+$("#to").addEventListener("change", e => { state.to = e.target.value;
+  if(state.to < state.from){ state.from = state.to; $("#from").value = state.from; }
+  press("[data-preset]","preset","__none__"); render(); });
+$("#cmp").addEventListener("change", e => { state.cmp = e.target.checked; render(); });
+
+/* ============================================================
+   DEEP-DIVE SNAPSHOT — fixed window, sourced from data/latest.json
+   ============================================================ */
+const esc = s => String(s == null ? "" : s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const cell = (v, cls, suffix) => '<td class="num '+(cls||"")+'">'+(v==null||v===""?'<span class="dim">—</span>':esc(v)+(suffix||""))+'</td>';
+const tbl = (head, body) => '<div class="twrap"><table><thead><tr>'+head+'</tr></thead><tbody>'+body+'</tbody></table></div>';
+
+function engCls(v){ return v==null?"":(v>=40?"ok":v<15?"bad":"warn"); }
+function bounceCls(v){ return v==null?"":(v<=30?"ok":v>=50?"bad":"warn"); }
+function lcpCls(v){ return v==null?"":(v<=2500?"ok":v>=4000?"bad":"warn"); }
+function scrollCls(v){ return v==null?"":(v>=40?"ok":v<25?"bad":"warn"); }
+
+let snapDev = "mobile";
+
+function renderHealth(){
+  const m = DATA.meta, h = m.health || "current";
+  const txt = {
+    current: ["✓ Data is current",
+      "Complete through "+m.maxDate+" (T-2, as expected). Safe to present."],
+    lagging: ["⚠ Data is one day behind",
+      "Latest day is "+m.maxDate+"; should be "+m.expectedMax+". Yesterday's refresh likely didn't run. "+
+      "Usable, but say so if you present it."],
+    stale: ["✕ DO NOT PRESENT — data is "+m.daysBehind+" days stale",
+      "Latest day is "+m.maxDate+"; should be "+m.expectedMax+". "+
+      "Run tools/DAILY_RUN.md before this is used in a meeting."]
+  }[h];
+  let extra = "";
+  if(m.clarityBehind > 0 && h === "current")
+    extra = ' Clarity is '+m.clarityBehind+' day(s) behind GA4 (through '+m.clarityTo+') — behaviour metrics lag the funnel.';
+  $("#health").innerHTML = '<div class="health '+h+'">'+
+    '<span class="hl">'+txt[0]+'</span>'+
+    '<span class="hd">'+txt[1]+extra+'</span>'+
+    '<span class="hd" style="opacity:.75">Built '+m.generated+' · last ingest '+m.lastRunAt+' · '+m.lastRunStatus+'</span>'+
+    '</div>';
+}
+
+function renderPulse(){
+  const m = DATA.meta;
+  const y = shift(m.maxDate, -1);
+  const wFrom = shift(m.maxDate, -6), pwFrom = shift(m.maxDate, -13), pwTo = shift(m.maxDate, -7);
+  const dCur = slice(m.maxDate, m.maxDate, "all"), dPrev = slice(y, y, "all");
+  const wCur = slice(wFrom, m.maxDate, "all"), wPrev = slice(pwFrom, pwTo, "all");
+
+  const block = (cur, prev, label) => {
+    const r1k = cur.clSessions ? cur.rage/cur.clSessions*1000 : null;
+    const pr1k = prev.clSessions ? prev.rage/prev.clSessions*1000 : null;
+    const K = [
+      ["Sessions", fmt(cur.sessions), delta(cur.sessions, prev.sessions)],
+      ["Add-to-cart rate", pct(cur.atcRate), delta(cur.atcRate, prev.atcRate)],
+      ["Cart → checkout", pct(cur.checkoutRate), delta(cur.checkoutRate, prev.checkoutRate)],
+      ["Purchases", fmt(cur.steps.purchase), delta(cur.steps.purchase, prev.steps.purchase)],
+      ["Rage per 1k sessions", r1k!==null?r1k.toFixed(1):"—", delta(r1k, pr1k, true)]
+    ];
+    return '<div class="pulse-block"><div class="pulse-label">'+label+'</div><div class="kpis">' +
+      K.map(([l,v,d]) => '<div class="kpi"><div class="lbl">'+l+'</div><div class="num">'+v+'</div>'+dEl(d)+'</div>').join("") +
+      '</div></div>';
+  };
+
+  $("#pulse").innerHTML =
+    '<div class="sec-head"><span class="tag">Pulse</span><h2>Improved or degraded?</h2></div>' +
+    block(dCur, dPrev, '<b>'+m.maxDate+'</b> vs <b>'+y+'</b> — day-over-day (latest complete day; GA4/Clarity run T-2)') +
+    block(wCur, wPrev, '<b>'+wFrom+' → '+m.maxDate+'</b> vs prior 7 days (<b>'+pwFrom+' → '+pwTo+'</b>) — week-over-week');
+}
+
+function renderSnapshot(){
+  const S = SNAP;
+  if(!S || !S.run){ document.querySelectorAll('[id^=snap]').forEach(e=>e.innerHTML='<div class="empty">Snapshot data unavailable.</div>'); return; }
+  const w = S.run.window;
+  $("#snapwin").textContent = w.start + " → " + w.end + " (" + w.days + " days)";
+
+  /* ---- page tables ---- */
+  const pages = (S.pages_7d && S.pages_7d[snapDev]) || [];
+  if(!pages.length){
+    $("#snapPages").innerHTML = '<div class="empty">No page rows captured for '+snapDev+' in this snapshot.</div>';
+  } else {
+    const body = pages.map(p => '<tr>'+
+      '<td><span class="chip low">'+esc(p.type||"")+'</span></td>'+
+      '<td style="font-family:ui-monospace,monospace;font-size:11.5px;color:var(--muted);max-width:250px;overflow:hidden;text-overflow:ellipsis">'+esc(p.path)+'</td>'+
+      cell(p.views==null?null:p.views.toLocaleString("en-IN")) +
+      cell(p.users==null?null:p.users.toLocaleString("en-IN")) +
+      cell(p.avg_engagement_s, engCls(p.avg_engagement_s), " s") +
+      cell(p.bounce_pct, bounceCls(p.bounce_pct), "%") +
+      cell(p.scroll_depth_pct, scrollCls(p.scroll_depth_pct), "%") +
+      cell(p.lcp_ms, lcpCls(p.lcp_ms)) +
+      cell(p.rage_clicks, p.rage_clicks>100?"bad":p.rage_clicks>40?"warn":"") +
+      cell(p.dead_clicks, p.dead_clicks>500?"bad":p.dead_clicks>100?"warn":"") +
+      '</tr>').join("");
+    $("#snapPages").innerHTML = tbl(
+      '<th>Type</th><th>Page</th><th class="num">Views</th><th class="num">Users</th>'+
+      '<th class="num">Avg eng.</th><th class="num">Bounce</th><th class="num">Scroll</th>'+
+      '<th class="num">LCP ms</th><th class="num">Rage</th><th class="num">Dead</th>', body) +
+      '<p class="note">Blank cells were not captured for that page/metric — not a confirmed zero. '+
+      'Thresholds: engagement good ≥40 s / poor &lt;15 s · bounce good ≤30% / poor ≥50% · LCP good ≤2,500 / poor ≥4,000 ms.</p>';
+  }
+
+  /* ---- user-based funnel ---- */
+  const F = S.funnel_7d;
+  if(F){
+    const order = F.steps || Object.keys(F.by_device.mobile||{});
+    const rateKeys = ["view_to_atc","atc_to_checkout","checkout_to_shipping","shipping_to_payment","payment_to_purchase"];
+    const body = order.map((e,i) => {
+      const m = F.by_device.mobile?F.by_device.mobile[e]:null, d = F.by_device.desktop?F.by_device.desktop[e]:null,
+            t = F.by_device.tablet?F.by_device.tablet[e]:null;
+      const rm = i<rateKeys.length?F.step_completion_rate_pct.mobile[rateKeys[i]]:null;
+      const rd = i<rateKeys.length?F.step_completion_rate_pct.desktop[rateKeys[i]]:null;
+      return '<tr><td>'+esc(LABEL[e]||e)+'</td>'+
+        cell(m==null?null:m.toLocaleString("en-IN")) + cell(rm, rm==null?"":(rm<10?"bad":rm<45?"warn":"ok"), "%") +
+        cell(d==null?null:d.toLocaleString("en-IN")) + cell(rd, rd==null?"":(rd<10?"bad":rd<45?"warn":"ok"), "%") +
+        cell(t==null?null:t.toLocaleString("en-IN")) + '</tr>';
+    }).join("");
+    const cap = F.ga4_capture_rate;
+    $("#snapFunnel").innerHTML = tbl(
+      '<th>Step</th><th class="num">Mobile</th><th class="num">→ next</th>'+
+      '<th class="num">Desktop</th><th class="num">→ next</th><th class="num">Tablet</th>', body) +
+      (cap?'<div class="banner" style="margin-top:12px"><b>GA4 capture rate '+cap.capture_pct+'%.</b> '+
+        'GA4 logged '+cap.ga4_purchases+' purchases against '+cap.real_razorpay_orders_same_week+
+        ' real Razorpay orders in the same week. Treat GA4 purchase counts as a floor, not a total.</div>':"");
+  }
+
+  /* ---- homepage journey funnel ---- */
+  const HF = S.homepage_funnel_7d;
+  if(HF){
+    const keys = ["homepage","plp","pdp","add_to_cart","begin_checkout","purchase"];
+    const rk = ["home_to_plp","plp_to_pdp","pdp_to_atc","atc_to_checkout","checkout_to_purchase"];
+    const top = HF.by_device.total.homepage || 1;
+    const body = keys.map((k,i) => {
+      const tot = HF.by_device.total[k], mo = HF.by_device.mobile[k], de = HF.by_device.desktop[k];
+      const rt = i<rk.length?HF.step_completion_rate_pct.total[rk[i]]:null;
+      const rm = i<rk.length?HF.step_completion_rate_pct.mobile[rk[i]]:null;
+      const rd = i<rk.length?HF.step_completion_rate_pct.desktop[rk[i]]:null;
+      const lost = i<rk.length ? tot - HF.by_device.total[keys[i+1]] : null;
+      const rc = v => v==null?"":(v<20?"bad":v<50?"warn":"ok");
+      return '<tr><td><b>'+esc(HF.steps[i])+'</b></td>'+
+        cell(tot==null?null:tot.toLocaleString("en-IN")) + cell(rt, rc(rt), "%") +
+        cell(lost==null?null:lost.toLocaleString("en-IN"), lost>3000?"bad":lost>800?"warn":"") +
+        cell(mo==null?null:mo.toLocaleString("en-IN")) + cell(rm, rc(rm), "%") +
+        cell(de==null?null:de.toLocaleString("en-IN")) + cell(rd, rc(rd), "%") +
+        '<td class="bar-cell"><div class="b" style="width:'+Math.max(0.6,tot/top*100)+'%"></div><span></span></td></tr>';
+    }).join("");
+    const L = HF.biggest_leak, CV = HF.comparison_vs_sitewide;
+    $("#snapHomeFunnel").innerHTML =
+      tbl('<th>Step</th><th class="num">All</th><th class="num">→ next</th><th class="num">Lost</th>'+
+          '<th class="num">Mobile</th><th class="num">→ next</th><th class="num">Desktop</th><th class="num">→ next</th><th>Volume</th>', body) +
+      '<div class="split" style="margin-top:14px">'+
+        '<div class="banner alarm"><b>Biggest leak: '+esc(L.step)+' — '+L.loss_pct+'% ('+
+          L.users_lost.toLocaleString("en-IN")+' users).</b> '+esc(L.detail)+'</div>'+
+        '<div class="banner"><b>But the traffic that does get through is your best.</b> '+
+          'Homepage-origin PDP→cart runs at '+CV.pdp_to_atc.homepage_origin+'% against '+
+          CV.pdp_to_atc.sitewide+'% site-wide ('+CV.pdp_to_atc.multiple+'×), and cart→checkout at '+
+          CV.atc_to_checkout.homepage_origin+'% against '+CV.atc_to_checkout.sitewide+'% ('+
+          CV.atc_to_checkout.multiple+'×). '+esc(CV.note)+'</div>'+
+      '</div>'+
+      '<p class="note">'+esc(HF.note)+'</p>';
+  }
+
+  /* ---- heatmap vs funnel ---- */
+  const HM = S.heatmap_7d;
+  if(HM){
+    const kindCls = { popup:"critical", nav:"medium", product:"medium", checkout:"low", chrome:"low", untagged:"low" };
+    const cards = HM.by_funnel_stage.map(st => {
+      const maxC = Math.max(...(st.top_clicks||[]).map(c=>c.clicks), 1);
+      const clicks = (st.top_clicks||[]).length
+        ? (st.top_clicks||[]).map(c => '<div class="hm-row">'+
+            '<span class="hm-t'+(c.kind==="popup"?" pop":"")+'">'+esc(c.text)+'</span>'+
+            '<span class="hm-b"><i class="'+esc(c.kind)+'" style="width:'+(c.clicks/maxC*100)+'%"></i></span>'+
+            '<span class="hm-n">'+c.clicks.toLocaleString("en-IN")+'</span></div>').join("")
+        : '<p class="note" style="margin:0">'+esc(st.observation||"No element-level clicks captured.")+'</p>';
+      const ratio = st.popup_to_nav_ratio;
+      const badge = ratio==null ? '' :
+        '<span class="chip '+(ratio>=2?"critical":ratio>=0.5?"high":"low")+'">'+
+        (ratio===0?"no popups":ratio+"× popup : nav")+'</span>';
+      return '<div class="card" style="margin-bottom:14px">'+
+        '<h3 style="display:flex;justify-content:space-between;gap:10px;align-items:center">'+
+          '<span>'+esc(st.stage)+' <span style="font-family:ui-monospace,monospace;text-transform:none;letter-spacing:0;color:var(--faint)">'+esc(st.path)+'</span></span>'+
+          badge+'</h3>'+
+        '<div class="kv"><span>Users</span><b>'+(st.users==null?"—":st.users.toLocaleString("en-IN"))+'</b></div>'+
+        '<div class="kv"><span>Scroll depth</span><b class="'+(st.scroll_depth_pct==null?"":(st.scroll_depth_pct>=40?"":"")) +'">'+(st.scroll_depth_pct==null?"—":st.scroll_depth_pct+"%")+'</b></div>'+
+        '<div class="kv"><span>Rage / dead clicks</span><b>'+(st.rage_clicks==null?"—":st.rage_clicks.toLocaleString("en-IN"))+' / '+(st.dead_clicks==null?"—":st.dead_clicks.toLocaleString("en-IN"))+'</b></div>'+
+        (st.popup_clicks!=null?'<div class="kv"><span>Clicks absorbed by popups</span><b class="'+(st.popup_clicks>1000?"pop":"")+'">'+st.popup_clicks.toLocaleString("en-IN")+'</b></div>':'')+
+        '<div style="margin-top:11px">'+clicks+'</div>'+
+        (st.observation && (st.top_clicks||[]).length ? '<p class="note">'+esc(st.observation)+'</p>' : '')+
+      '</div>';
+    }).join("");
+    $("#snapHeatmap").innerHTML =
+      '<div class="banner alarm" style="margin-bottom:14px"><b>'+esc(HM.headline)+'</b></div>' +
+      '<p class="note" style="margin:0 0 14px">'+esc(HM.note)+'</p>' +
+      cards;
+  }
+
+  /* ---- cart cliff ---- */
+  const C = S.cart_cliff_7d;
+  if(C){
+    const row = (l,a,b,ca,cb) => '<tr><td>'+l+'</td>'+cell(a,ca)+cell(b,cb)+'</tr>';
+    $("#snapCart").innerHTML =
+      '<div class="banner alarm" style="margin-bottom:12px"><b>'+
+      C.mobile.cart_page_users.toLocaleString("en-IN")+' mobile users opened the cart. '+
+      C.mobile.began_checkout+' proceeded.</b> That is '+C.mobile.progression_pct+'% against '+
+      C.desktop.progression_pct+'% on desktop — a '+C.gap_multiple+'× gap. '+esc(C.interpretation)+'</div>' +
+      tbl('<th>Metric</th><th class="num">Mobile</th><th class="num">Desktop</th>',
+        row("Cart page users", C.mobile.cart_page_users.toLocaleString("en-IN"), C.desktop.cart_page_users) +
+        row("Began checkout", C.mobile.began_checkout, C.desktop.began_checkout) +
+        row("Progression rate", C.mobile.progression_pct+"%", C.desktop.progression_pct+"%", "bad", "ok") +
+        row("Bounce rate", C.mobile.bounce_pct+"%", C.desktop.bounce_pct+"%", "ok", "ok") +
+        row("Avg engagement", C.mobile.avg_engagement_s+" s", C.desktop.avg_engagement_s+" s") +
+        row("Scroll depth", C.mobile.scroll_depth_pct+"%", "—", "ok") +
+        row("Rage clicks", C.mobile.rage_clicks, C.desktop.rage_clicks, "bad", "ok") +
+        row("Dead clicks", C.mobile.dead_clicks.toLocaleString("en-IN"), C.desktop.dead_clicks, "bad", "ok"));
+  }
+
+  /* ---- fold analysis ---- */
+  const FA = S.fold_analysis;
+  if(FA){
+    const stop = FA.avg_scroll_depth_pct;
+    let placed = false, rows = "";
+    FA.elements.forEach(el => {
+      const p = el.pct_down;
+      if(!placed && p != null && p > stop){
+        rows += '<div class="foldmark">↑ average visitor stops here — '+stop+'%</div>'; placed = true;
+      }
+      const seen = el.seen_by_avg_user !== false;
+      rows += '<div class="fold-row'+(seen?"":" unseen")+'">'+
+        '<span><b>'+esc(el.label)+'</b></span>'+
+        '<span class="m"><i class="'+(seen?"":"out")+'" style="left:'+Math.min(98,Math.max(0,p==null?0:p))+'%"></i></span>'+
+        '<span class="p">'+(el.position==="sticky"?"sticky":(p==null?"—":p+"%"))+'</span></div>';
+    });
+    if(!placed) rows += '<div class="foldmark">↑ average visitor stops here — '+stop+'%</div>';
+    $("#snapFold").innerHTML =
+      '<div class="kpis" style="margin-bottom:14px">'+
+        '<div class="kpi"><div class="lbl">Page height</div><div class="num">'+FA.doc_height_px.toLocaleString("en-IN")+' px</div><div class="dl flat">'+FA.screens_tall+' screens</div></div>'+
+        '<div class="kpi"><div class="lbl">Scroll depth — this PDP</div><div class="num">'+FA.avg_scroll_depth_pct+'%</div><div class="dl flat">vs 25.5% site-wide</div></div>'+
+        '<div class="kpi"><div class="lbl">Visit ends at</div><div class="num">'+FA.avg_scroll_reach_px.toLocaleString("en-IN")+' px</div><div class="dl flat">of '+FA.doc_height_px.toLocaleString("en-IN")+'</div></div>'+
+        '<div class="kpi"><div class="lbl">Never seen</div><div class="num">'+FA.page_never_seen_pct+'%</div><div class="dl down">by median visitor</div></div>'+
+      '</div>'+
+      '<div class="card" style="padding:0"><div style="padding:12px 14px;border-bottom:1px solid var(--line);font-size:12px;color:var(--muted)">'+
+      'Live DOM measurement · '+esc(FA.page)+' at '+FA.viewport.width+'×'+FA.viewport.height+'</div>'+rows+'</div>'+
+      '<p class="note">'+esc(FA.caveat||"")+'</p>';
+  }
+
+  /* ---- rage-click elements ---- */
+  const CL = S.clarity_7d;
+  if(CL){
+    const mk = (title, arr, showWhat) => '<div class="card"><h3>'+title+'</h3>'+
+      tbl('<th>Element</th>'+(showWhat?'<th>What it is</th>':'<th class="num">Weight</th>'),
+        arr.map(r => '<tr><td style="font-family:ui-monospace,monospace;font-size:11.5px;color:var(--muted)">'+esc(r.text)+'</td>'+
+          (showWhat ? '<td'+(/error|empty|lost/i.test(r.identified_as||"")?' class="bad"':'')+'>'+esc(r.identified_as||"—")+'</td>'
+                    : cell(r.weight.toLocaleString("en-IN"), r.weight>10000?"bad":r.weight>4000?"warn":""))+'</tr>').join("")) +
+      '</div>';
+    $("#snapElements").innerHTML =
+      mk("Site-wide", CL.rage_click_by_element_sitewide||[], true) +
+      mk("Cart page only", CL.rage_click_by_element_cart||[], false);
+    $("#snapElements").insertAdjacentHTML("afterend",
+      '<p class="note">'+esc(CL.element_weight_caveat||"")+'</p>');
+  }
+
+  /* ---- vitals ---- */
+  const P = S.performance_7d;
+  if(P){
+    const bar = (label, v, max) => '<div class="brow"><span class="u">'+esc(label)+'</span>'+
+      '<div class="track"><div class="fill '+(v<=2500?"good":v>=4000?"bad":"warn")+'" style="width:'+
+      Math.min(100, v/max*100)+'%"></div></div><span class="v">'+v.toLocaleString("en-IN")+'</span></div>';
+    const dev = P.lcp_median_ms, maxD = Math.max(...Object.values(dev));
+    const pg = P.lcp_median_by_page_mobile_ms||{}, maxP = Math.max(...Object.values(pg), 1);
+    $("#snapVitals").innerHTML =
+      '<div class="card"><h3>Median LCP by device</h3><div class="bars">'+
+        Object.entries(dev).sort((a,b)=>a[1]-b[1]).map(([k,v])=>bar(k,v,maxD)).join("")+'</div>'+
+        '<p class="note">Good ≤2,500 ms · poor &gt;4,000 ms. '+esc(P.lcp_mean_ms_discarded?P.lcp_mean_ms_discarded.reason:"")+
+        ' Avg CLS ≈ '+P.cls_avg.mobile+' mobile / '+P.cls_avg.desktop+' desktop — '+esc(P.cls_avg.caveat||"")+'</p></div>'+
+      '<div class="card"><h3>Median LCP by page — mobile</h3><div class="bars">'+
+        Object.entries(pg).sort((a,b)=>b[1]-a[1]).map(([k,v])=>bar(k,v,maxP)).join("")+'</div></div>';
+  }
+
+  /* ---- traffic quality ---- */
+  const T = S.traffic_quality_7d;
+  if(T){
+    const body = T.landing_page_by_channel.map(r => {
+      const paid = /Paid Social|Organic Social/i.test(r.channel);
+      return '<tr><td style="font-family:ui-monospace,monospace;font-size:11.5px;color:var(--muted)">'+esc(r.landing_page)+'</td>'+
+        '<td>'+(paid?'<b>'+esc(r.channel)+'</b>':esc(r.channel))+'</td>'+
+        cell(r.sessions.toLocaleString("en-IN")) +
+        cell(r.bounce_pct, bounceCls(r.bounce_pct), "%") +
+        cell(Math.round(r.avg_duration_s), r.avg_duration_s>=300?"ok":r.avg_duration_s<30?"bad":"", " s") + '</tr>';
+    }).join("");
+    const d = T.collection_template_diff;
+    $("#snapTraffic").innerHTML =
+      '<div class="banner alarm" style="margin-bottom:12px"><b>'+esc(T.root_cause_finding)+'</b></div>' +
+      tbl('<th>Landing page</th><th>Channel</th><th class="num">Sessions</th><th class="num">Bounce</th><th class="num">Avg duration</th>', body) +
+      (d?'<div class="card" style="margin-top:12px"><h3>Template diff — verdict: '+esc(d.verdict)+'</h3>'+
+        Object.entries(d).filter(([k])=>k!=="verdict").map(([k,v])=>
+          '<div class="kv"><span style="font-family:ui-monospace,monospace;font-size:11.5px">'+esc(k)+'</span>'+
+          '<b>'+v.product_cards+' cards · first at '+v.first_card_top_px+'px · '+v.folds+' folds</b></div>').join("")+
+        '<p class="note" style="margin-bottom:0">Same template, same card count, same controls — so the bounce gap cannot be a design cause.</p></div>':"");
+  }
+
+  /* ---- js errors ---- */
+  if(CL && CL.javascript_errors){
+    $("#snapErrors").innerHTML = tbl('<th>Error</th><th class="num">Sessions</th><th>Signature</th>',
+      CL.javascript_errors.map(e => '<tr>'+
+        '<td style="font-family:ui-monospace,monospace;font-size:11.5px;color:var(--muted);max-width:420px">'+esc(e.message)+'</td>'+
+        cell(e.sessions.toLocaleString("en-IN"), e.sessions>500?"bad":e.sessions>100?"warn":"") +
+        '<td>'+(e.signature?'<span class="chip high">'+esc(e.signature)+'</span>':'<span class="dim">—</span>')+'</td></tr>').join("")) +
+      '<p class="note">The top three are Meta in-app WebView signatures — roughly 1,500 sessions where the page may never have worked properly. This is the mechanism behind the Paid Social bounce rates above.</p>';
+  }
+
+  /* ---- commerce ---- */
+  const M = S.commerce_30d;
+  if(M){
+    const seg = M.segments;
+    const body = Object.entries(seg).map(([k,v]) => '<tr>'+
+      '<td><b>'+esc(k.replace(/_/g," "))+'</b></td>'+
+      '<td style="font-family:ui-monospace,monospace;font-size:11px;color:var(--muted)">'+esc(v.source_name)+'</td>'+
+      cell(v.orders, v.include_in_cro?"":"dim") +
+      cell("₹"+v.revenue_inr.toLocaleString("en-IN")) +
+      cell("₹"+v.aov_inr.toLocaleString("en-IN")) +
+      '<td>'+(v.include_in_cro?'<span class="chip medium">in scope</span>':'<span class="chip critical">excluded</span>')+'</td>'+
+      '<td>'+(v.ga4_trackable?'<span class="chip medium">yes</span>':'<span class="chip high">no</span>')+'</td></tr>').join("");
+    $("#snapCommerce").innerHTML = tbl(
+      '<th>Segment</th><th>sourceName</th><th class="num">Orders</th><th class="num">Revenue</th>'+
+      '<th class="num">AOV</th><th>CRO scope</th><th>GA4 sees it</th>', body) +
+      '<div class="banner" style="margin-top:12px"><b>'+M.orders_total+' total orders, but only '+
+      M.online_combined.orders+' are online</b> (₹'+M.online_combined.revenue_inr.toLocaleString("en-IN")+
+      ', AOV ₹'+M.online_combined.aov_inr.toLocaleString("en-IN")+'). '+
+      seg.erp_store.orders+' are physical-store orders written back through the ERP. '+
+      'Never derive a conversion rate from the raw order count.</div>';
+  }
+
+  /* ---- tracking issues ---- */
+  const TI = S.tracking_issues;
+  if(TI){
+    $("#snapTracking").innerHTML = Object.entries(TI).map(([k,v]) => {
+      const st = v.status==="open" ? '<span class="chip open">open</span>'
+               : '<span class="chip low">'+esc(v.status.replace(/_/g," "))+'</span>';
+      let extra = "";
+      if(v.misconfigured_actions) extra += '<div style="margin-top:9px">'+v.misconfigured_actions.map(a =>
+        '<div class="kv"><span>'+esc(a.name)+' <span class="dim">('+esc(a.category||a.type)+')</span></span>'+
+        '<b class="'+(a.should_be===false?"":"")+'">counted: '+a.include_in_conversions_metric+
+        (a.should_be!==undefined?' → should be '+a.should_be:'')+'</b></div>').join("")+'</div>';
+      if(v.correctly_wired_but_excluded) extra += '<div style="margin-top:6px">'+v.correctly_wired_but_excluded.map(a =>
+        '<div class="kv"><span>'+esc(a.name)+' <span class="dim">(correctly wired)</span></span>'+
+        '<b>excluded → should be included</b></div>').join("")+'</div>';
+      if(v.blocked_on) extra += '<p class="note" style="margin-bottom:0">Blocked on: '+esc(v.blocked_on)+'</p>';
+      return '<div class="card" style="margin-bottom:12px"><h3>'+esc(k.replace(/_/g," "))+' '+st+'</h3>'+
+        '<div style="font-size:13.5px">'+esc(v.detail)+'</div>'+extra+'</div>';
+    }).join("");
+  }
+
+  /* ---- findings ---- */
+  if(S.findings){
+    $("#snapFindings").innerHTML = tbl(
+      '<th>ID</th><th>Priority</th><th>Finding</th><th>Evidence</th><th class="num">Conf.</th><th>Status</th>',
+      S.findings.map(f => '<tr>'+
+        '<td><b>'+esc(f.id)+'</b></td>'+
+        '<td><span class="chip '+esc(f.priority)+'">'+esc(f.priority)+'</span></td>'+
+        '<td><b>'+esc(f.title)+'</b></td>'+
+        '<td style="font-size:12px;color:var(--muted);max-width:330px">'+esc(f.evidence)+'</td>'+
+        cell(Math.round(f.confidence*100), f.confidence>=0.9?"ok":"", "%") +
+        '<td><span class="chip '+(f.status==="open"?"open":"low")+'">'+esc(f.status.replace(/_/g," "))+'</span></td></tr>').join(""));
+  }
+
+  /* ---- corrections ---- */
+  if(S.corrections_log){
+    $("#snapCorrections").innerHTML = tbl(
+      '<th>From</th><th>Claim</th><th>Verdict</th><th>Why it was wrong</th><th>Fixed in</th>',
+      S.corrections_log.map(c => '<tr>'+
+        '<td>'+esc(c.run)+'</td>'+
+        '<td style="max-width:230px">'+esc(c.claim)+'</td>'+
+        '<td><span class="chip wrong">'+esc(c.verdict)+'</span></td>'+
+        '<td style="font-size:12px;color:var(--muted);max-width:400px">'+esc(c.reason)+'</td>'+
+        '<td>'+esc(c.corrected_in)+'</td></tr>').join(""));
+  }
+}
+
+document.querySelectorAll("[data-sdev]").forEach(b => b.addEventListener("click", () => {
+  snapDev = b.dataset.sdev; press("[data-sdev]","sdev",snapDev); renderSnapshot(); }));
+
+$("#from").min = $("#to").min = DATA.meta.minDate;
+$("#from").max = $("#to").max = DATA.meta.maxDate;
+setPreset(7); press("[data-preset]","preset","7");
+renderHealth();
+renderPulse();
+render();
+renderSnapshot();
+</script>
+

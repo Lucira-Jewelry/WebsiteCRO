@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Cart &amp; Checkout — Lucira Jewelry CRO</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --bg:#EEF0ED; --surface:#FFFFFF; --raise:#F7F8F6; --ink:#1B2320; --muted:#5B6560; --faint:#8A938E;
+    --accent:#A9813F; --accent-ink:#5E4520;
+    --critical:#A23B2E; --critical-bg:#F7E7E4;
+    --high:#B0722A; --high-bg:#F8EDDC;
+    --good:#48684C; --good-bg:#E5EDE5;
+    --medium:#3D5A73; --medium-bg:#E3EAEF;
+    --line:rgba(27,35,32,0.13); --line-strong:rgba(27,35,32,0.26);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#111412; --surface:#191E1A; --raise:#1F2521; --ink:#EDEFEA; --muted:#9AA69E; --faint:#6E786F;
+      --accent:#C79B4E; --accent-ink:#D8B87A; --critical:#E4695C; --critical-bg:#3B2320;
+      --high:#DFA555; --high-bg:#392D19; --good:#8CBC92; --good-bg:#1C2A1E;
+      --medium:#8FB3D2; --medium-bg:#1D2B35;
+      --line:rgba(237,239,234,0.14); --line-strong:rgba(237,239,234,0.28); }
+  }
+  :root[data-theme="dark"]{ --bg:#111412; --surface:#191E1A; --raise:#1F2521; --ink:#EDEFEA; --muted:#9AA69E;
+    --faint:#6E786F; --accent:#C79B4E; --accent-ink:#D8B87A; --critical:#E4695C; --critical-bg:#3B2320;
+    --high:#DFA555; --high-bg:#392D19; --good:#8CBC92; --good-bg:#1C2A1E; --medium:#8FB3D2; --medium-bg:#1D2B35;
+    --line:rgba(237,239,234,0.14); --line-strong:rgba(237,239,234,0.28); }
+  :root[data-theme="light"]{ --bg:#EEF0ED; --surface:#FFFFFF; --raise:#F7F8F6; --ink:#1B2320; --muted:#5B6560;
+    --faint:#8A938E; --accent:#A9813F; --accent-ink:#5E4520; --critical:#A23B2E; --critical-bg:#F7E7E4;
+    --high:#B0722A; --high-bg:#F8EDDC; --good:#48684C; --good-bg:#E5EDE5; --medium:#3D5A73; --medium-bg:#E3EAEF;
+    --line:rgba(27,35,32,0.13); --line-strong:rgba(27,35,32,0.26); }
+
+  *{box-sizing:border-box;} html,body{margin:0;padding:0;}
+  body{background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;
+    font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  .page{max-width:1080px;margin:0 auto;padding:40px 22px 90px;}
+  h1,h2,h3,h4{font-family:Iowan Old Style,"Palatino Linotype","Book Antiqua",Georgia,serif;font-weight:600;margin:0;text-wrap:balance;}
+  .measure{max-width:70ch;} p{margin:0 0 13px;}
+  code{font-family:ui-monospace,"SF Mono","Cascadia Code",monospace;font-size:.86em;background:var(--line);padding:1px 5px;border-radius:3px;}
+
+  .hubnav{background:var(--surface);border-bottom:1px solid var(--line-strong);}
+  .hubnav .inner{max-width:1080px;margin:0 auto;padding:11px 22px;display:flex;flex-wrap:wrap;align-items:center;gap:5px;}
+  .hubnav a{font-size:12.5px;font-weight:600;color:var(--muted);text-decoration:none;padding:6px 13px;border-radius:100px;white-space:nowrap;}
+  .hubnav a:hover{background:var(--raise);color:var(--ink);}
+  .hubnav a.active{background:var(--accent);color:#fff;}
+  .hubnav .sep{color:var(--faint);font-size:12px;margin:0 2px;}
+
+  .subnav{background:var(--raise);border-bottom:1px solid var(--line);}
+  .subnav .inner{max-width:1080px;margin:0 auto;padding:9px 22px;display:flex;flex-wrap:wrap;align-items:center;gap:4px;}
+  .subnav .label{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);font-weight:700;margin-right:8px;}
+  .subnav a{font-size:12.5px;font-weight:600;color:var(--muted);text-decoration:none;padding:5px 12px;border-radius:6px;white-space:nowrap;border:1px solid transparent;}
+  .subnav a:hover{border-color:var(--line-strong);color:var(--ink);}
+  .subnav a.active{background:var(--surface);border-color:var(--line-strong);color:var(--accent-ink);}
+
+  .masthead{display:flex;flex-direction:column;gap:8px;padding-bottom:20px;margin-bottom:22px;border-bottom:1px solid var(--line-strong);}
+  .eyebrow{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-ink);font-weight:700;}
+  .masthead h1{font-size:34px;line-height:1.1;}
+  .masthead .meta{font-size:12.5px;color:var(--muted);margin-top:2px;}
+
+  .goal{background:var(--surface);border:1px solid var(--line-strong);border-left:5px solid var(--critical);
+    border-radius:6px;padding:16px 20px;margin-bottom:26px;}
+  .goal .lbl{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--critical);font-weight:700;margin-bottom:6px;}
+  .goal .target{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-top:8px;}
+  .goal .num{font-size:26px;font-weight:700;font-variant-numeric:tabular-nums;}
+  .goal .arrow{color:var(--faint);font-size:18px;}
+  .goal .num.now{color:var(--critical);}
+  .goal .num.want{color:var(--good);}
+
+  section{margin-bottom:36px;}
+  .sec-head{display:flex;align-items:baseline;gap:12px;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--line);}
+  .sec-head .tag{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700;}
+  .sec-head h2{font-size:20px;}
+
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);
+    border:1px solid var(--line);border-radius:6px;overflow:hidden;margin-bottom:10px;}
+  .kpi{background:var(--surface);padding:14px 15px;}
+  .kpi .lbl{font-size:11px;color:var(--muted);}
+  .kpi .num{font-size:21px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.01em;margin-top:2px;}
+  .kpi .num.bad{color:var(--critical);} .kpi .num.warn{color:var(--high);} .kpi .num.ok{color:var(--good);}
+  .kpi .sub{font-size:10.5px;color:var(--faint);margin-top:2px;}
+  .devlabel{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);font-weight:700;margin:18px 0 6px;}
+
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  .twrap{overflow-x:auto;border:1px solid var(--line);border-radius:6px;}
+  th{text-align:left;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:700;
+    padding:9px 11px;background:var(--raise);border-bottom:1px solid var(--line-strong);white-space:nowrap;}
+  td{padding:9px 11px;border-bottom:1px solid var(--line);background:var(--surface);font-variant-numeric:tabular-nums;vertical-align:top;}
+  tr:last-child td{border-bottom:none;}
+  th.num,td.num{text-align:right;}
+  td.bad{color:var(--critical);font-weight:700;} td.warn{color:var(--high);font-weight:600;}
+  td.ok{color:var(--good);font-weight:600;} td.dim{color:var(--faint);}
+
+  .chip{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+    padding:2px 8px;border-radius:100px;white-space:nowrap;}
+  .chip.critical{background:var(--critical-bg);color:var(--critical);}
+  .chip.high{background:var(--high-bg);color:var(--high);}
+  .chip.medium{background:var(--medium-bg);color:var(--medium);}
+  .chip.good{background:var(--good-bg);color:var(--good);}
+  .chip.low{background:var(--raise);color:var(--faint);}
+
+  .banner{background:var(--surface);border:1px solid var(--line-strong);border-left:4px solid var(--accent);
+    border-radius:6px;padding:15px 18px;font-size:13.5px;}
+  .banner.alarm{border-color:var(--critical);border-left-color:var(--critical);}
+  .banner.good{border-left-color:var(--good);}
+  .banner b{color:var(--ink);}
+
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  @media (max-width:820px){ .split{grid-template-columns:1fr;} }
+  .gap-card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:20px;text-align:center;}
+  .gap-card .num{font-size:38px;font-weight:700;font-variant-numeric:tabular-nums;}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:18px 20px;}
+  .card h4{margin:0 0 10px;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);}
+  .rec-list{margin:0;padding-left:18px;font-size:13px;line-height:1.7;}
+  .rec-list li{margin-bottom:8px;} .rec-list li:last-child{margin-bottom:0;}
+  .gap-card .lbl{font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:4px;}
+
+  .controls{background:var(--raise);border:1px solid var(--line);border-radius:6px;padding:11px 14px;margin-bottom:18px;}
+  .ctrl-row{display:flex;flex-wrap:wrap;gap:9px 14px;align-items:center;}
+  .ctrl-label{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;}
+  input[type=date]{font:inherit;font-size:13px;padding:5px 8px;border:1px solid var(--line-strong);
+    border-radius:5px;background:var(--surface);color:var(--ink);font-variant-numeric:tabular-nums;}
+  .seg{display:inline-flex;border:1px solid var(--line-strong);border-radius:6px;overflow:hidden;}
+  .seg button{font:inherit;font-size:12.5px;padding:5px 11px;border:0;background:var(--surface);
+    color:var(--muted);cursor:pointer;border-right:1px solid var(--line);}
+  .seg button:last-child{border-right:0;}
+  .seg button[aria-pressed=true]{background:var(--accent);color:#fff;font-weight:600;}
+  .seg button:hover:not([aria-pressed=true]){background:var(--raise);color:var(--ink);}
+  .rangenote{font-size:12px;color:var(--faint);font-variant-numeric:tabular-nums;}
+
+  .foot{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);font-size:11.5px;color:var(--faint);}
+</style>
+</head>
+<body>
+
+<nav class="hubnav"><div class="inner">
+  <a href="index.html">Reports Home</a><span class="sep">&middot;</span>
+  <a href="insights.html">Insights</a>
+  <a href="action_plan.html">Action Plan</a>
+  <a href="interactive.html">Interactive Dashboard</a>
+  <a href="connectors.html">Connectors</a>
+</div></nav>
+<nav class="subnav"><div class="inner">
+  <span class="label">Page-by-page</span>
+  <a href="page-homepage.html">Homepage</a>
+  <a href="page-plp.html">Collection (PLP)</a>
+  <a href="page-pdp.html">Product (PDP)</a>
+  <a href="page-cart-checkout.html" class="active">Cart &amp; Checkout</a>
+  <a href="page-traffic-ads.html">Traffic &amp; Meta/Ads</a>
+</div></nav>
+
+<div class="page">
+
+  <div class="masthead">
+    <div class="eyebrow">Page Insights &middot; Cart &amp; Checkout</div>
+    <h1>Cart &amp; Checkout</h1>
+    <div class="meta">/checkout/cart, /checkout/shipping, /checkout/payment &middot; data through 27 Jul, gate re-verified live 29 Jul 2026</div>
+  </div>
+
+  <div class="goal">
+    <div class="lbl">Job of this page &middot; the single biggest opportunity on the site</div>
+    <p style="margin:0;font-size:14.5px;">Get a visitor with an item in cart to begin checkout. Desktop already
+      proves this is achievable at 30.9% &mdash; mobile is stuck at 7.3% behind an identical gate rendered badly.</p>
+    <div class="target">
+      <div><div style="font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">Mobile cart &rarr; checkout today</div>
+        <span class="num now">7.3%</span></div>
+      <span class="arrow">&rarr;</span>
+      <div><div style="font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">Desktop, same gate</div>
+        <span class="num want">30.9%</span></div>
+      <div style="margin-left:auto;font-size:12.5px;color:var(--muted);max-width:32ch;">A 4.2&times; gap between
+        two devices facing the exact same login requirement.</div>
+    </div>
+  </div>
+
+  <div class="banner alarm" style="margin-bottom:26px;">
+    <p style="margin:0;"><b>Still broken as of 29 Jul.</b> The checkout OTP wall was re-verified live yesterday on
+      both devices with <code>checkout-gate.js</code>: clicking "Proceed to Checkout" still returns
+      <code>login_wall: true</code>, <code>guest_option: false</code>, <code>asks_phone: true</code> on mobile
+      <b>and</b> desktop, identical to Run 005. No fix has shipped here yet.</p>
+  </div>
+
+  <section>
+    <div class="sec-head"><span class="tag">The gap</span><h2>Why mobile and desktop diverge on an identical gate</h2></div>
+    <div class="split">
+      <div class="gap-card">
+        <div class="num" style="color:var(--critical);">7.3%</div>
+        <div class="lbl">Mobile progression</div>
+        <p style="font-size:12.5px;color:var(--muted);margin:10px 0 0;">Full-screen takeover. Cart, total and step
+          progress all disappear behind it. 538 rage clicks, 2,545 dead clicks on this page.</p>
+      </div>
+      <div class="gap-card">
+        <div class="num" style="color:var(--good);">30.9%</div>
+        <div class="lbl">Desktop progression</div>
+        <p style="font-size:12.5px;color:var(--muted);margin:10px 0 0;">Centred dialog. Cart, total and
+          <code>CART&nbsp;1/3</code> stay visible behind it. 0 rage clicks.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Traffic &amp; Engagement</span><h2>Cart page &mdash; pick any range</h2></div>
+    <div class="controls">
+      <div class="ctrl-row">
+        <span class="ctrl-label">Range</span>
+        <input type="date" id="from" aria-label="From date">
+        <span style="color:var(--faint)">&rarr;</span>
+        <input type="date" id="to" aria-label="To date">
+        <div class="seg" role="group" aria-label="Quick ranges">
+          <button data-preset="7">7d</button><button data-preset="14">14d</button><button data-preset="30">30d</button>
+        </div>
+        <span class="rangenote" id="rangenote"></span>
+      </div>
+    </div>
+    <div class="devlabel">Mobile</div>
+    <div class="kpis" id="kpisMobile"></div>
+    <div class="devlabel">Desktop</div>
+    <div class="kpis" id="kpisDesktop"></div>
+    <p class="note" style="font-size:12px;color:var(--faint);margin-top:8px;">Data covers 29 Jun&ndash;28 Jul 2026
+      (30 days stored).</p>
+    <div class="devlabel">Fixed snapshot (Clarity + lab, not date-filterable)</div>
+    <div class="kpis">
+      <div class="kpi"><div class="lbl">Mobile scroll depth</div><div class="num">80.9%</div></div>
+      <div class="kpi"><div class="lbl">Mobile rage / dead clicks</div><div class="num bad">538 / 2,545</div></div>
+      <div class="kpi"><div class="lbl">Mobile lab LCP (median of 3)</div><div class="num ok">524ms</div><div class="sub">good &middot; not a speed issue</div></div>
+      <div class="kpi"><div class="lbl">Desktop rage / dead clicks</div><div class="num ok">0 / 5</div></div>
+      <div class="kpi"><div class="lbl">Desktop lab LCP (median of 3)</div><div class="num ok">432ms</div><div class="sub">good &middot; 30 Jul</div></div>
+    </div>
+    <div class="devlabel">Checkout steps beyond cart (mobile, 7d) &mdash; low volume because most never get past the gate</div>
+    <div class="kpis">
+      <div class="kpi"><div class="lbl">Shipping — users</div><div class="num">149</div><div class="sub">65.3s engagement</div></div>
+      <div class="kpi"><div class="lbl">Payment — users</div><div class="num">63</div><div class="sub">28.3s engagement</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Behaviour</span><h2>What's actually being clicked on the cart page</h2></div>
+    <div class="twrap">
+      <table>
+        <thead><tr><th>Clicked element</th><th class="num">Weight</th><th>What it means</th></tr></thead>
+        <tbody>
+          <tr><td>"WELCOME TO LUCIRA" (login modal)</td><td class="num bad">16,483</td><td>The OTP gate itself, top rage-click target on this page</td></tr>
+          <tr><td>Overlay backdrop (blank)</td><td class="num bad">14,556</td><td>Users clicking outside the modal trying to dismiss it</td></tr>
+          <tr><td>"Your cart is empty" state</td><td class="num warn">6,415</td><td>Cart appearing empty behind/after the modal</td></tr>
+          <tr><td>Subtotal / savings</td><td class="num">4,950</td><td>Checking the total before deciding</td></tr>
+          <tr><td><code>Cart 1/3</code> step indicator</td><td class="num warn">4,654</td><td>Users clicking the progress indicator itself, hoping it advances the stalled flow</td></tr>
+          <tr><td>"REQUEST OTP" button</td><td class="num">1,201</td><td>Some users do attempt to proceed through the gate</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Issues</span><h2>What's actually wrong on this page type</h2></div>
+    <div class="twrap">
+      <table>
+        <thead><tr><th>Issue</th><th>Criticality</th><th>Status</th><th>Evidence</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><b>Mobile checkout is a full-screen OTP wall with no guest path</b> (F1)</td>
+            <td><span class="chip critical">Critical</span></td>
+            <td><span class="chip critical">Open &middot; re-confirmed live 29 Jul</span></td>
+            <td>7.3% vs 30.9% progression, 4.2&times; gap, 538 vs 0 rage clicks. Fix scoped as T1 (bottom sheet,
+              ~4hrs, Frontend) &mdash; not yet shipped.</td>
+          </tr>
+          <tr>
+            <td>No guest checkout option on either device</td>
+            <td><span class="chip critical">Critical</span></td>
+            <td><span class="chip high">Open</span></td>
+            <td>T2: add guest checkout, move phone capture to shipping step. Largest single prize in the plan,
+              needs real development.</td>
+          </tr>
+          <tr>
+            <td><code>begin_checkout</code> fires after OTP succeeds, not on the click</td>
+            <td><span class="chip high">High</span></td>
+            <td><span class="chip low">Open, measurement-only</span></td>
+            <td>T14: without this fix, the true cost of the OTP wall is invisible in GA4 &mdash; the event only
+              fires for people who already got through it.</td>
+          </tr>
+          <tr>
+            <td>Spin-wheel popup rage-clicked sitewide, including here</td>
+            <td><span class="chip high">High</span></td>
+            <td><span class="chip high">Blocked &middot; T7, auth dependency</span></td>
+            <td>Same NitroCommerce popup implicated on the homepage. T7 confirmed blocked on 30 Jul &mdash; see
+              interim mitigation in <a href="insights.html">Insights</a>.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Read</span><h2>What the live view above shows</h2></div>
+    <div class="banner alarm">
+      <p style="margin:0;"><b>This is the most qualified traffic on the entire site.</b> Across every range in the
+        filter above, engagement rate runs 90%+ on both devices with a near-zero new-user share &mdash; confirming
+        cart visitors are committed shoppers who already browsed and added an item, not casual traffic. Every
+        session lost to the OTP wall here is a near-certain buyer, which is why T1/T2 outrank almost everything
+        else in the plan on impact-per-fix.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Recommendations</span><h2>What to do next, by device</h2></div>
+    <div class="split">
+      <div class="card">
+        <h4>Mobile</h4>
+        <ol class="rec-list">
+          <li>Ship T1 (bottom sheet) first &mdash; of every fix on the site, this one acts on the most qualified,
+            highest-intent traffic (97% engaged, 1.4% new).</li>
+          <li>T2 (guest checkout) is the structural fix behind T1's layout change &mdash; sequence them together
+            where possible rather than shipping the layout fix alone and stopping.</li>
+          <li>Ship T14 (fire <code>begin_checkout</code> on the click, not after OTP) alongside T1/T2 &mdash;
+            without it, T1's impact will be invisible in GA4.</li>
+        </ol>
+      </div>
+      <div class="card">
+        <h4>Desktop</h4>
+        <ol class="rec-list">
+          <li>No cart-specific desktop work needed &mdash; 92.8% engagement and 144.6s average duration are healthy,
+            and this is the proof that the centred-dialog pattern (vs mobile's full-screen takeover) works.</li>
+          <li>Use desktop's <code>CART&nbsp;1/3</code> progress-visible pattern as the reference design when building
+            T1's mobile bottom sheet.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Evidence</span><h2>Live capture, 29 Jul</h2></div>
+    <div class="split">
+      <figure style="margin:0;background:var(--surface);border:1px solid var(--line);border-radius:8px;overflow:hidden;">
+        <img src="captures/gate-3-after_checkout_click-mobile.png" alt="Mobile checkout gate after clicking Proceed to Checkout" style="width:100%;display:block;">
+        <figcaption style="padding:10px 13px;font-size:12px;color:var(--muted);border-top:1px solid var(--line);">Mobile:
+          full-screen takeover after "Proceed to Checkout" &mdash; cart and total gone from view.</figcaption>
+      </figure>
+      <figure style="margin:0;background:var(--surface);border:1px solid var(--line);border-radius:8px;overflow:hidden;">
+        <img src="captures/gate-3-after_checkout_click-desktop.png" alt="Desktop checkout gate after clicking Proceed to Checkout" style="width:100%;display:block;">
+        <figcaption style="padding:10px 13px;font-size:12px;color:var(--muted);border-top:1px solid var(--line);">Desktop:
+          centred dialog &mdash; cart, total and step progress stay visible.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <div class="foot">
+    Sources: GA4 (30d page-level for the filter above, 7d checkout steps), Microsoft Clarity element-click data,
+    Playwright <code>checkout-gate.js</code> + <code>cro_vitals</code> (29&ndash;30 Jul). Full narrative in
+    <a href="insights.html">Insights</a>; tasks tracked in <a href="action_plan.html">Action Plan</a> (T1, T2, T7, T14).
+  </div>
+
+</div>
+
+<script>
+const DATA = [{"d":"2026-06-29","dev":"desktop","s":12,"eng":12,"dur":293.2,"pps":3.50,"nu":1,"tu":11,"b":0.00},{"d":"2026-06-30","dev":"desktop","s":16,"eng":14,"dur":137.0,"pps":1.50,"nu":1,"tu":14,"b":12.50},{"d":"2026-07-01","dev":"desktop","s":24,"eng":21,"dur":232.9,"pps":1.88,"nu":0,"tu":20,"b":12.50},{"d":"2026-07-02","dev":"desktop","s":17,"eng":17,"dur":66.9,"pps":1.47,"nu":0,"tu":15,"b":0.00},{"d":"2026-07-03","dev":"desktop","s":23,"eng":19,"dur":138.4,"pps":1.57,"nu":0,"tu":19,"b":17.39},{"d":"2026-07-04","dev":"desktop","s":11,"eng":8,"dur":29.8,"pps":1.09,"nu":0,"tu":10,"b":27.27},{"d":"2026-07-05","dev":"desktop","s":5,"eng":5,"dur":178.8,"pps":2.60,"nu":1,"tu":5,"b":0.00},{"d":"2026-07-06","dev":"desktop","s":11,"eng":9,"dur":231.0,"pps":3.09,"nu":0,"tu":9,"b":18.18},{"d":"2026-07-07","dev":"desktop","s":15,"eng":14,"dur":138.3,"pps":2.67,"nu":0,"tu":14,"b":6.67},{"d":"2026-07-08","dev":"desktop","s":36,"eng":34,"dur":247.1,"pps":3.19,"nu":1,"tu":24,"b":5.56},{"d":"2026-07-09","dev":"desktop","s":29,"eng":26,"dur":115.6,"pps":1.45,"nu":0,"tu":20,"b":10.34},{"d":"2026-07-10","dev":"desktop","s":40,"eng":33,"dur":89.0,"pps":2.92,"nu":0,"tu":28,"b":17.50},{"d":"2026-07-11","dev":"desktop","s":23,"eng":18,"dur":123.1,"pps":2.04,"nu":1,"tu":15,"b":21.74},{"d":"2026-07-12","dev":"desktop","s":7,"eng":7,"dur":236.8,"pps":1.00,"nu":0,"tu":6,"b":0.00},{"d":"2026-07-13","dev":"desktop","s":21,"eng":20,"dur":144.4,"pps":3.43,"nu":0,"tu":19,"b":4.76},{"d":"2026-07-14","dev":"desktop","s":23,"eng":22,"dur":35.8,"pps":1.57,"nu":0,"tu":19,"b":4.35},{"d":"2026-07-15","dev":"desktop","s":28,"eng":22,"dur":158.8,"pps":4.21,"nu":0,"tu":19,"b":21.43},{"d":"2026-07-16","dev":"desktop","s":29,"eng":26,"dur":92.4,"pps":2.28,"nu":0,"tu":24,"b":10.34},{"d":"2026-07-17","dev":"desktop","s":34,"eng":30,"dur":152.3,"pps":2.15,"nu":0,"tu":25,"b":11.76},{"d":"2026-07-18","dev":"desktop","s":31,"eng":29,"dur":90.5,"pps":1.65,"nu":1,"tu":18,"b":6.45},{"d":"2026-07-19","dev":"desktop","s":6,"eng":6,"dur":71.9,"pps":2.17,"nu":0,"tu":6,"b":0.00},{"d":"2026-07-20","dev":"desktop","s":20,"eng":15,"dur":123.7,"pps":1.45,"nu":0,"tu":14,"b":25.00},{"d":"2026-07-21","dev":"desktop","s":18,"eng":18,"dur":52.7,"pps":1.67,"nu":0,"tu":15,"b":0.00},{"d":"2026-07-22","dev":"desktop","s":11,"eng":11,"dur":217.2,"pps":1.64,"nu":0,"tu":10,"b":0.00},{"d":"2026-07-23","dev":"desktop","s":13,"eng":12,"dur":115.1,"pps":1.54,"nu":0,"tu":11,"b":7.69},{"d":"2026-07-24","dev":"desktop","s":13,"eng":12,"dur":51.3,"pps":1.77,"nu":0,"tu":12,"b":7.69},{"d":"2026-07-25","dev":"desktop","s":23,"eng":22,"dur":107.0,"pps":1.87,"nu":0,"tu":15,"b":4.35},{"d":"2026-07-26","dev":"desktop","s":13,"eng":11,"dur":94.9,"pps":2.38,"nu":0,"tu":9,"b":15.38},{"d":"2026-07-27","dev":"desktop","s":33,"eng":30,"dur":83.2,"pps":1.85,"nu":0,"tu":22,"b":9.09},{"d":"2026-07-28","dev":"desktop","s":20,"eng":19,"dur":354.0,"pps":2.40,"nu":1,"tu":18,"b":5.00},{"d":"2026-06-29","dev":"mobile","s":295,"eng":288,"dur":67.1,"pps":1.29,"nu":2,"tu":271,"b":2.37},{"d":"2026-06-30","dev":"mobile","s":329,"eng":322,"dur":59.8,"pps":1.40,"nu":5,"tu":297,"b":2.13},{"d":"2026-07-01","dev":"mobile","s":306,"eng":295,"dur":54.1,"pps":1.60,"nu":1,"tu":273,"b":3.59},{"d":"2026-07-02","dev":"mobile","s":322,"eng":314,"dur":30.1,"pps":1.30,"nu":2,"tu":301,"b":2.48},{"d":"2026-07-03","dev":"mobile","s":351,"eng":340,"dur":59.9,"pps":1.38,"nu":1,"tu":312,"b":3.13},{"d":"2026-07-04","dev":"mobile","s":330,"eng":320,"dur":47.1,"pps":1.36,"nu":4,"tu":304,"b":3.03},{"d":"2026-07-05","dev":"mobile","s":290,"eng":283,"dur":49.2,"pps":1.34,"nu":5,"tu":278,"b":2.41},{"d":"2026-07-06","dev":"mobile","s":294,"eng":290,"dur":66.8,"pps":1.34,"nu":2,"tu":267,"b":1.36},{"d":"2026-07-07","dev":"mobile","s":314,"eng":307,"dur":45.7,"pps":1.28,"nu":5,"tu":296,"b":2.23},{"d":"2026-07-08","dev":"mobile","s":329,"eng":322,"dur":53.8,"pps":1.32,"nu":3,"tu":305,"b":2.13},{"d":"2026-07-09","dev":"mobile","s":306,"eng":297,"dur":35.8,"pps":1.42,"nu":3,"tu":279,"b":2.94},{"d":"2026-07-10","dev":"mobile","s":321,"eng":309,"dur":49.5,"pps":1.25,"nu":7,"tu":289,"b":3.74},{"d":"2026-07-11","dev":"mobile","s":270,"eng":264,"dur":39.8,"pps":1.28,"nu":4,"tu":254,"b":2.22},{"d":"2026-07-12","dev":"mobile","s":311,"eng":297,"dur":38.2,"pps":1.32,"nu":2,"tu":287,"b":4.50},{"d":"2026-07-13","dev":"mobile","s":268,"eng":257,"dur":66.4,"pps":1.36,"nu":3,"tu":249,"b":4.10},{"d":"2026-07-14","dev":"mobile","s":294,"eng":287,"dur":46.8,"pps":1.31,"nu":3,"tu":276,"b":2.38},{"d":"2026-07-15","dev":"mobile","s":305,"eng":295,"dur":44.1,"pps":1.53,"nu":4,"tu":283,"b":3.28},{"d":"2026-07-16","dev":"mobile","s":349,"eng":338,"dur":42.2,"pps":1.51,"nu":4,"tu":322,"b":3.15},{"d":"2026-07-17","dev":"mobile","s":375,"eng":366,"dur":51.3,"pps":1.45,"nu":3,"tu":349,"b":2.40},{"d":"2026-07-18","dev":"mobile","s":330,"eng":322,"dur":44.9,"pps":1.47,"nu":2,"tu":307,"b":2.42},{"d":"2026-07-19","dev":"mobile","s":355,"eng":344,"dur":42.6,"pps":1.53,"nu":2,"tu":329,"b":3.10},{"d":"2026-07-20","dev":"mobile","s":339,"eng":331,"dur":35.4,"pps":1.38,"nu":3,"tu":319,"b":2.36},{"d":"2026-07-21","dev":"mobile","s":318,"eng":313,"dur":47.5,"pps":1.34,"nu":2,"tu":295,"b":1.57},{"d":"2026-07-22","dev":"mobile","s":338,"eng":326,"dur":36.9,"pps":1.30,"nu":1,"tu":308,"b":3.55},{"d":"2026-07-23","dev":"mobile","s":332,"eng":316,"dur":52.7,"pps":1.29,"nu":10,"tu":311,"b":4.82},{"d":"2026-07-24","dev":"mobile","s":336,"eng":331,"dur":47.4,"pps":1.51,"nu":4,"tu":316,"b":1.49},{"d":"2026-07-25","dev":"mobile","s":331,"eng":321,"dur":38.4,"pps":1.41,"nu":2,"tu":297,"b":3.02},{"d":"2026-07-26","dev":"mobile","s":364,"eng":356,"dur":41.3,"pps":1.36,"nu":3,"tu":343,"b":2.20},{"d":"2026-07-27","dev":"mobile","s":361,"eng":350,"dur":40.6,"pps":1.45,"nu":3,"tu":327,"b":3.05},{"d":"2026-07-28","dev":"mobile","s":338,"eng":328,"dur":52.0,"pps":1.38,"nu":4,"tu":308,"b":2.96}];
+
+const $ = s => document.querySelector(s);
+const fmt = n => n===null||n===undefined||isNaN(n) ? "—" : Math.round(n).toLocaleString("en-IN");
+const pct = (n,d=1) => n===null||n===undefined||isNaN(n) ? "—" : n.toFixed(d)+"%";
+const bounceCls = v => v==null?"":(v<=30?"ok":v>=50?"bad":"warn");
+const engCls = v => v==null?"":(v>=60?"ok":v<40?"bad":"warn");
+
+const maxDate = DATA.reduce((m,r)=>r.d>m?r.d:m, DATA[0].d);
+const minDate = DATA.reduce((m,r)=>r.d<m?r.d:m, DATA[0].d);
+const shift = (d,n) => { const x = new Date(d); x.setDate(x.getDate()+n); return x.toISOString().slice(0,10); };
+let state = { from:null, to:null };
+
+function slice(from, to, dev){
+  const rows = DATA.filter(r => r.dev===dev && r.d>=from && r.d<=to);
+  const s = rows.reduce((a,r)=>a+r.s,0);
+  const eng = rows.reduce((a,r)=>a+r.eng,0);
+  const nu = rows.reduce((a,r)=>a+r.nu,0);
+  const tu = rows.reduce((a,r)=>a+r.tu,0);
+  const dur = s ? rows.reduce((a,r)=>a+r.dur*r.s,0)/s : null;
+  const pps = s ? rows.reduce((a,r)=>a+r.pps*r.s,0)/s : null;
+  const b = s ? rows.reduce((a,r)=>a+r.b*r.s,0)/s : null;
+  return { sessions:s, users:tu, engRate: s?eng/s*100:null, dur, pps, newPct: tu?nu/tu*100:null, bounce:b };
+}
+
+function kpiHTML(d){
+  const rows = [
+    ["Sessions", fmt(d.sessions), ""],
+    ["Users", fmt(d.users), ""],
+    ["Bounce rate", pct(d.bounce), bounceCls(d.bounce)],
+    ["Engagement rate", pct(d.engRate), engCls(d.engRate)],
+    ["Avg session duration", d.dur!=null?d.dur.toFixed(1)+"s":"—", ""],
+    ["Pages / session", d.pps!=null?d.pps.toFixed(2):"—", ""],
+    ["New users", pct(d.newPct), ""]
+  ];
+  return rows.map(([l,v,c]) => '<div class="kpi"><div class="lbl">'+l+'</div><div class="num '+c+'">'+v+'</div></div>').join("");
+}
+
+function render(){
+  $("#kpisMobile").innerHTML = kpiHTML(slice(state.from, state.to, "mobile"));
+  $("#kpisDesktop").innerHTML = kpiHTML(slice(state.from, state.to, "desktop"));
+  const days = Math.round((new Date(state.to) - new Date(state.from))/864e5) + 1;
+  $("#rangenote").textContent = state.from + " → " + state.to + " (" + days + (days===1?" day)":" days)");
+}
+
+function setPreset(n){
+  state.to = maxDate;
+  state.from = n >= 30 ? minDate : shift(state.to, -(n-1));
+  if (state.from < minDate) state.from = minDate;
+  $("#from").value = state.from; $("#to").value = state.to;
+}
+
+document.querySelectorAll("[data-preset]").forEach(b => b.addEventListener("click", () => {
+  setPreset(+b.dataset.preset);
+  document.querySelectorAll("[data-preset]").forEach(x => x.setAttribute("aria-pressed", String(x===b)));
+  render();
+}));
+$("#from").addEventListener("change", e => { state.from = e.target.value;
+  if (state.from > state.to){ state.to = state.from; $("#to").value = state.to; }
+  document.querySelectorAll("[data-preset]").forEach(x => x.setAttribute("aria-pressed","false"));
+  render(); });
+$("#to").addEventListener("change", e => { state.to = e.target.value;
+  if (state.to < state.from){ state.from = state.to; $("#from").value = state.from; }
+  document.querySelectorAll("[data-preset]").forEach(x => x.setAttribute("aria-pressed","false"));
+  render(); });
+
+setPreset(30);
+document.querySelector('[data-preset="30"]').setAttribute("aria-pressed","true");
+render();
+</script>
+</body>
+</html>

@@ -126,16 +126,39 @@
   .divider{margin:48px 0 30px;border-top:2px solid var(--accent);padding-top:16px;}
   .foot{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);font-size:11.5px;color:var(--faint);}
   .foot .g{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:9px 18px;margin-top:9px;}
+
+  .hubnav{background:var(--surface);border-bottom:1px solid var(--line-strong);}
+  .hubnav .inner{max-width:1080px;margin:0 auto;padding:11px 22px;display:flex;flex-wrap:wrap;align-items:center;gap:5px;}
+  .hubnav a{font-size:12.5px;font-weight:600;color:var(--muted);text-decoration:none;padding:6px 13px;border-radius:100px;white-space:nowrap;}
+  .hubnav a:hover{background:var(--raise);color:var(--ink);}
+  .hubnav a.active{background:var(--accent);color:#fff;}
+  .hubnav .sep{color:var(--faint);font-size:12px;margin:0 2px;}
 </style>
+
+<nav class="hubnav"><div class="inner">
+  <a href="index.html">Reports Home</a><span class="sep">&middot;</span>
+  <a href="insights.html" class="active">Insights</a>
+  <a href="action_plan.html">Action Plan</a>
+  <a href="interactive.html">Interactive Dashboard</a>
+  <a href="connectors.html">Connectors</a>
+</div></nav>
+<nav class="subnav" style="background:var(--raise);border-bottom:1px solid var(--line);"><div class="inner" style="max-width:1080px;margin:0 auto;padding:9px 22px;display:flex;flex-wrap:wrap;align-items:center;gap:4px;">
+  <span style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);font-weight:700;margin-right:8px;">Page-by-page</span>
+  <a href="page-homepage.html" style="font-size:12.5px;font-weight:600;color:var(--muted);text-decoration:none;padding:5px 12px;border-radius:6px;">Homepage</a>
+  <a href="page-plp.html" style="font-size:12.5px;font-weight:600;color:var(--muted);text-decoration:none;padding:5px 12px;border-radius:6px;">Collection (PLP)</a>
+  <a href="page-pdp.html" style="font-size:12.5px;font-weight:600;color:var(--muted);text-decoration:none;padding:5px 12px;border-radius:6px;">Product (PDP)</a>
+  <a href="page-cart-checkout.html" style="font-size:12.5px;font-weight:600;color:var(--muted);text-decoration:none;padding:5px 12px;border-radius:6px;">Cart &amp; Checkout</a>
+  <a href="page-traffic-ads.html" style="font-size:12.5px;font-weight:600;color:var(--muted);text-decoration:none;padding:5px 12px;border-radius:6px;">Traffic &amp; Meta/Ads</a>
+</div></nav>
 
 <div class="page">
 
   <div class="masthead">
-    <div class="eyebrow">AI CRO Analyst — Run 005 · Full Insight Pass</div>
+    <div class="eyebrow">AI CRO Analyst — Run 005 · Full Insight Pass <span style="color:var(--critical)">+ Update 30 Jul</span></div>
     <h1>Lucira Jewelry</h1>
     <div class="meta">
-      <span>Generated 28 Jul 2026</span>
-      <span>Analytics: 27 May – 26 Jul 2026 · Behaviour: 12–26 Jul · Lab: measured live 28 Jul</span>
+      <span>Generated 28 Jul 2026 · addendum 30 Jul 2026</span>
+      <span>Analytics: 27 May – 28 Jul 2026 · Behaviour: 12–28 Jul · Lab: measured live 28 & 30 Jul · Ads: pulled 30 Jul</span>
       <span>Online storefront only — 127 ERP/store orders excluded</span>
     </div>
   </div>
@@ -436,14 +459,20 @@
             <tbody>
               <tr><td class="url">/ (mobile)</td><td class="num ok">1,908</td><td class="num warn">3,796</td><td class="num ok">181</td></tr>
               <tr><td class="url">/collections/eterna</td><td class="num ok">1,876</td><td class="num ok">2,872</td><td class="num ok">126</td></tr>
-              <tr><td class="url">/products/corinthian…</td><td class="num ok">2,412</td><td class="num warn">3,392</td><td class="num ok">95</td></tr>
+              <tr><td class="url">/products/corinthian… (mobile)</td><td class="num ok">2,412</td><td class="num warn">3,392</td><td class="num ok">95</td></tr>
+              <tr style="background:var(--critical-bg)"><td class="url">/products/corinthian… <b>(desktop)</b></td><td class="num bad">16,988</td><td class="num dim">not yet measured</td><td class="num ok">72</td></tr>
               <tr><td class="url">/checkout/cart</td><td class="num ok">704</td><td class="num warn">3,568</td><td class="num ok">179</td></tr>
             </tbody>
           </table>
         </div>
-        <p class="measure" style="margin:12px 0 0;font-size:13px;"><b>The origin and CDN are fine.</b> TTFB is
-          95–181 ms and lab LCP is 0.7–2.4 s — all inside “good”. The field median is roughly 1.5–5× slower, which
-          points at real-user devices and networks, not at server response.</p>
+        <p class="measure" style="margin:10px 0 0;font-size:13px;background:var(--critical-bg);border-left:3px solid var(--critical);padding:8px 10px;border-radius:4px;">
+          <b>Update, 30 Jul:</b> the desktop PDP row above was added after re-measuring with <code>cro_vitals</code>
+          (median of 3 clean runs — 16,604 / 16,988 / 17,164 ms). This was <b>not in the original Run 005 capture</b>,
+          which only reported the mobile figure for this page. See "Update — 30 Jul" below.</p>
+        <p class="measure" style="margin:9px 0 0;font-size:13px;"><b>The origin and CDN are fine.</b> TTFB is
+          95–181 ms and mobile lab LCP is 0.7–2.4 s — all inside “good”. The field median is roughly 1.5–5× slower, which
+          points at real-user devices and networks, not at server response. Desktop PDP is the one page where the lab
+          number itself is already "poor" — see above.</p>
         <p class="measure" style="margin:9px 0 0;font-size:13px;">That reframes the recommendation: speed work belongs
           in <b>payload weight and render path</b> — image sizes, third-party script count, main-thread work — not in
           origin or hosting. Notably, the site loads <b>14 third-party script hosts</b>, including two separate
@@ -456,11 +485,12 @@
           <div class="brow"><span class="u">/collections/eterna (mobile)</span><div class="track"><div class="fill good" style="width:33%"></div></div><span class="v">0.049</span></div>
           <div class="brow"><span class="u">/products/corinthian… (mobile)</span><div class="track"><div class="fill good" style="width:36%"></div></div><span class="v">0.054</span></div>
           <div class="brow"><span class="u">/checkout/cart (mobile)</span><div class="track"><div class="fill good" style="width:2%"></div></div><span class="v">0.001</span></div>
-          <div class="brow"><span class="u">/collections/eterna (desktop)</span><div class="track"><div class="fill warn" style="width:100%"></div></div><span class="v">0.154</span></div>
+          <div class="brow"><span class="u">/collections/eterna (desktop)</span><div class="track"><div class="fill good" style="width:3%"></div></div><span class="v">0.004</span></div>
         </div>
-        <p class="note">Good ≤0.1. Mobile CLS is healthy at 0.05–0.06 — better than the ~0.09 Clarity reported. The one
-          outlier is the desktop collection page at <b>0.154</b>, which is in “needs improvement”: something shifts
-          during load there. Single measurement, worth re-running before acting.</p>
+        <p class="note">Good ≤0.1. Mobile CLS is healthy at 0.05–0.06 — better than the ~0.09 Clarity reported.
+          <b>Update, 30 Jul:</b> the desktop collection-page figure shown here is corrected from the original 0.154.
+          Re-measured across 3 clean <code>cro_vitals</code> runs at 0.004–0.005 — the original single-run reading was
+          noise, not a real layout shift. See "Corrections from this run" below.</p>
       </div>
     </div>
   </section>
@@ -650,6 +680,11 @@
           <tr><td><b>Run 003:</b> “Curated collections beat generic ones — diff the templates.”</td>
               <td><span class="chip critical">wrong</span></td>
               <td>Templates are identical. The gap is channel: Paid Social bounces 62–100% everywhere.</td></tr>
+          <tr><td><b>Run 005:</b> desktop collection-page CLS is <b>0.154</b> ("needs improvement").</td>
+              <td><span class="chip critical">wrong</span></td>
+              <td>This document itself flagged it as a single measurement needing a re-run. 30 Jul: 3 clean
+                <code>cro_vitals</code> runs measured <b>0.004–0.005</b> — roughly 30× lower. Noise from the
+                original single-run capture, not a real defect. The corresponding action-plan task (T5) is dismissed.</td></tr>
         </tbody>
       </table>
     </div>
@@ -678,14 +713,140 @@
     </ul>
   </section>
 
+  <div class="divider">
+    <div class="eyebrow" style="color:var(--critical)">Added 30 Jul 2026 — two days after Run 005</div>
+    <h2 style="font-size:24px;margin:6px 0 6px;">Update — what shipped, what moved, and what's new</h2>
+    <p class="measure" style="margin:0;font-size:13.5px;color:var(--muted);">
+      One reported production change was checked live. Data now runs through 28 Jul. A deeper pass through Google
+      Ads surfaced an account-wide version of a problem this report already flagged. Search Console data could not
+      be pulled this round — see the gap noted at the end.</p>
+  </div>
+
+  <section>
+    <div class="sec-head"><span class="tag">Monitoring</span><h2>The reviews fix: reported shipped, not detected live</h2></div>
+    <div class="banner alarm">
+      <p style="margin:0 0 9px;"><b>What was reported:</b> the review section was moved up on PDPs.
+        <b>What Playwright found:</b> checked live on two products (Corinthian Pave Diamond Men's Ring, 7.80ct Pear
+        Diamond Tennis Bracelet) with a fresh Clarity scroll-depth figure (17.93%, essentially unchanged from the
+        18.3% used in the original acceptance test). On both, <code>Customer Reviews</code> still sits at
+        <b>47–48% page depth</b> — identical to Run 005 — and a broad search for any star-rating summary badge
+        (★, "out of 5", review count) found nothing higher up the page.</p>
+      <p style="margin:0;"><b>Recommendation:</b> don't mark this done yet. Three likely explanations, in order of
+        probability: (1) a phased/template rollout that hasn't reached these two products, (2) a CDN/cache layer
+        still serving the old page, (3) the change shipped somewhere other than the PDP template itself. Confirm
+        directly with whoever deployed it which product(s) and environment were touched, then re-run
+        <code>cro_fold_analysis</code> on that exact URL before crediting the fix. This finding (F3) stays open.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Monitoring</span><h2>The popup fix: confirmed blocked, not just delayed</h2></div>
+    <p class="measure" style="font-size:13.5px;">T7 (suppress the popup on a session's first page view) turns out to
+      be entangled with the same auth system as the checkout OTP gate (T1) — it can't ship as the quick config-only
+      change originally scoped. <b>Recommendation:</b> don't wait on the full auth rework to get relief. Ask whoever
+      owns the NitroCommerce popup tool for an interim, config-only mitigation in the meantime — e.g. raising the
+      trigger delay or session-view threshold — which needs no auth work and would blunt the worst of it (2,221
+      homepage popup/login clicks vs 215 on real navigation) while the real fix is built. Re-verify with
+      <code>cro_overlay_audit</code> once anything changes.</p>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Trend</span><h2>Day-over-day and week-over-week movement</h2></div>
+    <div class="split">
+      <div class="card">
+        <h4>28 Jul vs 27 Jul (latest complete day)</h4>
+        <table style="width:100%;font-size:13px;">
+          <tbody>
+            <tr><td>Sessions</td><td class="num">15,611</td><td class="num warn">−8.9%</td></tr>
+            <tr><td>Add-to-cart rate</td><td class="num">2.53%</td><td class="num ok">+18.1%</td></tr>
+            <tr><td>Cart → checkout</td><td class="num">14.50%</td><td class="num warn">−13.0%</td></tr>
+            <tr><td>Purchases</td><td class="num">1</td><td class="num dim">−50% (base of 1–2/day — noise)</td></tr>
+            <tr><td>Rage clicks / 1k sessions</td><td class="num bad">31.3</td><td class="num bad">+75.0%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card">
+        <h4>22–28 Jul vs the prior 7 days (15–21 Jul)</h4>
+        <table style="width:100%;font-size:13px;">
+          <tbody>
+            <tr><td>Sessions</td><td class="num">1,05,499</td><td class="num ok">+3.7%</td></tr>
+            <tr><td>Add-to-cart rate</td><td class="num">2.28%</td><td class="num warn">−11.6%</td></tr>
+            <tr><td>Cart → checkout</td><td class="num">14.98%</td><td class="num bad">−25.6%</td></tr>
+            <tr><td>Purchases (7d)</td><td class="num">14</td><td class="num warn">−12.5%</td></tr>
+            <tr><td>Rage clicks / 1k sessions</td><td class="num">21.1</td><td class="num ok">−26.3%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="measure" style="margin:12px 0 0;font-size:13px;"><b>Read carefully, not alarmingly:</b> cart→checkout
+      is down in both windows (−13% day, −25.6% week) — the same direction twice is more meaningful than either alone,
+      worth watching but not yet a fixed conclusion at this purchase volume (14/week). The day-over-day rage-click
+      spike (+75%) is one day's data on a low base (31.3 per 1k vs a 21.1 weekly average) — flag it, don't act on it,
+      until it repeats. This view is now permanent on the <a href="interactive.html">Interactive Dashboard</a>
+      ("Pulse" section) so it no longer needs a manual range-picker to see.</p>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Ads</span><h2>Google Ads, one layer deeper: the conversion problem is account-wide</h2></div>
+    <p class="measure" style="font-size:13.5px;">T9/T10 already flagged that campaign "conversions" blend Purchase,
+      Begin Checkout and upload-based actions. Pulling all enabled campaigns' 30-day totals shows exactly how far
+      that goes, and surfaces a second, separate problem: real spend with no recorded return.</p>
+    <div class="kpis" style="margin-bottom:18px;">
+      <div class="kpi"><div class="lbl">Total Ads spend, 30d (enabled campaigns)</div><div class="num">₹9,68,304</div></div>
+      <div class="kpi"><div class="lbl">Spend on 8 non-video campaigns, 0 conversions</div><div class="num bad">₹1,07,223</div></div>
+      <div class="kpi"><div class="lbl">Share of total spend</div><div class="num warn">11.1%</div></div>
+      <div class="kpi"><div class="lbl">Highest per-conversion value seen</div><div class="num">₹28,175</div><div class="sub">Gold Products shopping</div></div>
+      <div class="kpi"><div class="lbl">Lowest per-conversion value seen</div><div class="num">₹1.00</div><div class="sub">Performance Max — click-style action</div></div>
+    </div>
+    <div class="twrap">
+      <table>
+        <thead><tr><th>Campaign</th><th>Type</th><th class="num">30d spend</th><th class="num">Conversions</th><th>Note</th></tr></thead>
+        <tbody>
+          <tr><td>Display retargeting (01.12.2025)</td><td>Display</td><td class="num bad">₹22,156</td><td class="num">0</td><td>Retargeting with zero return is the most surprising line here</td></tr>
+          <tr><td>Embrace acquisition (11.07.2026)</td><td>Demand Gen</td><td class="num bad">₹18,219</td><td class="num">0</td><td>New-ish campaign, still nothing</td></tr>
+          <tr><td>ROC-except-store retargeting (12.01.2026)</td><td>Demand Gen</td><td class="num bad">₹14,756</td><td class="num">0.26</td><td>Effectively zero</td></tr>
+          <tr><td>Noida local search (GMB, 14.04.2026)</td><td>Search</td><td class="num bad">₹14,702</td><td class="num">0</td><td>Pune/Chembur/Borivali GMB campaigns all show 12–60 conversions — Noida specifically shows none</td></tr>
+          <tr><td>"Store city" retargeting (12.01.2026)</td><td>Demand Gen</td><td class="num bad">₹13,352</td><td class="num">0</td><td>Bottom-of-funnel retargeting is normally the highest-converting stage</td></tr>
+          <tr><td>Pan-India "checkout" campaign (16.03.2026)</td><td>Demand Gen</td><td class="num bad">₹11,818</td><td class="num">0</td><td><b>12,173 clicks, zero conversions</b> — named for checkout intent yet the widest click/conversion gap in the account</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="measure" style="margin:12px 0 0;font-size:13px;">(2 smaller lines — a same-audience retargeting variant
+      at ₹4,569 and a new Shopping campaign 5 days old at ₹3,559 — omitted here as too new or too small to read yet.
+      6 YouTube awareness campaigns totalling ₹23,117 also show 0 conversions but aren't included above: video/top-
+      funnel spend isn't expected to convert directly.)</p>
+    <div class="banner alarm" style="margin-top:14px;">
+      <p style="margin:0;"><b>Recommendation:</b> pause-and-review the 6 campaigns in the table above pending
+        investigation — ₹95,003 of the ₹1,07,223 sits in genuinely concerning categories (retargeting and
+        checkout-intent campaigns that should convert). Prioritise the pan-India checkout campaign first: 12,173
+        clicks for zero recorded conversions is either a tracking gap (most likely, given T13's open Web Pixel
+        investigation) or a real landing-page/audience mismatch — find out which before cutting spend. Separately,
+        before trusting any blended ROAS number in this account, segment "conversions" by action type — a
+        Performance Max campaign shows 758 "conversions" worth ₹758 (₹1 each, clearly a click-style action) in the
+        same column as a Shopping campaign showing 210 conversions worth ₹59.3L (~₹28,175 each, clearly real
+        purchase value). Averaging these together, which is what account-level ROAS does today, is not a meaningful
+        number.</p>
+    </div>
+  </section>
+
+  <section style="margin-bottom:0;">
+    <div class="sec-head"><span class="tag">Gap</span><h2>What couldn't be pulled this round</h2></div>
+    <p class="measure" style="font-size:13.5px;color:var(--muted);">Google Search Console was attempted (site
+      snapshot, quick-wins, CTR opportunities) and failed consistently with an <code>invalid_client</code>
+      authentication error — a connector configuration issue, not a data or rate-limit problem. Organic search
+      visibility, ranking positions and CTR-vs-position opportunities are not represented anywhere in this report as
+      a result. Reconnect the Search Console MCP connector before the next deep-dive if that view is wanted.</p>
+  </section>
+
   <div class="foot">
     <div>Sources</div>
     <div class="g">
-      <div>GA4 — property 478308692 · 61 days daily, funnels, pages, channels</div>
-      <div>Microsoft Clarity — ro0m9zh071 · 12–26 Jul, clicks, scroll, vitals, JS errors</div>
+      <div>GA4 — property 478308692 · 63 days daily, funnels, pages, channels</div>
+      <div>Microsoft Clarity — ro0m9zh071 · 12–28 Jul, clicks, scroll, vitals, JS errors</div>
       <div>Shopify Admin — orders segmented by sourceName + tags</div>
-      <div>Google Ads — account 2348623547 · spend &amp; conversion config</div>
-      <div>Playwright 1.49 / Chromium 151 — live measurement, 28 Jul 2026</div>
+      <div>Google Ads — account 2348623547 · full 30d campaign-level spend &amp; conversion pull, 30 Jul 2026</div>
+      <div>Playwright 1.49 / Chromium 151 — live measurement, 28 &amp; 30 Jul 2026</div>
+      <div>Google Search Console — attempted 30 Jul, failed (invalid_client) — not represented in this report</div>
     </div>
   </div>
 

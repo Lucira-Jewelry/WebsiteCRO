@@ -75,6 +75,14 @@
   .kpi .dl{font-size:11.5px;margin-top:3px;font-variant-numeric:tabular-nums;font-weight:600;}
   .dl.up{color:var(--good);} .dl.down{color:var(--critical);} .dl.flat{color:var(--faint);font-weight:500;}
 
+  /* ---- pulse: fixed day-over-day / week-over-week, independent of the range picker ---- */
+  .pulse{margin-bottom:26px;}
+  .pulse-block{margin-bottom:14px;} .pulse-block:last-child{margin-bottom:0;}
+  .pulse-label{font-size:11.5px;letter-spacing:.04em;color:var(--muted);font-weight:600;margin-bottom:8px;
+    font-variant-numeric:tabular-nums;}
+  .pulse-label b{color:var(--ink);}
+  .pulse .kpis{margin-bottom:0;}
+
   section{margin-bottom:38px;}
   .sec-head{display:flex;align-items:baseline;gap:12px;margin-bottom:14px;padding-bottom:8px;
     border-bottom:1px solid var(--line);}
@@ -167,7 +175,29 @@
   @media (max-width:760px){ .hm-row{grid-template-columns:1fr 62px;} .hm-b{display:none;} }
   @media (max-width:760px){ .split{grid-template-columns:1fr;} .fold-row{grid-template-columns:1fr 58px;} .fold-row .m{display:none;} }
   @media (max-width:640px){ .masthead h1{font-size:28px;} .controls{position:static;} }
+  .hubnav{background:var(--surface);border-bottom:1px solid var(--line-strong);}
+  .hubnav .inner{max-width:1080px;margin:0 auto;padding:11px 22px;display:flex;flex-wrap:wrap;align-items:center;gap:5px;}
+  .hubnav a{font-size:12.5px;font-weight:600;color:var(--muted);text-decoration:none;padding:6px 13px;border-radius:100px;white-space:nowrap;}
+  .hubnav a:hover{background:var(--raise);color:var(--ink);}
+  .hubnav a.active{background:var(--accent);color:#fff;}
+  .hubnav .sep{color:var(--faint);font-size:12px;margin:0 2px;}
 </style>
+
+<nav class="hubnav"><div class="inner">
+  <a href="index.html">Reports Home</a><span class="sep">&middot;</span>
+  <a href="insights.html">Insights</a>
+  <a href="action_plan.html">Action Plan</a>
+  <a href="interactive.html" class="active">Interactive Dashboard</a>
+  <a href="connectors.html">Connectors</a>
+</div></nav>
+<nav class="subnav" style="background:var(--raise);border-bottom:1px solid var(--line);"><div class="inner" style="max-width:1080px;margin:0 auto;padding:9px 22px;display:flex;flex-wrap:wrap;align-items:center;gap:4px;">
+  <span style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);font-weight:700;margin-right:8px;">Page-by-page</span>
+  <a href="page-homepage.html" style="font-size:12.5px;font-weight:600;color:var(--muted);text-decoration:none;padding:5px 12px;border-radius:6px;">Homepage</a>
+  <a href="page-plp.html" style="font-size:12.5px;font-weight:600;color:var(--muted);text-decoration:none;padding:5px 12px;border-radius:6px;">Collection (PLP)</a>
+  <a href="page-pdp.html" style="font-size:12.5px;font-weight:600;color:var(--muted);text-decoration:none;padding:5px 12px;border-radius:6px;">Product (PDP)</a>
+  <a href="page-cart-checkout.html" style="font-size:12.5px;font-weight:600;color:var(--muted);text-decoration:none;padding:5px 12px;border-radius:6px;">Cart &amp; Checkout</a>
+  <a href="page-traffic-ads.html" style="font-size:12.5px;font-weight:600;color:var(--muted);text-decoration:none;padding:5px 12px;border-radius:6px;">Traffic &amp; Meta/Ads</a>
+</div></nav>
 
 <div class="page">
   <div class="masthead">
@@ -177,6 +207,8 @@
   </div>
 
   <div id="health"></div>
+
+  <div class="pulse" id="pulse"></div>
 
   <div class="controls">
     <div class="ctrl-row">
@@ -622,6 +654,34 @@ function renderHealth(){
     '</div>';
 }
 
+function renderPulse(){
+  const m = DATA.meta;
+  const y = shift(m.maxDate, -1);
+  const wFrom = shift(m.maxDate, -6), pwFrom = shift(m.maxDate, -13), pwTo = shift(m.maxDate, -7);
+  const dCur = slice(m.maxDate, m.maxDate, "all"), dPrev = slice(y, y, "all");
+  const wCur = slice(wFrom, m.maxDate, "all"), wPrev = slice(pwFrom, pwTo, "all");
+
+  const block = (cur, prev, label) => {
+    const r1k = cur.clSessions ? cur.rage/cur.clSessions*1000 : null;
+    const pr1k = prev.clSessions ? prev.rage/prev.clSessions*1000 : null;
+    const K = [
+      ["Sessions", fmt(cur.sessions), delta(cur.sessions, prev.sessions)],
+      ["Add-to-cart rate", pct(cur.atcRate), delta(cur.atcRate, prev.atcRate)],
+      ["Cart → checkout", pct(cur.checkoutRate), delta(cur.checkoutRate, prev.checkoutRate)],
+      ["Purchases", fmt(cur.steps.purchase), delta(cur.steps.purchase, prev.steps.purchase)],
+      ["Rage per 1k sessions", r1k!==null?r1k.toFixed(1):"—", delta(r1k, pr1k, true)]
+    ];
+    return '<div class="pulse-block"><div class="pulse-label">'+label+'</div><div class="kpis">' +
+      K.map(([l,v,d]) => '<div class="kpi"><div class="lbl">'+l+'</div><div class="num">'+v+'</div>'+dEl(d)+'</div>').join("") +
+      '</div></div>';
+  };
+
+  $("#pulse").innerHTML =
+    '<div class="sec-head"><span class="tag">Pulse</span><h2>Improved or degraded?</h2></div>' +
+    block(dCur, dPrev, '<b>'+m.maxDate+'</b> vs <b>'+y+'</b> — day-over-day (latest complete day; GA4/Clarity run T-2)') +
+    block(wCur, wPrev, '<b>'+wFrom+' → '+m.maxDate+'</b> vs prior 7 days (<b>'+pwFrom+' → '+pwTo+'</b>) — week-over-week');
+}
+
 function renderSnapshot(){
   const S = SNAP;
   if(!S || !S.run){ document.querySelectorAll('[id^=snap]').forEach(e=>e.innerHTML='<div class="empty">Snapshot data unavailable.</div>'); return; }
@@ -936,6 +996,7 @@ $("#from").min = $("#to").min = DATA.meta.minDate;
 $("#from").max = $("#to").max = DATA.meta.maxDate;
 setPreset(7); press("[data-preset]","preset","7");
 renderHealth();
+renderPulse();
 render();
 renderSnapshot();
 </script>

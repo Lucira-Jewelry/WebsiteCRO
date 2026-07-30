@@ -8,11 +8,28 @@ A scheduled job adds one day of data each morning and rebuilds an interactive da
 
 ## Start here
 
+Open **[`reports/index.html`](reports/index.html)** — a single hub linking every report below. Every page carries
+two nav bars: the top one reaches Insights / Action Plan / Interactive Dashboard / Connectors from anywhere, and a
+second row reaches the five page-type breakdowns from anywhere.
+
+**Page-by-page insights** (bifurcated by page type, each with a goal, KPIs, and issues ranked by criticality):
+
 | | What it is |
 |---|---|
-| **[`reports/insights.html`](reports/insights.html)** | The full findings, with screenshots and click heatmaps. Read this first. |
-| **[`reports/action_plan.html`](reports/action_plan.html)** | 20 prioritised tasks across 3 sprints, each with an owner and a runnable acceptance test. |
-| **[`reports/interactive.html`](reports/interactive.html)** | Date-range filterable dashboard — pick any from/to, filter by device, compare against the preceding period. |
+| **[`reports/page-homepage.html`](reports/page-homepage.html)** | Homepage: the popup problem, the 66% Home→Collection leak. |
+| **[`reports/page-plp.html`](reports/page-plp.html)** | Collection pages: the healthiest step, plus the channel-vs-template bounce diagnosis. |
+| **[`reports/page-pdp.html`](reports/page-pdp.html)** | Product pages: the ~17s desktop LCP defect, the reviews-placement question, per-product breakdown. |
+| **[`reports/page-cart-checkout.html`](reports/page-cart-checkout.html)** | Cart & checkout: the OTP-wall gap, 7.3% vs 30.9% mobile/desktop. |
+| **[`reports/page-traffic-ads.html`](reports/page-traffic-ads.html)** | Meta/Paid Social behaviour + a full Google Ads spend/conversion audit. |
+| **[`reports/connectors.html`](reports/connectors.html)** | Live health check of every data source (GA4, Clarity, Shopify, Google Ads, GSC, WebEngage, Meta Ads). |
+
+**Full narrative reports:**
+
+| | What it is |
+|---|---|
+| **[`reports/insights.html`](reports/insights.html)** | The full findings, with screenshots and click heatmaps, plus a running "Update" log. Read this first. |
+| **[`reports/action_plan.html`](reports/action_plan.html)** | 21 prioritised tasks across 3 sprints (1 dismissed), each with an owner and a runnable acceptance test. |
+| **[`reports/interactive.html`](reports/interactive.html)** | Date-range filterable dashboard with a permanent day-over-day/week-over-week "Pulse" view. |
 | **[`tools/DAILY_RUN.md`](tools/DAILY_RUN.md)** | The daily data-refresh procedure. |
 | **[`tools/cro-mcp/README.md`](tools/cro-mcp/README.md)** | The Playwright MCP server and its six tools. |
 

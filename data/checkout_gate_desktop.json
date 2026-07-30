@@ -1,6 +1,6 @@
 {
  "device": "desktop",
- "generated_at": "2026-07-28T08:13:12.378Z",
+ "generated_at": "2026-07-29T10:31:22.195Z",
  "steps": [
   {
    "step": 1,
@@ -10,7 +10,7 @@
    "blocking_overlay": {
     "coverage_pct": 116.7,
     "z": "auto",
-    "text": "Fast Shipping Trending SIMILAR ITEMS"
+    "text": "Trending SIMILAR ITEMS"
    },
    "login_wall": true,
    "guest_option": false,
@@ -60,7 +60,7 @@
    "screenshot": "reports\\captures\\gate-3-after_checkout_click-desktop.png",
    "blocking_overlay": {
     "coverage_pct": 100,
-    "z": "600",
+    "z": "2000",
     "text": ""
    },
    "login_wall": true,

@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Lucira Jewelry — AI CRO Analyst · Reports</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --bg:#EEF0ED; --surface:#FFFFFF; --raise:#F7F8F6; --ink:#1B2320; --muted:#5B6560; --faint:#8A938E;
+    --accent:#A9813F; --accent-ink:#5E4520;
+    --critical:#A23B2E; --critical-bg:#F7E7E4;
+    --high:#B0722A; --high-bg:#F8EDDC;
+    --good:#48684C; --good-bg:#E5EDE5;
+    --medium:#3D5A73; --medium-bg:#E3EAEF;
+    --line:rgba(27,35,32,0.13); --line-strong:rgba(27,35,32,0.26);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#111412; --surface:#191E1A; --raise:#1F2521; --ink:#EDEFEA; --muted:#9AA69E; --faint:#6E786F;
+      --accent:#C79B4E; --accent-ink:#D8B87A; --critical:#E4695C; --critical-bg:#3B2320;
+      --high:#DFA555; --high-bg:#392D19; --good:#8CBC92; --good-bg:#1C2A1E;
+      --medium:#8FB3D2; --medium-bg:#1D2B35;
+      --line:rgba(237,239,234,0.14); --line-strong:rgba(237,239,234,0.28); }
+  }
+  :root[data-theme="dark"]{ --bg:#111412; --surface:#191E1A; --raise:#1F2521; --ink:#EDEFEA; --muted:#9AA69E;
+    --faint:#6E786F; --accent:#C79B4E; --accent-ink:#D8B87A; --critical:#E4695C; --critical-bg:#3B2320;
+    --high:#DFA555; --high-bg:#392D19; --good:#8CBC92; --good-bg:#1C2A1E; --medium:#8FB3D2; --medium-bg:#1D2B35;
+    --line:rgba(237,239,234,0.14); --line-strong:rgba(237,239,234,0.28); }
+  :root[data-theme="light"]{ --bg:#EEF0ED; --surface:#FFFFFF; --raise:#F7F8F6; --ink:#1B2320; --muted:#5B6560;
+    --faint:#8A938E; --accent:#A9813F; --accent-ink:#5E4520; --critical:#A23B2E; --critical-bg:#F7E7E4;
+    --high:#B0722A; --high-bg:#F8EDDC; --good:#48684C; --good-bg:#E5EDE5; --medium:#3D5A73; --medium-bg:#E3EAEF;
+    --line:rgba(27,35,32,0.13); --line-strong:rgba(27,35,32,0.26); }
+
+  *{box-sizing:border-box;} html,body{margin:0;padding:0;}
+  body{background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;
+    font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  .page{max-width:1080px;margin:0 auto;padding:52px 22px 96px;}
+  h1,h2,h3{font-family:Iowan Old Style,"Palatino Linotype","Book Antiqua",Georgia,serif;font-weight:600;margin:0;text-wrap:balance;}
+  .measure{max-width:70ch;} p{margin:0 0 13px;}
+
+  .hubnav{background:var(--surface);border-bottom:1px solid var(--line-strong);}
+  .hubnav .inner{max-width:1080px;margin:0 auto;padding:11px 22px;display:flex;flex-wrap:wrap;align-items:center;gap:5px;}
+  .hubnav a{font-size:12.5px;font-weight:600;color:var(--muted);text-decoration:none;padding:6px 13px;border-radius:100px;white-space:nowrap;}
+  .hubnav a:hover{background:var(--raise);color:var(--ink);}
+  .hubnav a.active{background:var(--accent);color:#fff;}
+  .hubnav .sep{color:var(--faint);font-size:12px;margin:0 2px;}
+
+  .masthead{display:flex;flex-direction:column;gap:9px;padding-bottom:24px;margin-bottom:32px;border-bottom:1px solid var(--line-strong);}
+  .eyebrow{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-ink);font-weight:700;}
+  .masthead h1{font-size:41px;line-height:1.07;}
+  .masthead .meta{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;color:var(--muted);margin-top:4px;}
+
+  .group{margin-bottom:38px;}
+  .group-head{display:flex;align-items:baseline;gap:10px;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--line);}
+  .group-head .tag{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700;}
+  .group-head h2{font-size:19px;}
+  .group-head .note{font-size:12.5px;color:var(--faint);margin-left:auto;}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;}
+  .cards{display:flex;flex-direction:column;gap:14px;}
+
+  .card{display:block;background:var(--surface);border:1px solid var(--line);border-radius:10px;
+    padding:18px 20px;text-decoration:none;color:inherit;transition:border-color .15s ease;}
+  .card:hover{border-color:var(--accent);}
+  .card.big{padding:22px 24px;}
+  .card .rowtop{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+  .card h2{font-size:21px;color:var(--ink);}
+  .card h3{font-size:16px;color:var(--ink);}
+  .card .go{font-size:12px;font-weight:700;color:var(--accent-ink);white-space:nowrap;}
+  .card p{margin:8px 0 0;font-size:13.5px;color:var(--muted);max-width:64ch;}
+  .card.small p{font-size:12.5px;margin-top:6px;}
+  .card .tags{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap;}
+  .chip{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+    padding:2px 8px;border-radius:100px;white-space:nowrap;background:var(--raise);color:var(--faint);}
+  .chip.accent{background:var(--high-bg);color:var(--high);}
+  .chip.critical{background:var(--critical-bg);color:var(--critical);}
+  .chip.good{background:var(--good-bg);color:var(--good);}
+
+  .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:middle;}
+  .dot.ok{background:var(--good);} .dot.bad{background:var(--critical);} .dot.off{background:var(--faint);}
+
+  .foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);font-size:12px;color:var(--faint);}
+  .foot code{font-family:ui-monospace,"SF Mono","Cascadia Code",monospace;font-size:.92em;background:var(--line);padding:1px 5px;border-radius:3px;color:var(--muted);}
+</style>
+</head>
+<body>
+
+<nav class="hubnav"><div class="inner">
+  <a href="index.html" class="active">Reports Home</a><span class="sep">&middot;</span>
+  <a href="insights.html">Insights</a>
+  <a href="action_plan.html">Action Plan</a>
+  <a href="interactive.html">Interactive Dashboard</a>
+  <a href="connectors.html">Connectors</a>
+</div></nav>
+
+<div class="page">
+
+  <div class="masthead">
+    <div class="eyebrow">AI CRO Analyst</div>
+    <h1>Lucira Jewelry — Reports</h1>
+    <div class="meta">
+      <span>Evidence-first conversion-rate analysis for the online storefront</span>
+      <span>Last updated 30 Jul 2026</span>
+    </div>
+  </div>
+
+  <div class="group">
+    <div class="group-head"><span class="tag">Start here</span><h2>Page-by-page insights</h2>
+      <span class="note">Bifurcated by page type — each with a live 30-day date-range filter, goal, KPIs, and issues ranked by criticality</span></div>
+    <div class="grid">
+      <a class="card small" href="page-homepage.html">
+        <div class="rowtop"><h3>Homepage</h3><span class="go">→</span></div>
+        <p>Goal: get to a collection page. Currently 33.96% — a critical popup issue is the leading suspect.</p>
+        <div class="tags"><span class="chip critical">1 critical</span></div>
+      </a>
+      <a class="card small" href="page-plp.html">
+        <div class="rowtop"><h3>Collection (PLP)</h3><span class="go">→</span></div>
+        <p>Goal: get to a product page. Healthiest step in the funnel — mostly protect what's working.</p>
+        <div class="tags"><span class="chip good">Cleared 1 issue</span></div>
+      </a>
+      <a class="card small" href="page-pdp.html">
+        <div class="rowtop"><h3>Product (PDP)</h3><span class="go">→</span></div>
+        <p>Goal: get to add-to-cart. Desktop LCP is ~17s — the single biggest confirmed defect on the site.</p>
+        <div class="tags"><span class="chip critical">2 critical</span></div>
+      </a>
+      <a class="card small" href="page-cart-checkout.html">
+        <div class="rowtop"><h3>Cart &amp; Checkout</h3><span class="go">→</span></div>
+        <p>Goal: begin checkout. Mobile is stuck at 7.3% vs desktop's 30.9% behind an identical gate.</p>
+        <div class="tags"><span class="chip critical">2 critical</span></div>
+      </a>
+      <a class="card small" href="page-traffic-ads.html">
+        <div class="rowtop"><h3>Traffic &amp; Meta/Ads</h3><span class="go">→</span></div>
+        <p>Why bounce swings by channel, not page. ₹1.07L/30d in ad spend with zero recorded conversions.</p>
+        <div class="tags"><span class="chip critical">1 critical</span></div>
+      </a>
+      <a class="card small" href="connectors.html">
+        <div class="rowtop"><h3>Connectors</h3><span class="go">→</span></div>
+        <p><span class="dot ok"></span>5 connected &middot; <span class="dot bad"></span>1 broken (GSC) &middot;
+          <span class="dot off"></span>1 not configured (Meta Ads)</p>
+      </a>
+    </div>
+  </div>
+
+  <div class="group">
+    <div class="group-head"><span class="tag">Full reports</span><h2>The complete narrative</h2></div>
+    <div class="cards">
+
+      <a class="card big" href="insights.html">
+        <div class="rowtop">
+          <h2>Insights</h2>
+          <span class="go">Open →</span>
+        </div>
+        <p>The full findings, with screenshots and click heatmaps, plus a 30 Jul update covering what shipped,
+          what didn't, and a deeper Google Ads pass. Read this first for the complete story.</p>
+        <div class="tags"><span class="chip accent">Start here</span><span class="chip">Screenshots + heatmaps</span></div>
+      </a>
+
+      <a class="card big" href="action_plan.html">
+        <div class="rowtop">
+          <h2>Action Plan</h2>
+          <span class="go">Open →</span>
+        </div>
+        <p>21 prioritised tasks across 3 sprints (1 dismissed), each with an owner and a runnable acceptance
+          test — what to fix, in what order.</p>
+        <div class="tags"><span class="chip">21 tasks</span><span class="chip">3 sprints</span></div>
+      </a>
+
+      <a class="card big" href="interactive.html">
+        <div class="rowtop">
+          <h2>Interactive Dashboard</h2>
+          <span class="go">Open →</span>
+        </div>
+        <p>Date-range filterable dashboard with a permanent "Pulse" view (day-over-day and week-over-week),
+          rebuilt automatically every morning with a live freshness banner.</p>
+        <div class="tags"><span class="chip">Rebuilt daily</span><span class="chip">Pulse view</span></div>
+      </a>
+
+    </div>
+  </div>
+
+  <div class="foot">
+    Data pipeline: GA4 + Microsoft Clarity + Shopify Admin + Google Ads, refreshed daily per
+    <code>tools/DAILY_RUN.md</code>. Google Search Console is currently broken and Meta Ads has no connector —
+    see <a href="connectors.html">Connectors</a>. Only the Interactive Dashboard rebuilds automatically; the other
+    reports reflect the most recent full analysis pass.
+  </div>
+
+</div>
+</body>
+</html>
