@@ -154,11 +154,11 @@
 <div class="page">
 
   <div class="masthead">
-    <div class="eyebrow">AI CRO Analyst — Run 005 · Full Insight Pass <span style="color:var(--critical)">+ Update 30 Jul</span></div>
+    <div class="eyebrow">AI CRO Analyst — Run 005 · Full Insight Pass <span style="color:var(--critical)">+ Updates 30 Jul &amp; 3 Aug</span></div>
     <h1>Lucira Jewelry</h1>
     <div class="meta">
-      <span>Generated 28 Jul 2026 · addendum 30 Jul 2026</span>
-      <span>Analytics: 27 May – 28 Jul 2026 · Behaviour: 12–28 Jul · Lab: measured live 28 & 30 Jul · Ads: pulled 30 Jul</span>
+      <span>Generated 28 Jul 2026 · addenda 30 Jul &amp; 3 Aug 2026</span>
+      <span>Analytics: 27 May – 1 Aug 2026 · Behaviour: 12 Jul–1 Aug · Lab: measured live 28, 30 Jul &amp; 3 Aug · Ads: pulled 30 Jul</span>
       <span>Online storefront only — 127 ERP/store orders excluded</span>
     </div>
   </div>
@@ -827,6 +827,87 @@
         purchase value). Averaging these together, which is what account-level ROAS does today, is not a meaningful
         number.</p>
     </div>
+  </section>
+
+  <div class="divider">
+    <div class="eyebrow" style="color:var(--critical)">Added 3 Aug 2026 — data caught up through 1 Aug</div>
+    <h2 style="font-size:24px;margin:6px 0 6px;">Update — a tracking break, and how the week actually went</h2>
+    <p class="measure" style="margin:0;font-size:13.5px;color:var(--muted);">
+      Three days of data (30&ndash;31 Jul, 1 Aug) were pulled to catch up. In the process, a critical GA4 tracking
+      defect surfaced on 1 Aug — read this before trusting any bounce/engagement number that spans that date. The
+      week-over-week comparison below has been adjusted to account for it.</p>
+  </div>
+
+  <section>
+    <div class="sec-head"><span class="tag">Critical</span><h2>GA4's engagement tracking broke sitewide for one day (F12, T22)</h2></div>
+    <div class="banner alarm">
+      <p style="margin:0 0 9px;"><b>On 2026-08-01, GA4 reported engaged-session rates of 0&ndash;2.4% and bounce
+        rates of 97&ndash;100% on every single reference page, both devices</b> — homepage mobile went from 62%
+        engaged / 38% bounce on 31 Jul to 0.5% engaged / 99.5% bounce on 1 Aug, overnight. Cart mobile: 98% engaged
+        / 1.8% bounce &rarr; 2.4% engaged / 97.6% bounce. Every page tracked (Home, PLP, PDP, Cart) on both devices
+        shows the identical pattern.</p>
+      <p style="margin:0 0 9px;"><b>This is not a real traffic collapse.</b> Two independent signals prove it:
+        funnel events kept firing normally that day (view_item, add_to_cart, begin_checkout, 1 purchase — in line
+        with every other day this week), and Microsoft Clarity — a completely separate measurement system — logged
+        entirely ordinary behaviour (278 rage clicks, 25.9% scroll depth, both squarely in the normal range). Real
+        visitors browsed normally. GA4's <em>engaged-session flag</em> is what broke, sitewide, for one day.</p>
+      <p style="margin:0;"><b>Live console check, 3 Aug:</b> reloading the homepage three times reproduced
+        <code>Skipped GTM&rarr;GA4: Missing data for: pageView</code> on one of the three loads — a real,
+        currently-reproducible bug, but intermittent, so probably a contributing factor rather than the sole cause
+        of a near-total single-day collapse. The same page load also surfaced two more issues worth a look while
+        investigating: Microsoft Clarity logged <i>"Data from this session is not being collected... due to your
+        configured project settings"</i>, and a Meta Pixel <i>"Invalid parameter format for currency"</i> warning
+        that's likely corrupting purchase-value data sent to Meta. Opened as <b>T22</b>, critical, in the Action Plan.
+        Data through 2&ndash;3 Aug (not yet available — GA4 lags 2 days) will show whether this was a one-day blip
+        or is ongoing; don't trust bounce/engagement figures for any range spanning 1 Aug until then.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Performance</span><h2>How this week went vs the week before</h2></div>
+    <p class="measure" style="font-size:13px;">Current week 26 Jul&ndash;1 Aug vs the prior week 19&ndash;25 Jul,
+      sitewide, both devices blended:</p>
+    <div class="twrap">
+      <table>
+        <thead><tr><th>Metric</th><th class="num">This week</th><th class="num">vs prior week</th><th>Read</th></tr></thead>
+        <tbody>
+          <tr><td>Sessions</td><td class="num">1,07,962</td><td class="num ok">+6.0%</td><td>Real growth, not a rate-shift artifact</td></tr>
+          <tr><td>Users</td><td class="num">97,067</td><td class="num ok">+6.7%</td><td>Tracks sessions — consistent</td></tr>
+          <tr><td>Bounce rate (raw)</td><td class="num bad">51.7%</td><td class="num bad">+16.3%</td><td><b>Artifact — see below</b></td></tr>
+          <tr><td>Bounce rate (excl. 1 Aug)</td><td class="num ok">~44.0%</td><td class="num dim">flat vs the rest of this week</td><td>The real number</td></tr>
+          <tr><td>Avg engagement</td><td class="num">32.7s</td><td class="num dim">+0.2%</td><td>Essentially flat, despite the bounce spike</td></tr>
+          <tr><td>Add-to-cart rate</td><td class="num warn">2.26%</td><td class="num warn">-6.0%</td><td>Still well below the 8–12% category typical</td></tr>
+          <tr><td>Cart → checkout</td><td class="num ok">17.26%</td><td class="num ok">+32.5%</td><td>Genuinely improved — worth watching, not yet explained</td></tr>
+          <tr><td>Payment → purchase</td><td class="num bad">8.15%</td><td class="num bad">-66.0%</td><td>Real concern, but base is tiny (11 purchases/week)</td></tr>
+          <tr><td>Purchases</td><td class="num">11</td><td class="num bad">-35.3%</td><td>Noisy at this volume — read over 3-4 weeks, not one</td></tr>
+          <tr><td>Rage clicks</td><td class="num ok">1,821</td><td class="num ok">-16.6%</td><td>Improved</td></tr>
+          <tr><td>Rage clicks / 1k sessions</td><td class="num ok">16.9</td><td class="num ok">-21.3%</td><td>Improved, and normalised for the session growth</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="banner" style="margin-top:14px;">
+      <p style="margin:0;"><b>Net read: quietly a decent week, with one loose thread.</b> Sessions and users grew
+        ~6-7% without a corresponding jump in rage clicks (which actually fell) — growth didn't come at the cost of
+        a worse experience. Cart→checkout jumped +32.5%, a genuinely large move against the prior week; nothing in
+        this analysis explains why yet (no fix has shipped on T1/T2), so treat it as a signal to watch, not a
+        result to credit to any specific change. The one real concern is payment→purchase falling 66% — but on a
+        base of ~11 purchases a week, that's roughly a 7-purchase swing, well within noise for this volume; it
+        needs 3-4 weeks of trend, not one, before treating it as real. The headline "+16.3% bounce" is not real —
+        it's entirely the 1 Aug tracking break above; the other six days of the week sit at a normal ~44%, in line
+        with every week before it.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Monitoring</span><h2>Live re-check, 3 Aug: nothing has shipped</h2></div>
+    <p class="measure" style="font-size:13px;">Re-ran the two cheapest, highest-value live checks to confirm nothing
+      changed since the last pass: <code>checkout-gate.js</code> (mobile) still returns <code>login_wall: true</code>,
+      <code>guest_option: false</code>, <code>asks_phone: true</code> after clicking "Proceed to Checkout" —
+      identical to every prior check. <code>cro_fold_analysis</code> on the reference PDP still shows
+      <code>Customer Reviews</code> at 48.1% depth with no summary badge anywhere higher — F3/T3 unchanged. Full lab
+      re-verification (vitals, heatmaps) was not re-run this pass since it was completed just days ago with no
+      indication anything shipped; the two checks above were chosen as the cheapest way to confirm the two
+      highest-stakes open items (F1/T1 and F3/T3) are still exactly where they were.</p>
   </section>
 
   <section style="margin-bottom:0;">
