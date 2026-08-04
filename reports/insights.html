@@ -154,11 +154,11 @@
 <div class="page">
 
   <div class="masthead">
-    <div class="eyebrow">AI CRO Analyst — Run 005 · Full Insight Pass <span style="color:var(--critical)">+ Updates 30 Jul &amp; 3 Aug</span></div>
+    <div class="eyebrow">AI CRO Analyst — Run 005 · Full Insight Pass <span style="color:var(--critical)">+ Updates 30 Jul, 3 &amp; 4 Aug</span></div>
     <h1>Lucira Jewelry</h1>
     <div class="meta">
-      <span>Generated 28 Jul 2026 · addenda 30 Jul &amp; 3 Aug 2026</span>
-      <span>Analytics: 27 May – 1 Aug 2026 · Behaviour: 12 Jul–1 Aug · Lab: measured live 28, 30 Jul &amp; 3 Aug · Ads: pulled 30 Jul</span>
+      <span>Generated 28 Jul 2026 · addenda 30 Jul, 3 &amp; 4 Aug 2026</span>
+      <span>Analytics: 27 May – 3 Aug 2026 · Behaviour: 12 Jul–3 Aug · Lab: measured live 28, 30 Jul, 3 &amp; 4 Aug · Ads: pulled 30 Jul</span>
       <span>Online storefront only — 127 ERP/store orders excluded</span>
     </div>
   </div>
@@ -917,6 +917,191 @@
       authentication error — a connector configuration issue, not a data or rate-limit problem. Organic search
       visibility, ranking positions and CTR-vs-position opportunities are not represented anywhere in this report as
       a result. Reconnect the Search Console MCP connector before the next deep-dive if that view is wanted.</p>
+  </section>
+
+  <div class="divider">
+    <div class="eyebrow" style="color:var(--critical)">Added 4 Aug 2026 — data caught up through 3 Aug; deployment check requested</div>
+    <h2 style="font-size:24px;margin:6px 0 6px;">Update — the tracking break came back the day after a deployment, and the cart got a coupon module</h2>
+    <p class="measure" style="margin:0;font-size:13.5px;color:var(--muted);">
+      Two days (2&ndash;3 Aug) were pulled to catch up, specifically to check Microsoft Clarity and the checkout
+      journey (cart, shipping, payment) against a deployment the client flagged as shipped on 3 Aug. Found: the F12
+      tracking break recurred — worse than before — exactly on the day after that deployment; a new coupon/offer
+      module is live on the cart page; and two small order-hygiene discrepancies. Detail below.</p>
+  </div>
+
+  <section>
+    <div class="sec-head"><span class="tag">Critical — escalated</span><h2>F12/T22 is back, sitewide, the day after the 3 Aug deployment (still active right now)</h2></div>
+    <div class="banner alarm">
+      <p style="margin:0 0 9px;"><b>2 Aug was completely normal, then 3 Aug broke sitewide again, identically to
+        1 Aug.</b> Engagement/bounce by day, all reference pages blended:</p>
+      <div class="twrap" style="margin:0 0 9px;">
+        <table>
+          <thead><tr><th>Date</th><th>Mobile bounce</th><th>Mobile engaged</th><th>Desktop bounce</th><th>Funnel events</th><th>Clarity behaviour</th></tr></thead>
+          <tbody>
+            <tr><td>1 Aug (prior break)</td><td class="num bad">~99.5%</td><td class="num bad">~0.5%</td><td class="num bad">~99%</td><td class="num ok">Normal</td><td class="num ok">Normal</td></tr>
+            <tr><td>2 Aug</td><td class="num ok">43.4%</td><td class="num ok">56.6%</td><td class="num ok">38.7%</td><td class="num ok">Normal</td><td class="num ok">Normal</td></tr>
+            <tr><td>3 Aug (day after deploy)</td><td class="num bad">99.6%</td><td class="num bad">0.4%</td><td class="num bad">99.1%</td><td class="num ok">Normal</td><td class="num ok">Normal</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="margin:0 0 9px;"><b>Every checkout-journey page shows the identical pattern on 3 Aug</b> — cart
+        mobile engaged fell from 97.8% (2 Aug) to 1.3% (3 Aug); shipping mobile bounce went 0% &rarr; 76.5%; payment
+        mobile bounce went 0% &rarr; 78.6%; both PDPs and both PLPs collapsed to 0% engaged on both devices. Funnel
+        event counts (view_item 14,294 mobile / 1,245 desktop, add_to_cart 384+54, begin_checkout 62+39, 2 purchases,
+        57+3+1 signups) are all in the normal daily range — real visitor behaviour did not change on 3 Aug, only
+        GA4's engagement flag did, again.</p>
+      <p style="margin:0 0 9px;"><b>Clarity confirms it independently:</b> 3 Aug sessions (11,505 mobile / 562 desktop),
+        rage clicks (544 mobile), dead clicks (1,688 mobile) and scroll depth (26.5%) all sit in the same range as
+        2 Aug and every prior day. Two completely independent measurement systems agree real behaviour was normal;
+        only GA4's pipeline broke.</p>
+      <p style="margin:0;"><b>Live console check, this morning (4 Aug):</b> reloaded the cart page and the homepage
+        three separate times just now — <code>Skipped GTM&rarr;GA4: Missing data for: pageView</code> fired on
+        <b>every single load (3/3)</b>, up from 1-of-3 when this was last checked on 3 Aug. The defect has not
+        self-resolved; it is currently live on the site as this report is being written. Given the timing —
+        normal on 2 Aug, broken again the day immediately after the reported 3 Aug deployment, and still broken
+        this morning — a change in that deployment (GTM container update, consent-mode change, or a tag-firing
+        condition tied to the new cart coupon module below) is the leading suspect. Recommend checking the GTM
+        container's publish history against the deployment timestamp as the fastest way to confirm or rule this out.</p>
+    </div>
+    <div class="banner fix" style="margin-top:14px;">
+      <p style="margin:0 0 9px;"><b>Important update, discovered while refreshing the deep-dive snapshot this
+        afternoon: GA4 has since retroactively corrected 1 Aug's historical record.</b> A fresh pull of 1 Aug just
+        now returns completely normal figures — mobile bounce 41.6% / engaged 58.4%, desktop bounce 37.8% / engaged
+        62.2% — nothing like the ~99.5% bounce recorded live on that day. <code>data/daily_device.csv</code> and
+        <code>data/daily_pagetype.csv</code> have been corrected to match.</p>
+      <p style="margin:0;"><b>What this does and doesn't mean:</b> the anomaly was real and correctly reported when
+        it was observed — this isn't a case of us being wrong, GA4's own numbers actually read that way at the time.
+        What's new is that GA4 appears to silently reprocess a broken day's engagement/bounce metrics back to normal
+        within a few days after the fact (1 Aug took ~3 days; we don't yet know the general rule). <b>This does not
+        mean the underlying defect is fixed</b> — 3 Aug's numbers are still showing ~99% bounce as of right now (a
+        fresh check just confirmed it), and the live console warning is still reproducing on every page load. The
+        practical takeaway: a same-day or next-day tracking anomaly like this may partially self-correct in GA4's
+        historical record within a few days, so don't over-react to a single freshly-pulled bad day — but also don't
+        assume a bad day is "fine" just because it happened a while ago; keep checking. T22 stays open.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">New — needs a look</span><h2>Microsoft Clarity is now also warning it isn't collecting some sessions</h2></div>
+    <div class="banner warn">
+      <p style="margin:0 0 9px;">The same live console checks (cart page, homepage, 4 Aug) surfaced a second,
+        previously-unseen-this-consistently warning on <b>every load</b>: <i>"Data from this session is not being
+        collected by Microsoft Clarity due to your configured project settings."</i></p>
+      <p style="margin:0;"><b>Caveat before treating this as a crisis:</b> Clarity's own daily aggregate numbers
+        (11,505&ndash;15,169 mobile sessions/day across 2&ndash;3 Aug) stayed in the completely normal range, so
+        real user sessions are broadly still being captured — this warning may be specific to the automated
+        Playwright test session (which can look bot-like to Clarity's filters) rather than proof that genuine
+        visitor sessions are being dropped. Still, it did not show up this reliably before, so it's worth the
+        client's team checking Clarity's project settings (recording quota, sampling rate, any recent path/domain
+        restriction) to rule out any narrowing since the deployment. Filed as a watch item alongside F12/T22, not
+        a separate confirmed finding.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Deployment check</span><h2>Cart page: a real UI change, plus one thing worth confirming</h2></div>
+    <p class="measure" style="font-size:13.5px;">Live checkout-gate walkthrough (mobile) and Clarity's clicked-element
+      data for <code>/checkout/cart</code> on 3 Aug both confirm a new coupon/offer module has been added to the cart
+      that did not exist in the pre-deployment baseline (the "Register to Win a Reward" spin-wheel popup used to
+      dominate; that popup is not visible on cart in this pass):</p>
+    <ul class="measure" style="font-size:13.5px;">
+      <li><b>"Apply Coupon — View all available coupons"</b> widget (60 clicks, 3 Aug) and a <b>"You've unlocked a
+        FREE Diamond Pendant worth ₹10,000 — CLAIM"</b> gamified offer banner, both new.</li>
+      <li>A <b>"Shop with Complete Confidence — VIEW LIVE"</b> live-shopping video banner, and a persistent
+        Call / WhatsApp (62 clicks) / Chat contact dock — also new.</li>
+      <li>Clarity logged 209 clicks on text truncated as <b>"ApplyLogin to Unlock Coup…"</b> — this reads as though
+        the coupon-apply action may itself be login-gated, i.e. a second login prompt stacked on top of the cart's
+        existing OTP wall. The text is ambiguous (Clarity truncates at ~25 characters); recommend a 2-minute manual
+        click-through on the "Apply Coupon" row to confirm whether it asks for login before showing codes, since
+        that would compound F1 rather than relieve it.</li>
+      <li><b>F1 is unchanged.</b> Live <code>checkout-gate.js</code> run today: "Proceed to Checkout" still opens
+        the identical 100%-coverage "WELCOME TO LUCIRA / Enter Phone Number / REQUEST OTP" overlay, no guest option,
+        <code>asks_phone: true</code> — byte-for-byte the same blocker as every prior check. The new coupon module
+        sits above an unfixed login wall.</li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Orders &amp; offers</span><h2>Checkout journey: partial-COD confirmed working, two discount-hygiene discrepancies found</h2></div>
+    <p class="measure" style="font-size:13.5px;">16 orders placed 2&ndash;3 Aug, pulled with full discount and
+      transaction detail:</p>
+    <ul class="measure" style="font-size:13.5px;">
+      <li><b>Partial-COD is a large and legitimate share of orders — 6 of 16 (37.5%) are PARTIALLY_PAID</b>, matching
+        the "partial_cod" and "Apply Points" options seen in Clarity's payment-page clicks: customers pay a deposit
+        online, balance on delivery, exactly as designed. Not a bug, but a materially high share worth knowing —
+        cash-flow and fulfilment planning should account for over a third of orders arriving without full payment.</li>
+      <li><b>Discrepancy — an internal to-do note was left as a live discount code.</b> Order #2480 (₹20,000,
+        salesperson-assisted, 2 Aug) shows discount code text of <code>"500Lucira point + 166 additional discount -
+        Need to add"</code> for a ₹666 discount. That is a staff note-to-self, not a real code, and it's
+        customer-facing on the order record. Order #2486 similarly shows a generic <code>"Custom discount"</code>
+        label rather than a named code. Both are manual/draft-order entries — a quick process fix (name the discount
+        properly before finalizing) rather than a system bug.</li>
+      <li>Named coupon codes are working as intended elsewhere: <code>GRAND250</code> (order #2493, ₹250 off),
+        <code>GRAND750</code> (order #2478, ₹750 off) both applied cleanly with no anomalies.</li>
+      <li>Shipping page, 3 Aug: a <b>"Close"</b> element logged 18 dead clicks against only 8 real clicks — a
+        disproportionate ratio suggesting a modal close button that isn't fully responsive to taps. Single day of
+        data; flagged as a watch item, not yet confirmed over multiple days.</li>
+    </ul>
+  </section>
+
+  <div class="divider">
+    <div class="eyebrow" style="color:var(--accent-ink)">Added 4 Aug 2026, later — heatmaps and screenshots were stale; re-tested Clarity + Playwright together</div>
+    <h2 style="font-size:24px;margin:6px 0 6px;">Update — the click heatmaps hadn't moved since late July. Here's what changed after re-testing</h2>
+    <p class="measure" style="margin:0;font-size:13.5px;color:var(--muted);">
+      Flagged correctly: the heatmap and overlay images across Homepage, PLP, PDP and Cart were still the same
+      Playwright captures from 29&ndash;31 Jul, paired with Clarity click data from the same era, even though three
+      data-refresh runs had happened since. Re-ran every heatmap and several overlay audits fresh against Clarity's
+      current 27 Jul&ndash;2 Aug click data. Four things came out of it.</p>
+  </div>
+
+  <section>
+    <div class="sec-head"><span class="tag">New capability</span><h2>The cart heatmap finally rendered — after failing on every prior attempt</h2></div>
+    <div class="banner fix">
+      <p style="margin:0;">Every earlier pass hit the same wall: a fresh page load always lands on an <b>empty</b>
+        cart, so the highest-value click targets (the login modal, the new coupon module, "Proceed to Checkout")
+        don't exist to click on. This time, two of the cart's real elements — the <code>Cart1/3</code> step chrome
+        and the empty-cart messaging — matched and rendered on both devices (see
+        <a href="page-cart-checkout.html">Cart &amp; Checkout</a>). The <code>Cart1/3</code> indicator alone
+        absorbs more clicks (1,136) than anything else visible on the empty state, suggesting a real share of
+        cart-page traffic in Clarity's aggregate is landing on an empty cart — direct visits, bookmarks, or
+        returns after removing the last item — separate from the cart-with-item sessions the rest of the cart
+        findings describe. The login-modal and coupon-module clicks (the majority of the cart's click volume)
+        still can't be captured this way and remain the job of <code>checkout-gate.js</code>'s scripted walkthrough.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">New nuance</span><h2>The homepage popup is intermittent, not guaranteed — caught it both ways in the same few minutes</h2></div>
+    <p class="measure" style="font-size:13.5px;">Regenerating the homepage heatmap (mobile) and immediately running
+      a fresh overlay audit on the identical URL and device produced two different results: the heatmap capture
+      had <b>no popup at all</b>; the overlay audit moments later got the full 100%-viewport-coverage "Register to
+      Win a Reward" modal. Desktop home and the reference PDP (desktop) both also triggered it on today's re-test.
+      This doesn't undercut F9/F2 — Clarity's aggregate click volume across thousands of real sessions still shows
+      popup/login elements dominating every page — but it does mean a single screenshot proves "the popup fired
+      this visit," not "the popup fires every visit." Worth keeping that distinction explicit going forward.</p>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">New nuance</span><h2>Two Playwright tools disagree on the reference PDP's page height, by almost exactly 2×</h2></div>
+    <p class="measure" style="font-size:13.5px;"><code>cro_fold_analysis</code> reproduced the same 13,220px /
+      16.3-screen figure twice today. <code>cro_heatmap</code>'s full-page screenshot on the same URL and device
+      came back <b>26,440px</b> — nearly double — because its slower full-page scroll triggers lazy-loaded sections
+      (a "Story Behind the Product" block, store locator, reviews carousel, "Our Process", a lab-grown-vs-mined
+      comparison table, "Explore Our Range") that a single settle-wait doesn't load. Neither number is wrong: 16.3
+      screens is what a typical visitor's browser reports at rest (the number behind the 17.9% scroll-reach figure
+      used for F3/F5); 26,440px is closer to everything technically on the page once every lazy block has fired.
+      Detail in <a href="page-pdp.html">Product (PDP)</a>.</p>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Data gap</span><h2>iOS click volume was too low to refresh two of the six OS-segmented heatmaps</h2></div>
+    <p class="measure" style="font-size:13.5px;">Homepage Android, Eterna Android, and the reference PDP's Android
+      heatmap all refreshed cleanly with real, current clicks. Homepage iOS refreshed too, on a thin base (28
+      clicks total this window). Eterna iOS and the PDP's iOS heatmap did <b>not</b> refresh — Clarity returned
+      either no rows or text too generic to match ("9kt Collection", "Ring Size") for iOS on those two specific
+      pages this window. Rather than publish a broken or misleading image, both keep their older (31 Jul) capture
+      with an explicit "still dated" label — flagged in <a href="page-plp.html">PLP</a> and
+      <a href="page-pdp.html">PDP</a> rather than silently left stale.</p>
   </section>
 
   <div class="foot">

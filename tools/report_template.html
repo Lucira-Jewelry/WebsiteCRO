@@ -257,6 +257,7 @@
         <button data-metric="sessions" aria-pressed="true">Sessions</button>
         <button data-metric="atcRate">ATC rate</button>
         <button data-metric="checkoutRate">Cart→checkout</button>
+        <button data-metric="signups">Signups</button>
         <button data-metric="bounce">Bounce</button>
         <button data-metric="rage">Rage clicks</button>
         <button data-metric="scroll">Scroll depth</button>
@@ -425,17 +426,19 @@ function slice(from, to, dev){
   // bounce is a per-day-per-device rate: weight by sessions
   const bounce = sessions ? dv.reduce((s,r)=>s+r.br*r.s,0)/sessions : null;
   const steps = {}; STEPS.forEach(e => steps[e] = fn.filter(r=>r.e===e).reduce((s,r)=>s+r.n,0));
+  const signups = fn.filter(r=>r.e==="signup").reduce((s,r)=>s+r.n,0);
   const rage = cl.reduce((s,r)=>s+r.rage,0), dead = cl.reduce((s,r)=>s+r.dead,0);
   // scroll is a per-day-per-device average: weight by that device's sessions on that day
   let sw = 0, ss = 0;
   cl.forEach(r => { const m = dv.find(x=>x.d===r.d && x.dev===r.dev); if(m){ sw += r.scroll*m.s; ss += m.s; } });
-  return { sessions, users, eng, pv, bounce, steps, rage, dead,
+  return { sessions, users, eng, pv, bounce, steps, rage, dead, signups,
     scroll: ss ? sw/ss : null, hasClarity: cl.length>0,
     clSessions: ss, clDays: new Set(cl.map(r=>r.d)).size,
     engPerUser: users ? eng/users : null,
     atcRate: steps.view_item ? steps.add_to_cart/steps.view_item*100 : null,
     checkoutRate: steps.add_to_cart ? steps.begin_checkout/steps.add_to_cart*100 : null,
     payRate: steps.add_payment_info ? steps.purchase/steps.add_payment_info*100 : null,
+    signupRate: sessions ? signups/sessions*100 : null,
     endToEnd: steps.view_item ? steps.purchase/steps.view_item*100 : null };
 }
 
@@ -471,7 +474,9 @@ function render(){
     ["Add-to-cart rate", pct(cur.atcRate), delta(cur.atcRate, prev&&prev.atcRate)],
     ["Cart → checkout", pct(cur.checkoutRate), delta(cur.checkoutRate, prev&&prev.checkoutRate)],
     ["Purchases", fmt(cur.steps.purchase), delta(cur.steps.purchase, prev&&prev.steps.purchase)],
-    ["View → purchase", pct(cur.endToEnd,3), delta(cur.endToEnd, prev&&prev.endToEnd)]
+    ["View → purchase", pct(cur.endToEnd,3), delta(cur.endToEnd, prev&&prev.endToEnd)],
+    ["New signups", fmt(cur.signups), delta(cur.signups, prev&&prev.signups)],
+    ["Signup rate", pct(cur.signupRate,2), delta(cur.signupRate, prev&&prev.signupRate)]
   ];
   $("#kpis").innerHTML = K.map(([l,v,d]) =>
     '<div class="kpi"><div class="lbl">'+l+'</div><div class="num">'+v+'</div>'+dEl(d)+'</div>').join("");
@@ -556,6 +561,7 @@ function renderChart(){
       case "sessions": return x.sessions;
       case "atcRate": return x.atcRate;
       case "checkoutRate": return x.checkoutRate;
+      case "signups": return x.signups;
       case "bounce": return x.bounce;
       case "rage": return x.hasClarity ? x.rage : null;
       case "scroll": return x.hasClarity ? x.scroll : null;
@@ -587,7 +593,7 @@ function renderChart(){
     g += '<text x="'+x(i)+'" y="'+(H-7)+'" text-anchor="middle" font-size="10" fill="var(--faint)">'+d.slice(5)+'</text>'; });
   svg.setAttribute("viewBox","0 0 "+W+" "+H); svg.innerHTML = g;
   const names = {sessions:"Sessions",atcRate:"Add-to-cart rate",checkoutRate:"Cart → checkout rate",
-    bounce:"Bounce rate",rage:"Rage clicks",scroll:"Avg scroll depth"};
+    signups:"New signups",bounce:"Bounce rate",rage:"Rage clicks",scroll:"Avg scroll depth"};
   const gap = vals.some(v=>v===null);
   $("#legend").innerHTML = '<span><i style="background:var(--accent)"></i>'+names[metric]+
     ' · '+state.dev+'</span>' + (gap?'<span style="color:var(--critical)">gaps = no data that day</span>':'');
@@ -669,6 +675,7 @@ function renderPulse(){
       ["Add-to-cart rate", pct(cur.atcRate), delta(cur.atcRate, prev.atcRate)],
       ["Cart → checkout", pct(cur.checkoutRate), delta(cur.checkoutRate, prev.checkoutRate)],
       ["Purchases", fmt(cur.steps.purchase), delta(cur.steps.purchase, prev.steps.purchase)],
+      ["New signups", fmt(cur.signups), delta(cur.signups, prev.signups)],
       ["Rage per 1k sessions", r1k!==null?r1k.toFixed(1):"—", delta(r1k, pr1k, true)]
     ];
     return '<div class="pulse-block"><div class="pulse-label">'+label+'</div><div class="kpis">' +

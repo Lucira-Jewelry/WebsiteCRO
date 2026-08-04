@@ -117,7 +117,7 @@
   <div class="masthead">
     <div class="eyebrow">Lucira Jewelry · CRO Action Plan</div>
     <h1>What to do, in what order</h1>
-    <div class="meta">Derived from Run 005 (+ T21 added 29 Jul, T22 added 3 Aug) · 22 tasks across 4 owners · every task has a runnable acceptance test</div>
+    <div class="meta">Derived from Run 005 (+ T21 added 29 Jul, T22 added 3 Aug, T23 added 4 Aug) · 23 tasks across 4 owners · every task has a runnable acceptance test</div>
   </div>
 
   <div class="banner alarm" style="margin-bottom:30px;">
@@ -372,36 +372,69 @@
       you measure afterwards — which is why they sit after the funnel fixes but before any further optimisation.</p>
 
     <div class="task crit">
-      <div class="task-head"><span class="tid">T22</span><h3>Investigate the 1 Aug GA4 engaged-session/bounce collapse</h3></div>
+      <div class="task-head"><span class="tid">T22</span><h3>Investigate the GA4 engaged-session/bounce collapse — now confirmed recurring, and still live</h3></div>
       <div class="chips">
         <span class="chip critical">Critical</span><span class="chip owner">Analytics</span>
-        <span class="chip effort">~half day to diagnose</span><span class="chip med">opened 3 Aug</span>
+        <span class="chip effort">~half day to diagnose</span><span class="chip med">opened 3 Aug · escalated 4 Aug</span>
       </div>
       <div class="task-body">
-        <p>On 2026-08-01, GA4's engaged-session rate fell to ~0&ndash;2.4% and bounce rate rose to ~97&ndash;100%
-          on <b>every</b> reference page and device — homepage mobile went from 62% engaged / 38% bounce (31 Jul)
-          to 0.5% engaged / 99.5% bounce (1 Aug) overnight. This is not a real traffic collapse: funnel events
-          (view_item, add_to_cart, begin_checkout, 1 purchase) and Microsoft Clarity's independent behavioural data
-          (278 rage clicks, 25.9% scroll depth — both perfectly normal for that day) show ordinary user behaviour
-          throughout. The engaged-session flag itself is what broke, sitewide, for one day.</p>
+        <p>First seen 2026-08-01: GA4's engaged-session rate fell to ~0&ndash;2.4% and bounce rate rose to
+          ~97&ndash;100% on <b>every</b> reference page and device. <b>2 Aug was completely normal</b> (mobile
+          bounce back to 43.4%, engaged 56.6%). Then <b>3 Aug — the day immediately after a deployment the client
+          reported — broke again, identically</b>: mobile bounce 99.6%/engaged 0.4%, desktop bounce 99.1%, and
+          every checkout-journey page (cart, shipping, payment) plus both PLPs and PDPs collapsed the same way on
+          both devices. Funnel events and Clarity behavioural data stayed completely normal both days — real user
+          behaviour did not change; only GA4's engaged-session flag did, twice now.</p>
         <ol class="steps">
-          <li>Check the GTM container's publish history for any change made on or just before 1 Aug — this has the
-            signature of a tag/trigger change, not infrastructure downtime.</li>
-          <li>Live console check (3 Aug) reproduced <code>Skipped GTM&rarr;GA4: Missing data for: pageView</code>
-            on 1 of 3 homepage loads — intermittent, so likely a contributing race condition rather than the full
-            explanation for a near-total single-day collapse. Worth fixing regardless.</li>
-          <li>Same console check surfaced two more issues on the same page load, worth a look while in there:
-            Microsoft Clarity logged <em>"Data from this session is not being collected... due to your configured
-            project settings"</em> (check the Clarity project's sampling/collection settings directly in its
-            dashboard), and a Meta Pixel <em>"Invalid parameter format for currency"</em> warning (likely corrupting
-            purchase-value data sent to Meta for ad optimisation).</li>
-          <li>Watch 2&ndash;3 Aug once GA4 finishes processing (T-2 lag) to see whether this was a one-day blip or
-            is ongoing — don't trust any bounce/engagement number for a range that includes 1 Aug until resolved.</li>
+          <li><b>Check the GTM container's publish history against the 3 Aug deployment timestamp</b> — normal on
+            2 Aug, broken the day immediately after the deployment, still broken this morning (4 Aug) is a strong
+            timing signature pointing at that release, not infrastructure downtime.</li>
+          <li>Live console check this morning (4 Aug, cart + homepage, 3 reloads) reproduced
+            <code>Skipped GTM&rarr;GA4: Missing data for: pageView</code> on <b>3 of 3 loads</b> — up from 1-of-3 on
+            3 Aug. The defect has not self-resolved and is live on the site right now, at the time of writing.</li>
+          <li>Same console check also surfaced Microsoft Clarity's <em>"Data from this session is not being
+            collected... due to your configured project settings"</em> warning on every load too (see new item
+            below) and, on the 3 Aug check, a Meta Pixel <em>"Invalid parameter format for currency"</em> warning
+            (likely corrupting purchase-value data sent to Meta for ad optimisation) — worth a look while in GTM.</li>
+          <li>Given this has now recurred once already, treat it as an ongoing risk rather than a one-off: any
+            bounce/engagement number for a range touching 1 Aug or 3 Aug is not trustworthy until this is fixed.</li>
+          <li><b>Update, 4 Aug afternoon:</b> a fresh pull found GA4 has since retroactively corrected 1 Aug's
+            historical bounce/engagement figures back to normal (mobile bounce 41.6%/engaged 58.4%, nothing like the
+            ~99.5% recorded live). <code>daily_device.csv</code>/<code>daily_pagetype.csv</code> updated to match.
+            3 Aug has <b>not</b> self-corrected as of this check — still ~99% bounce, and the live console warning
+            is still reproducing. So GA4 does eventually revise a broken day's historical record, but that doesn't
+            mean the underlying tag-firing defect is fixed — keep this task open and keep checking.</li>
         </ol>
         <div class="accept"><b>Acceptance test</b>
-          Reload the homepage 5 times fresh (cleared cookies) and confirm <code>Skipped GTM&rarr;GA4</code> does
-          not appear in the console on any load. Once 2&ndash;3 Aug data lands, confirm engaged-session rate
-          returns to the 55&ndash;70% range seen on every other day this month.</div>
+          Reload the homepage and cart page 5 times each fresh (cleared cookies) and confirm
+          <code>Skipped GTM&rarr;GA4</code> does not appear in the console on any load. Once GA4 finishes
+          processing the next few days, confirm engaged-session rate stays in the 55&ndash;98% range seen on every
+          normal day this month, with no further single-day collapses.</div>
+      </div>
+    </div>
+
+    <div class="task med">
+      <div class="task-head"><span class="tid">T23</span><h3>Confirm whether Clarity's "not collecting this session" warning affects real visitors</h3></div>
+      <div class="chips">
+        <span class="chip med">Medium</span><span class="chip owner">Analytics</span>
+        <span class="chip effort">~30 min</span><span class="chip med">opened 4 Aug</span>
+      </div>
+      <div class="task-body">
+        <p>Live console checks today (cart + homepage, 3 reloads each) show <em>"Data from this session is not
+          being collected by Microsoft Clarity due to your configured project settings"</em> on every load — more
+          consistently than previously observed. Clarity's own daily aggregate session counts stayed normal through
+          2&ndash;3 Aug (11.5k&ndash;15k mobile sessions/day), so this may be specific to the automated test
+          session's bot-like fingerprint rather than proof real sessions are being dropped — but it wasn't this
+          reliable before, and it showed up right after the same deployment as T22.</p>
+        <ol class="steps">
+          <li>Open Clarity's dashboard → Settings → Setup and check the recording quota, sampling rate, and any
+            path/domain restriction added recently.</li>
+          <li>Cross-check daily session totals in Clarity against GA4 sessions for the same days — if the ratio
+            hasn't shifted, real coverage is intact and this is a synthetic-session artifact.</li>
+        </ol>
+        <div class="accept"><b>Acceptance test</b>
+          Confirm the warning does not appear on a real (non-automated) browser session, or confirm it does and
+          identify which project setting is causing it.</div>
       </div>
     </div>
 
@@ -609,9 +642,9 @@
   </div>
 
   <div class="foot">
-    <div><b>22 tasks</b> (1 dismissed — T5) · 5 in Sprint 1 · 4 in Sprint 2 · 7 in Sprint 3 · 6 in backlog (5 active)</div>
+    <div><b>23 tasks</b> (1 dismissed — T5) · 5 in Sprint 1 · 4 in Sprint 2 · 8 in Sprint 3 · 6 in backlog (5 active)</div>
     <div style="margin-top:7px;">Owners: Frontend (T1, T3, T4, T5, T6, T16, T21), Frontend+backend (T2), Frontend+analytics (T14),
-      Marketing ops (T7, T8), Paid media (T9, T10, T12), Analytics (T13, T15, T19, T11, T22), QA/growth (T17),
+      Marketing ops (T7, T8), Paid media (T9, T10, T12), Analytics (T13, T15, T19, T11, T22, T23), QA/growth (T17),
       Payments (T18), Leadership (T20).</div>
     <div style="margin-top:7px;">Every acceptance test is runnable today via the <code>cro</code> MCP server
       (<code>.mcp.json</code>) or the interactive dashboard. Effort estimates are mine, not the team's.</div>

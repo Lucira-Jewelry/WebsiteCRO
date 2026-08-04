@@ -153,7 +153,7 @@
   <div class="masthead">
     <div class="eyebrow">Page Insights &middot; Cart &amp; Checkout</div>
     <h1>Cart &amp; Checkout</h1>
-    <div class="meta">/checkout/cart, /checkout/shipping, /checkout/payment &middot; data through 27 Jul, gate re-verified live 29 Jul 2026</div>
+    <div class="meta">/checkout/cart, /checkout/shipping, /checkout/payment &middot; data through 3 Aug, gate re-verified live 4 Aug 2026</div>
   </div>
 
   <div class="goal">
@@ -172,10 +172,13 @@
   </div>
 
   <div class="banner alarm" style="margin-bottom:26px;">
-    <p style="margin:0;"><b>Still broken as of 29 Jul.</b> The checkout OTP wall was re-verified live yesterday on
-      both devices with <code>checkout-gate.js</code>: clicking "Proceed to Checkout" still returns
-      <code>login_wall: true</code>, <code>guest_option: false</code>, <code>asks_phone: true</code> on mobile
-      <b>and</b> desktop, identical to Run 005. No fix has shipped here yet.</p>
+    <p style="margin:0;"><b>Still broken as of 4 Aug — and a new coupon module now sits above it.</b> The checkout
+      OTP wall was re-verified live this morning with <code>checkout-gate.js</code>: clicking "Proceed to Checkout"
+      still returns <code>login_wall: true</code>, <code>guest_option: false</code>, <code>asks_phone: true</code>
+      on mobile, byte-for-byte identical to every prior check. A deployment shipped 3 Aug added a new "Apply Coupon"
+      / "Claim your free pendant" module to the cart page (see the deep-dive below) — but it sits above the same
+      unfixed wall. That same deployment also appears to have re-broken GA4's engagement tracking on this page;
+      see the tracking-break section below before trusting any bounce/engagement number for 3 Aug.</p>
   </div>
 
   <section>
@@ -233,19 +236,50 @@
 
   <section>
     <div class="sec-head"><span class="tag">Behaviour</span><h2>What's actually being clicked on the cart page</h2></div>
+    <p class="measure" style="font-size:12.5px;color:var(--muted);margin:0 0 10px;">Refreshed 4 Aug — window 27 Jul&ndash;2 Aug, after the 3 Aug coupon-module deployment. Weights aren't
+      directly comparable to the pre-deployment numbers below them (different window, different UI) — shown side by side to make the shift visible.</p>
     <div class="twrap">
       <table>
-        <thead><tr><th>Clicked element</th><th class="num">Weight</th><th>What it means</th></tr></thead>
+        <thead><tr><th>Clicked element</th><th class="num">Weight (27 Jul&ndash;2 Aug, current)</th><th class="num">Weight (19&ndash;25 Jul, pre-deployment)</th><th>What it means</th></tr></thead>
         <tbody>
-          <tr><td>"WELCOME TO LUCIRA" (login modal)</td><td class="num bad">16,483</td><td>The OTP gate itself, top rage-click target on this page</td></tr>
-          <tr><td>Overlay backdrop (blank)</td><td class="num bad">14,556</td><td>Users clicking outside the modal trying to dismiss it</td></tr>
-          <tr><td>"Your cart is empty" state</td><td class="num warn">6,415</td><td>Cart appearing empty behind/after the modal</td></tr>
-          <tr><td>Subtotal / savings</td><td class="num">4,950</td><td>Checking the total before deciding</td></tr>
-          <tr><td><code>Cart 1/3</code> step indicator</td><td class="num warn">4,654</td><td>Users clicking the progress indicator itself, hoping it advances the stalled flow</td></tr>
-          <tr><td>"REQUEST OTP" button</td><td class="num">1,201</td><td>Some users do attempt to proceed through the gate</td></tr>
+          <tr><td>Overlay backdrop (blank/untagged)</td><td class="num bad">3,858</td><td class="num">14,556</td><td>Users clicking outside the modal trying to dismiss it — down, but still the single largest bucket</td></tr>
+          <tr><td>"REQUEST OTP" button</td><td class="num">1,610</td><td class="num">1,201</td><td>More users now attempting the gate, up ~34%</td></tr>
+          <tr><td><b>"Proceed To Checkout"</b> (new module CTA)</td><td class="num warn">1,313</td><td class="num dim">—</td><td>New this window — part of the 3 Aug coupon/offer module</td></tr>
+          <tr><td><b><code>Cart1/3</code></b> step indicator</td><td class="num warn">1,136</td><td class="num">4,654</td><td>Still clicked as if it might advance the stalled flow, though down from before</td></tr>
+          <tr><td>"WELCOME TO LUCIRA" (login modal)</td><td class="num bad">1,072</td><td class="num bad">16,483</td><td>The OTP gate itself — still present underneath the new module, unchanged behaviour</td></tr>
+          <tr><td>"100% Secured & Spam Free"</td><td class="num">943</td><td class="num">1,835</td><td>Trust badge on the login modal</td></tr>
+          <tr><td>"Remove"</td><td class="num">338</td><td class="num dim">—</td><td>Line-item removal — new visibility into this action this window</td></tr>
         </tbody>
       </table>
     </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Evidence</span><h2>Cart heatmap — captured for the first time, 4 Aug</h2></div>
+    <p class="measure" style="font-size:13px;">Every prior attempt at a cart heatmap failed outright ("no supplied
+      click texts could be located") because a fresh page load always lands on an <b>empty</b> cart, and the
+      highest-weight clicks (the login modal, the new coupon module, "Proceed to Checkout") only exist once an item
+      is in cart — a state a stateless screenshot can't reproduce. This pass got a partial result: two of the
+      cart page's real click targets — the <code>Cart1/3</code> step indicator and the empty-cart messaging — do
+      exist on the empty state and rendered successfully below. The login-modal and coupon-module clicks (the
+      majority of the table above) still can't be captured this way; <code>checkout-gate.js</code>'s screenshots
+      (further down this page) remain the only way to see those, since that script actually adds an item first.</p>
+    <div class="split">
+      <figure style="margin:0;background:var(--surface);border:1px solid var(--line);border-radius:8px;overflow:hidden;">
+        <img src="captures/heatmap-cart-mobile.png" alt="Cart page click heatmap, mobile, empty-cart state" style="width:100%;display:block;">
+        <figcaption style="padding:10px 13px;font-size:12px;color:var(--muted);border-top:1px solid var(--line);">Mobile —
+          hottest spot is the <code>Cart1/3</code> chrome at the very top, not any content on the page itself.</figcaption>
+      </figure>
+      <figure style="margin:0;background:var(--surface);border:1px solid var(--line);border-radius:8px;overflow:hidden;">
+        <img src="captures/heatmap-cart-desktop.png" alt="Cart page click heatmap, desktop, empty-cart state" style="width:100%;display:block;">
+        <figcaption style="padding:10px 13px;font-size:12px;color:var(--muted);border-top:1px solid var(--line);">Desktop —
+          same pattern; the CART/SHIPPING/PAYMENT stepper is visible and takes the bulk of empty-state clicks.</figcaption>
+      </figure>
+    </div>
+    <p class="measure" style="font-size:12.5px;color:var(--muted);margin-top:10px;">Read carefully: this doesn't mean
+      users are mostly clicking the step indicator instead of shopping — it means a meaningful share of cart-page
+      sessions in Clarity's aggregate are landing on an <b>empty</b> cart (direct visit, bookmark, or after removing
+      the last item), separate from the cart-with-item sessions the rest of this page's findings are about.</p>
   </section>
 
   <section>
@@ -365,7 +399,54 @@
   </section>
 
   <section>
-    <div class="sec-head"><span class="tag">Evidence</span><h2>Live capture, 29 Jul</h2></div>
+    <div class="sec-head"><span class="tag">Deployment check &middot; 4 Aug</span><h2>Cart, shipping &amp; payment: what changed, what broke, what's fine</h2></div>
+    <div class="banner alarm" style="margin-bottom:16px;">
+      <p style="margin:0 0 9px;"><b>GA4 tracking broke again, sitewide, the day after the deployment — and is
+        still live this morning.</b> 2 Aug was completely normal on every checkout page (cart mobile 97.8% engaged,
+        shipping/payment bounce 0%). On 3 Aug — the day immediately after the deployment — every checkout page
+        collapsed identically: cart mobile engaged fell to 1.3% (bounce 98.7%), shipping mobile bounce jumped
+        0%&rarr;76.5%, payment mobile bounce jumped 0%&rarr;78.6%, payment desktop bounce 0-30%&rarr;87.5%.</p>
+      <p style="margin:0;">Two independent signals prove real behaviour did not change: funnel events stayed
+        normal (2 purchases, 96 begin_checkout, 36 add_shipping_info, 19 add_payment_info combined across devices
+        on 3 Aug — in the usual daily range) and Clarity's aggregate numbers for the whole site stayed normal too
+        (11,505 mobile sessions, 544 rage clicks, 26.5% scroll). Live console check this morning reproduced
+        <code>Skipped GTM&rarr;GA4: Missing data for: pageView</code> on 3 of 3 reloads of this page — up from 1 of
+        3 previously. See <b>F12/T22</b> in <a href="insights.html">Insights</a> and the <a href="action_plan.html">Action Plan</a> for the full timeline.</p>
+    </div>
+    <div class="split">
+      <div>
+        <h3 style="font-size:14.5px;margin:0 0 8px;">What's new on the cart page (confirmed live)</h3>
+        <ul style="font-size:12.5px;color:var(--muted);margin:0;padding-left:18px;">
+          <li><b>"Apply Coupon — View all available coupons"</b> widget (60 clicks, 3 Aug Clarity data)</li>
+          <li><b>"You've unlocked a FREE Diamond Pendant worth ₹10,000 — CLAIM"</b> gamified offer banner, new</li>
+          <li>"Shop with Complete Confidence — VIEW LIVE" video-shopping banner, new</li>
+          <li>Persistent Call / WhatsApp (62 clicks) / Chat contact dock, new</li>
+          <li>209 clicks logged on text truncated as <b>"ApplyLogin to Unlock Coup…"</b> — reads as though applying
+            a coupon may itself require login, i.e. a second gate stacked on the existing OTP wall. Ambiguous due
+            to Clarity's truncation; needs a 2-minute manual click-through to confirm (filed as <b>F14</b>, low
+            confidence, needs investigation).</li>
+        </ul>
+      </div>
+      <div>
+        <h3 style="font-size:14.5px;margin:0 0 8px;">Orders &amp; offers — checkout journey, 2&ndash;3 Aug</h3>
+        <ul style="font-size:12.5px;color:var(--muted);margin:0;padding-left:18px;">
+          <li><b>Partial-COD is working as designed and is a large share of volume:</b> 6 of the last 16 orders
+            (37.5%) are PARTIALLY_PAID, matching the "partial_cod" / "Apply Points" options seen in payment-page
+            clicks — deposit online, balance on delivery.</li>
+          <li><b>Discrepancy:</b> order #2480 (₹20,000, salesperson-assisted) carries the discount code text
+            <code>"500Lucira point + 166 additional discount - Need to add"</code> — a staff to-do note, not a real
+            code, visible on the customer's order. Order #2486 shows a generic "Custom discount" label instead of
+            a named code. Both are manual/draft-order entries; named codes elsewhere (GRAND250, GRAND750) applied
+            cleanly. Process fix, filed as <b>F15</b>.</li>
+          <li>Shipping page, 3 Aug: a "Close" element logged 18 dead clicks against only 8 real clicks — worth
+            watching, single day of data only.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Evidence</span><h2>Live capture, 4 Aug — post-deployment</h2></div>
     <div class="split">
       <figure style="margin:0;background:var(--surface);border:1px solid var(--line);border-radius:8px;overflow:hidden;">
         <img src="captures/gate-3-after_checkout_click-mobile.png" alt="Mobile checkout gate after clicking Proceed to Checkout" style="width:100%;display:block;">
@@ -389,7 +470,7 @@
 </div>
 
 <script>
-const DATA = [{"d":"2026-06-29","dev":"desktop","s":12,"eng":12,"dur":293.2,"pps":3.50,"nu":1,"tu":11,"b":0.00},{"d":"2026-06-30","dev":"desktop","s":16,"eng":14,"dur":137.0,"pps":1.50,"nu":1,"tu":14,"b":12.50},{"d":"2026-07-01","dev":"desktop","s":24,"eng":21,"dur":232.9,"pps":1.88,"nu":0,"tu":20,"b":12.50},{"d":"2026-07-02","dev":"desktop","s":17,"eng":17,"dur":66.9,"pps":1.47,"nu":0,"tu":15,"b":0.00},{"d":"2026-07-03","dev":"desktop","s":23,"eng":19,"dur":138.4,"pps":1.57,"nu":0,"tu":19,"b":17.39},{"d":"2026-07-04","dev":"desktop","s":11,"eng":8,"dur":29.8,"pps":1.09,"nu":0,"tu":10,"b":27.27},{"d":"2026-07-05","dev":"desktop","s":5,"eng":5,"dur":178.8,"pps":2.60,"nu":1,"tu":5,"b":0.00},{"d":"2026-07-06","dev":"desktop","s":11,"eng":9,"dur":231.0,"pps":3.09,"nu":0,"tu":9,"b":18.18},{"d":"2026-07-07","dev":"desktop","s":15,"eng":14,"dur":138.3,"pps":2.67,"nu":0,"tu":14,"b":6.67},{"d":"2026-07-08","dev":"desktop","s":36,"eng":34,"dur":247.1,"pps":3.19,"nu":1,"tu":24,"b":5.56},{"d":"2026-07-09","dev":"desktop","s":29,"eng":26,"dur":115.6,"pps":1.45,"nu":0,"tu":20,"b":10.34},{"d":"2026-07-10","dev":"desktop","s":40,"eng":33,"dur":89.0,"pps":2.92,"nu":0,"tu":28,"b":17.50},{"d":"2026-07-11","dev":"desktop","s":23,"eng":18,"dur":123.1,"pps":2.04,"nu":1,"tu":15,"b":21.74},{"d":"2026-07-12","dev":"desktop","s":7,"eng":7,"dur":236.8,"pps":1.00,"nu":0,"tu":6,"b":0.00},{"d":"2026-07-13","dev":"desktop","s":21,"eng":20,"dur":144.4,"pps":3.43,"nu":0,"tu":19,"b":4.76},{"d":"2026-07-14","dev":"desktop","s":23,"eng":22,"dur":35.8,"pps":1.57,"nu":0,"tu":19,"b":4.35},{"d":"2026-07-15","dev":"desktop","s":28,"eng":22,"dur":158.8,"pps":4.21,"nu":0,"tu":19,"b":21.43},{"d":"2026-07-16","dev":"desktop","s":29,"eng":26,"dur":92.4,"pps":2.28,"nu":0,"tu":24,"b":10.34},{"d":"2026-07-17","dev":"desktop","s":34,"eng":30,"dur":152.3,"pps":2.15,"nu":0,"tu":25,"b":11.76},{"d":"2026-07-18","dev":"desktop","s":31,"eng":29,"dur":90.5,"pps":1.65,"nu":1,"tu":18,"b":6.45},{"d":"2026-07-19","dev":"desktop","s":6,"eng":6,"dur":71.9,"pps":2.17,"nu":0,"tu":6,"b":0.00},{"d":"2026-07-20","dev":"desktop","s":20,"eng":15,"dur":123.7,"pps":1.45,"nu":0,"tu":14,"b":25.00},{"d":"2026-07-21","dev":"desktop","s":18,"eng":18,"dur":52.7,"pps":1.67,"nu":0,"tu":15,"b":0.00},{"d":"2026-07-22","dev":"desktop","s":11,"eng":11,"dur":217.2,"pps":1.64,"nu":0,"tu":10,"b":0.00},{"d":"2026-07-23","dev":"desktop","s":13,"eng":12,"dur":115.1,"pps":1.54,"nu":0,"tu":11,"b":7.69},{"d":"2026-07-24","dev":"desktop","s":13,"eng":12,"dur":51.3,"pps":1.77,"nu":0,"tu":12,"b":7.69},{"d":"2026-07-25","dev":"desktop","s":23,"eng":22,"dur":107.0,"pps":1.87,"nu":0,"tu":15,"b":4.35},{"d":"2026-07-26","dev":"desktop","s":13,"eng":11,"dur":94.9,"pps":2.38,"nu":0,"tu":9,"b":15.38},{"d":"2026-07-27","dev":"desktop","s":33,"eng":30,"dur":83.2,"pps":1.85,"nu":0,"tu":22,"b":9.09},{"d":"2026-07-28","dev":"desktop","s":20,"eng":19,"dur":354.0,"pps":2.40,"nu":1,"tu":18,"b":5.00},{"d":"2026-06-29","dev":"mobile","s":295,"eng":288,"dur":67.1,"pps":1.29,"nu":2,"tu":271,"b":2.37},{"d":"2026-06-30","dev":"mobile","s":329,"eng":322,"dur":59.8,"pps":1.40,"nu":5,"tu":297,"b":2.13},{"d":"2026-07-01","dev":"mobile","s":306,"eng":295,"dur":54.1,"pps":1.60,"nu":1,"tu":273,"b":3.59},{"d":"2026-07-02","dev":"mobile","s":322,"eng":314,"dur":30.1,"pps":1.30,"nu":2,"tu":301,"b":2.48},{"d":"2026-07-03","dev":"mobile","s":351,"eng":340,"dur":59.9,"pps":1.38,"nu":1,"tu":312,"b":3.13},{"d":"2026-07-04","dev":"mobile","s":330,"eng":320,"dur":47.1,"pps":1.36,"nu":4,"tu":304,"b":3.03},{"d":"2026-07-05","dev":"mobile","s":290,"eng":283,"dur":49.2,"pps":1.34,"nu":5,"tu":278,"b":2.41},{"d":"2026-07-06","dev":"mobile","s":294,"eng":290,"dur":66.8,"pps":1.34,"nu":2,"tu":267,"b":1.36},{"d":"2026-07-07","dev":"mobile","s":314,"eng":307,"dur":45.7,"pps":1.28,"nu":5,"tu":296,"b":2.23},{"d":"2026-07-08","dev":"mobile","s":329,"eng":322,"dur":53.8,"pps":1.32,"nu":3,"tu":305,"b":2.13},{"d":"2026-07-09","dev":"mobile","s":306,"eng":297,"dur":35.8,"pps":1.42,"nu":3,"tu":279,"b":2.94},{"d":"2026-07-10","dev":"mobile","s":321,"eng":309,"dur":49.5,"pps":1.25,"nu":7,"tu":289,"b":3.74},{"d":"2026-07-11","dev":"mobile","s":270,"eng":264,"dur":39.8,"pps":1.28,"nu":4,"tu":254,"b":2.22},{"d":"2026-07-12","dev":"mobile","s":311,"eng":297,"dur":38.2,"pps":1.32,"nu":2,"tu":287,"b":4.50},{"d":"2026-07-13","dev":"mobile","s":268,"eng":257,"dur":66.4,"pps":1.36,"nu":3,"tu":249,"b":4.10},{"d":"2026-07-14","dev":"mobile","s":294,"eng":287,"dur":46.8,"pps":1.31,"nu":3,"tu":276,"b":2.38},{"d":"2026-07-15","dev":"mobile","s":305,"eng":295,"dur":44.1,"pps":1.53,"nu":4,"tu":283,"b":3.28},{"d":"2026-07-16","dev":"mobile","s":349,"eng":338,"dur":42.2,"pps":1.51,"nu":4,"tu":322,"b":3.15},{"d":"2026-07-17","dev":"mobile","s":375,"eng":366,"dur":51.3,"pps":1.45,"nu":3,"tu":349,"b":2.40},{"d":"2026-07-18","dev":"mobile","s":330,"eng":322,"dur":44.9,"pps":1.47,"nu":2,"tu":307,"b":2.42},{"d":"2026-07-19","dev":"mobile","s":355,"eng":344,"dur":42.6,"pps":1.53,"nu":2,"tu":329,"b":3.10},{"d":"2026-07-20","dev":"mobile","s":339,"eng":331,"dur":35.4,"pps":1.38,"nu":3,"tu":319,"b":2.36},{"d":"2026-07-21","dev":"mobile","s":318,"eng":313,"dur":47.5,"pps":1.34,"nu":2,"tu":295,"b":1.57},{"d":"2026-07-22","dev":"mobile","s":338,"eng":326,"dur":36.9,"pps":1.30,"nu":1,"tu":308,"b":3.55},{"d":"2026-07-23","dev":"mobile","s":332,"eng":316,"dur":52.7,"pps":1.29,"nu":10,"tu":311,"b":4.82},{"d":"2026-07-24","dev":"mobile","s":336,"eng":331,"dur":47.4,"pps":1.51,"nu":4,"tu":316,"b":1.49},{"d":"2026-07-25","dev":"mobile","s":331,"eng":321,"dur":38.4,"pps":1.41,"nu":2,"tu":297,"b":3.02},{"d":"2026-07-26","dev":"mobile","s":364,"eng":356,"dur":41.3,"pps":1.36,"nu":3,"tu":343,"b":2.20},{"d":"2026-07-27","dev":"mobile","s":361,"eng":350,"dur":40.6,"pps":1.45,"nu":3,"tu":327,"b":3.05},{"d":"2026-07-28","dev":"mobile","s":338,"eng":328,"dur":52.0,"pps":1.38,"nu":4,"tu":308,"b":2.96},{"d":"2026-07-29","dev":"desktop","s":24,"eng":22,"dur":55.2,"pps":1.46,"nu":0,"tu":16,"b":8.33},{"d":"2026-07-29","dev":"mobile","s":334,"eng":324,"dur":54.0,"pps":1.38,"nu":3,"tu":303,"b":2.99},{"d":"2026-07-30","dev":"desktop","s":20,"eng":20,"dur":54.0,"pps":1.85,"nu":0,"tu":16,"b":0.00},{"d":"2026-07-31","dev":"desktop","s":27,"eng":23,"dur":73.0,"pps":2.30,"nu":1,"tu":23,"b":14.81},{"d":"2026-08-01","dev":"desktop","s":15,"eng":2,"dur":457.6,"pps":2.20,"nu":0,"tu":14,"b":86.67},{"d":"2026-07-30","dev":"mobile","s":376,"eng":366,"dur":61.4,"pps":1.45,"nu":2,"tu":341,"b":2.66},{"d":"2026-07-31","dev":"mobile","s":339,"eng":333,"dur":42.3,"pps":1.48,"nu":3,"tu":308,"b":1.77},{"d":"2026-08-01","dev":"mobile","s":336,"eng":8,"dur":146.1,"pps":1.28,"nu":3,"tu":313,"b":97.62}];
+const DATA = [{"d":"2026-06-29","dev":"desktop","s":12,"eng":12,"dur":293.2,"pps":3.50,"nu":1,"tu":11,"b":0.00},{"d":"2026-06-30","dev":"desktop","s":16,"eng":14,"dur":137.0,"pps":1.50,"nu":1,"tu":14,"b":12.50},{"d":"2026-07-01","dev":"desktop","s":24,"eng":21,"dur":232.9,"pps":1.88,"nu":0,"tu":20,"b":12.50},{"d":"2026-07-02","dev":"desktop","s":17,"eng":17,"dur":66.9,"pps":1.47,"nu":0,"tu":15,"b":0.00},{"d":"2026-07-03","dev":"desktop","s":23,"eng":19,"dur":138.4,"pps":1.57,"nu":0,"tu":19,"b":17.39},{"d":"2026-07-04","dev":"desktop","s":11,"eng":8,"dur":29.8,"pps":1.09,"nu":0,"tu":10,"b":27.27},{"d":"2026-07-05","dev":"desktop","s":5,"eng":5,"dur":178.8,"pps":2.60,"nu":1,"tu":5,"b":0.00},{"d":"2026-07-06","dev":"desktop","s":11,"eng":9,"dur":231.0,"pps":3.09,"nu":0,"tu":9,"b":18.18},{"d":"2026-07-07","dev":"desktop","s":15,"eng":14,"dur":138.3,"pps":2.67,"nu":0,"tu":14,"b":6.67},{"d":"2026-07-08","dev":"desktop","s":36,"eng":34,"dur":247.1,"pps":3.19,"nu":1,"tu":24,"b":5.56},{"d":"2026-07-09","dev":"desktop","s":29,"eng":26,"dur":115.6,"pps":1.45,"nu":0,"tu":20,"b":10.34},{"d":"2026-07-10","dev":"desktop","s":40,"eng":33,"dur":89.0,"pps":2.92,"nu":0,"tu":28,"b":17.50},{"d":"2026-07-11","dev":"desktop","s":23,"eng":18,"dur":123.1,"pps":2.04,"nu":1,"tu":15,"b":21.74},{"d":"2026-07-12","dev":"desktop","s":7,"eng":7,"dur":236.8,"pps":1.00,"nu":0,"tu":6,"b":0.00},{"d":"2026-07-13","dev":"desktop","s":21,"eng":20,"dur":144.4,"pps":3.43,"nu":0,"tu":19,"b":4.76},{"d":"2026-07-14","dev":"desktop","s":23,"eng":22,"dur":35.8,"pps":1.57,"nu":0,"tu":19,"b":4.35},{"d":"2026-07-15","dev":"desktop","s":28,"eng":22,"dur":158.8,"pps":4.21,"nu":0,"tu":19,"b":21.43},{"d":"2026-07-16","dev":"desktop","s":29,"eng":26,"dur":92.4,"pps":2.28,"nu":0,"tu":24,"b":10.34},{"d":"2026-07-17","dev":"desktop","s":34,"eng":30,"dur":152.3,"pps":2.15,"nu":0,"tu":25,"b":11.76},{"d":"2026-07-18","dev":"desktop","s":31,"eng":29,"dur":90.5,"pps":1.65,"nu":1,"tu":18,"b":6.45},{"d":"2026-07-19","dev":"desktop","s":6,"eng":6,"dur":71.9,"pps":2.17,"nu":0,"tu":6,"b":0.00},{"d":"2026-07-20","dev":"desktop","s":20,"eng":15,"dur":123.7,"pps":1.45,"nu":0,"tu":14,"b":25.00},{"d":"2026-07-21","dev":"desktop","s":18,"eng":18,"dur":52.7,"pps":1.67,"nu":0,"tu":15,"b":0.00},{"d":"2026-07-22","dev":"desktop","s":11,"eng":11,"dur":217.2,"pps":1.64,"nu":0,"tu":10,"b":0.00},{"d":"2026-07-23","dev":"desktop","s":13,"eng":12,"dur":115.1,"pps":1.54,"nu":0,"tu":11,"b":7.69},{"d":"2026-07-24","dev":"desktop","s":13,"eng":12,"dur":51.3,"pps":1.77,"nu":0,"tu":12,"b":7.69},{"d":"2026-07-25","dev":"desktop","s":23,"eng":22,"dur":107.0,"pps":1.87,"nu":0,"tu":15,"b":4.35},{"d":"2026-07-26","dev":"desktop","s":13,"eng":11,"dur":94.9,"pps":2.38,"nu":0,"tu":9,"b":15.38},{"d":"2026-07-27","dev":"desktop","s":33,"eng":30,"dur":83.2,"pps":1.85,"nu":0,"tu":22,"b":9.09},{"d":"2026-07-28","dev":"desktop","s":20,"eng":19,"dur":354.0,"pps":2.40,"nu":1,"tu":18,"b":5.00},{"d":"2026-06-29","dev":"mobile","s":295,"eng":288,"dur":67.1,"pps":1.29,"nu":2,"tu":271,"b":2.37},{"d":"2026-06-30","dev":"mobile","s":329,"eng":322,"dur":59.8,"pps":1.40,"nu":5,"tu":297,"b":2.13},{"d":"2026-07-01","dev":"mobile","s":306,"eng":295,"dur":54.1,"pps":1.60,"nu":1,"tu":273,"b":3.59},{"d":"2026-07-02","dev":"mobile","s":322,"eng":314,"dur":30.1,"pps":1.30,"nu":2,"tu":301,"b":2.48},{"d":"2026-07-03","dev":"mobile","s":351,"eng":340,"dur":59.9,"pps":1.38,"nu":1,"tu":312,"b":3.13},{"d":"2026-07-04","dev":"mobile","s":330,"eng":320,"dur":47.1,"pps":1.36,"nu":4,"tu":304,"b":3.03},{"d":"2026-07-05","dev":"mobile","s":290,"eng":283,"dur":49.2,"pps":1.34,"nu":5,"tu":278,"b":2.41},{"d":"2026-07-06","dev":"mobile","s":294,"eng":290,"dur":66.8,"pps":1.34,"nu":2,"tu":267,"b":1.36},{"d":"2026-07-07","dev":"mobile","s":314,"eng":307,"dur":45.7,"pps":1.28,"nu":5,"tu":296,"b":2.23},{"d":"2026-07-08","dev":"mobile","s":329,"eng":322,"dur":53.8,"pps":1.32,"nu":3,"tu":305,"b":2.13},{"d":"2026-07-09","dev":"mobile","s":306,"eng":297,"dur":35.8,"pps":1.42,"nu":3,"tu":279,"b":2.94},{"d":"2026-07-10","dev":"mobile","s":321,"eng":309,"dur":49.5,"pps":1.25,"nu":7,"tu":289,"b":3.74},{"d":"2026-07-11","dev":"mobile","s":270,"eng":264,"dur":39.8,"pps":1.28,"nu":4,"tu":254,"b":2.22},{"d":"2026-07-12","dev":"mobile","s":311,"eng":297,"dur":38.2,"pps":1.32,"nu":2,"tu":287,"b":4.50},{"d":"2026-07-13","dev":"mobile","s":268,"eng":257,"dur":66.4,"pps":1.36,"nu":3,"tu":249,"b":4.10},{"d":"2026-07-14","dev":"mobile","s":294,"eng":287,"dur":46.8,"pps":1.31,"nu":3,"tu":276,"b":2.38},{"d":"2026-07-15","dev":"mobile","s":305,"eng":295,"dur":44.1,"pps":1.53,"nu":4,"tu":283,"b":3.28},{"d":"2026-07-16","dev":"mobile","s":349,"eng":338,"dur":42.2,"pps":1.51,"nu":4,"tu":322,"b":3.15},{"d":"2026-07-17","dev":"mobile","s":375,"eng":366,"dur":51.3,"pps":1.45,"nu":3,"tu":349,"b":2.40},{"d":"2026-07-18","dev":"mobile","s":330,"eng":322,"dur":44.9,"pps":1.47,"nu":2,"tu":307,"b":2.42},{"d":"2026-07-19","dev":"mobile","s":355,"eng":344,"dur":42.6,"pps":1.53,"nu":2,"tu":329,"b":3.10},{"d":"2026-07-20","dev":"mobile","s":339,"eng":331,"dur":35.4,"pps":1.38,"nu":3,"tu":319,"b":2.36},{"d":"2026-07-21","dev":"mobile","s":318,"eng":313,"dur":47.5,"pps":1.34,"nu":2,"tu":295,"b":1.57},{"d":"2026-07-22","dev":"mobile","s":338,"eng":326,"dur":36.9,"pps":1.30,"nu":1,"tu":308,"b":3.55},{"d":"2026-07-23","dev":"mobile","s":332,"eng":316,"dur":52.7,"pps":1.29,"nu":10,"tu":311,"b":4.82},{"d":"2026-07-24","dev":"mobile","s":336,"eng":331,"dur":47.4,"pps":1.51,"nu":4,"tu":316,"b":1.49},{"d":"2026-07-25","dev":"mobile","s":331,"eng":321,"dur":38.4,"pps":1.41,"nu":2,"tu":297,"b":3.02},{"d":"2026-07-26","dev":"mobile","s":364,"eng":356,"dur":41.3,"pps":1.36,"nu":3,"tu":343,"b":2.20},{"d":"2026-07-27","dev":"mobile","s":361,"eng":350,"dur":40.6,"pps":1.45,"nu":3,"tu":327,"b":3.05},{"d":"2026-07-28","dev":"mobile","s":338,"eng":328,"dur":52.0,"pps":1.38,"nu":4,"tu":308,"b":2.96},{"d":"2026-07-29","dev":"desktop","s":24,"eng":22,"dur":55.2,"pps":1.46,"nu":0,"tu":16,"b":8.33},{"d":"2026-07-29","dev":"mobile","s":334,"eng":324,"dur":54.0,"pps":1.38,"nu":3,"tu":303,"b":2.99},{"d":"2026-07-30","dev":"desktop","s":20,"eng":20,"dur":54.0,"pps":1.85,"nu":0,"tu":16,"b":0.00},{"d":"2026-07-31","dev":"desktop","s":27,"eng":23,"dur":73.0,"pps":2.30,"nu":1,"tu":23,"b":14.81},{"d":"2026-08-01","dev":"desktop","s":15,"eng":15,"dur":95.7,"pps":2.13,"nu":0,"tu":14,"b":0.00},{"d":"2026-07-30","dev":"mobile","s":376,"eng":366,"dur":61.4,"pps":1.45,"nu":2,"tu":341,"b":2.66},{"d":"2026-07-31","dev":"mobile","s":339,"eng":333,"dur":42.3,"pps":1.48,"nu":3,"tu":308,"b":1.77},{"d":"2026-08-01","dev":"mobile","s":344,"eng":331,"dur":48.9,"pps":1.33,"nu":5,"tu":323,"b":3.78},{"d":"2026-08-02","dev":"desktop","s":11,"eng":10,"dur":52.7,"pps":2.00,"nu":0,"tu":8,"b":9.09},{"d":"2026-08-03","dev":"desktop","s":43,"eng":3,"dur":839.3,"pps":2.63,"nu":0,"tu":29,"b":93.02},{"d":"2026-08-02","dev":"mobile","s":408,"eng":399,"dur":41.8,"pps":1.39,"nu":3,"tu":379,"b":2.21},{"d":"2026-08-03","dev":"mobile","s":378,"eng":5,"dur":174.8,"pps":1.30,"nu":7,"tu":357,"b":98.68}];
 
 const $ = s => document.querySelector(s);
 const fmt = n => n===null||n===undefined||isNaN(n) ? "—" : Math.round(n).toLocaleString("en-IN");

@@ -1,6 +1,6 @@
 {
  "device": "mobile",
- "generated_at": "2026-08-03T04:38:55.342Z",
+ "generated_at": "2026-08-04T05:08:28.983Z",
  "steps": [
   {
    "step": 1,
@@ -16,18 +16,18 @@
    "guest_option": false,
    "asks_phone": true,
    "visible_ctas": [
-    "A small reminder: Embrace yourself",
-    "Extraaa 3% Bank Discount on Eterna",
-    "Tennis Bracelets You'll Love | ₹50",
+    "Free Pendant on orders over ₹30K!",
     "2500+ designs to try on. Visit our",
-    "Find Your Sparkle on a Video Call",
-    "Try at Home, Love for Life",
+    "Discover Rakhis That Become Pendan",
+    "Rakhi gifts she'll never stop wear",
+    "Free to be you.",
+    "Search here",
     "ADD TO CART",
     "STORES",
     "ADD TO CART",
-    "Collections",
-    "Rings",
-    "SIMILAR ITEMS"
+    "Customize",
+    "Delivery",
+    "Details"
    ]
   },
   {
@@ -44,6 +44,7 @@
     "MOVE TO WISHLIST",
     "Shop with Complete Confidence See ",
     "Apply Coupon View all available co",
+    "CLAIM",
     "ADD",
     "Call",
     "Whatsapp",
@@ -70,6 +71,7 @@
     "MOVE TO WISHLIST",
     "Shop with Complete Confidence See ",
     "Apply Coupon View all available co",
+    "CLAIM",
     "ADD",
     "Call",
     "Whatsapp",

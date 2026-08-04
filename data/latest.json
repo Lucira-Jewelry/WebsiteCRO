@@ -1,12 +1,12 @@
 {
   "schema_version": "1.0",
   "run": {
-    "id": "run-004",
-    "generated_at": "2026-07-27",
-    "window": { "start": "2026-07-19", "end": "2026-07-25", "days": 7, "cutoff_rule": "T-2" },
+    "id": "run-006",
+    "generated_at": "2026-08-04",
+    "window": { "start": "2026-07-27", "end": "2026-08-02", "days": 7, "cutoff_rule": "T-2" },
     "scope": "Online storefront only. ERP/store orders and Shopify native session analytics excluded (headless).",
-    "previous_run": "run-003",
-    "report_file": "reports/2026-07-27_run-004.html"
+    "previous_run": "run-005",
+    "report_file": "reports/2026-08-04_run-006.html"
   },
 
   "sources": {
@@ -17,24 +17,24 @@
   },
 
   "commerce_30d": {
-    "note": "30-day context window 2026-06-27 to 2026-07-27. Order segmentation is the authoritative baseline.",
-    "orders_total": 211,
-    "revenue_total_inr": 7990873.26,
+    "note": "30-day context window 2026-07-04 to 2026-08-02. Order segmentation is the authoritative baseline. Pulled fresh this run via Shopify Admin GraphQL (213 orders, paged in full).",
+    "orders_total": 213,
+    "revenue_total_inr": 8293546.20,
     "segments": {
       "erp_store": {
-        "orders": 127,
-        "revenue_inr": 5849604,
-        "aov_inr": 46060,
+        "orders": 130,
+        "revenue_inr": 6587454,
+        "aov_inr": 50673,
         "source_name": "283870494721",
         "app": "OrnaVerse ERP",
-        "tag_prefixes": ["HO-LJ-", "PV1-LJ-", "PN1-LJ-", "BO1-LJ-", "FCS-LJ-", "N18-LJ-"],
+        "tag_prefixes": ["HO-LJ-", "PV1-LJ-", "PN1-LJ-", "BO1-LJ-", "FCS-LJ-", "N18-LJ-", "LPN-LJ-"],
         "include_in_cro": false,
         "reason": "Physical store / offline orders written back via ERP. Not attributable to website conversion."
       },
       "online_headless": {
-        "orders": 64,
-        "revenue_inr": 1637951,
-        "aov_inr": 25593,
+        "orders": 57,
+        "revenue_inr": 1161655,
+        "aov_inr": 20380,
         "source_name": "307193511937",
         "app": "Shopify Admin API",
         "tag_markers": ["Razorpay", "Partial COD", "nector_redeem"],
@@ -42,9 +42,9 @@
         "ga4_trackable": true
       },
       "salesperson_assisted": {
-        "orders": 22,
-        "revenue_inr": 538147,
-        "aov_inr": 24461,
+        "orders": 26,
+        "revenue_inr": 544437,
+        "aov_inr": 20940,
         "source_name": "shopify_draft_order",
         "app": "Draft Orders",
         "include_in_cro": true,
@@ -52,208 +52,241 @@
         "reason": "Counted as online sales by the business, but GA4 tag does not fire on backend-created orders."
       }
     },
-    "online_combined": { "orders": 84, "revenue_inr": 2141269, "aov_inr": 25491, "overlap_orders_deduped": 2 }
+    "online_combined": { "orders": 83, "revenue_inr": 1706092, "aov_inr": 20555, "overlap_orders_deduped": 0, "overlap_note": "Segmentation is by Shopify sourceName, which is mutually exclusive by construction, so no duplicate order IDs exist across segments in this pull. Prior run's overlap figure (2) reflected a manual customer-level reconciliation that was not repeated this run." }
   },
 
   "funnel_7d": {
     "steps": ["view_item", "add_to_cart", "begin_checkout", "add_shipping_info", "add_payment_info", "purchase"],
-    "totals": { "view_item": 58734, "add_to_cart": 1876, "begin_checkout": 165, "add_shipping_info": 75, "add_payment_info": 45, "purchase": 14 },
+    "totals": { "view_item": 129014, "add_to_cart": 2927, "begin_checkout": 508, "add_shipping_info": 261, "add_payment_info": 134, "purchase": 10 },
     "by_device": {
-      "mobile":  { "view_item": 53597, "add_to_cart": 1818, "begin_checkout": 144, "add_shipping_info": 61, "add_payment_info": 35, "purchase": 13 },
-      "desktop": { "view_item": 5178,  "add_to_cart": 57,   "begin_checkout": 21,  "add_shipping_info": 14, "add_payment_info": 10, "purchase": 1 },
-      "tablet":  { "view_item": 130,   "add_to_cart": 1,    "begin_checkout": 0,   "add_shipping_info": 0,  "add_payment_info": 0,  "purchase": 0 }
+      "mobile":  { "view_item": 115233, "add_to_cart": 2768, "begin_checkout": 356, "add_shipping_info": 192, "add_payment_info": 93, "purchase": 9 },
+      "desktop": { "view_item": 13473,  "add_to_cart": 155,  "begin_checkout": 149, "add_shipping_info": 69,  "add_payment_info": 41, "purchase": 1 },
+      "tablet":  { "view_item": 308,    "add_to_cart": 4,    "begin_checkout": 3,   "add_shipping_info": 0,   "add_payment_info": 0,  "purchase": 0 }
     },
     "step_completion_rate_pct": {
-      "mobile":  { "view_to_atc": 3.39, "atc_to_checkout": 7.92,  "checkout_to_shipping": 42.36, "shipping_to_payment": 57.38, "payment_to_purchase": 37.14, "end_to_end": 0.024 },
-      "desktop": { "view_to_atc": 1.10, "atc_to_checkout": 36.84, "checkout_to_shipping": 66.67, "shipping_to_payment": 71.43, "payment_to_purchase": 10.00, "end_to_end": 0.019 },
-      "tablet":  { "view_to_atc": 0.77, "atc_to_checkout": 0.00 }
+      "mobile":  { "view_to_atc": 2.40, "atc_to_checkout": 12.86, "checkout_to_shipping": 53.93, "shipping_to_payment": 48.44, "payment_to_purchase": 9.68, "end_to_end": 0.008 },
+      "desktop": { "view_to_atc": 1.15, "atc_to_checkout": 96.13, "checkout_to_shipping": 46.31, "shipping_to_payment": 59.42, "payment_to_purchase": 2.44, "end_to_end": 0.007 },
+      "tablet":  { "view_to_atc": 1.30, "atc_to_checkout": 75.00 }
     },
-    "ga4_capture_rate": { "ga4_purchases": 14, "real_razorpay_orders_same_week": 18, "capture_pct": 78 }
+    "step_completion_rate_caveat": "Mobile view_to_atc dropped from 3.39% (19-25 Jul) to 2.40% this window while desktop's atc_to_checkout jumped from 36.84% to 96.13% -- driven by desktop begin_checkout events (149) now exceeding desktop add_to_cart events (155) almost 1:1. Real event counts (unaffected by the GA4 F12 tracking break), but worth a manual check for a checkout-entry path that bypasses add_to_cart tracking on desktop.",
+    "ga4_capture_rate": {
+      "ga4_purchases": 10,
+      "real_razorpay_orders_same_week": 10,
+      "capture_pct": 100.0,
+      "capture_pct_caveat": "Small-sample week (10 orders); a single mis-tagged order would move this +/-10pp. 30-day context below is more stable.",
+      "ga4_purchases_30d": 48,
+      "online_headless_orders_30d": 57,
+      "capture_pct_30d": 84.2
+    }
   },
 
   "cart_cliff_7d": {
-    "mobile": { "cart_page_users": 1964, "began_checkout": 144, "progression_pct": 7.3, "bounce_pct": 2.8, "avg_engagement_s": 27.5, "scroll_depth_pct": 80.9, "rage_clicks": 538, "dead_clicks": 2545 },
-    "desktop": { "cart_page_users": 68, "began_checkout": 21, "progression_pct": 30.9, "bounce_pct": 7.8, "avg_engagement_s": 35.5, "rage_clicks": 0, "dead_clicks": 5 },
-    "gap_multiple": 4.2,
-    "interpretation": "Low bounce + high scroll + high rage clicks = users are stuck, not leaving. Mobile-specific overlay failure."
+    "mobile": { "cart_page_users": 2027, "began_checkout": 356, "progression_pct": 17.56, "bounce_pct": 2.75, "avg_engagement_s": 32.22, "scroll_depth_pct": 80.59, "rage_clicks": 1059, "dead_clicks": 3405 },
+    "desktop": { "cart_page_users": 96, "began_checkout": 149, "progression_pct": 155.21, "bounce_pct": 7.33, "avg_engagement_s": 46.61, "rage_clicks": 0, "dead_clicks": 27 },
+    "gap_multiple": 8.84,
+    "desktop_anomaly_note": "Desktop began_checkout (149, real event count) exceeds desktop cart_page_users (96) this window, so progression_pct >100% -- some desktop begin_checkout events are firing without a tracked /checkout/cart pageview (e.g. a quick-buy path). Real data, not a calculation error; treat gap_multiple as directional only until this path is confirmed.",
+    "interpretation": "Low bounce + high scroll + high rage clicks = users are stuck, not leaving. Mobile-specific overlay failure, now compounded: mobile cart rage clicks nearly doubled (538 -> 1059) after the 3 Aug deployment added a coupon/offer module on top of the existing login wall (see F1, F14)."
   },
 
   "sessions_7d": {
-    "total": 101494,
+    "total": 108530,
     "by_device": {
-      "mobile":  { "sessions": 93002, "users": 73628, "bounce_pct": 44.85, "engagement_rate_pct": 55.15, "avg_session_duration_s": 114.12, "ga4_conversions": 127, "ga4_revenue_inr": 96887 },
-      "desktop": { "sessions": 8238,  "users": 6300,  "bounce_pct": 36.65, "engagement_rate_pct": 63.35, "avg_session_duration_s": 208.12, "ga4_conversions": 35,  "ga4_revenue_inr": 11528 },
-      "tablet":  { "sessions": 254,   "users": 212,   "bounce_pct": 53.94, "engagement_rate_pct": 46.06, "avg_session_duration_s": 84.84,  "ga4_conversions": 0,   "ga4_revenue_inr": 0 }
+      "mobile":  { "sessions": 97513, "users": 88152, "bounce_pct": 44.59, "engagement_rate_pct": 55.41, "avg_session_duration_s": 28.10, "ga4_conversions": 202, "ga4_revenue_inr": 80817 },
+      "desktop": { "sessions": 10707, "users": 9288,  "bounce_pct": 31.79, "engagement_rate_pct": 68.21, "avg_session_duration_s": 44.49, "ga4_conversions": 70,  "ga4_revenue_inr": 38271 },
+      "tablet":  { "sessions": 310,   "users": 294,   "bounce_pct": 60.33, "engagement_rate_pct": 39.67, "avg_session_duration_s": 30.42, "ga4_conversions": 0,   "ga4_revenue_inr": 0 }
     },
-    "bot_share_pct_clarity": 34.4
+    "bot_share_pct_clarity": 14.69,
+    "caveat": "Window includes 1 Aug, the day GA4's engaged-session/bounce tracking broke sitewide (finding F12). A live spot-check today (4 Aug) found GA4 has since retroactively reprocessed 1 Aug back to normal ranges (e.g. mobile bounce 41.6% fresh vs the 99.7% recorded live that day) -- the bounce/engagement figures above use the corrected fresh pull, not the stale pre-correction values still sitting in daily_device.csv. avg_session_duration_s is userEngagementDuration/sessions from daily_device.csv (a proxy; GA4's native averageSessionDuration metric was not re-pulled per-day to stay within budget)."
   },
 
   "pages_7d": {
     "metric_definitions": {
-      "avg_engagement_s": "GA4 userEngagementDuration / activeUsers",
+      "avg_engagement_s": "GA4 userEngagementDuration / totalUsers, from a single fresh pull over the full window (already reflects GA4's post-correction reprocessing -- see sessions_7d.caveat)",
       "bounce_pct": "GA4 bounceRate (session-scoped; unreliable on mid-funnel pages)",
       "scroll_depth_pct": "Clarity average scroll depth, bot-filtered",
-      "lcp_ms": "Clarity median LCP"
+      "lcp_ms": "Clarity median LCP, mobile"
     },
+    "caveat": "Figures below come from a single whole-window GA4 pull (not a day-by-day sum), so they already reflect GA4's corrected 1 Aug data -- see sessions_7d.caveat for detail on the underlying tracking break (F12).",
     "mobile": [
-      { "path": "/", "type": "home", "views": 10076, "users": 5656, "avg_engagement_s": 23.8, "bounce_pct": 44.8, "scroll_depth_pct": 27.8, "lcp_ms": 3796, "rage_clicks": 23, "dead_clicks": 86 },
-      { "path": "/collections/eterna", "type": "plp", "views": 7220, "users": 4037, "avg_engagement_s": 35.8, "bounce_pct": 37.7, "scroll_depth_pct": 27.66, "lcp_ms": 2872, "rage_clicks": 120, "dead_clicks": 510 },
-      { "path": "/checkout/cart", "type": "cart", "views": 3284, "users": 1964, "avg_engagement_s": 27.5, "bounce_pct": 2.8, "scroll_depth_pct": 80.9, "lcp_ms": 3568, "rage_clicks": 538, "dead_clicks": 2545 },
-      { "path": "/products/corinthian-pave-diamond-mens-ring", "type": "pdp", "views": 2938, "users": 2289, "avg_engagement_s": 19.3, "bounce_pct": 34.6, "scroll_depth_pct": 18.26, "lcp_ms": 3392 },
-      { "path": "/products/paramount-pave-diamond-mens-ring", "type": "pdp", "views": 2721, "users": 2113, "avg_engagement_s": 16.2, "bounce_pct": 36.4, "scroll_depth_pct": 21.45, "lcp_ms": 4200, "dead_clicks": 93 },
-      { "path": "/schemes", "type": "other", "views": 2669, "users": 2010, "avg_engagement_s": 23.8, "bounce_pct": 54.3, "scroll_depth_pct": 27.01, "lcp_ms": 2464, "rage_clicks": 135, "dead_clicks": 334 },
-      { "path": "/products/mens-classic-solitaire-engagement-ring", "type": "pdp", "views": 2210, "users": 1614, "avg_engagement_s": 20.5, "bounce_pct": 35.7, "scroll_depth_pct": 20.96, "lcp_ms": 3432 },
-      { "path": "/products/men-s-bezel-set-solitaire-lab-grown-diamond-ring", "type": "pdp", "views": 2165, "users": 1739, "avg_engagement_s": 12.4, "bounce_pct": 41.0, "scroll_depth_pct": 19.64, "lcp_ms": 5072 },
-      { "path": "/products/gemstone-and-diamond-chandelier-earrings", "type": "pdp", "views": 2001, "users": 747, "avg_engagement_s": 44.3, "bounce_pct": 29.0, "dead_clicks": 82 },
-      { "path": "/collections/all-earrings", "type": "plp", "views": 1843, "users": 975, "avg_engagement_s": 14.1, "bounce_pct": 61.0, "scroll_depth_pct": 25.73, "lcp_ms": 3596 },
-      { "path": "/products/four-prong-round-solitaire-ring-7-50mm", "type": "pdp", "views": 1743, "users": 1285, "avg_engagement_s": 22.2, "bounce_pct": 36.7, "scroll_depth_pct": 18.85, "lcp_ms": 3680 },
-      { "path": "/collections/bestsellers", "type": "plp", "views": 1347, "users": 939, "avg_engagement_s": 26.8, "bounce_pct": 52.4 },
-      { "path": "/collections/jewelry", "type": "plp", "views": 1345, "users": 830, "avg_engagement_s": 39.8, "bounce_pct": 20.3 },
-      { "path": "/collections/all-rings", "type": "plp", "views": 1314, "users": 728, "avg_engagement_s": 10.7, "bounce_pct": 65.4 },
-      { "path": "/collections/gifts-for-her", "type": "plp", "views": 1070, "users": 716, "avg_engagement_s": 11.1, "bounce_pct": 58.4 },
-      { "path": "/collections/rings", "type": "plp", "views": 962, "users": 478, "avg_engagement_s": 53.4, "bounce_pct": 12.7 },
-      { "path": "/search", "type": "search", "views": 885, "users": 375, "avg_engagement_s": 57.0, "bounce_pct": 5.2 },
-      { "path": "/checkout/shipping", "type": "shipping", "views": 276, "users": 149, "avg_engagement_s": 65.3, "bounce_pct": 3.4, "rage_clicks": 0, "dead_clicks": 95 },
-      { "path": "/checkout/payment", "type": "payment", "views": 119, "users": 63, "avg_engagement_s": 28.3, "bounce_pct": 1.3, "rage_clicks": 0, "dead_clicks": 60 },
-      { "path": "/products/box-gold-neck-chain", "type": "pdp", "views": 1604, "users": 1313, "avg_engagement_s": 15.9, "bounce_pct": 41.6, "scroll_depth_pct": 18.32 },
-      { "path": "/products/princess-cut-diamond-mens-classic-ring", "type": "pdp", "views": 1662, "users": 1150, "avg_engagement_s": 26.8, "bounce_pct": 28.0, "scroll_depth_pct": 18.59 }
+      { "path": "/", "type": "home", "views": 8946, "users": 5404, "avg_engagement_s": 27.1, "bounce_pct": 34.6, "scroll_depth_pct": 27.58, "lcp_ms": 3684, "rage_clicks": 39, "dead_clicks": 103 },
+      { "path": "/collections/eterna", "type": "plp", "views": 7107, "users": 4192, "avg_engagement_s": 31.5, "bounce_pct": 34.5, "scroll_depth_pct": 28.30, "lcp_ms": 2828, "rage_clicks": 115, "dead_clicks": 482 },
+      { "path": "/checkout/cart", "type": "cart", "views": 3525, "users": 2027, "avg_engagement_s": 32.2, "bounce_pct": 2.8, "scroll_depth_pct": 80.59, "lcp_ms": 3636, "rage_clicks": 1059, "dead_clicks": 3405 },
+      { "path": "/products/corinthian-pave-diamond-mens-ring", "type": "pdp", "views": 3235, "users": 2544, "avg_engagement_s": 19.2, "bounce_pct": 33.6, "scroll_depth_pct": 18.39, "lcp_ms": 3352, "rage_clicks": 3, "dead_clicks": 40 },
+      { "path": "/products/men-s-bezel-set-solitaire-lab-grown-diamond-ring", "type": "pdp", "views": 2703, "users": 2249, "avg_engagement_s": 12.5, "bounce_pct": 41.4, "scroll_depth_pct": 20.07, "lcp_ms": 5228, "rage_clicks": 3, "dead_clicks": 90 },
+      { "path": "/products/paramount-pave-diamond-mens-ring", "type": "pdp", "views": 2443, "users": 2015, "avg_engagement_s": 16.0, "bounce_pct": 35.3, "scroll_depth_pct": 20.74, "lcp_ms": 4168, "rage_clicks": 0, "dead_clicks": 32 },
+      { "path": "/products/gemstone-and-diamond-chandelier-earrings", "type": "pdp", "views": 2364, "users": 1097, "avg_engagement_s": 42.3, "bounce_pct": 32.9, "scroll_depth_pct": 22.87, "lcp_ms": 3976, "rage_clicks": 15, "dead_clicks": 104 },
+      { "path": "/products/mens-classic-solitaire-engagement-ring", "type": "pdp", "views": 2262, "users": 1679, "avg_engagement_s": 17.2, "bounce_pct": 36.3, "scroll_depth_pct": 19.71, "lcp_ms": 3376, "rage_clicks": 0, "dead_clicks": 17 },
+      { "path": "/products/swastika-wheel-diamond-mens-bracelet", "type": "pdp", "views": 1939, "users": 1621, "avg_engagement_s": 8.4, "bounce_pct": 69.2, "scroll_depth_pct": 15.73, "lcp_ms": 2076, "rage_clicks": 0, "dead_clicks": 16 },
+      { "path": "/schemes", "type": "other", "views": 1879, "users": 1494, "avg_engagement_s": 7.2, "bounce_pct": 67.2, "scroll_depth_pct": 31.42, "lcp_ms": 2652, "rage_clicks": 3, "dead_clicks": 59 },
+      { "path": "/collections/all-rings", "type": "plp", "views": 1791, "users": 1443, "avg_engagement_s": 7.1, "bounce_pct": 65.4, "scroll_depth_pct": 27.14, "lcp_ms": 3728, "rage_clicks": 0, "dead_clicks": 12 },
+      { "path": "/products/four-prong-round-solitaire-ring-7-50mm", "type": "pdp", "views": 1692, "users": 1327, "avg_engagement_s": 21.9, "bounce_pct": 33.1, "scroll_depth_pct": 17.63, "lcp_ms": 3828, "rage_clicks": 0, "dead_clicks": 32 },
+      { "path": "/products/bead-line-gold-neck-chain", "type": "pdp", "views": 1641, "users": 1369, "avg_engagement_s": 13.4, "bounce_pct": 40.6, "scroll_depth_pct": 18.29, "lcp_ms": 3752, "rage_clicks": 0, "dead_clicks": 34 },
+      { "path": "/products/box-gold-neck-chain", "type": "pdp", "views": 1624, "users": 1363, "avg_engagement_s": 14.7, "bounce_pct": 43.1, "scroll_depth_pct": 17.85, "lcp_ms": 3652, "rage_clicks": 1, "dead_clicks": 43 },
+      { "path": "/products/princess-cut-diamond-mens-classic-ring", "type": "pdp", "views": 1570, "users": 1156, "avg_engagement_s": 26.0, "bounce_pct": 29.3, "scroll_depth_pct": 20.31, "lcp_ms": 3464, "rage_clicks": 0, "dead_clicks": 40 },
+      { "path": "/collections/all-earrings", "type": "plp", "views": 1461, "users": 1059, "avg_engagement_s": 11.5, "bounce_pct": 56.5, "scroll_depth_pct": 27.64, "rage_clicks": 0, "dead_clicks": 11 },
+      { "path": "/products/cable-gold-neck-chain", "type": "pdp", "views": 1455, "users": 1130, "avg_engagement_s": 22.9, "bounce_pct": 32.2, "scroll_depth_pct": 23.20, "rage_clicks": 3, "dead_clicks": 45 },
+      { "path": "/collections/rings", "type": "plp", "views": 1453, "users": 704, "avg_engagement_s": 52.2, "bounce_pct": 21.0, "scroll_depth_pct": 34.07, "rage_clicks": 0, "dead_clicks": 11 },
+      { "path": "/collections/bestsellers", "type": "plp", "views": 1398, "users": 1114, "avg_engagement_s": 14.9, "bounce_pct": 57.5, "scroll_depth_pct": 33.68, "rage_clicks": 0, "dead_clicks": 11 },
+      { "path": "/products/titans-two-tone-diamond-mens-ring", "type": "pdp", "views": 1279, "users": 1117, "avg_engagement_s": 10.3, "bounce_pct": 37.6, "scroll_depth_pct": 19.92, "rage_clicks": 0, "dead_clicks": 38 },
+      { "path": "/checkout/shipping", "type": "shipping", "views": 321, "users": 171, "avg_engagement_s": 56.2, "bounce_pct": 2.4, "scroll_depth_pct": 83.39, "rage_clicks": 2, "dead_clicks": 106 },
+      { "path": "/checkout/payment", "type": "payment", "views": 155, "users": 76, "avg_engagement_s": 22.3, "bounce_pct": 5.1, "scroll_depth_pct": 87.34, "rage_clicks": 1, "dead_clicks": 73 }
     ],
     "desktop": [
-      { "path": "/", "type": "home", "views": 1740, "users": 716, "avg_engagement_s": 49.3, "bounce_pct": 28.4, "rage_clicks": 0, "dead_clicks": 9 },
-      { "path": "/search", "type": "search", "views": 1275, "users": 113, "avg_engagement_s": 152.4, "bounce_pct": 13.5, "dead_clicks": 5 },
-      { "path": "/collections/rings", "type": "plp", "views": 427, "users": 149, "avg_engagement_s": 97.1, "bounce_pct": 16.8 },
-      { "path": "/collections/eterna", "type": "plp", "views": 255, "users": 177, "avg_engagement_s": 23.3, "bounce_pct": 41.6 },
-      { "path": "/collections/9kt-collection", "type": "plp", "views": 180, "users": 54, "avg_engagement_s": 111.8, "bounce_pct": 5.4 },
-      { "path": "/checkout/cart", "type": "cart", "views": 176, "users": 68, "avg_engagement_s": 35.5, "bounce_pct": 7.8, "rage_clicks": 0, "dead_clicks": 5 },
-      { "path": "/collections/bestsellers", "type": "plp", "views": 160, "users": 97, "avg_engagement_s": 77.0, "bounce_pct": 10.5 },
-      { "path": "/build-your-jewelry", "type": "other", "views": 159, "users": 57, "avg_engagement_s": 36.5, "bounce_pct": 6.9, "rage_clicks": 1, "dead_clicks": 17 },
-      { "path": "/collections/earrings", "type": "plp", "views": 153, "users": 73, "avg_engagement_s": 79.4, "bounce_pct": 16.8 },
-      { "path": "/collections/jewelry", "type": "plp", "views": 137, "users": 77, "avg_engagement_s": 52.6, "bounce_pct": 10.7 },
-      { "path": "/products/bellara-round-diamond-ring", "type": "pdp", "views": 121, "users": 114, "avg_engagement_s": 8.3, "bounce_pct": 30.8 },
-      { "path": "/schemes", "type": "other", "views": 109, "users": 68, "avg_engagement_s": 52.9, "bounce_pct": 20.9 },
-      { "path": "/products/paramount-pave-diamond-mens-ring", "type": "pdp", "views": 99, "users": 64, "avg_engagement_s": 67.1, "bounce_pct": 30.0 },
-      { "path": "/products/1-06-ct-classic-round-diamond-tennis-bracelet", "type": "pdp", "views": 97, "users": 68, "avg_engagement_s": 46.8, "bounce_pct": 28.1 },
-      { "path": "/collections/rings-for-men", "type": "plp", "views": 95, "users": 20, "avg_engagement_s": 125.7, "bounce_pct": 0.0 },
-      { "path": "/checkout/shipping", "type": "shipping", "views": 56, "users": 26, "avg_engagement_s": 40.5, "bounce_pct": 7.9 },
-      { "path": "/checkout/payment", "type": "payment", "views": 32, "users": 17, "avg_engagement_s": 37.1, "bounce_pct": 0.0, "dead_clicks": 6 },
-      { "path": "/pages/contact-us", "type": "other", "views": null, "rage_clicks": 3, "dead_clicks": 13 },
-      { "path": "/pages/size-guide-1", "type": "other", "views": null, "rage_clicks": 5, "dead_clicks": 11 }
+      { "path": "/", "type": "home", "views": 1948, "users": 754, "avg_engagement_s": 57.3, "bounce_pct": 27.2 },
+      { "path": "/search", "type": "search", "views": 1203, "users": 113, "avg_engagement_s": 210.1, "bounce_pct": 9.8 },
+      { "path": "/collections/jewelry", "type": "plp", "views": 482, "users": 71, "avg_engagement_s": 125.0, "bounce_pct": 13.4 },
+      { "path": "/collections/rings", "type": "plp", "views": 337, "users": 136, "avg_engagement_s": 105.4, "bounce_pct": 11.0 },
+      { "path": "/checkout/cart", "type": "cart", "views": 297, "users": 96, "avg_engagement_s": 46.6, "bounce_pct": 7.3, "rage_clicks": 0, "dead_clicks": 27 },
+      { "path": "/collections/bestsellers", "type": "plp", "views": 198, "users": 105, "avg_engagement_s": 75.9, "bounce_pct": 6.3 },
+      { "path": "/collections/eterna", "type": "plp", "views": 189, "users": 130, "avg_engagement_s": 24.2, "bounce_pct": 29.0 },
+      { "path": "/collections/earrings", "type": "plp", "views": 181, "users": 85, "avg_engagement_s": 62.5, "bounce_pct": 13.5 },
+      { "path": "/build-your-jewelry", "type": "other", "views": 156, "users": 54, "avg_engagement_s": 58.3, "bounce_pct": 6.0 },
+      { "path": "/schemes", "type": "other", "views": 138, "users": 111, "avg_engagement_s": 26.3, "bounce_pct": 23.6 },
+      { "path": "/checkout/shipping", "type": "shipping", "views": 129, "users": 41, "avg_engagement_s": 110.9, "bounce_pct": 6.3 },
+      { "path": "/collections/9kt-collection", "type": "plp", "views": 125, "users": 64, "avg_engagement_s": 75.4, "bounce_pct": 16.5 },
+      { "path": "/collections/chain-bracelets", "type": "plp", "views": 110, "users": 16, "avg_engagement_s": 260.6, "bounce_pct": 14.3 },
+      { "path": "/checkout/payment", "type": "payment", "views": 63, "users": 26, "avg_engagement_s": 74.4, "bounce_pct": 13.6 },
+      { "path": "/products/corinthian-pave-diamond-mens-ring", "type": "pdp", "views": 45, "users": 37, "avg_engagement_s": 58.1, "bounce_pct": 29.8 }
     ],
     "tablet": [
-      { "path": "/checkout/cart", "type": "cart", "views": 6, "users": 1, "avg_engagement_s": 103, "bounce_pct": 0 }
+      { "path": "/checkout/shipping", "type": "shipping", "views": 1, "users": 1, "avg_engagement_s": 29.0, "bounce_pct": 0.0 }
     ]
   },
 
   "clarity_7d": {
     "device_totals": {
-      "mobile":  { "rage_clicks": 2170, "dead_clicks": 8714, "scroll_depth_pct": 26.21 },
-      "desktop": { "rage_clicks": 13,   "dead_clicks": 196,  "scroll_depth_pct": 40.07 },
-      "tablet":  { "rage_clicks": 0,    "dead_clicks": 5,    "scroll_depth_pct": 31.57 }
+      "mobile":  { "rage_clicks": 1881, "dead_clicks": 8155, "scroll_depth_pct": 25.78 },
+      "desktop": { "rage_clicks": 18,   "dead_clicks": 264,  "scroll_depth_pct": 39.87 },
+      "tablet":  { "rage_clicks": 0,    "dead_clicks": 6,    "scroll_depth_pct": 38.25 }
     },
     "rage_click_by_element_sitewide": [
-      { "text": "Register to Win a Reward", "weight": 139875, "identified_as": "NitroCommerce spin-wheel popup" },
-      { "text": "(blank)", "weight": 75850, "identified_as": "Overlay backdrop" },
-      { "text": "Spin the Wheel", "weight": 43762, "identified_as": "Popup CTA" },
-      { "text": "Something went wrong!Try", "weight": 31595, "identified_as": "Error state — page not yet attributed" },
-      { "text": "WELCOME TO LUCIRAWelcome", "weight": 24646, "identified_as": "Login / OTP modal" },
-      { "text": "+91", "weight": 16109, "identified_as": "Phone country code field" },
-      { "text": "Love, Joy & Comfort.Conta", "weight": 12310 },
-      { "text": "Adjust your monthly premi", "weight": 6973, "identified_as": "/schemes premium slider" },
-      { "text": "Your cart is emptyLooks l", "weight": 6415, "identified_as": "Empty cart state" },
-      { "text": "New user? Register", "weight": 5001 }
+      { "text": "(blank)", "weight": 536431, "identified_as": "Overlay backdrop / untagged element" },
+      { "text": "Cart1/3", "weight": 101829, "identified_as": "Cart step indicator -- new coupon/offer module, see F14" },
+      { "text": "Proceed To Checkout", "weight": 47194, "identified_as": "Cart CTA -- new coupon/offer module, see F14" },
+      { "text": "Register to Win a RewardT", "weight": 38847, "identified_as": "NitroCommerce spin-wheel popup" },
+      { "text": "WELCOME TO LUCIRAWelcome", "weight": 37745, "identified_as": "Login / OTP modal" },
+      { "text": "REQUEST OTP", "weight": 21436, "identified_as": "Phone OTP request button" },
+      { "text": "100% Secured & Spam Free", "weight": 20737, "identified_as": "Login modal trust badge" },
+      { "text": "Lifetime Exchange", "weight": 18188, "identified_as": "Cart trust badge -- new coupon/offer module" },
+      { "text": "₹ 1,52,176View Order Summ", "weight": 17787, "identified_as": "Cart order summary toggle" },
+      { "text": "Spin the Wheel", "weight": 15474, "identified_as": "Popup CTA" }
     ],
     "rage_click_by_element_cart": [
-      { "text": "WELCOME TO LUCIRAWelcome", "weight": 16483 },
-      { "text": "(blank)", "weight": 14556 },
-      { "text": "Your cart is emptyLooks l", "weight": 6415 },
-      { "text": "Subtotal INR 2,84,917 Savings", "weight": 4950 },
-      { "text": "Cart1/3", "weight": 4654 },
-      { "text": "Cart Offer Banner", "weight": 3269 },
-      { "text": "lucira jewelry logo", "weight": 2826 },
-      { "text": "100% Secured & Spam Free", "weight": 1835 },
-      { "text": "REQUEST OTP", "weight": 1201 },
-      { "text": "Insurance", "weight": 995 }
+      { "text": "(blank)", "weight": 2773 },
+      { "text": "REQUEST OTP", "weight": 1610 },
+      { "text": "Proceed To Checkout", "weight": 1313, "identified_as": "New coupon/offer module CTA, see F14" },
+      { "text": "Cart1/3", "weight": 1136, "identified_as": "New coupon/offer module step indicator, see F14" },
+      { "text": "(untagged)", "weight": 1085 },
+      { "text": "WELCOME TO LUCIRAWelcome", "weight": 1072, "identified_as": "Login / OTP modal" },
+      { "text": "100% Secured & Spam Free", "weight": 943 },
+      { "text": "Remove", "weight": 338 },
+      { "text": "Move Design from CartAre", "weight": 276 },
+      { "text": "Your cart is emptyLooks l", "weight": 272 }
     ],
     "element_weight_caveat": "Clicked-text weights aggregate on a different basis than per-page click totals. Use as ranking, not counts.",
     "javascript_errors": [
-      { "message": "undefined is not an object (evaluating 'window.webkit.messageHandlers')", "sessions": 817, "signature": "iOS in-app WebView (Meta)" },
-      { "message": "Script error.", "sessions": 809 },
-      { "message": "Error invoking postMessage: Java object is gone", "sessions": 694, "signature": "Android in-app WebView (Meta)" },
-      { "message": "Error invoking enableDidUserTypeOnKeyboardLogging: Java object is gone", "sessions": 143 },
-      { "message": "Error invoking enableButtonsClickedMetaDataLogging: Java object is gone", "sessions": 61 },
-      { "message": "document.documentElement.requestFullscreen is not a function", "sessions": 15 },
-      { "message": "Failed to execute 'postMessage' on 'Window': HTMLIFrameElement object could not be cloned.", "sessions": 12 },
-      { "message": "product_image is not defined", "sessions": 8 }
+      { "message": "undefined is not an object (evaluating 'window.webkit.messageHandlers')", "sessions": 1111, "signature": "iOS in-app WebView (Meta)" },
+      { "message": "Error invoking postMessage: Java object is gone", "sessions": 894, "signature": "Android in-app WebView (Meta)" },
+      { "message": "Script error.", "sessions": 788 },
+      { "message": "Error invoking enableDidUserTypeOnKeyboardLogging: Java object is gone", "sessions": 141 },
+      { "message": "ResizeObserver loop completed with undelivered notifications.", "sessions": 46 },
+      { "message": "Error invoking enableButtonsClickedMetaDataLogging: Java object is gone", "sessions": 30 },
+      { "message": "scrollToCollection is not defined", "sessions": 26 },
+      { "message": "Error invoking postMessage: Java exception was raised during method invocation", "sessions": 25 },
+      { "message": "Cannot read properties of undefined (reading 'VideoBackward')", "sessions": 19 },
+      { "message": "Cannot read properties of undefined (reading 'VideoForward')", "sessions": 17 }
     ]
   },
 
   "performance_7d": {
-    "lcp_median_ms": { "desktop": 2148, "tablet": 2968, "mobile": 3792 },
-    "lcp_mean_ms_discarded": { "desktop": 73465.17, "mobile": 6532.34, "tablet": 5830.58, "reason": "Outlier-corrupted; medians used instead." },
-    "cls_avg": { "desktop": 0.113, "mobile": 0.095, "tablet": 0.081, "caveat": "Clarity returned these scaled (112.96/94.68/80.77); unit scaling ambiguous. Indicative only." },
+    "measurement_note": "Home/PLP/cart on both devices re-measured live today (4 Aug) via cro_vitals; mobile home used median-of-3 after a single run returned a 7,752ms cold-start outlier (discarded, same pattern as the T19 desktop-PLP-CLS correction).",
+    "lcp_median_ms": { "desktop": 1576, "tablet": 1788, "mobile": 1628 },
+    "lcp_single_run_outlier_discarded_ms": { "mobile_home": 7752, "reason": "Single cold-start run; median-of-3 (1628ms) used instead. Both the 1-Aug/3-Aug GA4 break and this outlier are unrelated cold-start/processing artifacts, not real degradation." },
+    "cls_avg": { "desktop": 0.0202, "mobile": 0.0696, "tablet": 0.0391, "source": "cro_vitals (Playwright) direct measurement on homepage, both/all devices. Not Clarity-scaled -- see run-004's caveat about that source, now superseded." },
     "lcp_median_by_page_mobile_ms": {
-      "/products/men-s-bezel-set-solitaire-lab-grown-diamond-ring": 5072,
-      "/products/paramount-pave-diamond-mens-ring": 4200,
-      "/": 3796,
-      "/products/four-prong-round-solitaire-ring-7-50mm": 3680,
-      "/collections/all-earrings": 3596,
-      "/checkout/cart": 3568,
-      "/products/mens-classic-solitaire-engagement-ring": 3432,
-      "/products/corinthian-pave-diamond-mens-ring": 3392,
-      "/collections/eterna": 2872,
-      "/schemes": 2464
+      "/products/men-s-bezel-set-solitaire-lab-grown-diamond-ring": 5228,
+      "/products/paramount-pave-diamond-mens-ring": 4168,
+      "/products/gemstone-and-diamond-chandelier-earrings": 3976,
+      "/products/four-prong-round-solitaire-ring-7-50mm": 3828,
+      "/": 3684,
+      "/products/bead-line-gold-neck-chain": 3752,
+      "/collections/all-rings": 3728,
+      "/checkout/cart": 3636,
+      "/products/box-gold-neck-chain": 3652,
+      "/products/mens-classic-solitaire-engagement-ring": 3376,
+      "/products/corinthian-pave-diamond-mens-ring": 3352,
+      "/products/princess-cut-diamond-mens-classic-ring": 3464,
+      "/collections/eterna": 2828,
+      "/schemes": 2652,
+      "/products/swastika-wheel-diamond-mens-bracelet": 2076
     },
+    "cro_vitals_spot_checks_2026_08_04": [
+      { "url": "/", "device": "mobile", "runs": 3, "lcp_ms": 1628, "cls": 0.0696, "fcp_ms": 768, "ttfb_ms": 66 },
+      { "url": "/", "device": "desktop", "runs": 1, "lcp_ms": 1576, "cls": 0.0202, "fcp_ms": 764, "ttfb_ms": 102 },
+      { "url": "/", "device": "tablet", "runs": 3, "lcp_ms": 1788, "cls": 0.0391, "fcp_ms": 652, "ttfb_ms": 51 },
+      { "url": "/collections/eterna", "device": "mobile", "runs": 1, "lcp_ms": 2044, "cls": 0.0493, "fcp_ms": 1052, "ttfb_ms": 145 },
+      { "url": "/collections/eterna", "device": "desktop", "runs": 1, "lcp_ms": 1436, "cls": 0.0038, "fcp_ms": 576, "ttfb_ms": 59 },
+      { "url": "/checkout/cart", "device": "mobile", "runs": 1, "lcp_ms": 628, "cls": 0.0, "fcp_ms": 628, "ttfb_ms": 149 },
+      { "url": "/checkout/cart", "device": "desktop", "runs": 1, "lcp_ms": 756, "cls": 0.0005, "fcp_ms": 756, "ttfb_ms": 69 }
+    ],
     "thresholds": { "lcp_good_ms": 2500, "lcp_poor_ms": 4000, "cls_good": 0.1, "cls_poor": 0.25 }
   },
 
   "traffic_quality_7d": {
-    "root_cause_finding": "Bounce differences between landing pages are driven by channel, not page template. Paid Social bounces 62-100% on every page it touches, including pages that perform well from other channels.",
+    "root_cause_finding": "Bounce differences between landing pages are still driven mostly by channel, not page template. This window's Paid Social volume on /collections/rings still bounces high (87.5%) at low volume. But the two collections that carried the bulk of Paid Social traffic last snapshot -- /collections/all-rings (1,032 sessions) and /collections/all-earrings (787+773 sessions) -- have collapsed to near-zero Paid Social sessions this window (1 and 0 respectively), suggesting that spend/campaign activity paused or was redirected, not a page-level fix.",
     "landing_page_by_channel": [
-      { "landing_page": "/collections/rings", "channel": "Organic Search", "sessions": 18, "bounce_pct": 33.3, "avg_duration_s": 582.3 },
-      { "landing_page": "/collections/rings", "channel": "Paid Shopping", "sessions": 7, "bounce_pct": 14.3, "avg_duration_s": 761.8 },
-      { "landing_page": "/collections/rings", "channel": "Cross-network", "sessions": 137, "bounce_pct": 44.5, "avg_duration_s": 122.4 },
-      { "landing_page": "/collections/rings", "channel": "Direct", "sessions": 11, "bounce_pct": 27.3, "avg_duration_s": 80.3 },
-      { "landing_page": "/collections/rings", "channel": "Paid Social", "sessions": 10, "bounce_pct": 100.0, "avg_duration_s": 5.8 },
-      { "landing_page": "/collections/jewelry", "channel": "Organic Search", "sessions": 25, "bounce_pct": 32.0, "avg_duration_s": 469.9 },
-      { "landing_page": "/collections/jewelry", "channel": "Paid Social", "sessions": 125, "bounce_pct": 64.8, "avg_duration_s": 59.6 },
-      { "landing_page": "/collections/jewelry", "channel": "Unassigned", "sessions": 133, "bounce_pct": 50.4, "avg_duration_s": 161.3 },
-      { "landing_page": "/collections/all-rings", "channel": "Paid Social", "sessions": 1032, "bounce_pct": 66.1, "avg_duration_s": 46.6 },
-      { "landing_page": "/collections/all-rings", "channel": "Organic Social", "sessions": 95, "bounce_pct": 72.6, "avg_duration_s": 19.8 },
-      { "landing_page": "/collections/all-earrings", "channel": "Paid Social", "sessions": 787, "bounce_pct": 61.6, "avg_duration_s": 48.1 },
-      { "landing_page": "/collections/all-earrings", "channel": "Organic Social", "sessions": 773, "bounce_pct": 62.0, "avg_duration_s": 48.6 }
+      { "landing_page": "/collections/rings", "channel": "Cross-network", "sessions": 317, "bounce_pct": 46.37, "avg_duration_s": 93.38 },
+      { "landing_page": "/collections/jewelry", "channel": "Organic Search", "sessions": 21, "bounce_pct": 38.10, "avg_duration_s": 553.59 },
+      { "landing_page": "/collections/rings", "channel": "Organic Search", "sessions": 17, "bounce_pct": 47.06, "avg_duration_s": 247.82 },
+      { "landing_page": "/collections/rings", "channel": "Direct", "sessions": 15, "bounce_pct": 40.00, "avg_duration_s": 22.36 },
+      { "landing_page": "/collections/jewelry", "channel": "Direct", "sessions": 14, "bounce_pct": 35.71, "avg_duration_s": 75.81 },
+      { "landing_page": "/collections/jewelry", "channel": "Paid Other", "sessions": 12, "bounce_pct": 16.67, "avg_duration_s": 173.49 },
+      { "landing_page": "/collections/jewelry", "channel": "Referral", "sessions": 8, "bounce_pct": 12.50, "avg_duration_s": 466.48 },
+      { "landing_page": "/collections/rings", "channel": "Paid Search", "sessions": 8, "bounce_pct": 0.00, "avg_duration_s": 902.46 },
+      { "landing_page": "/collections/rings", "channel": "Paid Social", "sessions": 8, "bounce_pct": 87.50, "avg_duration_s": 9.66 },
+      { "landing_page": "/collections/jewelry", "channel": "Display", "sessions": 7, "bounce_pct": 57.14, "avg_duration_s": 38.24 },
+      { "landing_page": "/collections/jewelry", "channel": "SMS", "sessions": 7, "bounce_pct": 57.14, "avg_duration_s": 10.47 },
+      { "landing_page": "/collections/rings", "channel": "Paid Other", "sessions": 6, "bounce_pct": 16.67, "avg_duration_s": 530.34 },
+      { "landing_page": "/collections/rings", "channel": "Paid Shopping", "sessions": 5, "bounce_pct": 0.00, "avg_duration_s": 750.28 },
+      { "landing_page": "/collections/jewelry", "channel": "Cross-network", "sessions": 4, "bounce_pct": 25.00, "avg_duration_s": 10.50 },
+      { "landing_page": "/collections/all-earrings", "channel": "Direct", "sessions": 3, "bounce_pct": 33.33, "avg_duration_s": 16.23 }
     ],
+    "paid_social_volume_shift_note": "/collections/all-rings and /collections/all-earrings had almost no Paid Social sessions this window (1 and 0 rows above 1 session), versus 1,032 and 787+773 in the 19-25 Jul snapshot. Worth confirming with the team whether campaigns targeting these collections were paused.",
     "collection_template_diff": {
       "verdict": "identical",
+      "stale_carried_forward": true,
+      "measured_at": "2026-07-27",
       "/collections/rings": { "doc_height_px": 12673, "folds": 15.6, "product_cards": 26, "first_card_top_px": 392, "controls": ["Sort", "Filter"], "images": 130 },
       "/collections/all-rings": { "doc_height_px": 11479, "folds": 14.1, "product_cards": 26, "first_card_top_px": 392, "controls": ["Sort", "Filter"], "images": 118 }
     }
   },
 
   "fold_analysis": {
-    "measured_at": "2026-07-27",
+    "measured_at": "2026-08-04",
     "viewport": { "width": 375, "height": 812 },
     "page": "/products/corinthian-pave-diamond-mens-ring",
-    "doc_height_px": 15804,
-    "screens_tall": 19.5,
+    "doc_height_px": 13220,
+    "screens_tall": 16.3,
     "avg_scroll_depth_pct": 18.26,
-    "avg_scroll_reach_px": 2886,
+    "avg_scroll_reach_px": 2414,
     "page_never_seen_pct": 81.7,
     "elements": [
-      { "label": "Add to Cart", "top_px": -51, "position": "sticky", "seen_by_avg_user": true },
-      { "label": "Price (INR 44,560)", "top_px": -42, "position": "sticky", "seen_by_avg_user": true },
-      { "label": "Try at Home", "top_px": 160, "pct_down": 1.0, "seen_by_avg_user": true },
-      { "label": "Fast Shipping", "top_px": 181, "pct_down": 1.1, "seen_by_avg_user": true },
-      { "label": "Size Guide", "top_px": 962, "pct_down": 6.1, "seen_by_avg_user": true },
-      { "label": "Certification", "top_px": 1511, "pct_down": 9.6, "seen_by_avg_user": true },
-      { "label": "Lifetime exchange / 100% value guarantee", "top_px": 1511, "pct_down": 9.6, "seen_by_avg_user": true },
-      { "label": "Product Details", "top_px": 2521, "pct_down": 16.0, "seen_by_avg_user": true },
-      { "label": "Customer Reviews", "top_px": 6536, "pct_down": 41.4, "fold": 8.05, "seen_by_avg_user": false }
+      { "label": "Add to Cart", "top_px": -51, "position": "sticky", "seen_by_avg_user": true, "text": "ADD TO CART" },
+      { "label": "Price", "top_px": -42, "position": "sticky", "seen_by_avg_user": true, "text": "₹43,226" },
+      { "label": "Shipping info", "top_px": 177, "pct_down": 1.3, "seen_by_avg_user": true, "text": "Faster Delivery" },
+      { "label": "Size guide", "top_px": 962, "pct_down": 7.3, "seen_by_avg_user": true, "text": "Size Guide" },
+      { "label": "Returns / exchange", "top_px": 1465, "pct_down": 11.1, "seen_by_avg_user": true, "text": "15-day Money Back Guarantee" },
+      { "label": "Certification", "top_px": 1511, "pct_down": 11.4, "seen_by_avg_user": true, "text": "Certified Diamond & Gold Jewelry" },
+      { "label": "Try at home", "top_px": 2157, "pct_down": 16.3, "seen_by_avg_user": true, "text": "Try At Home" },
+      { "label": "Product details", "top_px": 2319, "pct_down": 17.5, "seen_by_avg_user": true, "text": "PRODUCT DETAILS" },
+      { "label": "Variant selector", "top_px": 2443, "pct_down": 18.5, "seen_by_avg_user": false, "text": "Yellow Gold" },
+      { "label": "Customer Reviews", "top_px": 6358, "pct_down": 48.1, "fold": 7.83, "seen_by_avg_user": false, "text": "Customer Reviews" }
     ],
-    "caveat": "One PDP measured directly. Scroll depth clusters at 18-21% across all 12 top PDPs, suggesting the template generalises."
+    "caveat": "One PDP measured directly. Doc height dropped from 15,804px (27 Jul) to 13,220px this run -- template got shorter -- but avg_scroll_depth_pct is unchanged at 18.26% (real Clarity figure for this window), so Reviews moved to a WORSE relative position (48.1% depth vs 41.4% previously) despite the shorter page. Scroll depth still clusters 15-23% across top PDPs sitewide (see pages_7d), suggesting the template generalises."
   },
 
   "third_party_scripts": {
-    "note": "Confirmed live on cart page 2026-07-27.",
+    "note": "Confirmed live on cart page as of 2026-07-27; not independently re-verified via network trace this run (2026-08-04). The 3 Aug deployment added a new coupon/offer module to the cart page (see F14) but no new third-party script domain was reported in the deployment notes checked during that run.",
     "popup_marketing": ["x.nitrocommerce.ai/nitro-popup-sdk.js", "ssl.widgets.webengage.com"],
     "chat": ["salesiq.zohopublic.in"],
     "chat_zindex": 2147483647,
@@ -264,13 +297,14 @@
   "tracking_issues": {
     "ga4_under_count": {
       "status": "open",
-      "detail": "GA4 recorded 14 purchases vs 18 real Razorpay orders in the 7-day window (78% capture). Over 30 days: 42 vs ~64 trackable (66%).",
+      "detail": "GA4 recorded 10 purchases vs 10 real Razorpay-trackable orders in the 7-day window (100% capture, small sample -- see funnel_7d.ga4_capture_rate.capture_pct_caveat). Over the trailing 30 days: 48 vs 57 trackable (84%), up from 66% in the prior snapshot.",
       "likely_causes": ["Consent mode defaults", "Ad blockers", "iOS ITP", "In-app WebView failures"],
       "blocked_on": "read_pixels scope not granted — cannot inspect Web Pixel config via API."
     },
     "google_ads_over_count": {
       "status": "open",
       "detail": "Campaign 'conversions' blends multiple counted actions, inflating totals ~7x vs real orders.",
+      "not_reverified_this_run": true,
       "misconfigured_actions": [
         { "name": "Begin Checkout", "category": "BEGIN_CHECKOUT", "include_in_conversions_metric": true, "should_be": false },
         { "name": "Offline Purchase", "type": "UPLOAD_CLICKS", "include_in_conversions_metric": true, "note": "May be intentional for O2O attribution — confirm with team." },
@@ -283,34 +317,38 @@
     "shopify_native_sessions": {
       "status": "wont_fix",
       "detail": "Shopify native session analytics reports ~670 sessions/30d vs 425,524 in GA4. Expected — the storefront is headless. Ignore this metric."
+    },
+    "ga4_engagement_break": {
+      "status": "open",
+      "detail": "See finding F12: GA4 engaged-session/bounce tracking collapsed sitewide on 1 Aug and recurred on 3 Aug (day after a deployment). New this run: a live pull today (4 Aug) found GA4 had already retroactively reprocessed 1 Aug's bounce/engagement figures back to normal ranges (e.g. mobile bounce 41.6% fresh vs 99.7% recorded live) -- the GA4 property self-corrects after some delay, but daily_device.csv and daily_pagetype.csv (pulled during the live defect window) still hold the stale pre-correction numbers and should be refreshed on the next data-catchup run. Unresolved whether the underlying GTM->GA4 tag-firing defect will recur on a future day; the console warning was still reproducing as of the 4 Aug morning check referenced in F12."
     }
   },
 
   "homepage_funnel_7d": {
-    "note": "Journey funnel for users who reached the homepage, using unifiedPagePathScreen for page-type steps (pagePath is not permitted inside GA4 funnel steps). User-based, not event counts.",
+    "note": "Journey funnel for users who reached the homepage, using unifiedPagePathScreen for page-type steps (pagePath is not permitted inside GA4 funnel steps). User-based, not event counts. Not affected by the F12 GA4 engagement/bounce tracking break (that bug only touches the bounceRate/engagementRate metrics, not funnel step completion), so no caveat needed here.",
     "steps": ["Homepage", "Collection (PLP)", "Product (PDP)", "Add to Cart", "Begin Checkout", "Purchase"],
     "by_device": {
-      "total":   { "homepage": 6455, "plp": 2192, "pdp": 1210, "add_to_cart": 224, "begin_checkout": 38, "purchase": 7 },
-      "mobile":  { "homepage": 5743, "plp": 1848, "pdp": 992,  "add_to_cart": 194, "begin_checkout": 25, "purchase": 6 },
-      "desktop": { "homepage": 711,  "plp": 339,  "pdp": 213,  "add_to_cart": 30,  "begin_checkout": 13, "purchase": 1 },
-      "tablet":  { "homepage": 21,   "plp": 5,    "pdp": 5,    "add_to_cart": 0,   "begin_checkout": 0,  "purchase": 0 }
+      "total":   { "homepage": 5585, "plp": 2403, "pdp": 1373, "add_to_cart": 244, "begin_checkout": 57, "purchase": 3 },
+      "mobile":  { "homepage": 4841, "plp": 2069, "pdp": 1139, "add_to_cart": 189, "begin_checkout": 24, "purchase": 3 },
+      "desktop": { "homepage": 727,  "plp": 325,  "pdp": 226,  "add_to_cart": 54,  "begin_checkout": 32, "purchase": 0 },
+      "tablet":  { "homepage": 18,   "plp": 9,    "pdp": 8,    "add_to_cart": 1,   "begin_checkout": 1,  "purchase": 0 }
     },
     "step_completion_rate_pct": {
-      "total":   { "home_to_plp": 33.96, "plp_to_pdp": 55.20, "pdp_to_atc": 18.51, "atc_to_checkout": 16.96, "checkout_to_purchase": 18.42, "end_to_end": 0.108 },
-      "mobile":  { "home_to_plp": 32.18, "plp_to_pdp": 53.68, "pdp_to_atc": 19.56, "atc_to_checkout": 12.89, "checkout_to_purchase": 24.00, "end_to_end": 0.104 },
-      "desktop": { "home_to_plp": 47.68, "plp_to_pdp": 62.83, "pdp_to_atc": 14.08, "atc_to_checkout": 43.33, "checkout_to_purchase": 7.69,  "end_to_end": 0.141 },
-      "tablet":  { "home_to_plp": 23.81, "plp_to_pdp": 100.0, "pdp_to_atc": 0.0 }
+      "total":   { "home_to_plp": 43.03, "plp_to_pdp": 57.14, "pdp_to_atc": 17.77, "atc_to_checkout": 23.36, "checkout_to_purchase": 5.26, "end_to_end": 0.05 },
+      "mobile":  { "home_to_plp": 42.74, "plp_to_pdp": 55.05, "pdp_to_atc": 16.59, "atc_to_checkout": 12.70, "checkout_to_purchase": 12.50, "end_to_end": 0.06 },
+      "desktop": { "home_to_plp": 44.70, "plp_to_pdp": 69.54, "pdp_to_atc": 23.89, "atc_to_checkout": 59.26, "checkout_to_purchase": 0.00, "end_to_end": 0.00 },
+      "tablet":  { "home_to_plp": 50.00, "plp_to_pdp": 88.89, "pdp_to_atc": 12.50, "atc_to_checkout": 100.0 }
     },
     "biggest_leak": {
       "step": "Homepage → Collection",
-      "users_lost": 4263,
-      "loss_pct": 66.04,
-      "detail": "Two-thirds of homepage visitors never reach a collection page. Largest absolute loss in the homepage journey, and mobile (67.8% lost) is materially worse than desktop (52.3%)."
+      "users_lost": 3182,
+      "loss_pct": 56.97,
+      "detail": "Homepage->Collection loss eased slightly from 66.04% (19-25 Jul) to 56.97% this window, though it remains the single biggest drop in the journey. Mobile (57.26% lost) is still worse than desktop (55.30% lost), though the gap between them has narrowed."
     },
     "comparison_vs_sitewide": {
       "note": "Like-for-like, both user-based. Homepage-originating traffic is far higher intent than the site blend, which is dominated by paid traffic landing deep.",
-      "pdp_to_atc":      { "homepage_origin": 18.51, "sitewide": 3.19, "multiple": 5.8 },
-      "atc_to_checkout": { "homepage_origin": 16.96, "sitewide": 8.80, "multiple": 1.9 }
+      "pdp_to_atc":      { "homepage_origin": 17.77, "sitewide": 2.27, "multiple": 7.83 },
+      "atc_to_checkout": { "homepage_origin": 23.36, "sitewide": 17.36, "multiple": 1.35 }
     }
   },
 
@@ -319,101 +357,125 @@
     "click_kinds": { "popup": "spin-wheel / login-OTP overlay", "nav": "navigation or category link", "product": "variant, customise, try-on", "checkout": "checkout control", "chrome": "logo, banner, promo strip", "untagged": "element with no text - image, icon or blank backdrop" },
     "by_funnel_stage": [
       {
-        "stage": "1. Homepage", "path": "/", "users": 5656, "scroll_depth_pct": 27.8,
-        "rage_clicks": 23, "dead_clicks": 86,
-        "popup_clicks": 2221, "top_genuine_nav": { "text": "Rings", "clicks": 215 },
-        "popup_to_nav_ratio": 10.3,
+        "stage": "1. Homepage", "path": "/", "users": 5404, "scroll_depth_pct": 27.58,
+        "rage_clicks": 39, "dead_clicks": 103,
         "top_clicks": [
-          { "text": "(untagged)", "clicks": 6518, "kind": "untagged" },
-          { "text": "(blank backdrop)", "clicks": 2626, "kind": "untagged" },
-          { "text": "Register to Win a Reward", "clicks": 703, "kind": "popup" },
-          { "text": "REQUEST OTP", "clicks": 428, "kind": "popup" },
-          { "text": "Spin the Wheel", "clicks": 400, "kind": "popup" },
-          { "text": "New user? Register", "clicks": 262, "kind": "popup" },
-          { "text": "WELCOME TO LUCIRA", "clicks": 259, "kind": "popup" },
-          { "text": "Rings", "clicks": 215, "kind": "nav" },
-          { "text": "100% Secured & Spam Free", "clicks": 169, "kind": "popup" },
-          { "text": "Lucira Jewelry", "clicks": 146, "kind": "chrome" }
-        ]
-      },
-      {
-        "stage": "2. Collection (PLP)", "path": "/collections/eterna", "users": 4037, "scroll_depth_pct": 27.66,
-        "rage_clicks": 120, "dead_clicks": 510,
-        "popup_clicks": 3331, "top_genuine_nav": { "text": "Eterna", "clicks": 3008 },
-        "popup_to_nav_ratio": 1.1,
-        "top_clicks": [
-          { "text": "(untagged)", "clicks": 3275, "kind": "untagged" },
-          { "text": "Eterna", "clicks": 3008, "kind": "nav" },
-          { "text": "(blank backdrop)", "clicks": 2589, "kind": "untagged" },
-          { "text": "Register to Win a Reward", "clicks": 1618, "kind": "popup" },
-          { "text": "Spin the Wheel", "clicks": 915, "kind": "popup" },
-          { "text": "REQUEST OTP", "clicks": 490, "kind": "popup" },
-          { "text": "New user? Register", "clicks": 308, "kind": "popup" },
-          { "text": "Eterna Collection (description)", "clicks": 251, "kind": "chrome" },
-          { "text": "Extraaa 3% Bank Discount", "clicks": 192, "kind": "chrome" },
-          { "text": "A small reminder: Embrace", "clicks": 169, "kind": "chrome" }
-        ]
-      },
-      {
-        "stage": "3. Product (PDP)", "path": "/products/corinthian-pave-diamond-mens-ring", "users": 2289, "scroll_depth_pct": 18.26,
-        "rage_clicks": null, "dead_clicks": null,
-        "popup_clicks": 111, "top_genuine_nav": { "text": "Yellow (metal variant)", "clicks": 638 },
-        "popup_to_nav_ratio": 0.17,
-        "top_clicks": [
-          { "text": "(blank backdrop)", "clicks": 2042, "kind": "untagged" },
-          { "text": "(untagged)", "clicks": 1403, "kind": "untagged" },
-          { "text": "Yellow", "clicks": 638, "kind": "product" },
-          { "text": "MH", "clicks": 295, "kind": "product" },
-          { "text": "MQ", "clicks": 225, "kind": "product" },
-          { "text": "Spin the Wheel", "clicks": 77, "kind": "popup" },
-          { "text": "CI", "clicks": 68, "kind": "product" },
-          { "text": "CUSTOMIZE", "clicks": 55, "kind": "product" },
-          { "text": "Virtual try on / Similar Items", "clicks": 36, "kind": "product" },
-          { "text": "REQUEST OTP", "clicks": 34, "kind": "popup" }
+          { "text": "(blank)", "clicks": 133262, "kind": "untagged" },
+          { "text": "(untagged)", "clicks": 78999, "kind": "untagged" },
+          { "text": "Yellow", "clicks": 20582, "kind": "product" },
+          { "text": "Spin the Wheel", "clicks": 10013, "kind": "popup" },
+          { "text": "Register to Win a RewardT", "clicks": 7808, "kind": "popup" },
+          { "text": "REQUEST OTP", "clicks": 6544, "kind": "popup" },
+          { "text": "MQ_AI", "clicks": 3931, "kind": "product" },
+          { "text": "White", "clicks": 3380, "kind": "product" },
+          { "text": "Eterna", "clicks": 3094, "kind": "nav" },
+          { "text": "100% Secured & Spam Free", "clicks": 2953, "kind": "popup" }
         ],
-        "observation": "Add to Cart does not appear in the top 10 clicked elements despite 2,289 users. It may be captured under the untagged rows, but variant selection ('Yellow', 'MH', 'MQ', 'CI') dominates real interaction — visitors are configuring, not committing."
+        "top_genuine_nav": { "text": "Eterna", "clicks": 3094 },
+        "popup_clicks": 28318,
+        "popup_to_nav_ratio": 9.15,
+        "observation": "Popup pressure eased slightly vs 19-25 Jul (10.3x nav) but is still ~9x the top genuine nav link. Note the top two rows ('Yellow', 'MQ_AI', 'White') are product-variant clicks bleeding onto the homepage template, not homepage content itself -- likely from a merchandising carousel."
       },
       {
-        "stage": "4. Cart", "path": "/checkout/cart", "users": 1964, "scroll_depth_pct": 80.9,
-        "rage_clicks": 538, "dead_clicks": 2545,
-        "popup_clicks": null, "top_genuine_nav": null, "popup_to_nav_ratio": null,
-        "top_clicks": [],
-        "observation": "Element-level data for the cart is captured as rage clicks rather than raw clicks - see clarity_7d.rage_click_by_element_cart. The login modal ('WELCOME TO LUCIRA', 'REQUEST OTP', '100% Secured & Spam Free') dominates there."
-      },
-      {
-        "stage": "5. Shipping", "path": "/checkout/shipping", "users": 149, "scroll_depth_pct": null,
-        "rage_clicks": 0, "dead_clicks": 95,
-        "popup_clicks": 0, "top_genuine_nav": { "text": "Continue to payment", "clicks": 75 },
-        "popup_to_nav_ratio": 0,
+        "stage": "2. Collection (PLP)", "path": "/collections/eterna", "users": 4192, "scroll_depth_pct": 28.30,
+        "rage_clicks": 115, "dead_clicks": 482,
         "top_clicks": [
-          { "text": "(blank backdrop)", "clicks": 285, "kind": "untagged" },
-          { "text": "Continue to payment", "clicks": 75, "kind": "checkout" },
-          { "text": "Save address", "clicks": 71, "kind": "checkout" },
-          { "text": "(untagged)", "clicks": 69, "kind": "untagged" },
-          { "text": "(masked field)", "clicks": 52, "kind": "checkout" },
-          { "text": "(masked field)", "clicks": 50, "kind": "checkout" },
-          { "text": "Ship", "clicks": 45, "kind": "checkout" },
-          { "text": "Pickup", "clicks": 29, "kind": "checkout" },
-          { "text": "CONTINUE TO PAYMENT", "clicks": 22, "kind": "checkout" }
-        ]
+          { "text": "(blank)", "clicks": 3533, "kind": "untagged" },
+          { "text": "Eterna", "clicks": 3080, "kind": "nav" },
+          { "text": "(untagged)", "clicks": 2950, "kind": "untagged" },
+          { "text": "Register to Win a RewardT", "clicks": 1949, "kind": "popup" },
+          { "text": "Spin the Wheel", "clicks": 743, "kind": "popup" },
+          { "text": "Request OTP & Spin", "clicks": 374, "kind": "popup" },
+          { "text": "100% Secured & Spam Free", "clicks": 307, "kind": "popup" },
+          { "text": "REQUEST OTP", "clicks": 296, "kind": "popup" },
+          { "text": "Eterna CollectionEterna i", "clicks": 285, "kind": "chrome" },
+          { "text": "Alphabetically: A-Z", "clicks": 258, "kind": "nav" }
+        ],
+        "top_genuine_nav": { "text": "Eterna", "clicks": 3080 },
+        "popup_clicks": 3669,
+        "popup_to_nav_ratio": 1.19,
+        "observation": "Broadly unchanged from 19-25 Jul (popup:nav ratio 1.1 -> 1.19)."
       },
       {
-        "stage": "6. Payment", "path": "/checkout/payment", "users": 63, "scroll_depth_pct": null,
-        "rage_clicks": 0, "dead_clicks": 60,
-        "popup_clicks": 0, "top_genuine_nav": { "text": "Pay Now", "clicks": 36 },
-        "popup_to_nav_ratio": 0,
+        "stage": "3. Product (PDP)", "path": "/products/corinthian-pave-diamond-mens-ring", "users": 2544, "scroll_depth_pct": 18.39,
+        "rage_clicks": 3, "dead_clicks": 40,
         "top_clicks": [
-          { "text": "Pay Now", "clicks": 36, "kind": "checkout" },
-          { "text": "Razorpay Secure (UPI, Card)", "clicks": 26, "kind": "checkout" },
-          { "text": "(blank backdrop)", "clicks": 23, "kind": "untagged" },
-          { "text": "Apply Points", "clicks": 21, "kind": "checkout" },
-          { "text": "partial_cod", "clicks": 20, "kind": "checkout" },
+          { "text": "(blank)", "clicks": 2891, "kind": "untagged" },
+          { "text": "(untagged)", "clicks": 1529, "kind": "untagged" },
+          { "text": "Yellow", "clicks": 689, "kind": "product" },
+          { "text": "MH", "clicks": 262, "kind": "product" },
+          { "text": "MQ", "clicks": 206, "kind": "product" },
+          { "text": "Spin the Wheel", "clicks": 109, "kind": "popup" },
+          { "text": "CI", "clicks": 56, "kind": "product" },
+          { "text": "CUSTOMIZE", "clicks": 48, "kind": "product" },
+          { "text": "REQUEST OTP", "clicks": 36, "kind": "popup" },
+          { "text": "DONE", "clicks": 33, "kind": "product" }
+        ],
+        "top_genuine_nav": { "text": "Yellow (metal variant)", "clicks": 689 },
+        "popup_clicks": 145,
+        "popup_to_nav_ratio": 0.21,
+        "observation": "Consistent with 19-25 Jul: Add to Cart does not appear in the top 10 clicked elements despite 2,544 users. Variant selection ('Yellow', 'MH', 'MQ', 'CI') still dominates real interaction over add-to-cart -- visitors are configuring, not committing."
+      },
+      {
+        "stage": "4. Cart", "path": "/checkout/cart", "users": 2027, "scroll_depth_pct": 80.59,
+        "rage_clicks": 1059, "dead_clicks": 3405,
+        "top_clicks": [
+          { "text": "(blank)", "clicks": 2773, "kind": "untagged" },
+          { "text": "REQUEST OTP", "clicks": 1610, "kind": "popup" },
+          { "text": "Proceed To Checkout", "clicks": 1313, "kind": "checkout" },
+          { "text": "Cart1/3", "clicks": 1136, "kind": "chrome" },
+          { "text": "(untagged)", "clicks": 1085, "kind": "untagged" },
+          { "text": "WELCOME TO LUCIRAWelcome", "clicks": 1072, "kind": "popup" },
+          { "text": "100% Secured & Spam Free", "clicks": 943, "kind": "popup" },
+          { "text": "Remove", "clicks": 338, "kind": "product" },
+          { "text": "Move Design from CartAre", "clicks": 276, "kind": "checkout" },
+          { "text": "Your cart is emptyLooks l", "clicks": 272, "kind": "chrome" }
+        ],
+        "top_genuine_nav": null,
+        "popup_clicks": 3625,
+        "popup_to_nav_ratio": null,
+        "observation": "Materially different from the 19-25 Jul snapshot, as expected: the 3 Aug deployment added a new coupon/offer module (see F14) and this run pulled real per-page clicked-element data for cart (the prior snapshot only had rage-click data here). 'Proceed To Checkout' and 'Cart1/3' are new top elements from that module; the login-modal cluster ('REQUEST OTP', 'WELCOME TO LUCIRA', '100% Secured & Spam Free') is still present underneath it, confirming F1 (login wall) and F14 (possible second gate) are compounding, not replacing each other."
+      },
+      {
+        "stage": "5. Shipping", "path": "/checkout/shipping", "users": 171, "scroll_depth_pct": 83.39,
+        "rage_clicks": 2, "dead_clicks": 106,
+        "top_clicks": [
+          { "text": "(blank)", "clicks": 427, "kind": "untagged" },
+          { "text": "Continue to payment", "clicks": 124, "kind": "checkout" },
+          { "text": "Save address", "clicks": 105, "kind": "checkout" },
+          { "text": "(untagged)", "clicks": 101, "kind": "untagged" },
+          { "text": "(masked field)", "clicks": 65, "kind": "checkout" },
+          { "text": "(masked field)", "clicks": 58, "kind": "checkout" },
+          { "text": "Pickup", "clicks": 47, "kind": "checkout" },
+          { "text": "CONTINUE TO PAYMENT", "clicks": 44, "kind": "checkout" },
+          { "text": "(masked field)", "clicks": 38, "kind": "checkout" },
+          { "text": "Ship", "clicks": 30, "kind": "checkout" }
+        ],
+        "top_genuine_nav": { "text": "Continue to payment", "clicks": 124 },
+        "popup_clicks": 0,
+        "popup_to_nav_ratio": 0
+      },
+      {
+        "stage": "6. Payment", "path": "/checkout/payment", "users": 76, "scroll_depth_pct": 87.34,
+        "rage_clicks": 1, "dead_clicks": 73,
+        "top_clicks": [
+          { "text": "(blank)", "clicks": 83, "kind": "untagged" },
+          { "text": "Pay Now", "clicks": 64, "kind": "checkout" },
+          { "text": "Apply Points", "clicks": 56, "kind": "checkout" },
+          { "text": "(untagged)", "clicks": 43, "kind": "untagged" },
+          { "text": "Apply Now", "clicks": 24, "kind": "checkout" },
+          { "text": "partial_cod", "clicks": 23, "kind": "checkout" },
+          { "text": "Change", "clicks": 21, "kind": "checkout" },
+          { "text": "REMOVE", "clicks": 19, "kind": "checkout" },
           { "text": "razorpay", "clicks": 14, "kind": "checkout" },
-          { "text": "View Order Summary", "clicks": 10, "kind": "checkout" }
-        ]
+          { "text": "Razorpay Secure (UPI, Car", "clicks": 14, "kind": "checkout" }
+        ],
+        "top_genuine_nav": { "text": "Pay Now", "clicks": 64 },
+        "popup_clicks": 0,
+        "popup_to_nav_ratio": 0
       }
     ],
-    "headline": "Popup pressure is concentrated exactly where the funnel leaks hardest. Homepage and PLP carry 2,221 and 3,331 popup clicks respectively; the PDP carries 111 and the checkout stages zero. Homepage → Collection loses 66% of users, and on the homepage the overlay stack absorbs 10.3 clicks for every click on the top navigation link."
+    "headline": "Popup pressure eased somewhat sitewide (homepage popup:nav ratio 10.3 -> 9.15) but the cart page now carries a second layer of friction: the 3 Aug coupon/offer module ('Proceed To Checkout', 'Cart1/3') sits directly on top of the pre-existing login wall, and cart rage clicks nearly doubled (538 -> 1,059) in the same window. Homepage -> Collection is still the single biggest leak in the journey (56.97% lost) even though it improved from 66.04%."
   },
 
   "findings": [
@@ -428,7 +490,12 @@
     { "id": "F7", "priority": "medium", "title": "/schemes mobile slider generates 135 rage + 334 dead clicks", "evidence": "54.3% bounce mobile vs 52.9s engagement desktop", "confidence": 0.8, "status": "open" },
     { "id": "F8", "priority": "low", "title": "'Something went wrong!' is 4th most rage-clicked element", "evidence": "31,595 weight, page not yet attributed", "confidence": 0.7, "status": "needs_investigation" },
     { "id": "F11", "priority": "critical", "title": "PDP desktop LCP is ~17s (poor), confirmed not a cold-start artifact", "evidence": "cro_vitals runs=3 on /products/corinthian-pave-diamond-mens-ring desktop: 16,604 / 16,988 / 17,164 ms (median 16,988, ~3% spread) against ~10.2MB transfer over 181 requests. Same URL on mobile medians 2,520ms (needs-improvement), ~9.6MB. Resolves T19's open question about the earlier single-run 19s reading -- confirmed real and reproducible, not noise. Opened as T21.", "confidence": 0.95, "status": "open" },
-    { "id": "F12", "priority": "critical", "title": "GA4 engaged-sessions/bounce collapsed sitewide on 1 Aug -- a tracking defect, not a real traffic event", "evidence": "On 2026-08-01, engagementRate fell to ~0-2.4% and bounceRate rose to ~97-100% on every one of 6 reference pages x both devices (e.g. homepage mobile: 62% engaged / 38% bounce on 31 Jul -> 0.5% engaged / 99.5% bounce on 1 Aug; cart mobile: 98% engaged / 1.8% bounce -> 2.4% engaged / 97.6% bounce). Funnel events (view_item, add_to_cart, begin_checkout, purchase=1) and Microsoft Clarity's independent behavioural data (rage clicks 278, scroll depth 25.9%, both normal) stayed completely ordinary that day, proving real user behaviour did not collapse -- this is GA4/GTM's engaged-session flag failing to be set, not a traffic or site outage. Live console check (3 Aug, homepage) reproduced a directly-related warning -- 'Skipped GTM->GA4: Missing data for: pageView' -- on 1 of 3 page loads (intermittent, a likely contributing race condition, not sufficient alone to explain a near-total single-day collapse). Same console check also surfaced two separate issues: Microsoft Clarity logging 'Data from this session is not being collected... due to your configured project settings' on that load, and a Meta Pixel 'Invalid parameter format for currency' warning. Opened as T22.", "confidence": 0.92, "status": "open" }
+    { "id": "F12", "priority": "critical", "title": "GA4 engaged-sessions/bounce tracking break recurred on 3 Aug -- the day after a deployment -- and is still live this morning", "evidence": "First seen 1 Aug (engagementRate ~0-2.4%, bounceRate ~97-100% sitewide, all 6 reference pages x both devices). 2 Aug was completely normal (mobile bounce 43.4%, engaged 56.6%). Then 3 Aug -- the day immediately after a deployment the client flagged -- broke again, identically: mobile bounce 99.6%/engaged 0.4%, desktop bounce 99.1%; every checkout-journey page (cart, shipping, payment) plus both PLPs and both PDPs collapsed to 0-7% engaged on both devices. Funnel event counts (view_item 14,294 mobile/1,245 desktop, add_to_cart 384+54, begin_checkout 62+39, purchase=2, signup=57+3+1) and Clarity (11,505 mobile sessions, 544 rage clicks, 26.5% scroll -- all normal range) confirm real behaviour did not change either day; only GA4's engaged-session flag did. Live console check this morning (4 Aug, cart + homepage, 3 reloads): 'Skipped GTM->GA4: Missing data for: pageView' fired on 3/3 loads (up from 1/3 on 3 Aug) -- the defect has not self-resolved and is live right now. Timing (normal 2 Aug -> broken the day after the reported deployment -> still broken today) points to the deployment as the likely trigger; recommend checking the GTM container publish history against the deployment timestamp. Opened as T22, still open.", "confidence": 0.94, "status": "open" },
+    { "id": "F13", "priority": "medium", "title": "Microsoft Clarity now also warns it isn't collecting some sessions, on every page load checked", "evidence": "Live console check, 4 Aug (cart + homepage, 3 reloads): 'Data from this session is not being collected by Microsoft Clarity due to your configured project settings' fired on every load, more consistently than previously observed. Caveat: Clarity's own daily aggregate session counts (11,505-15,169 mobile sessions/day, 2-3 Aug) stayed in the normal range, so this may be specific to the automated test session's bot-like fingerprint rather than proof real sessions are being dropped. Recommend the client's team check Clarity project settings (recording quota, sampling rate, path/domain restrictions) to rule out any narrowing since the deployment.", "confidence": 0.55, "status": "needs_investigation" },
+    { "id": "F14", "priority": "low", "title": "New cart coupon-apply flow may stack a second login gate on top of the existing OTP wall", "evidence": "Clarity clicked-element data for /checkout/cart, 3 Aug, logs 209 clicks on text truncated as 'ApplyLogin to Unlock Coup...' -- ambiguous due to Clarity's ~25-character truncation, but reads as though applying a coupon may itself require login. If so this compounds F1 rather than relieving it. Needs a 2-minute manual click-through on the 'Apply Coupon' row to confirm scope.", "confidence": 0.4, "status": "needs_investigation" },
+    { "id": "F15", "priority": "low", "title": "Discount-code hygiene: a staff to-do note was left as a live, customer-facing discount code", "evidence": "Order #2480 (Rs 20,000, salesperson-assisted, 2 Aug) carries discount code text '500Lucira point + 166 additional discount - Need to add' for a Rs 666 discount -- an internal note, not a real code, visible on the order record. Order #2486 similarly shows a generic 'Custom discount' label rather than a named code. Both are manual/draft-order entries; named codes elsewhere (GRAND250 on #2493, GRAND750 on #2478) applied cleanly with no issues. Process fix, not a system bug.", "confidence": 0.85, "status": "open" },
+    { "id": "F16", "priority": "low", "title": "Cart heatmap succeeded for the first time -- reveals empty-cart sessions absorb real click volume", "evidence": "Every prior cro_heatmap attempt on /checkout/cart failed outright (no matchable click text on an empty cart). Re-tested 4 Aug: two real elements do exist on the empty state and matched -- 'Cart1/3' step chrome (1,136 weight, the single hottest spot on the page) and 'Your cart is empty' messaging (272 weight). Suggests a real share of cart-page Clarity sessions are landing on an empty cart (direct visit, bookmark, post-removal return) rather than mid-checkout with an item -- a distinct population from the login-wall/coupon-module sessions the rest of F1/F14 describe.", "confidence": 0.75, "status": "open" },
+    { "id": "F17", "priority": "low", "title": "Two Playwright tools disagree on the reference PDP's page height by ~2x -- a measurement-methodology gap, not a site defect", "evidence": "cro_fold_analysis reproduced 13,220px / 16.3 screens twice on 4 Aug (stable). cro_heatmap's full-page screenshot on the identical URL+device same day came back 26,440px -- nearly double -- because its slower full-page scroll triggers additional lazy-loaded sections (Story Behind the Product, store locator, reviews carousel, Our Process, lab-grown comparison table, Explore Our Range) that a single settle-wait doesn't load. Both numbers are 'correct' for what they measure; flagged so the two aren't quoted interchangeably.", "confidence": 0.9, "status": "needs_investigation" }
   ],
 
   "corrections_log": [
@@ -440,8 +507,8 @@
   ],
 
   "next_run": {
-    "due": "2026-07-28",
+    "due": "2026-08-05",
     "window_rule": "7 days ending T-2",
-    "watch": ["cart_cliff_7d.mobile.progression_pct", "clarity_7d.device_totals.mobile.rage_clicks", "funnel_7d.step_completion_rate_pct.mobile.atc_to_checkout", "performance_7d.lcp_median_ms.mobile", "tracking_issues.google_ads_over_count.status"]
+    "watch": ["cart_cliff_7d.mobile.progression_pct", "clarity_7d.device_totals.mobile.rage_clicks", "funnel_7d.step_completion_rate_pct.mobile.atc_to_checkout", "performance_7d.lcp_median_ms.mobile", "tracking_issues.google_ads_over_count.status", "tracking_issues.ga4_engagement_break.status", "cart_cliff_7d.desktop.progression_pct"]
   }
 }
