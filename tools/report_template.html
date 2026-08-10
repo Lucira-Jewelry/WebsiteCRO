@@ -45,8 +45,16 @@
   .masthead{display:flex;flex-direction:column;gap:8px;padding-bottom:20px;margin-bottom:20px;
     border-bottom:1px solid var(--line-strong);}
   .eyebrow{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-ink);font-weight:700;}
-  .masthead h1{font-size:36px;line-height:1.1;}
+  .masthead h1{font-size:38px;line-height:1.08;letter-spacing:-.01em;}
   .masthead .meta{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums;}
+
+  /* ---- quick-jump section tabs ---- */
+  .quicknav{display:flex;gap:6px;flex-wrap:wrap;margin:14px 0 24px;}
+  .quicknav a{font-size:12.5px;font-weight:600;color:var(--muted);text-decoration:none;padding:7px 15px;
+    border-radius:100px;border:1px solid var(--line-strong);background:var(--surface);white-space:nowrap;
+    transition:border-color .12s ease,color .12s ease;}
+  .quicknav a:hover{border-color:var(--accent);color:var(--ink);}
+  .quicknav a.snap{border-style:dashed;color:var(--faint);}
 
   /* ---- control bar ---- */
   .controls{position:sticky;top:0;z-index:20;background:var(--bg);
@@ -68,12 +76,30 @@
 
   /* ---- KPI ---- */
   .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(152px,1fr));gap:1px;
-    background:var(--line);border:1px solid var(--line);border-radius:6px;overflow:hidden;margin-bottom:26px;}
-  .kpi{background:var(--surface);padding:14px 15px;}
+    background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden;margin-bottom:26px;
+    box-shadow:0 1px 3px rgba(0,0,0,.03);}
+  .kpi{background:var(--surface);padding:15px 16px;transition:background .12s ease;}
+  .kpi:hover{background:var(--raise);}
   .kpi .lbl{font-size:11px;color:var(--muted);}
-  .kpi .num{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.01em;margin-top:2px;}
-  .kpi .dl{font-size:11.5px;margin-top:3px;font-variant-numeric:tabular-nums;font-weight:600;}
+  .kpi .num{font-size:23px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.01em;margin-top:3px;}
+  .kpi .dl{font-size:11.5px;margin-top:4px;font-variant-numeric:tabular-nums;font-weight:600;display:flex;align-items:center;gap:3px;}
   .dl.up{color:var(--good);} .dl.down{color:var(--critical);} .dl.flat{color:var(--faint);font-weight:500;}
+  .dl.up::before{content:"▲";font-size:9px;} .dl.down::before{content:"▼";font-size:9px;} .dl.flat::before{content:"–";}
+
+  /* ---- device comparison table (alt view to the KPI grid) ---- */
+  .devcompare{overflow-x:auto;border:1px solid var(--line);border-radius:8px;margin-bottom:26px;box-shadow:0 1px 3px rgba(0,0,0,.03);}
+  .devcompare table{font-size:13px;}
+  .devcompare th{background:var(--raise);}
+  .devcompare td.metric-lbl{font-weight:600;color:var(--ink);white-space:nowrap;}
+  .devcompare td.winner{position:relative;}
+  .devcompare td.winner::after{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--good);}
+
+  /* ---- anomaly markers on the trend chart ---- */
+  .anomaly-flag{cursor:default;}
+  .anomaly-flag circle{fill:var(--critical);opacity:.85;}
+  .anomaly-flag:hover circle{opacity:1;}
+  .anomaly-legend{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--critical);font-weight:600;}
+  .anomaly-legend i{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--critical);}
 
   /* ---- pulse: fixed day-over-day / week-over-week, independent of the range picker ---- */
   .pulse{margin-bottom:26px;}
@@ -118,7 +144,9 @@
   .foot{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);font-size:11.5px;color:var(--faint);}
 
   .split{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
-  .card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px 18px;}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px 18px;
+    transition:box-shadow .12s ease;}
+  .card:hover{box-shadow:0 3px 12px rgba(0,0,0,.05);}
   .card h3{font-family:inherit;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;
     color:var(--muted);font-weight:700;margin:0 0 11px;}
   .health{border-radius:8px;padding:13px 17px;margin-bottom:18px;display:flex;
@@ -188,6 +216,7 @@
   <a href="insights.html">Insights</a>
   <a href="action_plan.html">Action Plan</a>
   <a href="interactive.html" class="active">Interactive Dashboard</a>
+  <a href="tasks.html">Tasks</a>
   <a href="connectors.html">Connectors</a>
 </div></nav>
 <nav class="subnav" style="background:var(--raise);border-bottom:1px solid var(--line);"><div class="inner" style="max-width:1080px;margin:0 auto;padding:9px 22px;display:flex;flex-wrap:wrap;align-items:center;gap:4px;">
@@ -206,11 +235,20 @@
     <div class="meta" id="meta"></div>
   </div>
 
+  <nav class="quicknav" aria-label="Jump to section">
+    <a href="#sec-overview">Overview</a>
+    <a href="#sec-funnel">Funnel</a>
+    <a href="#sec-trend">Trend</a>
+    <a href="#sec-behaviour">Behaviour</a>
+    <a href="tasks.html">Tasks →</a>
+    <a href="#sec-snapshot" class="snap">Deep-dive snapshot</a>
+  </nav>
+
   <div id="health"></div>
 
   <div class="pulse" id="pulse"></div>
 
-  <div class="controls">
+  <div class="controls" id="sec-overview">
     <div class="ctrl-row">
       <span class="ctrl-label">Range</span>
       <input type="date" id="from" aria-label="From date">
@@ -225,20 +263,24 @@
     </div>
     <div class="ctrl-row">
       <span class="ctrl-label">Device</span>
-      <div class="seg" role="group" aria-label="Device filter">
+      <div class="seg" role="group" aria-label="Device filter" id="devseg">
         <button data-dev="all" aria-pressed="true">All</button>
         <button data-dev="mobile">Mobile</button>
         <button data-dev="desktop">Desktop</button>
         <button data-dev="tablet">Tablet</button>
       </div>
       <label class="chk"><input type="checkbox" id="cmp" checked> Compare to previous period</label>
+      <label class="chk"><input type="checkbox" id="devcompare"> Compare devices side-by-side</label>
+      <label class="chk" title="1 & 3 Aug 2026: a confirmed GA4 tracking-pipeline defect, not real traffic — see F12">
+        <input type="checkbox" id="excludeAnomalies"> Exclude known tracking-anomaly days</label>
       <span class="rangenote" id="cmpnote"></span>
     </div>
   </div>
 
   <div class="kpis" id="kpis"></div>
+  <div class="devcompare" id="devcompareWrap" style="display:none;"></div>
 
-  <section>
+  <section id="sec-funnel">
     <div class="sec-head"><span class="tag">Funnel</span><h2>view_item → purchase</h2></div>
     <div class="twrap"><table>
       <thead><tr>
@@ -250,7 +292,7 @@
     <p class="note">Event counts, not unique users — one visitor can fire a step more than once, so rates differ slightly from a user-based funnel. Drop-off is the share lost between this step and the next.</p>
   </section>
 
-  <section>
+  <section id="sec-trend">
     <div class="sec-head"><span class="tag">Trend</span><h2>Daily movement</h2></div>
     <div class="ctrl-row" style="margin-bottom:12px;">
       <div class="seg" role="group" aria-label="Metric">
@@ -262,12 +304,14 @@
         <button data-metric="rage">Rage clicks</button>
         <button data-metric="scroll">Scroll depth</button>
       </div>
+      <span class="anomaly-legend" id="anomalyLegend" style="display:none;margin-left:6px;">
+        <i></i> known tracking anomaly (F12)</span>
     </div>
     <div class="chartbox"><svg id="chart" role="img" aria-label="Daily trend chart"></svg>
       <div class="legend" id="legend"></div></div>
   </section>
 
-  <section>
+  <section id="sec-behaviour">
     <div class="sec-head"><span class="tag">Behaviour</span><h2>Clarity signals</h2></div>
     <div id="claritywrap"></div>
   </section>
@@ -277,7 +321,7 @@
     <div id="insight"></div>
   </section>
 
-  <div class="divider">
+  <div class="divider" id="sec-snapshot">
     <div class="divider-inner">
       <div class="eyebrow" style="color:var(--critical)">Fixed window · does not respond to the filter above</div>
       <h2 style="font-size:24px;margin:6px 0 6px;">Deep-dive snapshot</h2>
@@ -410,7 +454,12 @@ const STEPS = ["view_item","add_to_cart","begin_checkout","add_shipping_info","a
 const LABEL = {view_item:"View Item", add_to_cart:"Add to Cart", begin_checkout:"Begin Checkout",
   add_shipping_info:"Add Shipping", add_payment_info:"Add Payment", purchase:"Purchase"};
 
-let state = { from:null, to:null, dev:"all", cmp:true, metric:"sessions" };
+// Confirmed GA4 engaged-session/bounce tracking-pipeline defect days (finding F12) — real user
+// behaviour was normal both days per Clarity + funnel events; only GA4's measurement broke.
+// Update this list as new anomaly days are confirmed during daily catch-up.
+const ANOMALY_DATES = ["2026-08-01", "2026-08-03"];
+
+let state = { from:null, to:null, dev:"all", cmp:true, metric:"sessions", devCompare:false, excludeAnomalies:false };
 
 const days = (a,b) => Math.round((new Date(b) - new Date(a))/864e5) + 1;
 const shift = (d,n) => { const x = new Date(d); x.setDate(x.getDate()+n); return x.toISOString().slice(0,10); };
@@ -418,9 +467,10 @@ const shift = (d,n) => { const x = new Date(d); x.setDate(x.getDate()+n); return
 function slice(from, to, dev){
   const inR = r => r.d >= from && r.d <= to;
   const inD = r => dev === "all" || r.dev === dev;
-  const dv = DATA.device.filter(r => inR(r) && inD(r));
-  const fn = DATA.funnel.filter(r => inR(r) && inD(r));
-  const cl = DATA.clarity.filter(r => inR(r) && inD(r));
+  const inA = r => !state.excludeAnomalies || !ANOMALY_DATES.includes(r.d);
+  const dv = DATA.device.filter(r => inR(r) && inD(r) && inA(r));
+  const fn = DATA.funnel.filter(r => inR(r) && inD(r) && inA(r));
+  const cl = DATA.clarity.filter(r => inR(r) && inD(r) && inA(r));
   const sessions = dv.reduce((s,r)=>s+r.s,0), users = dv.reduce((s,r)=>s+r.u,0);
   const eng = dv.reduce((s,r)=>s+r.eng,0), pv = dv.reduce((s,r)=>s+r.pv,0);
   // bounce is a per-day-per-device rate: weight by sessions
@@ -453,6 +503,38 @@ function dEl(d, suffix){
   return '<div class="dl '+d.cls+'">'+s+(suffix||" vs prev")+'</div>';
 }
 
+function renderDeviceCompare(from, to){
+  const devs = ["mobile", "desktop", "tablet"];
+  const s = {}; devs.forEach(d => s[d] = slice(from, to, d));
+  const rows = [
+    ["Sessions", d => fmt(d.sessions), d => d.sessions],
+    ["Users", d => fmt(d.users), d => d.users],
+    ["Bounce rate", d => pct(d.bounce,1), d => d.bounce, true],
+    ["Avg engagement", d => d.engPerUser?d.engPerUser.toFixed(1)+" s":"—", d => d.engPerUser],
+    ["Add-to-cart rate", d => pct(d.atcRate), d => d.atcRate],
+    ["Cart → checkout", d => pct(d.checkoutRate), d => d.checkoutRate],
+    ["Purchases", d => fmt(d.steps.purchase), d => d.steps.purchase],
+    ["New signups", d => fmt(d.signups), d => d.signups],
+    ["Rage clicks", d => d.hasClarity?fmt(d.rage):"—", d => d.hasClarity?d.rage:null],
+    ["Scroll depth", d => d.scroll!=null?pct(d.scroll,1):"—", d => d.scroll]
+  ];
+  const body = rows.map(([label, fmtFn, valFn, invert]) => {
+    const vals = devs.map(d => valFn(s[d]));
+    const ok = vals.filter(v => v!==null && !isNaN(v));
+    const best = ok.length ? (invert ? Math.min(...ok) : Math.max(...ok)) : null;
+    return "<tr><td class=\"metric-lbl\">"+label+"</td>" + devs.map((d,i) => {
+      const v = vals[i];
+      const isWinner = best!==null && v===best && ok.length>1;
+      return "<td class=\"num"+(isWinner?" winner":"")+"\">"+fmtFn(s[d])+"</td>";
+    }).join("") + "</tr>";
+  }).join("");
+  $("#devcompareWrap").innerHTML =
+    '<table><thead><tr><th>Metric</th><th class="num">Mobile</th><th class="num">Desktop</th><th class="num">Tablet</th></tr></thead>'+
+    '<tbody>'+body+'</tbody></table>'+
+    '<p class="note" style="padding:9px 13px 12px;margin:0;">Highlighted cell marks the best-performing device for that '+
+    'row over the selected range. Sessions/users naturally favour whichever device carries more traffic — read rates, not just volume.</p>';
+}
+
 function render(){
   const {from,to,dev,cmp} = state;
   const n = days(from,to);
@@ -480,6 +562,15 @@ function render(){
   ];
   $("#kpis").innerHTML = K.map(([l,v,d]) =>
     '<div class="kpi"><div class="lbl">'+l+'</div><div class="num">'+v+'</div>'+dEl(d)+'</div>').join("");
+
+  if (state.devCompare) {
+    $("#kpis").style.display = "none";
+    $("#devcompareWrap").style.display = "";
+    renderDeviceCompare(from, to);
+  } else {
+    $("#kpis").style.display = "";
+    $("#devcompareWrap").style.display = "none";
+  }
 
   // funnel
   const top = cur.steps.view_item || 1;
@@ -591,12 +682,22 @@ function renderChart(){
   const every = Math.max(1, Math.ceil(dates.length/9));
   dates.forEach((d,i)=>{ if(i%every===0||i===dates.length-1)
     g += '<text x="'+x(i)+'" y="'+(H-7)+'" text-anchor="middle" font-size="10" fill="var(--faint)">'+d.slice(5)+'</text>'; });
+  // Flag known GA4 tracking-anomaly days (F12) directly on the chart so a spike/dip is never
+  // mistaken for a real behaviour change without the context that it's a known measurement defect.
+  const anomaliesInRange = dates.filter(d => ANOMALY_DATES.includes(d));
+  anomaliesInRange.forEach(d => {
+    const i = dates.indexOf(d);
+    g += '<g class="anomaly-flag"><line x1="'+x(i)+'" x2="'+x(i)+'" y1="'+pad.t+'" y2="'+(H-pad.b)+'" ' +
+      'stroke="var(--critical)" stroke-width="1" stroke-dasharray="3,3" opacity=".5"/>' +
+      '<circle cx="'+x(i)+'" cy="'+(pad.t+4)+'" r="4"><title>'+d+' — known GA4 tracking anomaly (F12), not real traffic</title></circle></g>';
+  });
   svg.setAttribute("viewBox","0 0 "+W+" "+H); svg.innerHTML = g;
   const names = {sessions:"Sessions",atcRate:"Add-to-cart rate",checkoutRate:"Cart → checkout rate",
     signups:"New signups",bounce:"Bounce rate",rage:"Rage clicks",scroll:"Avg scroll depth"};
   const gap = vals.some(v=>v===null);
   $("#legend").innerHTML = '<span><i style="background:var(--accent)"></i>'+names[metric]+
     ' · '+state.dev+'</span>' + (gap?'<span style="color:var(--critical)">gaps = no data that day</span>':'');
+  $("#anomalyLegend").style.display = anomaliesInRange.length ? "inline-flex" : "none";
 }
 
 function setPreset(nDays){
@@ -623,6 +724,13 @@ $("#to").addEventListener("change", e => { state.to = e.target.value;
   if(state.to < state.from){ state.from = state.to; $("#from").value = state.from; }
   press("[data-preset]","preset","__none__"); render(); });
 $("#cmp").addEventListener("change", e => { state.cmp = e.target.checked; render(); });
+$("#devcompare").addEventListener("change", e => {
+  state.devCompare = e.target.checked;
+  $("#devseg").style.opacity = state.devCompare ? .45 : 1;
+  $("#devseg").querySelectorAll("button").forEach(b => b.disabled = state.devCompare);
+  render();
+});
+$("#excludeAnomalies").addEventListener("change", e => { state.excludeAnomalies = e.target.checked; render(); renderChart(); });
 
 /* ============================================================
    DEEP-DIVE SNAPSHOT — fixed window, sourced from data/latest.json

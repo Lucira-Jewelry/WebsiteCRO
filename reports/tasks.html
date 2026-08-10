@@ -1,0 +1,283 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Daily Tasks — Lucira Jewelry CRO</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --bg:#EEF0ED; --surface:#FFFFFF; --raise:#F7F8F6; --ink:#1B2320; --muted:#5B6560; --faint:#8A938E;
+    --accent:#A9813F; --accent-ink:#5E4520;
+    --critical:#A23B2E; --critical-bg:#F7E7E4;
+    --high:#B0722A; --high-bg:#F8EDDC;
+    --good:#48684C; --good-bg:#E5EDE5;
+    --medium:#3D5A73; --medium-bg:#E3EAEF;
+    --line:rgba(27,35,32,0.13); --line-strong:rgba(27,35,32,0.26);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#111412; --surface:#191E1A; --raise:#1F2521; --ink:#EDEFEA; --muted:#9AA69E; --faint:#6E786F;
+      --accent:#C79B4E; --accent-ink:#D8B87A; --critical:#E4695C; --critical-bg:#3B2320;
+      --high:#DFA555; --high-bg:#392D19; --good:#8CBC92; --good-bg:#1C2A1E;
+      --medium:#8FB3D2; --medium-bg:#1D2B35;
+      --line:rgba(237,239,234,0.14); --line-strong:rgba(237,239,234,0.28); }
+  }
+  :root[data-theme="dark"]{ --bg:#111412; --surface:#191E1A; --raise:#1F2521; --ink:#EDEFEA; --muted:#9AA69E;
+    --faint:#6E786F; --accent:#C79B4E; --accent-ink:#D8B87A; --critical:#E4695C; --critical-bg:#3B2320;
+    --high:#DFA555; --high-bg:#392D19; --good:#8CBC92; --good-bg:#1C2A1E; --medium:#8FB3D2; --medium-bg:#1D2B35;
+    --line:rgba(237,239,234,0.14); --line-strong:rgba(237,239,234,0.28); }
+  :root[data-theme="light"]{ --bg:#EEF0ED; --surface:#FFFFFF; --raise:#F7F8F6; --ink:#1B2320; --muted:#5B6560;
+    --faint:#8A938E; --accent:#A9813F; --accent-ink:#5E4520; --critical:#A23B2E; --critical-bg:#F7E7E4;
+    --high:#B0722A; --high-bg:#F8EDDC; --good:#48684C; --good-bg:#E5EDE5; --medium:#3D5A73; --medium-bg:#E3EAEF;
+    --line:rgba(27,35,32,0.13); --line-strong:rgba(27,35,32,0.26); }
+
+  *{box-sizing:border-box;} html,body{margin:0;padding:0;}
+  body{background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;
+    font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  .page{max-width:1080px;margin:0 auto;padding:40px 22px 90px;}
+  h1,h2,h3,h4{font-family:Iowan Old Style,"Palatino Linotype","Book Antiqua",Georgia,serif;font-weight:600;margin:0;text-wrap:balance;}
+  .measure{max-width:70ch;} p{margin:0 0 13px;}
+  code{font-family:ui-monospace,"SF Mono","Cascadia Code",monospace;font-size:.86em;background:var(--line);padding:1px 5px;border-radius:3px;}
+
+  .hubnav{background:var(--surface);border-bottom:1px solid var(--line-strong);}
+  .hubnav .inner{max-width:1080px;margin:0 auto;padding:11px 22px;display:flex;flex-wrap:wrap;align-items:center;gap:5px;}
+  .hubnav a{font-size:12.5px;font-weight:600;color:var(--muted);text-decoration:none;padding:6px 13px;border-radius:100px;white-space:nowrap;}
+  .hubnav a:hover{background:var(--raise);color:var(--ink);}
+  .hubnav a.active{background:var(--accent);color:#fff;}
+  .hubnav .sep{color:var(--faint);font-size:12px;margin:0 2px;}
+
+  .masthead{display:flex;flex-direction:column;gap:8px;padding-bottom:20px;margin-bottom:22px;border-bottom:1px solid var(--line-strong);}
+  .eyebrow{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-ink);font-weight:700;}
+  .masthead h1{font-size:34px;line-height:1.1;}
+  .masthead .meta{font-size:12.5px;color:var(--muted);margin-top:2px;}
+
+  .banner{background:var(--surface);border:1px solid var(--line-strong);border-left:5px solid var(--accent);
+    border-radius:6px;padding:14px 18px;margin-bottom:22px;}
+  .banner.fresh{border-left-color:var(--good);}
+  .banner p{margin:0;font-size:13px;}
+
+  .kpirow{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:1px;background:var(--line);
+    border:1px solid var(--line);border-radius:8px;overflow:hidden;margin-bottom:22px;}
+  .kpi{background:var(--surface);padding:14px 16px;cursor:pointer;transition:background .12s ease;}
+  .kpi:hover{background:var(--raise);}
+  .kpi.active{background:var(--accent);}
+  .kpi.active .num, .kpi.active .lbl{color:#fff;}
+  .kpi .lbl{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700;}
+  .kpi .num{font-size:26px;font-weight:700;font-variant-numeric:tabular-nums;margin-top:3px;}
+  .kpi .num.crit{color:var(--critical);} .kpi .num.high{color:var(--high);} .kpi .num.med{color:var(--medium);}
+
+  .filterbar{background:var(--surface);border:1px solid var(--line-strong);border-radius:8px;
+    padding:14px 16px;margin-bottom:20px;display:flex;flex-wrap:wrap;gap:14px;align-items:center;
+    position:sticky;top:0;z-index:20;box-shadow:0 2px 10px rgba(0,0,0,.04);}
+  .fgroup{display:flex;flex-wrap:wrap;gap:6px;align-items:center;}
+  .fgroup .flabel{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);font-weight:700;margin-right:4px;}
+  .fchip{font:inherit;font-size:12px;font-weight:600;padding:5px 12px;border-radius:100px;border:1px solid var(--line-strong);
+    background:var(--surface);color:var(--muted);cursor:pointer;white-space:nowrap;}
+  .fchip:hover{border-color:var(--accent);color:var(--ink);}
+  .fchip.on{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .searchwrap{flex:1;min-width:180px;position:relative;}
+  #search{width:100%;font:inherit;font-size:13px;padding:7px 12px 7px 30px;border:1px solid var(--line-strong);
+    border-radius:100px;background:var(--raise);color:var(--ink);}
+  .searchwrap::before{content:"⌕";position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--faint);font-size:14px;}
+  #count{font-size:12px;color:var(--faint);white-space:nowrap;margin-left:auto;}
+
+  .tasklist{display:flex;flex-direction:column;gap:12px;}
+  .task{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 20px;
+    border-left:5px solid var(--line-strong);transition:box-shadow .12s ease;}
+  .task:hover{box-shadow:0 3px 14px rgba(0,0,0,.06);}
+  .task.crit{border-left-color:var(--critical);}
+  .task.high{border-left-color:var(--high);}
+  .task.medium{border-left-color:var(--medium);}
+  .task.low{border-left-color:var(--faint);}
+  .task-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;margin-bottom:8px;}
+  .task-head h3{font-size:16.5px;flex:1;min-width:200px;}
+  .tid{font-family:ui-monospace,monospace;font-size:10.5px;color:var(--faint);font-weight:700;letter-spacing:.02em;}
+  .chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
+  .chip{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+    padding:3px 9px;border-radius:100px;white-space:nowrap;}
+  .chip.critical{background:var(--critical-bg);color:var(--critical);}
+  .chip.high{background:var(--high-bg);color:var(--high);}
+  .chip.medium{background:var(--medium-bg);color:var(--medium);}
+  .chip.low{background:var(--line);color:var(--muted);}
+  .chip.cat{background:var(--raise);color:var(--muted);border:1px solid var(--line-strong);}
+  .chip.status-open{background:var(--critical-bg);color:var(--critical);}
+  .chip.status-blocked{background:var(--high-bg);color:var(--high);}
+  .chip.status-needs_investigation{background:var(--medium-bg);color:var(--medium);}
+  .chip.status-done{background:var(--good-bg);color:var(--good);}
+  .chip.effort{background:var(--raise);color:var(--faint);}
+  .task-body{font-size:13.5px;}
+  .task-body h4{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-ink);
+    font-weight:700;margin:12px 0 5px;}
+  .task-body h4:first-child{margin-top:0;}
+  .task-body ol,.task-body ul{margin:0;padding-left:19px;}
+  .task-body li{margin-bottom:4px;}
+  .impact-box{background:var(--raise);border-radius:6px;padding:10px 13px;margin-top:4px;font-size:13px;}
+  .meta-row{display:flex;flex-wrap:wrap;gap:14px;font-size:11.5px;color:var(--faint);margin-top:12px;
+    padding-top:10px;border-top:1px solid var(--line);}
+  .meta-row a{color:var(--accent-ink);text-decoration:none;font-weight:600;}
+  .meta-row a:hover{text-decoration:underline;}
+
+  .empty{padding:40px 20px;text-align:center;color:var(--faint);font-size:13.5px;background:var(--surface);
+    border:1px dashed var(--line-strong);border-radius:10px;}
+
+  .foot{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);font-size:12px;color:var(--faint);}
+</style>
+</head>
+<body>
+
+<nav class="hubnav"><div class="inner">
+  <a href="index.html">Reports Home</a><span class="sep">&middot;</span>
+  <a href="insights.html">Insights</a>
+  <a href="action_plan.html">Action Plan</a>
+  <a href="interactive.html">Interactive Dashboard</a>
+  <a href="tasks.html" class="active">Tasks</a>
+  <a href="connectors.html">Connectors</a>
+</div></nav>
+
+<div class="page">
+
+  <div class="masthead">
+    <div class="eyebrow">AI CRO Analyst &middot; Daily Tasks</div>
+    <h1>What the data says users are facing right now</h1>
+    <div class="meta" id="metaline">—</div>
+  </div>
+
+  <div class="banner fresh" id="freshbanner">
+    <p>—</p>
+  </div>
+
+  <div class="kpirow" id="kpirow"></div>
+
+  <div class="filterbar">
+    <div class="fgroup"><span class="flabel">Priority</span><div id="fpriority"></div></div>
+    <div class="fgroup"><span class="flabel">Category</span><div id="fcategory"></div></div>
+    <div class="fgroup"><span class="flabel">Status</span><div id="fstatus"></div></div>
+    <div class="searchwrap"><input id="search" type="text" placeholder="Search tasks…" aria-label="Search tasks"></div>
+    <div id="count"></div>
+  </div>
+
+  <div class="tasklist" id="tasklist"></div>
+
+  <div class="foot" id="footnote">
+    Sources: GA4, Microsoft Clarity, Playwright live measurement, Shopify Admin. Regenerated as part of the
+    daily data catch-up — see <a href="insights.html" style="color:var(--accent-ink);">Insights</a> for the
+    full narrative and <a href="action_plan.html" style="color:var(--accent-ink);">Action Plan</a> for
+    sprint-level task tracking.
+  </div>
+
+</div>
+
+<script>
+const META = {"generated_at":"2026-08-10","window":"GA4 daily series finalised through 9 Aug (8 Aug clean, 9 Aug broken-read — see TASK-02) + 7d snapshot 27 Jul–2 Aug · Clarity finalised through 7 Aug, connector outage blocked 8-9 Aug checks · Shopify checked through 7 Aug · Playwright + competitive check 4 Aug","sources":["GA4 property 478308692","Microsoft Clarity ro0m9zh071","Playwright live measurement","Shopify Admin","Competitive check: caratlane.com"]};
+const TASKS = [{"id":"TASK-01","title":"Turn the mobile login wall into a checkout step, not a takeover — guest checkout is not the fix","priority":"critical","category":"checkout","status":"open","source":"GA4 + Clarity + Playwright + competitive benchmark","relatedFindings":["F1"],"relatedActionItems":["T1","T2"],"dateIdentified":"2026-07-27","dateConfirmed":"2026-08-04","insight":"REVISED 4 Aug: live-tested caratlane.com (a direct, larger competitor) end-to-end on mobile. CaratLane also requires phone/OTP login before payment — no guest checkout, no skip link, confirmed by walking a real cart through to \u0027Place Order.\u0027 So the login requirement itself is normal for this category; guest checkout is not the standard fix. The difference is presentation: CaratLane\u0027s cart is fully open (view, price-check, apply coupon — zero login prompt), and login only appears once you click \u0027Place Order,\u0027 as ONE step in a visible Address → Gifting → Payment flow, with the order total still visible in a collapsible bar throughout. Lucira\u0027s mobile flow instead throws a 100%-viewport takeover the moment \u0027Proceed to Checkout\u0027 is clicked, hiding the cart/total/progress entirely. Lucira\u0027s own desktop version already proves the point internally: same login requirement, rendered as a small centred dialog that keeps the cart visible — and desktop converts at 30.9% vs mobile\u0027s 7.3% on that identical requirement.","action":["Drop \u0027add guest checkout\u0027 as the ask — replace with: convert the mobile login moment into a proper step in a visible checkout flow (Address/Shipping/Payment-style progress), not a full-screen modal","Keep cart contents/total visible or collapsible (like CaratLane\u0027s order-summary bar) instead of hiding them behind the login screen","Trigger the login step only at \u0027Place Order\u0027/\u0027Proceed to Checkout\u0027 commitment, matching both CaratLane and Lucira\u0027s own desktop pattern — not immediately as a page-load interruption","Benchmark against 1-2 more direct competitors (e.g. Bluestone, Melorra) to confirm this is the category norm before finalising the spec"],"impact":"This is a materially smaller, more defensible build than guest checkout (no new anonymous-order/inventory-hold logic needed) and is directly validated by both a competitor and Lucira\u0027s own desktop experience — closing even half the mobile-desktop gap would roughly double mobile checkout starts.","effort":"~4 hours, Frontend"},{"id":"TASK-02","title":"GA4/GTM tracking break — now confirmed on 7 separate days; deployment theory effectively ruled out, shift to monitoring + optional root-cause","priority":"critical","category":"tracking","status":"open","source":"GA4 + Clarity + Playwright","relatedFindings":["F12"],"relatedActionItems":["T22"],"dateIdentified":"2026-08-01","dateConfirmed":"2026-08-10","insight":"UPDATED 10 Aug: broken-on-first-read is now confirmed on 1, 3, 4, 5, 7 and 9 Aug — 6 of the last 9 days (67%), only 2, 6 and 8 Aug clean. 1, 3, 4, 5 and 7 Aug have all since self-corrected within roughly 2-3 days each. 9 Aug (checked 10 Aug, 6 days after the 3 Aug deployment with nothing new shipped since) is broken exactly the same way — mobile 99.67% (13,689 sessions), desktop 99.47% (378 sessions), tablet 100.00% (32 sessions) bounce, universal across every reference page. Funnel events on 9 Aug stayed completely normal (368 add_to_cart, 64 begin_checkout, 32 add_shipping_info, 16 add_payment_info, 3 purchases, 80 signups) — confirming real activity again. Clarity cross-check could not run this time: the connector failed 8 consecutive times across this and the prior session (8 and 9 Aug, several query phrasings) — a first for this project, treated as a genuine outage, not the usual 1-2 retry blip, until it recovers. This forward-looking evidence — the pattern continuing unchanged 6 days post-deployment — is stronger than any retrospective check could be: a genuine one-time deployment regression would not still be firing intermittently 6+ days later with no further changes. Treat the deployment-correlation theory as ruled out.","action":["Reclassify this as a standing GA4 data-processing characteristic (breaks on ~2/3 of days at first read, self-corrects within a few days) rather than a GTM regression to hunt down","Document the rule sitewide: never quote same-day or next-day bounce/engagement figures without checking Clarity or funnel events first; wait 2-3 days for GA4 to settle before trusting a bounce number","Still worth a low-priority root-cause attempt if anyone has GTM debug access — check the container\u0027s tag-firing order/timing for a race condition on the pageView trigger — but this is no longer urgent since the numbers self-correct reliably","Identify the source of the 403/400 console errors first seen 6 Aug — still unattributed","Separately: escalate the Clarity connector outage (8 straight failures, 8-9 Aug) if it hasn\u0027t self-recovered by the next check"],"impact":"Stops wasted effort chasing a phantom deployment regression, and sets a durable rule (wait 2-3 days, cross-check Clarity) that prevents this from causing a false alarm every time it recurs.","effort":"~1 hour to settle the before/after question, then scope accordingly, Analytics — escalated priority"},{"id":"TASK-03","title":"Cut desktop PDP LCP from ~17s to under 4s","priority":"critical","category":"performance","status":"open","source":"Playwright (cro_vitals)","relatedFindings":["F11"],"relatedActionItems":["T21"],"dateIdentified":"2026-07-29","dateConfirmed":"2026-07-29","insight":"A median-of-3 cro_vitals measurement on the reference PDP (desktop) came back at ~17 seconds LCP against ~10.2MB transferred over 181 requests — confirmed reproducible, not a cold-start artifact. The same URL on mobile medians a much healthier 2.5s. This is the single worst Core Web Vitals reading measured anywhere on the site.","action":["Audit the desktop PDP\u0027s largest network requests — likely an unoptimised hero image/video or a render-blocking third-party script","Compare desktop vs mobile asset delivery for the same page to isolate what\u0027s different about the desktop bundle","Re-measure with cro_vitals after each change to confirm improvement, not just perceived speed"],"impact":"A 17-second load is very likely suppressing desktop PDP engagement and conversion specifically — desktop already converts reasonably well elsewhere on the site, so this page is leaving performance on the table.","effort":"~3-5 days, Frontend"},{"id":"TASK-04","title":"Throttle the spin-wheel/registration popup, especially on entry pages","priority":"high","category":"engagement","status":"blocked","source":"Clarity","relatedFindings":["F9","F2"],"relatedActionItems":["T7"],"dateIdentified":"2026-07-27","dateConfirmed":"2026-08-04","insight":"Sitewide Clarity click data shows popup/login elements out-clicking the homepage\u0027s top real navigation link by roughly 9×, and it remains the #1 rage-click target sitewide. Confirmed this pass that the popup is intermittent (fires on some visits, not others) rather than guaranteed every load — but Clarity\u0027s aggregate click volume across thousands of real sessions still shows it dominating. Homepage → Collection remains the single biggest leak in the journey.","action":["Reduce trigger frequency/aggressiveness on Homepage and PLP specifically, where the popup:nav click ratio is worst","T7 is currently blocked on a vendor/auth dependency — escalate that blocker since it\u0027s gating this entire fix","Consider a frequency cap (e.g. once per session) rather than removing the mechanic outright"],"impact":"Freeing up that click volume for real navigation should directly lift homepage→collection progression — currently the biggest single drop-off in the entire customer journey.","effort":"Blocked — vendor/auth dependency, Marketing ops"},{"id":"TASK-05","title":"Move a condensed review summary above the fold on PDPs","priority":"high","category":"engagement","status":"open","source":"Clarity + Playwright (cro_fold_analysis)","relatedFindings":["F3","F5"],"relatedActionItems":["T3"],"dateIdentified":"2026-07-27","dateConfirmed":"2026-08-04","insight":"Customer Reviews on the reference PDP sits at 48.1% scroll depth, while the median mobile visitor only reaches ~18% before leaving — roughly 8 in 10 visitors never see reviews at all. All 12 top PDPs cluster in the same 15-23% scroll-depth range, so this is template-wide, not a one-page issue.","action":["Add a condensed trust signal (star rating + review count) near the price/Add-to-Cart area, above the fold","Keep full review content further down the page — this is about surfacing the signal earlier, not restructuring the whole page","Re-run cro_fold_analysis after shipping to confirm the summary actually lands inside the ~18% reach line"],"impact":"Trust signals visible earlier in a considered-purchase category like fine jewellery typically lift add-to-cart rate — right now the strongest trust signal on the page is invisible to most visitors.","effort":"~3 hours, Frontend"},{"id":"TASK-06","title":"Fix the in-app-browser experience for Paid Social traffic","priority":"high","category":"traffic","status":"open","source":"GA4 + Clarity","relatedFindings":["F4"],"relatedActionItems":[],"dateIdentified":"2026-07-27","dateConfirmed":"2026-07-27","insight":"Paid Social bounces 62-100% across every landing page it touches, against 12-47% for the identical pages from other channels in the same week — the gap is channel, not page template. Clarity\u0027s JS-error log shows Meta in-app-WebView-specific errors across well over a thousand sessions — a plausible root cause.","action":["Test the storefront specifically inside Instagram\u0027s and Facebook\u0027s in-app browsers, not just standalone mobile Safari/Chrome","Consider a lightweight \u0027open in browser\u0027 prompt for traffic arriving via Meta\u0027s in-app WebView","Cross-check whether the Meta Pixel \u0027invalid currency parameter\u0027 warning (still reproducing live) is related"],"impact":"With meaningful ad spend behind this traffic, even a partial fix to the in-app WebView experience could materially improve Paid Social\u0027s real conversion rate and ROAS reporting.","effort":"~1-2 days, Frontend + Paid media"},{"id":"TASK-07","title":"Remove Begin Checkout from Google Ads\u0027 counted conversions","priority":"high","category":"commerce","status":"open","source":"Google Ads","relatedFindings":[],"relatedActionItems":["T13"],"dateIdentified":"2026-07-27","dateConfirmed":"2026-07-27","insight":"Google Ads\u0027 \u0027conversions\u0027 column blends Begin Checkout events with real purchase actions, inflating the headline conversion count roughly 7× against real orders, while the correctly-wired GA4 purchase action is excluded from the counted set.","action":["In Google Ads conversion settings, set Begin Checkout to \u0027don\u0027t count in conversions\u0027","Include the GA4 purchase conversion action in the counted set instead","Re-baseline any recent budget or bidding decisions that were made against the inflated number"],"impact":"This directly affects automated bidding — leaving this uncorrected likely means Ads is actively optimising toward the wrong signal.","effort":"~15 minutes, config only"},{"id":"TASK-08","title":"Close the GA4 purchase-tracking gap (currently ~84% capture)","priority":"high","category":"tracking","status":"blocked","source":"GA4 + Shopify","relatedFindings":[],"relatedActionItems":["T13"],"dateIdentified":"2026-07-27","dateConfirmed":"2026-08-04","insight":"Over the trailing 30 days, GA4 captured 48 purchases against 57 real GA4-trackable online orders — 84% capture, up from 66% previously but still a real, persistent gap. Can\u0027t diagnose further without read_pixels scope on the Shopify integration.","action":["Grant read_pixels scope to the analytics integration, or check Shopify Admin → Settings → Customer events manually","Specifically verify the purchase tag fires on Razorpay return and on Partial-COD orders","Check consent-mode defaults — a default-deny configuration can silently suppress a third of events"],"impact":"Every report that cites GA4 revenue/conversions is undercounting real sales by roughly a sixth.","effort":"~1 hour once unblocked, Analytics"},{"id":"TASK-09","title":"Confirm whether the new cart coupon flow requires a second login","priority":"medium","category":"checkout","status":"needs_investigation","source":"Clarity","relatedFindings":["F14"],"relatedActionItems":[],"dateIdentified":"2026-08-03","dateConfirmed":"2026-08-04","insight":"Still generating steady volume today: \u0027Apply/Login to Unlock Coup…\u0027 logged 52 clicks on 4 Aug alone (on top of 209 over the prior 7-day window) — this isn\u0027t a one-off, it\u0027s a persistent pattern since the 3 Aug deployment. Still ambiguous due to Clarity\u0027s text truncation, but reads as though applying a coupon may itself prompt a login, stacking a second gate on top of the checkout login flow covered in TASK-01.","action":["Manually click through the \u0027Apply Coupon\u0027 row on a live cart-with-item session to confirm whether it requires login","If confirmed, this needs to be scoped into the TASK-01 checkout redesign rather than fixed in isolation"],"impact":"A 2-minute check that could catch a compounding friction point before it accumulates more data against it — bumped priority given it hasn\u0027t faded with time.","effort":"~10 minutes, Frontend"},{"id":"TASK-10","title":"Speed up the two slowest, lowest-engagement PDPs specifically","priority":"medium","category":"performance","status":"open","source":"GA4 + Clarity","relatedFindings":["F6"],"relatedActionItems":[],"dateIdentified":"2026-07-27","dateConfirmed":"2026-07-27","insight":"The bezel-set solitaire ring PDP (5,072ms LCP / 12.4s avg engagement) and the paramount ring PDP (4,200ms LCP / 16.2s engagement) are both measurably slower and less engaging than the rest of the top-12 PDP set.","action":["Run the same asset/script audit planned for TASK-03 against these two specific product pages","Check whether these two PDPs share a template variant or image set that differs from faster-loading products"],"impact":"Two more high-consideration products likely underperforming their potential purely on load speed.","effort":"~1 day, Frontend"},{"id":"TASK-11","title":"Fix the /schemes page mobile slider (135 rage + 334 dead clicks)","priority":"medium","category":"engagement","status":"open","source":"Clarity","relatedFindings":["F7"],"relatedActionItems":[],"dateIdentified":"2026-07-27","dateConfirmed":"2026-07-27","insight":"The mobile slider on /schemes is an isolated, localised friction point — 135 rage clicks and 334 dead clicks concentrated on this one UI component, not a sitewide pattern.","action":["Test the slider\u0027s touch targets and gesture/swipe handling on a real Android device, not just an emulator","Check whether the slider is intercepting scroll gestures meant for the page itself"],"impact":"A contained, no-ambiguity fix — pure friction with no offsetting upside, on a page that carries meaningful traffic.","effort":"~half day, Frontend"},{"id":"TASK-12","title":"Fix discount-code hygiene on manually-entered orders","priority":"low","category":"commerce","status":"open","source":"Shopify","relatedFindings":["F15"],"relatedActionItems":[],"dateIdentified":"2026-08-03","dateConfirmed":"2026-08-04","insight":"A live customer order (#2480) carries the literal discount-code text \u0027500Lucira point + 166 additional discount - Need to add\u0027 — an internal staff note, not a real code, visible on the customer\u0027s own order record.","action":["Add a naming checklist step for staff before finalising manual discounts on draft orders","Spot-check recent salesperson-assisted orders for similar placeholder text"],"impact":"Small in isolation, but customer-facing on exactly the orders where a human relationship is supposed to be the differentiator.","effort":"~30 minutes, process only, Marketing ops"},{"id":"TASK-13","title":"Investigate Clarity\u0027s \u0027not collecting this session\u0027 warning","priority":"medium","category":"tracking","status":"needs_investigation","source":"Playwright (live console)","relatedFindings":["F13"],"relatedActionItems":["T23"],"dateIdentified":"2026-08-04","dateConfirmed":"2026-08-04","insight":"Live console checks logged \u0027Data from this session is not being collected by Microsoft Clarity due to your configured project settings\u0027 consistently across multiple page loads. Clarity\u0027s own daily aggregate session counts still look normal (11,648 mobile sessions today, in the usual range), so this may be specific to automated/synthetic sessions rather than proof real visitor sessions are being dropped.","action":["Review Clarity project settings directly in its dashboard — recording quota, sampling rate, any recent path/domain restriction","Cross-check daily Clarity session totals against GA4 sessions for the same days — if the ratio hasn\u0027t shifted, real coverage is intact"],"impact":"Rules out (or confirms) a second, independent data-quality gap on top of the GA4 tracking break in TASK-02.","effort":"~30 minutes, Analytics"},{"id":"TASK-14","title":"Understand why a share of cart-page sessions land on an empty cart","priority":"low","category":"checkout","status":"needs_investigation","source":"Clarity + Playwright","relatedFindings":["F16"],"relatedActionItems":[],"dateIdentified":"2026-08-04","dateConfirmed":"2026-08-04","insight":"A newly successful cart-page heatmap capture shows the \u0027Cart1/3\u0027 step-progress chrome drawing more clicks than anything else visible on an empty-cart state — pointing to a real share of cart-page Clarity sessions arriving with no item in cart.","action":["Check whether this correlates with a specific entry channel (bookmark/direct/notification) via GA4\u0027s landing-page + channel breakdown","Rule out a cart-persistence bug — confirm items aren\u0027t silently disappearing from cart between visits for logged-out users"],"impact":"If it\u0027s a persistence bug, that would be silently losing carts that should still have items in them.","effort":"~1 hour, Analytics"},{"id":"TASK-15","title":"Attribute the \u0027Something went wrong!\u0027 error clicks to a page","priority":"low","category":"engagement","status":"needs_investigation","source":"Clarity","relatedFindings":["F8"],"relatedActionItems":[],"dateIdentified":"2026-07-27","dateConfirmed":"2026-07-27","insight":"This error-state text is the 4th most rage-clicked element sitewide by weight, but which page or flow it belongs to has not yet been identified.","action":["Search Clarity session recordings filtered to this click text to identify the page and reproduce the error live","Once attributed, check browser console/network logs on that page for the actual failing request"],"impact":"Currently untraceable and therefore unfixable — once attributed, could be a meaningful, easily-fixed error currently hiding in aggregate data.","effort":"~1 hour, Analytics"},{"id":"TASK-16","title":"Confirm fulfilment/cash-flow planning accounts for the Partial-COD share","priority":"low","category":"commerce","status":"open","source":"Shopify","relatedFindings":[],"relatedActionItems":[],"dateIdentified":"2026-08-03","dateConfirmed":"2026-08-04","insight":"6 of the last 16 orders (37.5%) are Partially Paid — a deposit online with the balance due on delivery — matching the \u0027partial_cod\u0027 payment option. Working as designed, but a materially large share of order volume.","action":["Confirm with operations/finance that fulfilment scheduling and cash-flow forecasting explicitly account for this ratio","Track the Partial-COD share over the next few weeks to see if it\u0027s stable or growing"],"impact":"Not a defect — an informational task to prevent fulfilment or cash-flow surprises if this ratio holds or increases.","effort":"~15 minutes, Leadership"},{"id":"TASK-17","title":"NEW — Investigate a checkout path that appears to bypass cart-page tracking on desktop","priority":"medium","category":"tracking","status":"needs_investigation","source":"GA4","relatedFindings":[],"relatedActionItems":[],"dateIdentified":"2026-08-04","dateConfirmed":"2026-08-04","insight":"Surfaced while investigating why a decent PDP→ATC rate doesn\u0027t translate to cart→checkout: desktop\u0027s begin_checkout event count is exceeding desktop\u0027s tracked cart-page user count in the same window (149 begin_checkout events vs 96 cart_page_users). That shouldn\u0027t be mathematically possible if every checkout starts from a tracked cart pageview — it suggests either a \u0027quick buy\u0027/\u0027buy now\u0027 path that skips the cart page entirely, or a double-counting issue in how begin_checkout fires on desktop.","action":["Check whether the storefront has a \u0027Buy Now\u0027 or express-checkout button anywhere that bypasses /checkout/cart","If confirmed, add cart-page-independent tracking for that path so it\u0027s not silently missing from cart-based funnel analysis","If it\u0027s double-counting instead, check for a duplicate GTM tag firing begin_checkout twice on desktop"],"impact":"Right now the desktop cart→checkout metrics we report may be systematically understating desktop\u0027s real checkout-start volume, or overcounting it — worth resolving before trusting desktop funnel comparisons.","effort":"~2 hours, Analytics"},{"id":"TASK-18","title":"NEW — Confirm add_to_cart events are genuine clicks, not auto-fired on variant selection","priority":"low","category":"tracking","status":"needs_investigation","source":"GA4 + Clarity","relatedFindings":[],"relatedActionItems":[],"dateIdentified":"2026-08-04","dateConfirmed":"2026-08-04","insight":"Checked this today after a question about whether the add-to-cart rate might be inflated by miss-clicks: GA4\u0027s add_to_cart events are spread thinly and plausibly across 687 distinct product pages (no anomalous concentration found, no evidence of a phantom SKU or quick-add mechanism inflating counts). But Clarity\u0027s PDP click data shows the literal \u0027ADD TO CART\u0027 button rarely appears in the top-10 clicked elements despite thousands of PDP visitors — variant swatches (\u0027Yellow\u0027, \u0027MH\u0027, \u0027MQ\u0027) dominate instead. This is circumstantial, not proof of a problem, but worth a direct check.","action":["Review 3-5 real Clarity session recordings that fired add_to_cart on the reference PDP to confirm a deliberate button click precedes the event, not an automatic fire on variant selection","If confirmed clean, this can be closed as a non-issue; if not, the add_to_cart event needs to be re-wired to fire only on explicit intent"],"impact":"Closes the loop on whether the ATC metric can be trusted at face value — low probability of a real issue based on today\u0027s check, but cheap to confirm outright.","effort":"~30 minutes, Analytics"},{"id":"TASK-19","title":"NEW — Attribute two previously-unseen console errors (403 and 400 responses)","priority":"low","category":"tracking","status":"needs_investigation","source":"Playwright (live console)","relatedFindings":["F12"],"relatedActionItems":[],"dateIdentified":"2026-08-06","dateConfirmed":"2026-08-06","insight":"Surfaced during today\u0027s live console re-check of the GA4 tracking break (TASK-02): alongside the now-familiar \u0027Skipped GTM→GA4\u0027 warning, two new errors appeared that hadn\u0027t been logged in any prior check this project — \u0027Failed to load resource: the server responded with a status of 403\u0027 and a separate \u0027status of 400\u0027. Not yet attributed to a specific request or script.","action":["Reload the homepage with network request logging on and identify which two requests return 403 and 400","Check whether either is related to the GTM/GA4 pageView issue in TASK-02, or is an unrelated third issue"],"impact":"Unknown until attributed — could be inert (a blocked tracker, a harmless 404-adjacent miss) or could be a contributing signal for the tracking break. Cheap to check.","effort":"~20 minutes, Analytics"},{"id":"TASK-20","title":"Pause or fix Criteo + RTB.com retargeting — now confirmed zero conversions across TWO consecutive weeks","priority":"critical","category":"traffic","status":"open","source":"GA4 + Clarity","relatedFindings":["F18"],"relatedActionItems":[],"dateIdentified":"2026-08-06","dateConfirmed":"2026-08-08","insight":"GA4\u0027s \u0027Paid Other\u0027 channel (21,765 sessions, 29 Jul-4 Aug) is almost entirely two vendors — rtbcom-retargeting and Criteo\u0027s display campaigns (both set up 27 Jan 2026) — with zero conversions and Rs 0 revenue. RE-CHECKED 5-7 Aug: another 7,010 sessions, again exactly 0 conversions, Rs 0 revenue. Two straight weeks at 0% removes the \u0027maybe it was just a bad week\u0027 possibility entirely. Cross-checked directly in Clarity: this traffic bounces at 74.83% and scrolls only 23.87%, both far worse than the sitewide average — this is genuinely low-quality traffic, not a tracking gap hiding real engagement. Retargeting specifically converting at 0% for two weeks straight is a strong, now well-evidenced case for pausing.","action":["Get the actual weekly/monthly spend on rtbcom and Criteo — this data shows volume but not cost, and cost is the missing piece for a pause decision","With two full weeks of 0% conversion now confirmed, recommend pausing both pending investigation rather than continuing to watch — the \u0027is this real\u0027 question is answered","If keeping either, check whether their landing pages/redirects are stripping tracking parameters or loading differently from normal traffic (similar to the Meta in-app WebView issue in F4)","Re-run this same channel check after any fix to confirm conversions start appearing before resuming spend at volume"],"impact":"This is the single largest pool of traffic on the site with zero measurable business return for two consecutive weeks running — larger in volume than Paid Search + Organic Search + Direct + Referral combined.","effort":"~1 hour to get spend figures + pause decision, Paid media"},{"id":"TASK-21","title":"NEW — Correct GA4\u0027s default channel-level conversion reporting (Paid Social \u0026 Direct show conversions with Rs 0 revenue)","priority":"high","category":"tracking","status":"open","source":"GA4","relatedFindings":["F19"],"relatedActionItems":["T9"],"dateIdentified":"2026-08-06","dateConfirmed":"2026-08-06","insight":"GA4\u0027s channel-level report for 29 Jul-4 Aug shows Paid Social with 34 \u0027conversions\u0027 and Direct with 51 \u0027conversions\u0027, both at Rs 0 attributed revenue — the same Begin-Checkout-counted-as-a-conversion problem already flagged in Google Ads (T9), but visible here in GA4\u0027s own default reporting, which anyone could be reading without realising the number is inflated.","action":["Once T9\u0027s conversion-event cleanup lands in Google Ads, confirm the same fix is reflected in GA4\u0027s marked key events (Begin Checkout should not be a key event if Purchase already is)","Rebuild any channel-performance view (including ours) to filter to Purchase-based conversions specifically, not GA4\u0027s blended \u0027conversions\u0027 metric"],"impact":"Prevents anyone — us included — from citing \u0027Paid Social converts at X%\u0027 using a number that\u0027s actually counting checkout starts, not purchases.","effort":"~30 minutes once T9 lands, Analytics"},{"id":"TASK-22","title":"Check whether Shopify\u0027s abandoned-checkout recovery email is even enabled — now zero records for 3 straight days","priority":"medium","category":"commerce","status":"needs_investigation","source":"Shopify","relatedFindings":["F20"],"relatedActionItems":["T14"],"dateIdentified":"2026-08-06","dateConfirmed":"2026-08-08","insight":"Shopify recorded only 3 abandoned checkouts in the first 7 days checked (Rs 12,795, Rs 71,991, Rs 1,09,861 — Rs 1,94,647 total, all named real products). RE-CHECKED 5-7 Aug: zero abandoned checkouts recorded at all, despite continued cart-page traffic and begin_checkout events in GA4. Going from 3-in-7-days to 0-in-3-days confirms this isn\u0027t sampling noise — it\u0027s the normal, near-total state of this recovery channel. This confirms the OTP wall (F1) drops people off before Shopify ever creates a checkout record, so native abandoned-cart recovery emails have almost nothing to work with.","action":["Check Shopify Admin → Settings → Checkout → whether the abandoned checkout recovery email is switched on at all","Manually follow up on the 3 known high-value abandons if no automated email went out — Rs 1,09,861 and Rs 71,991 are large enough to be worth a direct outreach","Flag to whoever owns TASK-01/T1 that fixing the login-wall presentation would have a second benefit beyond conversion rate: it would let far more real abandoned-checkout records exist for Shopify\u0027s own recovery system to work with"],"impact":"Rs 1,94,647 in known, named, recoverable cart value sitting unaddressed this week alone — and that\u0027s only the small fraction of drop-off that even made it into a Shopify record.","effort":"~30 minutes to check settings + manual outreach, Marketing ops"}];
+
+const $ = s => document.querySelector(s);
+const esc = s => (s==null?"":String(s)).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const PRI_ORDER = { critical: 0, high: 1, medium: 2, low: 3 };
+const STATUS_LABEL = { open: "Open", blocked: "Blocked", needs_investigation: "Needs investigation", done: "Done" };
+const CAT_LABEL = { checkout: "Checkout", tracking: "Tracking", performance: "Performance", engagement: "Engagement", traffic: "Traffic", commerce: "Commerce" };
+
+$("#metaline").textContent = "Generated " + META.generated_at + " · window: " + META.window;
+$("#freshbanner").innerHTML = "<p><b>" + TASKS.length + " tasks</b> derived from " + (META.sources||[]).join(", ") +
+  ". Each task below is read straight off current GA4 and Clarity data, cross-checked where possible with live " +
+  "Playwright measurement — not a static backlog. Re-run the daily build to refresh this list as the underlying data changes.</p>";
+
+let state = { priority: "all", category: "all", status: "all", q: "" };
+
+function kpiCounts(){
+  const c = { total: TASKS.length, critical: 0, high: 0, blocked: 0, needs_investigation: 0 };
+  TASKS.forEach(t => {
+    if (t.priority === "critical") c.critical++;
+    if (t.priority === "high") c.high++;
+    if (t.status === "blocked") c.blocked++;
+    if (t.status === "needs_investigation") c.needs_investigation++;
+  });
+  return c;
+}
+
+function renderKpis(){
+  const c = kpiCounts();
+  const cells = [
+    ["Total tasks", c.total, ""],
+    ["Critical", c.critical, "crit"],
+    ["High", c.high, "high"],
+    ["Blocked", c.blocked, "med"],
+    ["Needs investigation", c.needs_investigation, "med"]
+  ];
+  $("#kpirow").innerHTML = cells.map(([l,v,cls]) =>
+    '<div class="kpi"><div class="lbl">'+l+'</div><div class="num '+cls+'">'+v+'</div></div>').join("");
+}
+
+function uniqueVals(key){
+  return [...new Set(TASKS.map(t => t[key]))];
+}
+
+function renderFilterGroup(containerId, key, values, allLabel){
+  const el = $(containerId);
+  const opts = [["all", allLabel]].concat(values.map(v => [v, key==="category" ? (CAT_LABEL[v]||v) : key==="status" ? (STATUS_LABEL[v]||v) : v[0].toUpperCase()+v.slice(1)]));
+  el.innerHTML = opts.map(([v,label]) =>
+    '<button class="fchip'+(state[key]===v?" on":"")+'" data-key="'+key+'" data-val="'+v+'">'+esc(label)+'</button>').join("");
+}
+
+function matches(t){
+  if (state.priority !== "all" && t.priority !== state.priority) return false;
+  if (state.category !== "all" && t.category !== state.category) return false;
+  if (state.status !== "all" && t.status !== state.status) return false;
+  if (state.q){
+    const hay = (t.title+" "+t.insight+" "+(t.action||[]).join(" ")+" "+t.impact).toLowerCase();
+    if (!hay.includes(state.q.toLowerCase())) return false;
+  }
+  return true;
+}
+
+function taskCard(t){
+  const findLinks = (t.relatedFindings||[]).map(f => '<a href="insights.html">'+f+'</a>').join(", ");
+  const actLinks = (t.relatedActionItems||[]).map(a => '<a href="action_plan.html">'+a+'</a>').join(", ");
+  return '<div class="task '+(t.priority==="critical"?"crit":t.priority)+'">' +
+    '<div class="task-head"><span class="tid">'+t.id+'</span><h3>'+esc(t.title)+'</h3></div>' +
+    '<div class="chips">' +
+      '<span class="chip '+t.priority+'">'+t.priority+'</span>' +
+      '<span class="chip cat">'+(CAT_LABEL[t.category]||t.category)+'</span>' +
+      '<span class="chip status-'+t.status+'">'+(STATUS_LABEL[t.status]||t.status)+'</span>' +
+      '<span class="chip effort">'+esc(t.effort||"")+'</span>' +
+    '</div>' +
+    '<div class="task-body">' +
+      '<h4>What the data shows</h4><p style="margin:0;">'+esc(t.insight)+'</p>' +
+      '<h4>What needs to be done</h4><ol>'+(t.action||[]).map(a=>'<li>'+esc(a)+'</li>').join("")+'</ol>' +
+      '<h4>Expected impact</h4><div class="impact-box">'+esc(t.impact)+'</div>' +
+      '<div class="meta-row">' +
+        '<span>Source: '+esc(t.source)+'</span>' +
+        '<span>Identified: '+esc(t.dateIdentified)+'</span>' +
+        '<span>Confirmed: '+esc(t.dateConfirmed)+'</span>' +
+        (findLinks ? '<span>Findings: '+findLinks+'</span>' : '') +
+        (actLinks ? '<span>Action Plan: '+actLinks+'</span>' : '') +
+      '</div>' +
+    '</div>' +
+  '</div>';
+}
+
+function render(){
+  renderFilterGroup("#fpriority", "priority", ["critical","high","medium","low"], "All");
+  renderFilterGroup("#fcategory", "category", uniqueVals("category"), "All");
+  renderFilterGroup("#fstatus", "status", uniqueVals("status"), "All");
+
+  const filtered = TASKS.filter(matches).slice().sort((a,b) => PRI_ORDER[a.priority] - PRI_ORDER[b.priority]);
+  $("#count").textContent = filtered.length + " of " + TASKS.length + " tasks";
+  $("#tasklist").innerHTML = filtered.length
+    ? filtered.map(taskCard).join("")
+    : '<div class="empty">No tasks match these filters. Try clearing one.</div>';
+}
+
+document.addEventListener("click", e => {
+  const b = e.target.closest(".fchip");
+  if (!b) return;
+  state[b.dataset.key] = b.dataset.val;
+  render();
+});
+$("#search").addEventListener("input", e => { state.q = e.target.value; render(); });
+
+renderKpis();
+render();
+</script>
+</body>
+</html>
+

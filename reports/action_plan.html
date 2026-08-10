@@ -101,6 +101,7 @@
   <a href="insights.html">Insights</a>
   <a href="action_plan.html" class="active">Action Plan</a>
   <a href="interactive.html">Interactive Dashboard</a>
+  <a href="tasks.html">Tasks</a>
   <a href="connectors.html">Connectors</a>
 </div></nav>
 <nav class="subnav" style="background:var(--raise);border-bottom:1px solid var(--line);"><div class="inner" style="max-width:1080px;margin:0 auto;padding:9px 22px;display:flex;flex-wrap:wrap;align-items:center;gap:4px;">
@@ -159,6 +160,14 @@
           Run <code>cro_funnel_walk</code> at <code>device: "mobile"</code>. The cart step must report
           <code>blocking_overlay.coverage_pct &lt; 60</code> and the cart total must still be readable in the
           screenshot. Compare against today's baseline of <code>100</code>.</div>
+        <div class="accept" style="border-color:var(--good);background:var(--good-bg)"><b>Update (4 Aug)</b>
+          Live-tested caratlane.com's mobile checkout: they also require phone/OTP login before payment (no guest
+          checkout), confirmed by walking a real cart to "Place Order." That validates this task's direction —
+          the fix was never "remove login," it's exactly this: present it as a step (bottom sheet, cart still
+          visible), triggered at checkout commitment — not a full-screen takeover on first tap. CaratLane's own
+          flow does this too: cart is fully open, login only appears at "Place Order," inside a visible
+          Address→Gifting→Payment progression with the order total always in view. Treat their pattern as a second
+          reference alongside Lucira's own desktop experience.</div>
       </div>
     </div>
 
@@ -266,26 +275,33 @@
       harness. T14 is small but must ship alongside it, or you will have no way to measure whether T2 worked.</p>
 
     <div class="task crit">
-      <div class="task-head"><span class="tid">T2</span><h3>Add guest checkout; move phone capture to the shipping step</h3></div>
+      <div class="task-head"><span class="tid">T2</span><h3>REVISED 4 Aug — Move login to checkout commitment, not cart entry; guest checkout is no longer the ask</h3></div>
       <div class="chips">
         <span class="chip critical">Critical</span><span class="chip owner">Frontend + backend</span>
-        <span class="chip effort slow">~3–5 days</span><span class="chip med">+₹8–12L / mo modelled</span>
+        <span class="chip effort slow">~2–3 days</span><span class="chip med">+₹8–12L / mo modelled</span>
         <span class="chip dep">pairs with T14</span>
       </div>
       <div class="task-body">
-        <p>A mandatory OTP before checkout asks for commitment before the visitor has seen shipping cost or delivery
-          date. You already capture a phone number at the shipping step, so the pre-checkout gate is redundant — the
-          number still arrives, one step later, from someone who has decided to buy.</p>
+        <div class="accept" style="border-color:var(--high);background:var(--high-bg);margin-bottom:12px;"><b>Correction (4 Aug)</b>
+          The original version of this task asked for guest checkout. A live competitive test on caratlane.com
+          (a direct, larger jewellery competitor) found they also require phone/OTP login before payment, with no
+          guest option — this is a category norm, not a Lucira-specific mistake, so guest checkout is no longer
+          the recommended fix. Downgraded from "add a new checkout path" to "fix where and how login is triggered,"
+          which is a smaller, cheaper build. See T1's update for the full competitive detail.</div>
+        <p>A mandatory OTP appearing the instant "Proceed to Checkout" is tapped asks for commitment before the
+          visitor has seen shipping cost or delivery date, and it hides the cart behind a full-screen takeover.
+          CaratLane's pattern (and Lucira's own desktop pattern) keeps the cart open and only asks for login at
+          the point of actually placing the order — as one step in a visible flow, not an interruption.</p>
         <ol class="steps">
-          <li>Add “Continue as guest” as the <em>primary</em> action; keep login secondary for returning customers.</li>
-          <li>Capture phone at shipping, where delivery makes the ask self-evidently justified.</li>
-          <li>Preserve cart contents across the guest→login transition, so a user who changes their mind loses nothing.</li>
-          <li>Ship to mobile first and use desktop as the control if you cannot run a true A/B test.</li>
+          <li>Keep the login requirement — do not build a guest/anonymous-order path.</li>
+          <li>Trigger the phone/OTP step only at genuine checkout commitment (equivalent to CaratLane's "Place Order"), not immediately on the cart's checkout button.</li>
+          <li>Keep cart contents and total visible or collapsible throughout the login step — mirror T1's bottom-sheet approach rather than a full takeover.</li>
+          <li>Add a visible progress indicator (Address/Shipping/Payment-style) so the login step reads as "step 1 of a flow," not a random wall.</li>
         </ol>
         <div class="accept"><b>Acceptance test</b>
-          <code>cro_funnel_walk</code> at <code>device: "mobile"</code> must reach a URL under
-          <code>/checkout/shipping</code> with <code>login_wall: false</code>. Today it stays on
-          <code>/checkout/cart</code> with <code>login_wall: true</code> and <code>guest_option: false</code>.</div>
+          <code>cro_funnel_walk</code> at <code>device: "mobile"</code>: the login step must render with
+          <code>blocking_overlay.coverage_pct &lt; 60</code> and the cart/order total still legible, matching T1's
+          bar — this task is really T1's fix extended to the full checkout-commitment moment, not a separate guest path.</div>
       </div>
     </div>
 
@@ -404,12 +420,29 @@
             3 Aug has <b>not</b> self-corrected as of this check — still ~99% bounce, and the live console warning
             is still reproducing. So GA4 does eventually revise a broken day's historical record, but that doesn't
             mean the underlying tag-firing defect is fixed — keep this task open and keep checking.</li>
+          <li><b>Update, 4 Aug evening — 3rd occurrence, live right now:</b> a fresh GA4 pull shows <b>today (4 Aug,
+            live/in-progress) reading broken too</b> — mobile bounce 99.2%, desktop 99.1%, tablet 100%, identical
+            fingerprint. That's 3 of the last 4 days. 3 Aug has since <em>also</em> self-corrected (fresh pull now
+            reads 43.8% bounce, 55.9% engaged, both devices normal) — <code>daily_device.csv</code>/
+            <code>daily_pagetype.csv</code> updated again to match. This is no longer an isolated incident; treat
+            it as recurring until the root cause in GTM is found and fixed. Escalating from "investigate" to
+            "fix now."</li>
+          <li><b>Update, 6 Aug — 4th occurrence, and the deployment theory is now in question:</b> 5 Aug reads
+            broken too (mobile bounce 99.7%, desktop 99.7%, tablet 100%) — that's <b>4 of the last 5 days</b>
+            affected, 3 days after the reported deployment with nothing new shipped since. 4 Aug has by now also
+            self-corrected (fresh pull: normal). Given the pattern is continuing well past the deployment window,
+            <b>don't assume it's deployment-caused</b> — the priority action is now to check whether GA4 data from
+            <em>before</em> 3 Aug shows the same broken-then-self-corrects behaviour. If it does, this is a standing
+            GA4 processing characteristic, not a regression to hunt in GTM. Also newly seen in today's console
+            check: two errors not logged before (403 and 400 responses, source not yet identified) — worth tracing.</li>
         </ol>
         <div class="accept"><b>Acceptance test</b>
           Reload the homepage and cart page 5 times each fresh (cleared cookies) and confirm
           <code>Skipped GTM&rarr;GA4</code> does not appear in the console on any load. Once GA4 finishes
           processing the next few days, confirm engaged-session rate stays in the 55&ndash;98% range seen on every
-          normal day this month, with no further single-day collapses.</div>
+          normal day this month, with no further single-day collapses. New: pull 3-5 days of GA4 data from June or
+          early July and check whether any of them show a similarly broken first-read that later corrected — this
+          single check settles whether the 3 Aug deployment is actually responsible.</div>
       </div>
     </div>
 
