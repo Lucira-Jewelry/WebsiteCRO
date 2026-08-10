@@ -154,7 +154,7 @@
   <div class="masthead">
     <div class="eyebrow">Page Insights &middot; Cart &amp; Checkout</div>
     <h1>Cart &amp; Checkout</h1>
-    <div class="meta">/checkout/cart, /checkout/shipping, /checkout/payment &middot; data through 3 Aug, gate re-verified live 4 Aug 2026</div>
+    <div class="meta">/checkout/cart, /checkout/shipping, /checkout/payment &middot; data through 9 Aug, gate re-verified live 4 Aug 2026</div>
   </div>
 
   <div class="goal">
@@ -174,12 +174,16 @@
 
   <div class="banner alarm" style="margin-bottom:26px;">
     <p style="margin:0;"><b>Still broken as of 4 Aug — and a new coupon module now sits above it.</b> The checkout
-      OTP wall was re-verified live this morning with <code>checkout-gate.js</code>: clicking "Proceed to Checkout"
+      OTP wall was re-verified live with <code>checkout-gate.js</code>: clicking "Proceed to Checkout"
       still returns <code>login_wall: true</code>, <code>guest_option: false</code>, <code>asks_phone: true</code>
       on mobile, byte-for-byte identical to every prior check. A deployment shipped 3 Aug added a new "Apply Coupon"
       / "Claim your free pendant" module to the cart page (see the deep-dive below) — but it sits above the same
-      unfixed wall. That same deployment also appears to have re-broken GA4's engagement tracking on this page;
-      see the tracking-break section below before trusting any bounce/engagement number for 3 Aug.</p>
+      unfixed wall. <b>Correction (4 Aug):</b> a live competitive test of CaratLane found mandatory phone/OTP login
+      before payment is standard for this category — CaratLane has no guest option either. The fix is no longer
+      "add guest checkout" (see the Recommendations below) but rather how and when the login step is presented.
+      GA4's engagement tracking has also broken repeatedly since (F12) — now confirmed on 7 of the last 9 days —
+      but this has since been ruled out as tied to the 3 Aug deployment and reclassified as a standing GA4
+      processing characteristic; see the <a href="insights.html">Insights</a> page for the full pattern.</p>
   </div>
 
   <section>
@@ -290,18 +294,19 @@
         <thead><tr><th>Issue</th><th>Criticality</th><th>Status</th><th>Evidence</th></tr></thead>
         <tbody>
           <tr>
-            <td><b>Mobile checkout is a full-screen OTP wall with no guest path</b> (F1)</td>
+            <td><b>Mobile checkout login modal blocks the cart</b> — fix is presentation, not removing login (F1)</td>
             <td><span class="chip critical">Critical</span></td>
-            <td><span class="chip critical">Open &middot; re-confirmed live 29 Jul</span></td>
+            <td><span class="chip critical">Open &middot; revised 4 Aug</span></td>
             <td>7.3% vs 30.9% progression, 4.2&times; gap, 538 vs 0 rage clicks. Fix scoped as T1 (bottom sheet,
               ~4hrs, Frontend) &mdash; not yet shipped.</td>
           </tr>
           <tr>
-            <td>No guest checkout option on either device</td>
+            <td>Login triggers on first tap, not at commitment — cart/total hidden behind it</td>
             <td><span class="chip critical">Critical</span></td>
-            <td><span class="chip high">Open</span></td>
-            <td>T2: add guest checkout, move phone capture to shipping step. Largest single prize in the plan,
-              needs real development.</td>
+            <td><span class="chip high">Open &middot; revised 4 Aug</span></td>
+            <td>T2 (revised): mandatory login is a category norm — CaratLane requires it too, no guest option.
+              The real fix is presentation: trigger login at "Place Order" commitment, not on first tap, and
+              keep cart/total visible throughout, matching CaratLane and Lucira's own desktop pattern.</td>
           </tr>
           <tr>
             <td><code>begin_checkout</code> fires after OTP succeeds, not on the click</td>
@@ -341,8 +346,9 @@
         <ol class="rec-list">
           <li>Ship T1 (bottom sheet) first &mdash; of every fix on the site, this one acts on the most qualified,
             highest-intent traffic (97% engaged, 1.4% new).</li>
-          <li>T2 (guest checkout) is the structural fix behind T1's layout change &mdash; sequence them together
-            where possible rather than shipping the layout fix alone and stopping.</li>
+          <li>T2 (revised) is the structural fix behind T1's layout change &mdash; move the login trigger to
+            "Place Order" commitment and keep cart/total visible throughout, matching CaratLane's flow; sequence
+            with T1 rather than shipping the layout fix alone and stopping.</li>
           <li>Ship T14 (fire <code>begin_checkout</code> on the click, not after OTP) alongside T1/T2 &mdash;
             without it, T1's impact will be invisible in GA4.</li>
         </ol>
@@ -413,6 +419,10 @@
         (11,505 mobile sessions, 544 rage clicks, 26.5% scroll). Live console check this morning reproduced
         <code>Skipped GTM&rarr;GA4: Missing data for: pageView</code> on 3 of 3 reloads of this page — up from 1 of
         3 previously. See <b>F12/T22</b> in <a href="insights.html">Insights</a> and the <a href="action_plan.html">Action Plan</a> for the full timeline.</p>
+      <p style="margin:9px 0 0;"><b>Update:</b> this has kept recurring well past the 3 Aug deployment window (also
+        broken on 4, 5, 7 and 9 Aug, with no new release shipped) — now 7 of the last 9 days checked. The
+        deployment-correlation theory has been ruled out; this is being treated as a standing GA4 processing
+        characteristic (self-corrects within 2-3 days) rather than a regression from this specific deployment.</p>
     </div>
     <div class="split">
       <div>

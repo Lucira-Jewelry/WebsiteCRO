@@ -118,7 +118,14 @@
   <div class="masthead">
     <div class="eyebrow">Lucira Jewelry · CRO Action Plan</div>
     <h1>What to do, in what order</h1>
-    <div class="meta">Derived from Run 005 (+ T21 added 29 Jul, T22 added 3 Aug, T23 added 4 Aug) · 23 tasks across 4 owners · every task has a runnable acceptance test</div>
+    <div class="meta">Derived from Run 005 (+ T21 added 29 Jul, T22 added 3 Aug, T23 added 4 Aug) · 23 tasks across 4 owners · every task has a runnable acceptance test · T1/T2/T22 revised through 10 Aug</div>
+  </div>
+
+  <div class="banner" style="margin-bottom:20px;">
+    <p style="margin:0;font-size:13px;"><b>Findings from 5 Aug onward (Criteo/RTB.com retargeting pause, GA4
+      conversion-inflation in the default channel report, Shopify abandoned-checkout visibility) are tracked in the
+      newer <a href="tasks.html">Tasks</a> tab, generated daily straight from GA4/Clarity data, rather than being
+      added here as new T-numbers. This page remains the source of truth for T1&ndash;T23.</p>
   </div>
 
   <div class="banner alarm" style="margin-bottom:30px;">
@@ -391,7 +398,7 @@
       <div class="task-head"><span class="tid">T22</span><h3>Investigate the GA4 engaged-session/bounce collapse — now confirmed recurring, and still live</h3></div>
       <div class="chips">
         <span class="chip critical">Critical</span><span class="chip owner">Analytics</span>
-        <span class="chip effort">~half day to diagnose</span><span class="chip med">opened 3 Aug · escalated 4 Aug</span>
+        <span class="chip effort">~half day to diagnose</span><span class="chip med">opened 3 Aug · reclassified 10 Aug — monitor, not fix</span>
       </div>
       <div class="task-body">
         <p>First seen 2026-08-01: GA4's engaged-session rate fell to ~0&ndash;2.4% and bounce rate rose to
@@ -435,14 +442,30 @@
             <em>before</em> 3 Aug shows the same broken-then-self-corrects behaviour. If it does, this is a standing
             GA4 processing characteristic, not a regression to hunt in GTM. Also newly seen in today's console
             check: two errors not logged before (403 and 400 responses, source not yet identified) — worth tracing.</li>
+          <li><b>Update, 8 Aug — 7 Aug also broken, deployment theory now effectively ruled out:</b> 7 Aug read
+            broken (mobile bounce 99.71%, desktop 99.95%, tablet 97.37%) — 5 of the last 7 days affected, now 4 days
+            post-deployment with nothing new shipped. Forward-looking evidence — the pattern continuing unchanged
+            4+ days after the deployment with no further releases — is stronger than any retrospective check could
+            be: a genuine one-time deployment regression would not still be firing intermittently this long
+            afterward. Reclassifying this as a standing GA4/GTM processing characteristic (breaks on ~70% of days
+            at first read, self-corrects within 2-3 days) rather than a regression to keep hunting in GTM.</li>
+          <li><b>Update, 10 Aug — 9 Aug also broken (7th occurrence), and Clarity cross-validation is currently
+            unavailable:</b> 9 Aug read broken the same way (mobile bounce 99.67%, desktop 99.47%, tablet 100.00%,
+            13,689/378/32 sessions respectively) — 6 of the last 9 checked days now (67%). Funnel events stayed
+            entirely normal (368 add_to_cart, 64 begin_checkout, 32 add_shipping_info, 16 add_payment_info, 3
+            purchases, 80 signups). Could not cross-validate against Clarity this time — the connector has failed
+            10+ consecutive times since 8 Aug (see T23-adjacent note below and <a href="connectors.html">Connectors</a>),
+            a first for this project. Status: no longer treating this as an open investigation — it's a documented,
+            monitored operating condition. Remaining open item is low-priority: a GTM debug-access root-cause pass
+            on the pageView trigger's firing order, if anyone wants to pursue it.</li>
         </ol>
         <div class="accept"><b>Acceptance test</b>
-          Reload the homepage and cart page 5 times each fresh (cleared cookies) and confirm
-          <code>Skipped GTM&rarr;GA4</code> does not appear in the console on any load. Once GA4 finishes
-          processing the next few days, confirm engaged-session rate stays in the 55&ndash;98% range seen on every
-          normal day this month, with no further single-day collapses. New: pull 3-5 days of GA4 data from June or
-          early July and check whether any of them show a similarly broken first-read that later corrected — this
-          single check settles whether the 3 Aug deployment is actually responsible.</div>
+          Superseded by the volume of forward-looking evidence (7 confirmed occurrences across 1, 3, 4, 5, 7, 9 Aug,
+          all self-correcting within 2-3 days) — the deployment-timing check originally proposed here is no longer
+          needed to settle the question. New standing acceptance test: before quoting any same-day or next-day
+          bounce/engagement figure, cross-check it against Clarity session/rage-click data or GA4 funnel event
+          counts first; treat any single day's engagement rate as provisional until it has had 2-3 days to
+          reprocess.</div>
       </div>
     </div>
 

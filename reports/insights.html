@@ -1193,14 +1193,102 @@
     </div>
   </section>
 
+  <div class="divider">
+    <div class="eyebrow" style="color:var(--critical)">Added 4-10 Aug 2026 — deployment theory ruled out, a competitive correction, two findings confirmed for a 2nd week, and a new connector outage</div>
+    <h2 style="font-size:24px;margin:6px 0 6px;">Update — F12 is a standing GA4 characteristic, guest checkout was the wrong fix, and two critical findings held up under a second look</h2>
+    <p class="measure" style="margin:0;font-size:13.5px;color:var(--muted);">
+      Six more days of data (4-9 Aug), a live competitive test, and a second-week re-check of two critical findings.
+      Net effect: one recommendation walked back with better evidence, two others confirmed harder, and a new
+      connector reliability issue opened.</p>
+  </div>
+
+  <section>
+    <div class="sec-head"><span class="tag">Correction</span><h2>F1/T2: guest checkout was the wrong fix — live-tested CaratLane to find the real one</h2></div>
+    <div class="banner fix">
+      <p style="margin:0 0 9px;"><b>Walked back a prior recommendation using direct competitive evidence.</b> The
+        original T2 ask was "add guest checkout, move phone capture to the shipping step." On 4 Aug, walked a real
+        cart through checkout on caratlane.com — a direct, larger jewellery competitor — end to end on mobile.
+        CaratLane also requires mandatory phone/OTP login before payment, with no guest option and no skip link.
+        Mandatory login before payment is a category norm here, not a Lucira-specific mistake, so guest checkout
+        was never going to be the lever that fixed this.</p>
+      <p style="margin:0;"><b>The real, much smaller fix: presentation, not removal.</b> CaratLane's cart stays
+        fully open — you can view it, price-check, and apply a coupon with zero login prompt — and login only
+        appears once you click "Place Order," as one step inside a visible Address &rarr; Gifting &rarr; Payment
+        flow, with the order total still visible in a collapsible bar throughout. Lucira's mobile flow instead
+        throws a 100%-viewport takeover the instant "Proceed to Checkout" is clicked, hiding the cart/total/progress
+        entirely — and Lucira's own desktop version already proves the fix internally (same login requirement,
+        rendered as a small centred dialog with the cart still visible behind it). T1/T2 revised accordingly; logged
+        in <code>corrections_log</code> rather than silently dropped. See the updated <a href="page-cart-checkout.html">Cart &amp; Checkout</a>
+        page and <a href="action_plan.html">Action Plan</a> for the new spec.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Critical — reclassified</span><h2>F12/T22: now 7 of the last 9 days — deployment theory ruled out for good</h2></div>
+    <div class="banner alarm">
+      <p style="margin:0 0 9px;">Broken-on-first-read confirmed on <b>1, 3, 4, 5, 7 and 9 Aug</b> — 6 of 9 checked
+        days (67%), only 2, 6 and 8 Aug clean. 1, 3, 4, 5 and 7 Aug have all since self-corrected in GA4's historical
+        record within roughly 2-3 days of first being pulled, same pattern every time. 9 Aug (the most recent, checked
+        10 Aug) broke the identical way — mobile bounce 99.67% (13,689 sessions), desktop 99.47%, tablet 100.00%,
+        universal across every reference page — while funnel events stayed completely normal (368 add_to_cart, 64
+        begin_checkout, 32 add_shipping_info, 16 add_payment_info, 3 purchases, 80 signups). Real behaviour has never
+        once moved on any of the 7 confirmed occurrences.</p>
+      <p style="margin:0;"><b>This is now 6 days after the reported 3 Aug deployment with no new release shipped,
+        and the pattern is unchanged</b> — the deployment-correlation theory is ruled out for good. Reclassified as
+        a standing GA4/GTM processing characteristic: it breaks on roughly two-thirds of days at first read and
+        quietly self-corrects within a few days, rather than a one-time regression to keep chasing. Practical rule
+        going forward: never trust a same-day or next-day bounce/engagement number without checking Clarity or
+        funnel events first, and wait 2-3 days before treating any single day's engagement rate as final.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Critical — held up on re-check</span><h2>F18: Criteo + RTB.com retargeting, 0% conversion for a second straight week</h2></div>
+    <div class="banner alarm">
+      <p style="margin:0;">GA4's "Paid Other" channel (Criteo + rtbcom retargeting/display, live since 27 Jan 2026)
+        sustained zero conversions and &#8377;0 revenue across <b>two independent weekly checks</b>: 21,765 sessions
+        in the first window (29 Jul-4 Aug), another 7,010 sessions in the follow-up (5-7 Aug) — still zero. Clarity
+        cross-validates independently: 74.83% bounce, 23.87% scroll on this traffic, confirming genuinely low-quality
+        behaviour rather than a tracking gap. The evidence bar for pausing both vendors has moved from "one bad
+        week" to "two straight weeks, well-evidenced." Root cause (invalid/bot traffic vs. a stale audience/creative)
+        is still open — settling it needs IVT/viewability data from Criteo's and RTB.com's own platforms, which
+        isn't available through this pipeline. See the new section on the <a href="page-traffic-ads.html">Traffic &amp; Ads</a> page.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Confirmed</span><h2>F20: Shopify abandoned-checkout records dropped to zero the following week</h2></div>
+    <div class="banner fix">
+      <p style="margin:0;">The first check (7 days) found only 3 abandoned-checkout records (&#8377;1,94,647 total)
+        despite far higher checkout-page traffic. The follow-up 3-day check (5-7 Aug) found <b>zero</b> new records
+        — down from 3, not sampling noise. This confirms the OTP wall (F1) drops people off before Shopify ever
+        creates a real Checkout object, so native abandoned-cart recovery emails have almost nothing to work with;
+        fixing F1's presentation is also the fix for this.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">New</span><h2>Microsoft Clarity connector outage — 10+ consecutive failures since 8 Aug</h2></div>
+    <div class="banner" style="border-color:var(--high);border-left-color:var(--high);">
+      <p style="margin:0;">Every Clarity query attempted for 8, 9 and 10 Aug has failed with a generic fetch error —
+        10+ consecutive failures across 3 separate sessions, several query phrasings tried each time. This breaks
+        from the connector's usual behaviour all session (intermittent, resolves on 1-2 retries) and is being
+        treated as a genuine outage rather than noise. Practical effect: the 9 Aug F12 recurrence above could not be
+        cross-validated against real Clarity session data the way every prior occurrence was — GA4's own funnel
+        events are the only independent signal available for that day. See <a href="connectors.html">Connectors</a>
+        for current status; recommend checking the Clarity project/API connection directly if this hasn't
+        self-resolved by the next check.</p>
+    </div>
+  </section>
+
   <div class="foot">
     <div>Sources</div>
     <div class="g">
-      <div>GA4 — property 478308692 · 63 days daily, funnels, pages, channels</div>
-      <div>Microsoft Clarity — ro0m9zh071 · 12–28 Jul, clicks, scroll, vitals, JS errors</div>
-      <div>Shopify Admin — orders segmented by sourceName + tags</div>
+      <div>GA4 — property 478308692 · daily series finalised through 9 Aug, funnels, pages, channels</div>
+      <div>Microsoft Clarity — ro0m9zh071 · finalised through 7 Aug; connector outage blocked 8-10 Aug checks</div>
+      <div>Shopify Admin — orders segmented by sourceName + tags; abandoned checkouts checked through 7 Aug</div>
       <div>Google Ads — account 2348623547 · full 30d campaign-level spend &amp; conversion pull, 30 Jul 2026</div>
-      <div>Playwright 1.49 / Chromium 151 — live measurement, 28 &amp; 30 Jul 2026</div>
+      <div>Playwright 1.49 / Chromium 151 — live measurement 28 &amp; 30 Jul 2026; competitive check (caratlane.com) 4 Aug 2026</div>
       <div>Google Search Console — attempted 30 Jul, failed (invalid_client) — not represented in this report</div>
     </div>
   </div>
