@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Daily Tasks — Lucira Jewelry CRO</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --bg:#EEF0ED; --surface:#FFFFFF; --raise:#F7F8F6; --ink:#1B2320; --muted:#5B6560; --faint:#8A938E;
+    --accent:#A9813F; --accent-ink:#5E4520;
+    --critical:#A23B2E; --critical-bg:#F7E7E4;
+    --high:#B0722A; --high-bg:#F8EDDC;
+    --good:#48684C; --good-bg:#E5EDE5;
+    --medium:#3D5A73; --medium-bg:#E3EAEF;
+    --line:rgba(27,35,32,0.13); --line-strong:rgba(27,35,32,0.26);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#111412; --surface:#191E1A; --raise:#1F2521; --ink:#EDEFEA; --muted:#9AA69E; --faint:#6E786F;
+      --accent:#C79B4E; --accent-ink:#D8B87A; --critical:#E4695C; --critical-bg:#3B2320;
+      --high:#DFA555; --high-bg:#392D19; --good:#8CBC92; --good-bg:#1C2A1E;
+      --medium:#8FB3D2; --medium-bg:#1D2B35;
+      --line:rgba(237,239,234,0.14); --line-strong:rgba(237,239,234,0.28); }
+  }
+  :root[data-theme="dark"]{ --bg:#111412; --surface:#191E1A; --raise:#1F2521; --ink:#EDEFEA; --muted:#9AA69E;
+    --faint:#6E786F; --accent:#C79B4E; --accent-ink:#D8B87A; --critical:#E4695C; --critical-bg:#3B2320;
+    --high:#DFA555; --high-bg:#392D19; --good:#8CBC92; --good-bg:#1C2A1E; --medium:#8FB3D2; --medium-bg:#1D2B35;
+    --line:rgba(237,239,234,0.14); --line-strong:rgba(237,239,234,0.28); }
+  :root[data-theme="light"]{ --bg:#EEF0ED; --surface:#FFFFFF; --raise:#F7F8F6; --ink:#1B2320; --muted:#5B6560;
+    --faint:#8A938E; --accent:#A9813F; --accent-ink:#5E4520; --critical:#A23B2E; --critical-bg:#F7E7E4;
+    --high:#B0722A; --high-bg:#F8EDDC; --good:#48684C; --good-bg:#E5EDE5; --medium:#3D5A73; --medium-bg:#E3EAEF;
+    --line:rgba(27,35,32,0.13); --line-strong:rgba(27,35,32,0.26); }
+
+  *{box-sizing:border-box;} html,body{margin:0;padding:0;}
+  body{background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;
+    font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  .page{max-width:1080px;margin:0 auto;padding:40px 22px 90px;}
+  h1,h2,h3,h4{font-family:Iowan Old Style,"Palatino Linotype","Book Antiqua",Georgia,serif;font-weight:600;margin:0;text-wrap:balance;}
+  .measure{max-width:70ch;} p{margin:0 0 13px;}
+  code{font-family:ui-monospace,"SF Mono","Cascadia Code",monospace;font-size:.86em;background:var(--line);padding:1px 5px;border-radius:3px;}
+
+  .hubnav{background:var(--surface);border-bottom:1px solid var(--line-strong);}
+  .hubnav .inner{max-width:1080px;margin:0 auto;padding:11px 22px;display:flex;flex-wrap:wrap;align-items:center;gap:5px;}
+  .hubnav a{font-size:12.5px;font-weight:600;color:var(--muted);text-decoration:none;padding:6px 13px;border-radius:100px;white-space:nowrap;}
+  .hubnav a:hover{background:var(--raise);color:var(--ink);}
+  .hubnav a.active{background:var(--accent);color:#fff;}
+  .hubnav .sep{color:var(--faint);font-size:12px;margin:0 2px;}
+
+  .masthead{display:flex;flex-direction:column;gap:8px;padding-bottom:20px;margin-bottom:22px;border-bottom:1px solid var(--line-strong);}
+  .eyebrow{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-ink);font-weight:700;}
+  .masthead h1{font-size:34px;line-height:1.1;}
+  .masthead .meta{font-size:12.5px;color:var(--muted);margin-top:2px;}
+
+  .banner{background:var(--surface);border:1px solid var(--line-strong);border-left:5px solid var(--accent);
+    border-radius:6px;padding:14px 18px;margin-bottom:22px;}
+  .banner.fresh{border-left-color:var(--good);}
+  .banner p{margin:0;font-size:13px;}
+
+  .kpirow{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:1px;background:var(--line);
+    border:1px solid var(--line);border-radius:8px;overflow:hidden;margin-bottom:22px;}
+  .kpi{background:var(--surface);padding:14px 16px;cursor:pointer;transition:background .12s ease;}
+  .kpi:hover{background:var(--raise);}
+  .kpi.active{background:var(--accent);}
+  .kpi.active .num, .kpi.active .lbl{color:#fff;}
+  .kpi .lbl{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700;}
+  .kpi .num{font-size:26px;font-weight:700;font-variant-numeric:tabular-nums;margin-top:3px;}
+  .kpi .num.crit{color:var(--critical);} .kpi .num.high{color:var(--high);} .kpi .num.med{color:var(--medium);}
+
+  .filterbar{background:var(--surface);border:1px solid var(--line-strong);border-radius:8px;
+    padding:14px 16px;margin-bottom:20px;display:flex;flex-wrap:wrap;gap:14px;align-items:center;
+    position:sticky;top:0;z-index:20;box-shadow:0 2px 10px rgba(0,0,0,.04);}
+  .fgroup{display:flex;flex-wrap:wrap;gap:6px;align-items:center;}
+  .fgroup .flabel{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);font-weight:700;margin-right:4px;}
+  .fchip{font:inherit;font-size:12px;font-weight:600;padding:5px 12px;border-radius:100px;border:1px solid var(--line-strong);
+    background:var(--surface);color:var(--muted);cursor:pointer;white-space:nowrap;}
+  .fchip:hover{border-color:var(--accent);color:var(--ink);}
+  .fchip.on{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .searchwrap{flex:1;min-width:180px;position:relative;}
+  #search{width:100%;font:inherit;font-size:13px;padding:7px 12px 7px 30px;border:1px solid var(--line-strong);
+    border-radius:100px;background:var(--raise);color:var(--ink);}
+  .searchwrap::before{content:"⌕";position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--faint);font-size:14px;}
+  #count{font-size:12px;color:var(--faint);white-space:nowrap;margin-left:auto;}
+
+  .tasklist{display:flex;flex-direction:column;gap:12px;}
+  .task{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 20px;
+    border-left:5px solid var(--line-strong);transition:box-shadow .12s ease;}
+  .task:hover{box-shadow:0 3px 14px rgba(0,0,0,.06);}
+  .task.crit{border-left-color:var(--critical);}
+  .task.high{border-left-color:var(--high);}
+  .task.medium{border-left-color:var(--medium);}
+  .task.low{border-left-color:var(--faint);}
+  .task-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;margin-bottom:8px;}
+  .task-head h3{font-size:16.5px;flex:1;min-width:200px;}
+  .tid{font-family:ui-monospace,monospace;font-size:10.5px;color:var(--faint);font-weight:700;letter-spacing:.02em;}
+  .chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
+  .chip{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+    padding:3px 9px;border-radius:100px;white-space:nowrap;}
+  .chip.critical{background:var(--critical-bg);color:var(--critical);}
+  .chip.high{background:var(--high-bg);color:var(--high);}
+  .chip.medium{background:var(--medium-bg);color:var(--medium);}
+  .chip.low{background:var(--line);color:var(--muted);}
+  .chip.cat{background:var(--raise);color:var(--muted);border:1px solid var(--line-strong);}
+  .chip.status-open{background:var(--critical-bg);color:var(--critical);}
+  .chip.status-blocked{background:var(--high-bg);color:var(--high);}
+  .chip.status-needs_investigation{background:var(--medium-bg);color:var(--medium);}
+  .chip.status-done{background:var(--good-bg);color:var(--good);}
+  .chip.effort{background:var(--raise);color:var(--faint);}
+  .task-body{font-size:13.5px;}
+  .task-body h4{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-ink);
+    font-weight:700;margin:12px 0 5px;}
+  .task-body h4:first-child{margin-top:0;}
+  .task-body ol,.task-body ul{margin:0;padding-left:19px;}
+  .task-body li{margin-bottom:4px;}
+  .impact-box{background:var(--raise);border-radius:6px;padding:10px 13px;margin-top:4px;font-size:13px;}
+  .meta-row{display:flex;flex-wrap:wrap;gap:14px;font-size:11.5px;color:var(--faint);margin-top:12px;
+    padding-top:10px;border-top:1px solid var(--line);}
+  .meta-row a{color:var(--accent-ink);text-decoration:none;font-weight:600;}
+  .meta-row a:hover{text-decoration:underline;}
+
+  .empty{padding:40px 20px;text-align:center;color:var(--faint);font-size:13.5px;background:var(--surface);
+    border:1px dashed var(--line-strong);border-radius:10px;}
+
+  .foot{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);font-size:12px;color:var(--faint);}
+</style>
+</head>
+<body>
+
+<nav class="hubnav"><div class="inner">
+  <a href="index.html">Reports Home</a><span class="sep">&middot;</span>
+  <a href="insights.html">Insights</a>
+  <a href="action_plan.html">Action Plan</a>
+  <a href="interactive.html">Interactive Dashboard</a>
+  <a href="tasks.html" class="active">Tasks</a>
+  <a href="connectors.html">Connectors</a>
+</div></nav>
+
+<div class="page">
+
+  <div class="masthead">
+    <div class="eyebrow">AI CRO Analyst &middot; Daily Tasks</div>
+    <h1>What the data says users are facing right now</h1>
+    <div class="meta" id="metaline">—</div>
+  </div>
+
+  <div class="banner fresh" id="freshbanner">
+    <p>—</p>
+  </div>
+
+  <div class="kpirow" id="kpirow"></div>
+
+  <div class="filterbar">
+    <div class="fgroup"><span class="flabel">Priority</span><div id="fpriority"></div></div>
+    <div class="fgroup"><span class="flabel">Category</span><div id="fcategory"></div></div>
+    <div class="fgroup"><span class="flabel">Status</span><div id="fstatus"></div></div>
+    <div class="searchwrap"><input id="search" type="text" placeholder="Search tasks…" aria-label="Search tasks"></div>
+    <div id="count"></div>
+  </div>
+
+  <div class="tasklist" id="tasklist"></div>
+
+  <div class="foot" id="footnote">
+    Sources: GA4, Microsoft Clarity, Playwright live measurement, Shopify Admin. Regenerated as part of the
+    daily data catch-up — see <a href="insights.html" style="color:var(--accent-ink);">Insights</a> for the
+    full narrative and <a href="action_plan.html" style="color:var(--accent-ink);">Action Plan</a> for
+    sprint-level task tracking.
+  </div>
+
+</div>
+
+<script>
+const META = /*__META__*/{};
+const TASKS = /*__TASKS__*/[];
+
+const $ = s => document.querySelector(s);
+const esc = s => (s==null?"":String(s)).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const PRI_ORDER = { critical: 0, high: 1, medium: 2, low: 3 };
+const STATUS_LABEL = { open: "Open", blocked: "Blocked", needs_investigation: "Needs investigation", done: "Done" };
+const CAT_LABEL = { checkout: "Checkout", tracking: "Tracking", performance: "Performance", engagement: "Engagement", traffic: "Traffic", commerce: "Commerce" };
+
+$("#metaline").textContent = "Generated " + META.generated_at + " · window: " + META.window;
+$("#freshbanner").innerHTML = "<p><b>" + TASKS.length + " tasks</b> derived from " + (META.sources||[]).join(", ") +
+  ". Each task below is read straight off current GA4 and Clarity data, cross-checked where possible with live " +
+  "Playwright measurement — not a static backlog. Re-run the daily build to refresh this list as the underlying data changes.</p>";
+
+let state = { priority: "all", category: "all", status: "all", q: "" };
+
+function kpiCounts(){
+  const c = { total: TASKS.length, critical: 0, high: 0, blocked: 0, needs_investigation: 0 };
+  TASKS.forEach(t => {
+    if (t.priority === "critical") c.critical++;
+    if (t.priority === "high") c.high++;
+    if (t.status === "blocked") c.blocked++;
+    if (t.status === "needs_investigation") c.needs_investigation++;
+  });
+  return c;
+}
+
+function renderKpis(){
+  const c = kpiCounts();
+  const cells = [
+    ["Total tasks", c.total, ""],
+    ["Critical", c.critical, "crit"],
+    ["High", c.high, "high"],
+    ["Blocked", c.blocked, "med"],
+    ["Needs investigation", c.needs_investigation, "med"]
+  ];
+  $("#kpirow").innerHTML = cells.map(([l,v,cls]) =>
+    '<div class="kpi"><div class="lbl">'+l+'</div><div class="num '+cls+'">'+v+'</div></div>').join("");
+}
+
+function uniqueVals(key){
+  return [...new Set(TASKS.map(t => t[key]))];
+}
+
+function renderFilterGroup(containerId, key, values, allLabel){
+  const el = $(containerId);
+  const opts = [["all", allLabel]].concat(values.map(v => [v, key==="category" ? (CAT_LABEL[v]||v) : key==="status" ? (STATUS_LABEL[v]||v) : v[0].toUpperCase()+v.slice(1)]));
+  el.innerHTML = opts.map(([v,label]) =>
+    '<button class="fchip'+(state[key]===v?" on":"")+'" data-key="'+key+'" data-val="'+v+'">'+esc(label)+'</button>').join("");
+}
+
+function matches(t){
+  if (state.priority !== "all" && t.priority !== state.priority) return false;
+  if (state.category !== "all" && t.category !== state.category) return false;
+  if (state.status !== "all" && t.status !== state.status) return false;
+  if (state.q){
+    const hay = (t.title+" "+t.insight+" "+(t.action||[]).join(" ")+" "+t.impact).toLowerCase();
+    if (!hay.includes(state.q.toLowerCase())) return false;
+  }
+  return true;
+}
+
+function taskCard(t){
+  const findLinks = (t.relatedFindings||[]).map(f => '<a href="insights.html">'+f+'</a>').join(", ");
+  const actLinks = (t.relatedActionItems||[]).map(a => '<a href="action_plan.html">'+a+'</a>').join(", ");
+  return '<div class="task '+(t.priority==="critical"?"crit":t.priority)+'">' +
+    '<div class="task-head"><span class="tid">'+t.id+'</span><h3>'+esc(t.title)+'</h3></div>' +
+    '<div class="chips">' +
+      '<span class="chip '+t.priority+'">'+t.priority+'</span>' +
+      '<span class="chip cat">'+(CAT_LABEL[t.category]||t.category)+'</span>' +
+      '<span class="chip status-'+t.status+'">'+(STATUS_LABEL[t.status]||t.status)+'</span>' +
+      '<span class="chip effort">'+esc(t.effort||"")+'</span>' +
+    '</div>' +
+    '<div class="task-body">' +
+      '<h4>What the data shows</h4><p style="margin:0;">'+esc(t.insight)+'</p>' +
+      '<h4>What needs to be done</h4><ol>'+(t.action||[]).map(a=>'<li>'+esc(a)+'</li>').join("")+'</ol>' +
+      '<h4>Expected impact</h4><div class="impact-box">'+esc(t.impact)+'</div>' +
+      '<div class="meta-row">' +
+        '<span>Source: '+esc(t.source)+'</span>' +
+        '<span>Identified: '+esc(t.dateIdentified)+'</span>' +
+        '<span>Confirmed: '+esc(t.dateConfirmed)+'</span>' +
+        (findLinks ? '<span>Findings: '+findLinks+'</span>' : '') +
+        (actLinks ? '<span>Action Plan: '+actLinks+'</span>' : '') +
+      '</div>' +
+    '</div>' +
+  '</div>';
+}
+
+function render(){
+  renderFilterGroup("#fpriority", "priority", ["critical","high","medium","low"], "All");
+  renderFilterGroup("#fcategory", "category", uniqueVals("category"), "All");
+  renderFilterGroup("#fstatus", "status", uniqueVals("status"), "All");
+
+  const filtered = TASKS.filter(matches).slice().sort((a,b) => PRI_ORDER[a.priority] - PRI_ORDER[b.priority]);
+  $("#count").textContent = filtered.length + " of " + TASKS.length + " tasks";
+  $("#tasklist").innerHTML = filtered.length
+    ? filtered.map(taskCard).join("")
+    : '<div class="empty">No tasks match these filters. Try clearing one.</div>';
+}
+
+document.addEventListener("click", e => {
+  const b = e.target.closest(".fchip");
+  if (!b) return;
+  state[b.dataset.key] = b.dataset.val;
+  render();
+});
+$("#search").addEventListener("input", e => { state.q = e.target.value; render(); });
+
+renderKpis();
+render();
+</script>
+</body>
+</html>

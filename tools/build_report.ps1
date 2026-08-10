@@ -147,3 +147,39 @@ Write-Output "  clarity rows : $($clRows.Count)  ($($payload.meta.clarityFrom) -
 Write-Output "  daily payload: $([math]::Round($json.Length/1KB,1)) KB"
 Write-Output "  snapshot     : $([math]::Round($snapJson.Length/1KB,1)) KB from data\latest.json"
 Write-Output "  output       : reports\interactive.html"
+
+# ---- daily tasks tab ----
+# data/tasks.json is the single source of truth for the Tasks tab -- a list of what users
+# are currently facing, read off GA4 + Clarity + Playwright + Shopify, each with insight/
+# action/impact. Injected verbatim, same pattern as the snapshot above.
+$tasksPath = Join-Path $dataDir 'tasks.json'
+if (Test-Path $tasksPath) {
+  $tasksRaw = Get-Content $tasksPath -Raw -Encoding UTF8
+  try { $tasksObj = $tasksRaw | ConvertFrom-Json } catch { throw "data\tasks.json is not valid JSON: $_" }
+
+  $tasksArrJson = $tasksObj.tasks | ConvertTo-Json -Depth 8 -Compress
+  if ($tasksObj.tasks.Count -eq 1) { $tasksArrJson = '[' + $tasksArrJson + ']' }
+  $metaObj = [ordered]@{
+    generated_at = $tasksObj.generated_at
+    window       = $tasksObj.window
+    sources      = $tasksObj.sources
+  }
+  $metaJson = $metaObj | ConvertTo-Json -Depth 4 -Compress
+
+  $tasksTplPath = Join-Path $PSScriptRoot 'tasks_template.html'
+  if (-not (Test-Path $tasksTplPath)) { throw "tools\tasks_template.html not found." }
+  $tasksTpl = Get-Content $tasksTplPath -Raw -Encoding UTF8
+  if ($tasksTpl -notmatch [regex]::Escape('/*__META__*/'))  { throw "Placeholder /*__META__*/ missing from tasks_template.html." }
+  if ($tasksTpl -notmatch [regex]::Escape('/*__TASKS__*/')) { throw "Placeholder /*__TASKS__*/ missing from tasks_template.html." }
+  $tasksHtml = $tasksTpl.Replace('/*__META__*/{}', $metaJson).Replace('/*__TASKS__*/[]', $tasksArrJson)
+
+  Set-Content -Path (Join-Path $outDir 'tasks.html') -Value $tasksHtml -Encoding utf8
+
+  Write-Output ""
+  Write-Output "Built tasks report"
+  Write-Output "  tasks        : $($tasksObj.tasks.Count)"
+  Write-Output "  generated_at : $($tasksObj.generated_at)"
+  Write-Output "  output       : reports\tasks.html"
+} else {
+  Write-Warning "data\tasks.json not found - skipped building reports\tasks.html."
+}
