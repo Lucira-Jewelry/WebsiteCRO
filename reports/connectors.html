@@ -106,11 +106,12 @@
   <div class="masthead">
     <div class="eyebrow">System Health</div>
     <h1>Connector Status</h1>
-    <div class="meta">Every data source this analysis depends on, checked live &middot; 30 Jul 2026</div>
+    <div class="meta">Every data source this analysis depends on, checked live &middot; 30 Jul 2026, re-verified through 10 Aug 2026</div>
   </div>
 
   <div class="kpis">
-    <div class="kpi"><div class="lbl">Connected &amp; working</div><div class="num ok">5</div></div>
+    <div class="kpi"><div class="lbl">Connected &amp; working</div><div class="num ok">4</div></div>
+    <div class="kpi"><div class="lbl">Degraded</div><div class="num warn">1</div></div>
     <div class="kpi"><div class="lbl">Broken</div><div class="num bad">1</div></div>
     <div class="kpi"><div class="lbl">Not configured</div><div class="num warn">1</div></div>
   </div>
@@ -121,20 +122,20 @@
 
       <div class="conn">
         <div class="dot ok"></div>
-        <div><h4>Google Analytics 4</h4><p>Property 478308692 ("Lucira"), Standard tier &middot; sessions, funnel events, page-level data</p></div>
-        <div class="status ok">CONNECTED &middot; verified 30 Jul</div>
+        <div><h4>Google Analytics 4</h4><p>Property 478308692 ("Lucira"), Standard tier &middot; sessions, funnel events, page-level data. Note: a separate engagement/bounce-rate tracking break (F12) has recurred on 7 of the last 9 days &mdash; this is a data-quality issue within GA4, not a connector failure; the API itself is responding normally every day.</p></div>
+        <div class="status ok">CONNECTED &middot; verified 10 Aug</div>
       </div>
 
-      <div class="conn">
-        <div class="dot ok"></div>
-        <div><h4>Microsoft Clarity</h4><p>Project ro0m9zh071 &middot; rage/dead clicks, scroll depth, session recordings, JS errors</p></div>
-        <div class="status ok">CONNECTED &middot; verified 30 Jul</div>
+      <div class="conn" style="border-color:var(--high);background:var(--high-bg);">
+        <div class="dot" style="background:var(--high);"></div>
+        <div><h4>Microsoft Clarity</h4><p>Project ro0m9zh071 &middot; rage/dead clicks, scroll depth, session recordings, JS errors. <b>Outage since 8 Aug</b> &mdash; every <code>query-analytics-dashboard</code> call has failed with a generic fetch error, 10+ consecutive attempts across 3 separate sessions and both target dates (8, 9, 10 Aug), with multiple query phrasings tried. This is a break from the usual behaviour (intermittent, resolves on 1-2 retries) &mdash; treat as a genuine outage, not noise.</p></div>
+        <div class="status" style="color:var(--high);">DEGRADED &middot; failing since 8 Aug</div>
       </div>
 
       <div class="conn">
         <div class="dot ok"></div>
         <div><h4>Shopify Admin</h4><p>luciraonline.myshopify.com, Advanced plan &middot; orders, products, customers</p></div>
-        <div class="status ok">CONNECTED &middot; verified 30 Jul</div>
+        <div class="status ok">CONNECTED &middot; verified 7 Aug</div>
       </div>
 
       <div class="conn">
@@ -177,6 +178,12 @@
         organic search visibility, keyword rankings, or title/meta-description CTR opportunities are wanted — none
         of that is currently represented anywhere in this report.</p>
     </div>
+    <div class="banner" style="border-color:var(--high);border-left-color:var(--high);margin-bottom:12px;">
+      <p style="margin:0;"><b>Microsoft Clarity:</b> the query connector has failed 10+ times in a row since
+        8 Aug — Clarity cross-validation of the GA4 tracking break (F12) and daily session/rage-click checks have
+        been blocked for 8-10 Aug as a result. If this hasn't self-resolved by the next data pull, check the
+        Clarity project/API connection directly rather than continuing to retry.</p>
+    </div>
     <div class="banner">
       <p style="margin:0;"><b>Meta Ads API:</b> if you want Meta's own spend/ROAS/campaign data alongside Google
         Ads (rather than inferring Paid Social behaviour from GA4 + Clarity, which is what this report does today),
@@ -185,9 +192,9 @@
   </section>
 
   <div class="foot">
-    Checked by attempting a real, lightweight call against each connector on 30 Jul 2026 — this is a live status,
-    not a configuration assumption. Re-run this check periodically; connector auth can expire independently of
-    the data pipeline.
+    Checked by attempting a real, lightweight call against each connector, most recently 10 Aug 2026 — this is a
+    live status, not a configuration assumption. Re-run this check periodically; connector auth and uptime can
+    change independently of the data pipeline.
   </div>
 
 </div>
