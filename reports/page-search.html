@@ -178,7 +178,7 @@
       <div class="kpi"><div class="lbl">view_search_results (query submitted)</div><div class="num">606</div><div class="sub">100% on /search</div></div>
       <div class="kpi"><div class="lbl">/search page_view</div><div class="num">9,766</div><div class="sub">desktop 5,471 &middot; mobile 4,235 &middot; tablet 60</div></div>
       <div class="kpi"><div class="lbl">select_item on /search</div><div class="num">4,245</div><div class="sub">product clicked from a list on that page</div></div>
-      <div class="kpi"><div class="lbl">Distinct search terms seen (60d)</div><div class="num">687</div><div class="sub">non-blank <code>searchTerm</code> values</div></div>
+      <div class="kpi"><div class="lbl">Distinct search terms seen (60d)</div><div class="num">693</div><div class="sub">non-blank <code>searchTerm</code> values &middot; 1,090 total sessions</div></div>
     </div>
     <div class="banner" style="margin-top:10px;">
       <p style="margin:0;"><b><code>Search_Click</code> is not the same journey as <code>view_search_results</code>.</b>
@@ -267,40 +267,739 @@
   </section>
 
   <section>
-    <div class="sec-head"><span class="tag">What they search for</span><h2>Top search terms</h2>
-      <span class="note">GA4 <code>searchTerm</code>, 60d, by sessions</span></div>
+    <div class="sec-head"><span class="tag">What they search for</span><h2>All search terms &mdash; full GA4 data</h2>
+      <span class="note">GA4 <code>searchTerm</code>, 60d, every distinct term, sorted by sessions</span></div>
+    <div class="kpis">
+      <div class="kpi"><div class="lbl">Distinct terms (60d)</div><div class="num">693</div></div>
+      <div class="kpi"><div class="lbl">Total search sessions (60d)</div><div class="num">1,090</div></div>
+      <div class="kpi"><div class="lbl">Terms with &ge;4 sessions</div><div class="num">35</div><div class="sub">311 sessions &middot; 29% of volume &middot; live-checked</div></div>
+      <div class="kpi"><div class="lbl">Terms with 2&ndash;3 sessions</div><div class="num">101</div><div class="sub">222 sessions &middot; 20% of volume &middot; not live-checked</div></div>
+      <div class="kpi"><div class="lbl">Terms with exactly 1 session</div><div class="num">557</div><div class="sub">557 sessions &middot; 51% of volume &middot; one-off long tail</div></div>
+    </div>
     <div class="banner">
       <p style="margin:0;"><b>Per-term revenue/add-to-cart cannot be pulled from the GA4 Data API.</b> Every term
         below returns <code>addToCarts</code>, <code>ecommercePurchases</code> and <code>purchaseRevenue</code> as a
-        flat zero when queried alongside <code>searchTerm</code> &mdash; including terms independently confirmed
-        (below) to convert. This is an API-scope limitation (<code>searchTerm</code> doesn't join to session/ecommerce
-        metrics through this endpoint, unlike GA4 UI's discontinued Site Search report), not a real "nobody buys
-        after searching X" signal. A true per-term revenue view needs the BigQuery export.</p>
+        flat zero when queried alongside <code>searchTerm</code> &mdash; including terms independently confirmed to
+        convert. This is an API-scope limitation (<code>searchTerm</code> doesn't join to session/ecommerce metrics
+        through this endpoint, unlike GA4 UI's discontinued Site Search report), not a real "nobody buys after
+        searching X" signal. A true per-term revenue view needs the BigQuery export.</p>
     </div>
-    <div class="twrap" style="margin-top:14px;">
+    <div class="banner" style="margin-top:10px;">
+      <p style="margin:0;"><b>Live-result verification (the "Live result" column) covers the 35 terms with &ge;4
+        sessions</b> &mdash; every one of them was reloaded in a real browser with a full AJAX settle wait. This
+        storefront is a JS-rendered SPA: a raw HTTP fetch of a search URL returns the page shell before results
+        hydrate and can misreport a working query as "0 Results" (caught mid-audit on "Pendants", which read 0 on
+        first fetch and 93 on a proper reload) &mdash; so anything checked without a render-and-wait step isn't
+        trustworthy and isn't reported here as confirmed. The remaining 658 terms (2&ndash;3 sessions and the
+        557-strong one-session tail) are shown with GA4's numbers but marked <span class="chip low">not checked</span>
+        &mdash; that's 51% of all search sessions by volume, mostly single-occurrence typos, SKU guesses and rare
+        phrasings, not verified live in this pass.</p>
+    </div>
+    <div class="twrap" style="margin-top:14px;max-height:640px;overflow-y:auto;">
       <table>
-        <thead><tr><th>Search term</th><th class="num">Sessions (60d)</th><th class="num">Users</th><th>Live result</th></tr></thead>
+        <thead style="position:sticky;top:0;"><tr><th>Search term</th><th class="num">Sessions (60d)</th><th class="num">Users</th><th class="num">Events</th><th>Live result</th></tr></thead>
         <tbody>
-          <tr><td>classic diamond nose pin</td><td class="num">75</td><td class="num">5</td><td><span class="chip critical">0 results &mdash; confirmed bug</span></td></tr>
-          <tr><td>kids Earrings</td><td class="num">25</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
-          <tr><td>tn0031 <span class="chip low" style="margin-left:4px;">SKU</span></td><td class="num">18</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
-          <tr><td>Chain</td><td class="num">11</td><td class="num">11</td><td><span class="chip low">not checked</span></td></tr>
-          <tr><td>Earrings</td><td class="num">10</td><td class="num">7</td><td><span class="chip low">not checked</span></td></tr>
-          <tr><td>Gold coin</td><td class="num">10</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
-          <tr><td>Necklace</td><td class="num">9</td><td class="num">7</td><td><span class="chip good">has results</span></td></tr>
-          <tr><td>Tennis bracelet</td><td class="num">9</td><td class="num">9</td><td><span class="chip good">has results</span></td></tr>
-          <tr><td>Nosepin</td><td class="num">8</td><td class="num">6</td><td><span class="chip critical">0 results &mdash; confirmed bug</span></td></tr>
-          <tr><td>Pendant</td><td class="num">8</td><td class="num">9</td><td><span class="chip good">has results</span></td></tr>
-          <tr><td>Rings</td><td class="num">8</td><td class="num">7</td><td><span class="chip low">not checked</span></td></tr>
-          <tr><td>mangalsutra / Mangalsutra</td><td class="num">8</td><td class="num">6</td><td><span class="chip critical">0 results &mdash; confirmed bug</span></td></tr>
-          <tr><td>ANGUTHI <span class="chip low" style="margin-left:4px;">Hindi: ring</span></td><td class="num">1</td><td class="num">1</td><td><span class="chip good">has results</span></td></tr>
+          <tr><td>classic diamond nose pin</td><td class="num">78</td><td class="num">6</td><td class="num">99</td><td><span class="chip critical">0 results</span></td></tr>
+          <tr><td>kids Earrings</td><td class="num">26</td><td class="num">1</td><td class="num">27</td><td><span class="chip good">has results</span></td></tr>
+          <tr><td>tn0031</td><td class="num">18</td><td class="num">1</td><td class="num">19</td><td><span class="chip good">has results</span></td></tr>
+          <tr><td>Chain</td><td class="num">11</td><td class="num">11</td><td class="num">11</td><td><span class="chip critical">0 results</span></td></tr>
+          <tr><td>Earrings</td><td class="num">10</td><td class="num">7</td><td class="num">10</td><td><span class="chip good">has results</span></td></tr>
+          <tr><td>Gold coin</td><td class="num">10</td><td class="num">2</td><td class="num">10</td><td><span class="chip good">has results</span></td></tr>
+          <tr><td>Tennis bracelet</td><td class="num">10</td><td class="num">9</td><td class="num">10</td><td><span class="chip good">has results</span></td></tr>
+          <tr><td>Necklace</td><td class="num">9</td><td class="num">7</td><td class="num">10</td><td><span class="chip good">has results</span></td></tr>
+          <tr><td>Pendant</td><td class="num">9</td><td class="num">9</td><td class="num">9</td><td><span class="chip good">has results</span></td></tr>
+          <tr><td>Rings</td><td class="num">9</td><td class="num">7</td><td class="num">9</td><td><span class="chip good">has results</span></td></tr>
+          <tr><td>Nosepin</td><td class="num">8</td><td class="num">6</td><td class="num">10</td><td><span class="chip critical">0 results</span></td></tr>
+          <tr><td>R00332</td><td class="num">7</td><td class="num">1</td><td class="num">9</td><td><span class="chip good">has results</span></td></tr>
+          <tr><td>Hoops</td><td class="num">7</td><td class="num">4</td><td class="num">7</td><td><span class="chip good">has results</span></td></tr>
+          <tr><td>Mens ring</td><td class="num">7</td><td class="num">6</td><td class="num">7</td><td><span class="chip critical">0 results</span></td></tr>
+          <tr><td>Bracelet</td><td class="num">6</td><td class="num">6</td><td class="num">9</td><td><span class="chip good">has results</span></td></tr>
+          <tr><td>title:Chain** OR body:Chain** OR tag:Chain** OR product_type:Chain** OR sku:Chain** OR Chain</td><td class="num">5</td><td class="num">5</td><td class="num">15</td><td><span class="chip good">has results</span></td></tr>
+          <tr><td>pendant chain</td><td class="num">5</td><td class="num">1</td><td class="num">12</td><td><span class="chip good">has results</span></td></tr>
+          <tr><td>Gold ring</td><td class="num">5</td><td class="num">4</td><td class="num">8</td><td><span class="chip good">has results</span></td></tr>
+          <tr><td>Men bracelet</td><td class="num">5</td><td class="num">5</td><td class="num">6</td><td><span class="chip good">has results</span></td></tr>
+          <tr><td>elara marquise solitaire</td><td class="num">5</td><td class="num">2</td><td class="num">5</td><td><span class="chip good">has results</span></td></tr>
+          <tr><td>tennis bracelet</td><td class="num">5</td><td class="num">4</td><td class="num">5</td><td><span class="chip good">has results</span></td></tr>
+          <tr><td>Necklaces</td><td class="num">4</td><td class="num">4</td><td class="num">9</td><td><span class="chip good">has results</span></td></tr>
+          <tr><td>br0176</td><td class="num">4</td><td class="num">2</td><td class="num">7</td><td><span class="chip good">has results</span></td></tr>
+          <tr><td>mangalsutra</td><td class="num">4</td><td class="num">4</td><td class="num">6</td><td><span class="chip critical">0 results</span></td></tr>
+          <tr><td>Earing</td><td class="num">4</td><td class="num">3</td><td class="num">5</td><td><span class="chip good">has results</span></td></tr>
+          <tr><td>Mangalsutra</td><td class="num">4</td><td class="num">4</td><td class="num">5</td><td><span class="chip critical">0 results</span></td></tr>
+          <tr><td>Pendants</td><td class="num">4</td><td class="num">3</td><td class="num">5</td><td><span class="chip good">has results</span></td></tr>
+          <tr><td>rings</td><td class="num">4</td><td class="num">4</td><td class="num">5</td><td><span class="chip good">has results</span></td></tr>
+          <tr><td>Shield S Letter Diamond Men's Bracelet</td><td class="num">4</td><td class="num">2</td><td class="num">5</td><td><span class="chip good">has results</span></td></tr>
+          <tr><td>Bracelets</td><td class="num">4</td><td class="num">3</td><td class="num">4</td><td><span class="chip good">has results</span></td></tr>
+          <tr><td>Mbr</td><td class="num">4</td><td class="num">3</td><td class="num">4</td><td><span class="chip good">has results</span></td></tr>
+          <tr><td>PD</td><td class="num">4</td><td class="num">2</td><td class="num">4</td><td><span class="chip critical">0 results</span></td></tr>
+          <tr><td>portuguese cut</td><td class="num">4</td><td class="num">4</td><td class="num">4</td><td><span class="chip good">has results</span></td></tr>
+          <tr><td>Ring</td><td class="num">4</td><td class="num">4</td><td class="num">4</td><td><span class="chip good">has results</span></td></tr>
+          <tr><td>vanki</td><td class="num">4</td><td class="num">2</td><td class="num">4</td><td><span class="chip good">has results</span></td></tr>
+          <tr><td>blue stone necklace</td><td class="num">3</td><td class="num">1</td><td class="num">5</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>MR0890</td><td class="num">3</td><td class="num">2</td><td class="num">5</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Nose pin</td><td class="num">3</td><td class="num">3</td><td class="num">5</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Pdo479</td><td class="num">3</td><td class="num">1</td><td class="num">5</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>bracelet</td><td class="num">3</td><td class="num">3</td><td class="num">4</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>diamond bracelet and kada designesign</td><td class="num">3</td><td class="num">1</td><td class="num">4</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>chain</td><td class="num">3</td><td class="num">3</td><td class="num">3</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Cushion diamond</td><td class="num">3</td><td class="num">1</td><td class="num">3</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Earings</td><td class="num">3</td><td class="num">1</td><td class="num">3</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>earring</td><td class="num">3</td><td class="num">2</td><td class="num">3</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Men’s chain</td><td class="num">3</td><td class="num">2</td><td class="num">3</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Mens bracelet</td><td class="num">3</td><td class="num">2</td><td class="num">3</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Nose</td><td class="num">3</td><td class="num">1</td><td class="num">3</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>palin gold jewelry</td><td class="num">3</td><td class="num">1</td><td class="num">3</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>pd0212</td><td class="num">3</td><td class="num">2</td><td class="num">3</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>portuguese </td><td class="num">3</td><td class="num">2</td><td class="num">3</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Princess solitaire studs</td><td class="num">3</td><td class="num">1</td><td class="num">3</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>R00198</td><td class="num">3</td><td class="num">2</td><td class="num">3</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>R00604</td><td class="num">3</td><td class="num">1</td><td class="num">3</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Stud</td><td class="num">3</td><td class="num">1</td><td class="num">3</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Anguthi</td><td class="num">2</td><td class="num">1</td><td class="num">20</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Marquise Cut Diamond</td><td class="num">2</td><td class="num">2</td><td class="num">5</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>bangles</td><td class="num">2</td><td class="num">2</td><td class="num">4</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Multi pierce</td><td class="num">2</td><td class="num">1</td><td class="num">4</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>r00604</td><td class="num">2</td><td class="num">2</td><td class="num">4</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>r00624</td><td class="num">2</td><td class="num">2</td><td class="num">4</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Rose Cut Diamond</td><td class="num">2</td><td class="num">2</td><td class="num">4</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>BR0190</td><td class="num">2</td><td class="num">2</td><td class="num">3</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Bracelets for men</td><td class="num">2</td><td class="num">2</td><td class="num">3</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>color diamond</td><td class="num">2</td><td class="num">2</td><td class="num">3</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>gem</td><td class="num">2</td><td class="num">1</td><td class="num">3</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Gents ring</td><td class="num">2</td><td class="num">2</td><td class="num">3</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Gold earrings</td><td class="num">2</td><td class="num">2</td><td class="num">3</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-E00324YG_4</td><td class="num">2</td><td class="num">2</td><td class="num">3</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-PD0111</td><td class="num">2</td><td class="num">2</td><td class="num">3</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>men ring</td><td class="num">2</td><td class="num">2</td><td class="num">3</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Neck chain</td><td class="num">2</td><td class="num">2</td><td class="num">3</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>nose pin</td><td class="num">2</td><td class="num">2</td><td class="num">3</td><td><span class="chip critical">0 results</span></td></tr>
+          <tr><td>pgb003</td><td class="num">2</td><td class="num">1</td><td class="num">3</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>R00111</td><td class="num">2</td><td class="num">1</td><td class="num">3</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>R00537</td><td class="num">2</td><td class="num">1</td><td class="num">3</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>R00756</td><td class="num">2</td><td class="num">1</td><td class="num">3</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>ring 9kt</td><td class="num">2</td><td class="num">1</td><td class="num">3</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>toi et Moi Engagement Rings</td><td class="num">2</td><td class="num">1</td><td class="num">3</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td> bezel cut</td><td class="num">2</td><td class="num">2</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>778</td><td class="num">2</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Apex Panther Diamond Men's Bracelet</td><td class="num">2</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Bangles</td><td class="num">2</td><td class="num">2</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Bellara Round Diamond Ring</td><td class="num">2</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Blue stone ring</td><td class="num">2</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Chains</td><td class="num">2</td><td class="num">2</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>dangel earings</td><td class="num">2</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Diamond earing</td><td class="num">2</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Enamel</td><td class="num">2</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Eternity</td><td class="num">2</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Florente Intricate Gold Drop Earrings</td><td class="num">2</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>gold ring</td><td class="num">2</td><td class="num">2</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Gold ring man</td><td class="num">2</td><td class="num">2</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Heart shape ring</td><td class="num">2</td><td class="num">2</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>hexa cut</td><td class="num">2</td><td class="num">2</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>hoop</td><td class="num">2</td><td class="num">2</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-E00022</td><td class="num">2</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-PD0210</td><td class="num">2</td><td class="num">2</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-PD0259</td><td class="num">2</td><td class="num">2</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-PD0388</td><td class="num">2</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Lj-pd0480</td><td class="num">2</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-PE0296-14YGLGD</td><td class="num">2</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-PE0427</td><td class="num">2</td><td class="num">2</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-PE0464</td><td class="num">2</td><td class="num">2</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-PE0543</td><td class="num">2</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-PR0355</td><td class="num">2</td><td class="num">2</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-R00984</td><td class="num">2</td><td class="num">2</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Long chain</td><td class="num">2</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>me0029</td><td class="num">2</td><td class="num">2</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Men</td><td class="num">2</td><td class="num">2</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Men's chain</td><td class="num">2</td><td class="num">2</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Men’s ring</td><td class="num">2</td><td class="num">2</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Mens</td><td class="num">2</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Mens brelet</td><td class="num">2</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>mens ring</td><td class="num">2</td><td class="num">2</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>MLR00684</td><td class="num">2</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Mosiac diamond</td><td class="num">2</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Moving diamond</td><td class="num">2</td><td class="num">2</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>nb0121</td><td class="num">2</td><td class="num">2</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>only charm</td><td class="num">2</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Oval necklace</td><td class="num">2</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>PE0307</td><td class="num">2</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Petal Earrings</td><td class="num">2</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>R00846</td><td class="num">2</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>R00848</td><td class="num">2</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>rakhi</td><td class="num">2</td><td class="num">2</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Ring for him</td><td class="num">2</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Ring for man</td><td class="num">2</td><td class="num">2</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>rings under 20k</td><td class="num">2</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Silver</td><td class="num">2</td><td class="num">2</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Solitaire women rings</td><td class="num">2</td><td class="num">2</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Tennis</td><td class="num">2</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>tennis bracelets</td><td class="num">2</td><td class="num">2</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Timeless Silk Fit Plain Gold Band</td><td class="num">2</td><td class="num">2</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Tops</td><td class="num">2</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>zzqqxwv</td><td class="num">2</td><td class="num">2</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>ANGUTHI</td><td class="num">1</td><td class="num">1</td><td class="num">34</td><td><span class="chip good">has results</span></td></tr>
+          <tr><td>22k gold ring</td><td class="num">1</td><td class="num">1</td><td class="num">7</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>embrace</td><td class="num">1</td><td class="num">1</td><td class="num">5</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-E00435</td><td class="num">1</td><td class="num">1</td><td class="num">5</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>24kt sui dhaga</td><td class="num">1</td><td class="num">1</td><td class="num">4</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>body:Chain</td><td class="num">1</td><td class="num">1</td><td class="num">4</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>cluster diamond nose pin</td><td class="num">1</td><td class="num">1</td><td class="num">4</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Nose pins</td><td class="num">1</td><td class="num">1</td><td class="num">4</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>14 kt bracelets</td><td class="num">1</td><td class="num">1</td><td class="num">3</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>24kt</td><td class="num">1</td><td class="num">1</td><td class="num">3</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>9k gold studs</td><td class="num">1</td><td class="num">1</td><td class="num">3</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>BR0056</td><td class="num">1</td><td class="num">1</td><td class="num">3</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>flower ring</td><td class="num">1</td><td class="num">1</td><td class="num">3</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>gemstone</td><td class="num">1</td><td class="num">1</td><td class="num">3</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-E00042-14RG</td><td class="num">1</td><td class="num">1</td><td class="num">3</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Lj-mr0781</td><td class="num">1</td><td class="num">1</td><td class="num">3</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-NP0040</td><td class="num">1</td><td class="num">1</td><td class="num">3</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>MR0892</td><td class="num">1</td><td class="num">1</td><td class="num">3</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>R00807</td><td class="num">1</td><td class="num">1</td><td class="num">3</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>R00810</td><td class="num">1</td><td class="num">1</td><td class="num">3</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>R00813</td><td class="num">1</td><td class="num">1</td><td class="num">3</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>R00814</td><td class="num">1</td><td class="num">1</td><td class="num">3</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>ring 9kT</td><td class="num">1</td><td class="num">1</td><td class="num">3</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Split Shank Engagement</td><td class="num">1</td><td class="num">1</td><td class="num">3</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>wedding ring for him</td><td class="num">1</td><td class="num">1</td><td class="num">3</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>14 kt ring</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>9 k ear drops</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>9 kt ring</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>A to B</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>bestsellers pendants</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>breclet</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>COTTAN CANDY</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Diamond  earrings</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Diamond ear studs</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Dimond ring for  men</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>e00487</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>ear drops</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>eardrops</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>earing</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>engagement ring</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Forever Diamond Stud Earrings</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Gold stud</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-BR0056</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-E00033-18RGLGD</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-E00348</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-E00669</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-ME0046</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-PD0431</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-PE0430</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Lj-r00052</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-R00358</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-SBR0012-14YGLGD-2.2</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Love symbol dimond ring for men</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>mbr</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>mbr027</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Mens diamond ring</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Mens earrings</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>necklace below 2 lakhs with round diamonds</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Oval shape 2 carat ring</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>pd0208</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Pearl gamestone ring</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Plain band rings for men</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>platinum band</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>r00101</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>r00358</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>rani har</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>red diamond tennis bracelet</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>red stone ring</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>ring 9k</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Round solitaire pendant</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Very beautiful earrings</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>&lt;B&gt;HELLO&lt;/B&gt;</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>&lt;script&gt;alert(123)&lt;/script&gt;</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>1 Carat Solitaire Diamond Ring</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>1 g</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>1.06 ct Classic Round Diamond Tennis Bracelet</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>14kt earrings</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>18 caret men's rings</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>2 ct round solitaire ring</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>22 creat</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>22 inch women chain </td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>24 inch gold xhain</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>24k gold ring women</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>3 gram mangalsutra locket</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>3 grams platinum rings for men</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>5999</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>6ct earring</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>9 k gold chain </td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>9 kt gold ring</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>9k ring</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>9k ring men</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>9kt</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>9kt chain</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>9kt gold chain</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>9kt mangalsutra</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>ABC 🔤</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>ANGOOTHI</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Aö</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Astra Teardrop Diamond Dangle Earrings</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>b00009</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>B00009</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>b0009</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Baby earrings</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>baju band</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Bali earrings</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Bangle</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>bangles </td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Belt bracelet</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>bfkwrgfkh</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Bird pendant</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Black chain</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>blomming stud</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>BLUE DIAMOND</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>blue gemstone ring</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Blue stone necklace</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Boys Kabaddi</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Boys ring</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Br0068</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Br0125</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>BR0179</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>br0188</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Br0188</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>br0212</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Brac</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>butterfly</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Butterfly</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Butterfly earring</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Ceramic Heart Diamond Ring</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>CHAIN</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>chain sirvar</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>champane</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>charm</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Charm evil eye</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>charms</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>chevron</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Chocker</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>clasic diamond nose pin</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Classic  solitaire  womens</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Clover</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Cocktail</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>COE012</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Coffin cut</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>coin</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Coins</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>colostone</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>cor141</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Corinthian Pave Diamond Men's Ring</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Cvm</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>DCRG0081</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Diamond</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Diamond earrings</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Diamond pendant for men under 15000</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Diamond ring</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Diamond ring 29 carat</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Diamond ring for men</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Diamond ring stack</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Diamond rings</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Dimand ring 2 gram</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>dimond ring for men's</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>E00060</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>E00173</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>E00245</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>E00282</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>E00312</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>E00317</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>E00322</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>e00362</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>e00407</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>e00409</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>e00410</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>e00456</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>E00520</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>E00553</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>e00604</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>e00633</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>E00670</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>e00671</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Ear</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>earrings</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>earrings under 50k</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Emerald cut</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Emerald ring</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>ENAMAL</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Engagement ring</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Engagement ring simple</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>eterna</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>eternity</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>eternity rings</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>eternity rings oval</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>eternity rings round</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Finger rings</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Flexi ring</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Floret Plain Gold Chain Bracelet</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Forever Solitaire Couple Band For Her</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Forever Solitaire Couple Band For Him</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Four Prong Round Solitaire Ring 7.50mm</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>full eternity rings round</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Gents gold ring</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>gift for sisters</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>gifts for sisters</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>gifts-for-sisters</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Girls engagement rings</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Gold</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Gold bracelets</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>gold chain</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Gold chain</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>GOLD CHAIN</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Gold chain for men</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>gold coin</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>gold coin </td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>gold coins 24</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>GOLD JEWELLERY</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Gold men rings</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>gold neck chain</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Gold pendant</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Gold pendent</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Gold ring for men</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Gold rings</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Gold ringsgold rings</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Gold Stud Earrings</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Gold studs for men</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Green</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Green ring</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Halo pendant</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Halo solitaire round diamond pendant</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Hexora moving diamond</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>hknkllllllohggljcvvgm..bggjmmklk</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Hoop Earrings</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>HOOPS</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>hypoallergenic earrings</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Imponderable+nose+ring</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>insurance</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>KADA</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>kadda</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>kids</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Lab grown diamond necklaces</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>lajpat</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Lanceolate Diamond Stud Earrings</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Layered jhumki</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LGD Wedding Band</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>lic ki ol</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-B00002</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-BR0011</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-BR0048-14YGLGD-6.5</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-BR0050</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-BR0068</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-BR0071</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Lj-br0084</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-BR0103</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-BR0173</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-CH0006-18YGPG-18</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-CHA028</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-COE116</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-COR068</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-E00001</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-E00019</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-E00021-14YGLGD</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-E00032-14YGLGD</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-E00033-18RGLGDYG</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-E00042-1</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-E00042-14</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-E00042-14L</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Lj-e00043</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-E00048</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-E00060</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-E00071-14YGLGD</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-E00144</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-E00174</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-E00289-14YGLGD</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-E00326-14YGLGD</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-E00358-14YGLGD</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-E00381-14YGLGD</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-E00389</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-E00458</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-E00500-14YGLGD</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-E00569</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-E00618</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-E00668</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-MBR014-14WGLGD</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-ME0001</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-ME0014</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-ME0035-14YGLGD</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-MR0778</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-MR0892-14RGLGD-20</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-MR0893-14RWLGD-20</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-N00006-14YGLGD</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-NE0058</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-NE0081</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-NP0056-14YGLGD</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-PD0065</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-PD0091</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-PD0195-14RGLGD</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-PD0206</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-PD0211</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-PD0266</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-PD0267</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-PD0280</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-PD0382</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-PD0421</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-PD0426</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-PD0427</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-PD0428</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-PD0458</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-PD0465</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-PD0535</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-PD0536</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-PD0540</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-PD0544</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-PE0085</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-PE0108-14YGLGD</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-PE0296</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-PE0420</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-PE0423</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-PE0424</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-PE0426</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-pe0431</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-PE0468</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-PGE008</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-PGMR002</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-PPE008-09YGPG</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-PR0276</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-PR0424</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-PR0425</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-PR0426</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-PR0427</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-PR0428</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-PR0430</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-PR0454</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-R00001-14WGLGD-12</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-R00029-14RGLGD-10</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-R00071</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-R00102</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-R00114-14YGLGD-15</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-R00174-14WGLGD-12</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-R00178-18YGLGD-11</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-R00298</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-R00332</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-R00334</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-R00379</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-R00380</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-R00478</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-R00491-14YGLGD-12</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Lj-r00520</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Lj-r00521</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-R00527</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-R00528</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-R00532</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-R00533</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-R00534</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-R00538</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-R00539</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-R00540</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-R00541</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-R00544</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-R00567</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-R00585</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-R00592</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-R00621</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-R00624</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Lj-r00697</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-R00697</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-R00795</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-R00837</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Lj-r00869</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-R00903-14YGLGD-12</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-R00971</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-R00972</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-R00978</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-R00986</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>LJ-SBR00</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Lucira jewellery</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Lucira scalloped lab grown diamond earrings</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Lucira store andheri</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Magalsutra</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>man chens</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>man ring</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Mangal sutra</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Mangalsutra bracelet</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>mangalsutra gold pendent</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>mangalsutra locet</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Marquise band ring</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>marquise diamond stud earrings</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>MBR025</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>mbr026</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>ME0003</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>ME0010</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>ME0028</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>ME0046</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>me009</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>men</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Men bracelelt</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>men diamond ring design</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>men earring</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Men gold ring</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Men ring</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Men rings</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>men stud</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>men's</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>men's pendant</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Mens braclet</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>MENS RING</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Mens ring </td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Mens studs</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>mosaic</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>moving</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>MR0652</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>MR0674</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>mr0768</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Mr0778</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>MR0779</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>mr0782</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>MR0784</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>mujhe ek aisi kar dikhao Jo drift bhi maar sakti hai</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>multi-pear-diamond-ring-with-round-accents</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>n00022</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>N00083</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>N00094</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>nakshatra</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Necklace with one diamond</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>necklace with three circle pendant</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>necklaces</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>no0076</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Nobita jujjhnhm</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Nog</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>NOSE PIN</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>nose pins</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Nose ring</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Nose studs</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Nosepins</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Nosering</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>NP</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>NP0023</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>NP0040</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>np0051</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>np0076</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>office wear earrings</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Om Plain Gold Chain Necklace</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>only pendent</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>P initial</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>P letter</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Passport Charm</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>PB0400</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Pd0241</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>pd0283</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>PD0333</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>PD0532</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>pe0307</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>PE0399</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>pe0437</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Pe0443</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Pear Halo Diamond Mangalsutra Necklace</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>pendant</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Pendant set</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>pendent</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Plain gold rings</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>PLAN GOLD</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>platinum</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>platinum </td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>platinum diamond earrings for men</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Platinum mens diamond ring</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Platinum mens Ring</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Portuguese ring</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Pr0399</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>PR0420</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Puffy Heart Plain Gold Pendant</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Quick</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>r infinity  diamond mangalsutra bracelet</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>r00094</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>R00096</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>r00097</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>R00100</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>R00109</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>R00180</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>R00208</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>R00318</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>R00330</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>R00339</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>R00368</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>r00475</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>R00548</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>R00593</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>R00616</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>R00646</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>R00652</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>R00725</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>R00779</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>r00780</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>r00809</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>r00869</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Rakhi</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>RAKHI .</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Rakhi Pendant</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>religious pendant</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>repair</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Rimg</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>ring</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>ring </td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Ring foe man</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Ring for men</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>ring for women</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Rings 18kt</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Rings for men</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Rose</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Round Diamond Floral Cluster Bypass Ring</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Round Diamond Swirl Stud Earrings</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Round Solitaire Engagement Ring with Pave Set Side Diamond</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>round-diamond-solitaire-bail-pendant</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>ruby</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Ruby Pendant set</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Sapphire</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>SBR0064</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Sculpted Plain Gold Stud Earrings</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Silvar ankal</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>silver</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Silver bracelet for men</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Silver bracelets</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Silver payel baby girl</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Silver pendant</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Solitaire</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Solitaire ring lady</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Solitaire rings for women 0.50 carats</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>spiral diamond pendant</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>sssaAAAAERRRREDSDDDD*ES ss ee wa wa malaa00 EW</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>stackable ring</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Streachable braclets</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>STUD</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Studs men</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>sui dhaga</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>sui dhaga earrings</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Tanminiya</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Tennis braceler</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>tennis Bracelet</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>TENNIS BRACELETS</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Tennis necklace</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>The Grandeur Pave Men's Ring</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>the loving</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Titan Frame Solitaire Diamond Mens Ring</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>toi</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Toi et Moi</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Toi et Moi Engagement Rings</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>triple halo</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Trishakti Round Diamond Pendant</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>True Bond Solitaire Men's Ring</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>tuh kaise patane gi dj jijajee th ghhffftgijgfffthggy ho fyyttffffjooocckggggghhkjhggfdß ji help 856</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Twin Circle Inter Looped Diamond Bracelet</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>ubdnm</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Ujdhdhurufjdkdhjdjmjdndndndndbjdbndbddbdjdhddjd</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Vvs D ring</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>White gold ruby</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Without stone ring design</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Woman ring</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Women chain</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Women ring</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Women xhain</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Xxx</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Yellow gold diamond earrings</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Zenith Chevron Diamond Chain Necklace</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
         </tbody>
       </table>
     </div>
-    <p class="note" style="font-size:12px;color:var(--faint);margin-top:8px;">687 distinct non-blank terms were
-      logged over 60 days; volume drops off fast after the top ~15 (long tail of one-off SKU codes, misspellings and
-      single-word category guesses). Full list available on request &mdash; showing the terms material to the
-      confirmed defect below plus the top of the tail for context.</p>
+    <p class="note" style="font-size:12px;color:var(--faint);margin-top:8px;">Scroll within the table for the full
+      693-row list. "Events" counts every <code>view_search_results</code> firing for that term (a session can
+      re-trigger it via sort/filter changes), so it can exceed sessions.</p>
+  </section>
+
   </section>
 
   <section>
@@ -349,6 +1048,27 @@
       mapping table was hand-typed against a category list, not read from live <code>product_type</code> values.
       <b>Recommend a full audit</b>: every value the search auto-filter can emit, checked against actual
       <code>product_type</code> values in the catalog.</p>
+
+    <div class="devlabel" style="margin-top:22px;">Additional zero-result terms found while checking the full list</div>
+    <div class="banner alarm">
+      <p style="margin:0;"><b>The taxonomy mismatch isn't the only cause of zero results.</b> Live-checking every
+        term with &ge;4 sessions (the table above) turned up three more terms returning 0 results that don't fit the
+        same root cause &mdash; flagged here as confirmed-broken but <b>not yet diagnosed</b>, since no catalog
+        cross-reference has been run for them:</p>
+    </div>
+    <div class="twrap" style="margin-top:10px;">
+      <table>
+        <thead><tr><th>Term</th><th class="num">Sessions (60d)</th><th>What's odd</th></tr></thead>
+        <tbody>
+          <tr><td>Chain</td><td class="num">11</td><td>Bare word returns 0, yet <code>pendant chain</code> (93 results) and the raw multi-field query string containing <code>Chain</code> (140 results) both work &mdash; suggests the same auto-filter pattern (likely mapping to a <code>product_type</code> that doesn't exist, e.g. chains are probably catalogued under a specific chain-type name, not a generic "Chain") rather than a content gap.</td></tr>
+          <tr><td>Mens ring</td><td class="num">7</td><td>0 results as an exact phrase, while <code>Ring</code>, <code>Rings</code>, <code>Gold ring</code> and <code>Men bracelet</code> all return hundreds of results &mdash; looks like no product is tagged with this exact phrase/category combination.</td></tr>
+          <tr><td>PD</td><td class="num">4</td><td>Explicit "NO RESULTS FOUND" for a bare 2-letter query. Likely a SKU-prefix search (catalog SKUs include <code>PD0212</code>, <code>LJ-PD0111</code>, etc.) that needs more characters to match &mdash; possibly by design rather than a bug, but worth confirming with engineering.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note" style="font-size:12px;color:var(--faint);margin-top:8px;">These bring the confirmed 0-result
+      total among the 35 live-checked high-volume terms to <b>6 of 35 (17%)</b> &mdash; treat that rate as a floor,
+      not a ceiling, since 658 lower-volume terms haven't been checked at all.</p>
 
     <div class="devlabel" style="margin-top:22px;">Real user hitting this bug &mdash; Clarity session recording, 11 Aug</div>
     <div class="banner">
