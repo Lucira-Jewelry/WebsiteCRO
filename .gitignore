@@ -29,3 +29,9 @@ reports/captures/*
 !reports/captures/gate-3-after_checkout_click-mobile.png
 !reports/captures/gate-3-after_checkout_click-desktop.png
 !reports/captures/overlay-pdp-mobile.png
+# Search page-type report evidence (reports/page-search.html) — the confirmed
+# 0-results taxonomy-mismatch defect and its working-control comparisons.
+!reports/captures/search-classic-diamond-nose-pin-filtered-mobile.png
+!reports/captures/search-mangalsutra-mobile.png
+!reports/captures/search-tennis-bracelet-mobile.png
+!reports/captures/search-necklace-mobile.png

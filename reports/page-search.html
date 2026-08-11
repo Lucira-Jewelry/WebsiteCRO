@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Search — Lucira Jewelry CRO</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --bg:#EEF0ED; --surface:#FFFFFF; --raise:#F7F8F6; --ink:#1B2320; --muted:#5B6560; --faint:#8A938E;
+    --accent:#A9813F; --accent-ink:#5E4520;
+    --critical:#A23B2E; --critical-bg:#F7E7E4;
+    --high:#B0722A; --high-bg:#F8EDDC;
+    --good:#48684C; --good-bg:#E5EDE5;
+    --medium:#3D5A73; --medium-bg:#E3EAEF;
+    --line:rgba(27,35,32,0.13); --line-strong:rgba(27,35,32,0.26);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#111412; --surface:#191E1A; --raise:#1F2521; --ink:#EDEFEA; --muted:#9AA69E; --faint:#6E786F;
+      --accent:#C79B4E; --accent-ink:#D8B87A; --critical:#E4695C; --critical-bg:#3B2320;
+      --high:#DFA555; --high-bg:#392D19; --good:#8CBC92; --good-bg:#1C2A1E;
+      --medium:#8FB3D2; --medium-bg:#1D2B35;
+      --line:rgba(237,239,234,0.14); --line-strong:rgba(237,239,234,0.28); }
+  }
+  :root[data-theme="dark"]{ --bg:#111412; --surface:#191E1A; --raise:#1F2521; --ink:#EDEFEA; --muted:#9AA69E;
+    --faint:#6E786F; --accent:#C79B4E; --accent-ink:#D8B87A; --critical:#E4695C; --critical-bg:#3B2320;
+    --high:#DFA555; --high-bg:#392D19; --good:#8CBC92; --good-bg:#1C2A1E; --medium:#8FB3D2; --medium-bg:#1D2B35;
+    --line:rgba(237,239,234,0.14); --line-strong:rgba(237,239,234,0.28); }
+  :root[data-theme="light"]{ --bg:#EEF0ED; --surface:#FFFFFF; --raise:#F7F8F6; --ink:#1B2320; --muted:#5B6560;
+    --faint:#8A938E; --accent:#A9813F; --accent-ink:#5E4520; --critical:#A23B2E; --critical-bg:#F7E7E4;
+    --high:#B0722A; --high-bg:#F8EDDC; --good:#48684C; --good-bg:#E5EDE5; --medium:#3D5A73; --medium-bg:#E3EAEF;
+    --line:rgba(27,35,32,0.13); --line-strong:rgba(27,35,32,0.26); }
+
+  *{box-sizing:border-box;} html,body{margin:0;padding:0;}
+  body{background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;
+    font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  .page{max-width:1080px;margin:0 auto;padding:40px 22px 90px;}
+  h1,h2,h3,h4{font-family:Iowan Old Style,"Palatino Linotype","Book Antiqua",Georgia,serif;font-weight:600;margin:0;text-wrap:balance;}
+  .measure{max-width:70ch;} p{margin:0 0 13px;}
+  code{font-family:ui-monospace,"SF Mono","Cascadia Code",monospace;font-size:.86em;background:var(--line);padding:1px 5px;border-radius:3px;}
+  a{color:var(--accent-ink);}
+
+  .hubnav{background:var(--surface);border-bottom:1px solid var(--line-strong);}
+  .hubnav .inner{max-width:1080px;margin:0 auto;padding:11px 22px;display:flex;flex-wrap:wrap;align-items:center;gap:5px;}
+  .hubnav a{font-size:12.5px;font-weight:600;color:var(--muted);text-decoration:none;padding:6px 13px;border-radius:100px;white-space:nowrap;}
+  .hubnav a:hover{background:var(--raise);color:var(--ink);}
+  .hubnav a.active{background:var(--accent);color:#fff;}
+  .hubnav .sep{color:var(--faint);font-size:12px;margin:0 2px;}
+
+  .subnav{background:var(--raise);border-bottom:1px solid var(--line);}
+  .subnav .inner{max-width:1080px;margin:0 auto;padding:9px 22px;display:flex;flex-wrap:wrap;align-items:center;gap:4px;}
+  .subnav .label{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);font-weight:700;margin-right:8px;}
+  .subnav a{font-size:12.5px;font-weight:600;color:var(--muted);text-decoration:none;padding:5px 12px;border-radius:6px;white-space:nowrap;border:1px solid transparent;}
+  .subnav a:hover{border-color:var(--line-strong);color:var(--ink);}
+  .subnav a.active{background:var(--surface);border-color:var(--line-strong);color:var(--accent-ink);}
+
+  .masthead{display:flex;flex-direction:column;gap:8px;padding-bottom:20px;margin-bottom:22px;border-bottom:1px solid var(--line-strong);}
+  .eyebrow{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-ink);font-weight:700;}
+  .masthead h1{font-size:34px;line-height:1.1;}
+  .masthead .meta{font-size:12.5px;color:var(--muted);margin-top:2px;}
+
+  .goal{background:var(--surface);border:1px solid var(--line-strong);border-left:5px solid var(--accent);
+    border-radius:6px;padding:16px 20px;margin-bottom:26px;}
+  .goal .lbl{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-ink);font-weight:700;margin-bottom:6px;}
+  .goal .target{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-top:8px;}
+  .goal .num{font-size:26px;font-weight:700;font-variant-numeric:tabular-nums;}
+  .goal .arrow{color:var(--faint);font-size:18px;}
+  .goal .num.now{color:var(--good);}
+  .goal .num.want{color:var(--good);}
+  .goal .num.bad{color:var(--critical);}
+
+  section{margin-bottom:36px;}
+  .sec-head{display:flex;align-items:baseline;gap:12px;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--line);flex-wrap:wrap;}
+  .sec-head .tag{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700;}
+  .sec-head h2{font-size:20px;}
+  .sec-head .note{font-size:12px;color:var(--faint);margin-left:auto;}
+
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);
+    border:1px solid var(--line);border-radius:6px;overflow:hidden;margin-bottom:10px;}
+  .kpi{background:var(--surface);padding:14px 15px;}
+  .kpi .lbl{font-size:11px;color:var(--muted);}
+  .kpi .num{font-size:21px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.01em;margin-top:2px;}
+  .kpi .num.bad{color:var(--critical);} .kpi .num.warn{color:var(--high);} .kpi .num.ok{color:var(--good);}
+  .kpi .sub{font-size:10.5px;color:var(--faint);margin-top:2px;}
+  .devlabel{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);font-weight:700;margin:18px 0 6px;}
+
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  .twrap{overflow-x:auto;border:1px solid var(--line);border-radius:6px;}
+  th{text-align:left;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:700;
+    padding:9px 11px;background:var(--raise);border-bottom:1px solid var(--line-strong);white-space:nowrap;}
+  td{padding:9px 11px;border-bottom:1px solid var(--line);background:var(--surface);font-variant-numeric:tabular-nums;vertical-align:top;}
+  tr:last-child td{border-bottom:none;}
+  th.num,td.num{text-align:right;}
+  td.bad{color:var(--critical);font-weight:700;} td.warn{color:var(--high);font-weight:600;}
+  td.ok{color:var(--good);font-weight:600;} td.dim{color:var(--faint);}
+
+  .chip{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+    padding:2px 8px;border-radius:100px;white-space:nowrap;}
+  .chip.critical{background:var(--critical-bg);color:var(--critical);}
+  .chip.high{background:var(--high-bg);color:var(--high);}
+  .chip.medium{background:var(--medium-bg);color:var(--medium);}
+  .chip.good{background:var(--good-bg);color:var(--good);}
+  .chip.low{background:var(--raise);color:var(--faint);}
+
+  .banner{background:var(--surface);border:1px solid var(--line-strong);border-left:4px solid var(--accent);
+    border-radius:6px;padding:15px 18px;font-size:13.5px;}
+  .banner.alarm{border-color:var(--critical);border-left-color:var(--critical);}
+  .banner.good{border-left-color:var(--good);}
+  .banner b{color:var(--ink);}
+
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .quad{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media (max-width:820px){ .split{grid-template-columns:1fr;} .quad{grid-template-columns:1fr;} }
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:18px 20px;}
+  .card h4{margin:0 0 10px;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);}
+  .rec-list{margin:0;padding-left:18px;font-size:13px;line-height:1.7;}
+  .rec-list li{margin-bottom:8px;} .rec-list li:last-child{margin-bottom:0;}
+
+  figure{margin:0;background:var(--surface);border:1px solid var(--line);border-radius:8px;overflow:hidden;}
+  figure .shot{max-height:460px;overflow-y:auto;background:var(--raise);}
+  figure .shot img{width:100%;display:block;}
+  figcaption{padding:10px 13px;font-size:12px;color:var(--muted);border-top:1px solid var(--line);}
+  figcaption b{color:var(--ink);}
+
+  .foot{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);font-size:11.5px;color:var(--faint);}
+</style>
+</head>
+<body>
+
+<nav class="hubnav"><div class="inner">
+  <a href="index.html">Reports Home</a><span class="sep">&middot;</span>
+  <a href="insights.html">Insights</a>
+  <a href="action_plan.html">Action Plan</a>
+  <a href="interactive.html">Interactive Dashboard</a>
+  <a href="tasks.html">Tasks</a>
+  <a href="connectors.html">Connectors</a>
+</div></nav>
+<nav class="subnav"><div class="inner">
+  <span class="label">Page-by-page</span>
+  <a href="page-homepage.html">Homepage</a>
+  <a href="page-plp.html">Collection (PLP)</a>
+  <a href="page-pdp.html">Product (PDP)</a>
+  <a href="page-cart-checkout.html">Cart &amp; Checkout</a>
+  <a href="page-traffic-ads.html">Traffic &amp; Meta/Ads</a>
+  <a href="page-search.html" class="active">Search</a>
+</div></nav>
+
+<div class="page">
+
+  <div class="masthead">
+    <div class="eyebrow">Page Insights &middot; Site Search</div>
+    <h1>Search</h1>
+    <div class="meta">/search &middot; GA4 property 478308692, 30d window (13 Jul&ndash;11 Aug) unless noted &middot;
+      Clarity 7d (5&ndash;11 Aug) &middot; live checks + Shopify catalog cross-reference 11 Aug 2026</div>
+  </div>
+
+  <div class="goal">
+    <div class="lbl">Job of this page</div>
+    <p style="margin:0;font-size:14.5px;">Take a visitor who already knows what they want and get them to that exact
+      product. Search traffic is a small slice of sessions but the <b>highest-intent segment on the site</b> &mdash;
+      it converts far above the sitewide baseline where the underlying search actually works. Where it doesn't
+      (see the confirmed defect below), it converts at exactly zero.</p>
+    <div class="target">
+      <div><div style="font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">Search &rarr; purchase, 30d</div>
+        <span class="num now">1.63%</span></div>
+      <span class="arrow">&rarr;</span>
+      <div><div style="font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">Sitewide product-view &rarr; purchase</div>
+        <span class="num" style="color:var(--muted);">0.021%</span></div>
+      <div style="margin-left:auto;font-size:12.5px;color:var(--muted);max-width:36ch;">~78&times; the sitewide rate
+        &mdash; but a confirmed catalog-filter bug is capping this artificially low. See "The confirmed defect" below.</div>
+    </div>
+  </div>
+
+  <section>
+    <div class="sec-head"><span class="tag">Volume</span><h2>How much search traffic there actually is</h2>
+      <span class="note">GA4, 30d, sitewide event totals</span></div>
+    <div class="kpis">
+      <div class="kpi"><div class="lbl">Search_Click (icon opened)</div><div class="num">606</div><div class="sub">fires site-wide, not just /search &mdash; see note below</div></div>
+      <div class="kpi"><div class="lbl">view_search_results (query submitted)</div><div class="num">606</div><div class="sub">100% on /search</div></div>
+      <div class="kpi"><div class="lbl">/search page_view</div><div class="num">9,766</div><div class="sub">desktop 5,471 &middot; mobile 4,235 &middot; tablet 60</div></div>
+      <div class="kpi"><div class="lbl">select_item on /search</div><div class="num">4,245</div><div class="sub">product clicked from a list on that page</div></div>
+      <div class="kpi"><div class="lbl">Distinct search terms seen (60d)</div><div class="num">687</div><div class="sub">non-blank <code>searchTerm</code> values</div></div>
+    </div>
+    <div class="banner" style="margin-top:10px;">
+      <p style="margin:0;"><b><code>Search_Click</code> is not the same journey as <code>view_search_results</code>.</b>
+        It fires on 61 different pages &mdash; mostly the homepage (142) and collection pages (eterna 95,
+        eternity-rings 63, jewelry 45, bestsellers 31) &mdash; and only 16 of its 606 firings happen on <code>/search</code>
+        itself. A funnel report requiring <code>Search_Click</code> to be directly followed by
+        <code>view_search_results</code> converts only 2 of 281 users. Read it as "opened the search icon/overlay",
+        a mostly separate action from actually submitting and viewing a query. The real search funnel below starts
+        at <code>view_search_results</code>.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Funnel</span><h2>The search-to-purchase funnel, by user</h2>
+      <span class="note">GA4 <code>run_funnel_report</code>, unique users, 30d</span></div>
+    <div class="twrap">
+      <table>
+        <thead><tr><th>Step</th><th class="num">Users</th><th class="num">% of previous step</th><th class="num">% of step 1</th></tr></thead>
+        <tbody>
+          <tr><td>1. Viewed search results</td><td class="num">245</td><td class="num dim">&mdash;</td><td class="num">100%</td></tr>
+          <tr><td>2. Clicked a search result</td><td class="num">120</td><td class="num warn">49.0%</td><td class="num warn">49.0%</td></tr>
+          <tr><td>3. Added to cart</td><td class="num">44</td><td class="num ok">36.7%</td><td class="num">18.0%</td></tr>
+          <tr><td>4. Began checkout</td><td class="num">19</td><td class="num warn">43.2%</td><td class="num">7.8%</td></tr>
+          <tr><td>5. Purchased</td><td class="num">4</td><td class="num">21.1%</td><td class="num ok">1.6%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note" style="font-size:12px;color:var(--faint);margin-top:8px;">These are unique <code>activeUsers</code>
+      per step (GA4 funnel report), not raw event counts &mdash; do not mix with the volume figures above, per the
+      README's measurement traps.</p>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Segmentation</span><h2>Known vs. unknown users of search</h2>
+      <span class="note">Proxy: GA4 <code>newVsReturning</code> &mdash; see caveat</span></div>
+    <div class="banner">
+      <p style="margin:0;"><b>GA4's Data API does not expose sign-in status</b> (<code>signInStatus</code> is
+        BigQuery-export-only, confirmed by testing it here &mdash; the API rejects it as an invalid dimension).
+        The closest available "known vs. unknown" split is <code>newVsReturning</code>: <b>known</b> = returning
+        visitor (this device/browser has been seen before), <b>unknown</b> = new/first-time visitor. This is
+        device recognition, not authenticated login &mdash; a logged-in customer on a new device would still show
+        as "new". Treat the numbers below as directional, not identity-verified.</p>
+    </div>
+    <div class="twrap" style="margin-top:14px;">
+      <table>
+        <thead><tr><th>Step</th><th class="num">Known (returning)</th><th class="num">Unknown (new)</th><th class="num">Not set</th></tr></thead>
+        <tbody>
+          <tr><td>1. Viewed search results</td><td class="num">162 (66.1%)</td><td class="num">71 (29.0%)</td><td class="num dim">12 (4.9%)</td></tr>
+          <tr><td>2. Clicked a search result</td><td class="num">99 (82.5%)</td><td class="num">19 (15.8%)</td><td class="num dim">2 (1.7%)</td></tr>
+          <tr><td>3. Added to cart</td><td class="num">41 (93.2%)</td><td class="num">2 (4.5%)</td><td class="num dim">1 (2.3%)</td></tr>
+          <tr><td>4. Began checkout</td><td class="num">18 (94.7%)</td><td class="num">1 (5.3%)</td><td class="num dim">0</td></tr>
+          <tr><td>5. Purchased</td><td class="num bad">4 (100%)</td><td class="num bad">0 (0%)</td><td class="num dim">0</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="banner alarm" style="margin-top:14px;">
+      <p style="margin:0;"><b>Every search-driven purchase in the last 30 days came from a known (returning)
+        visitor. Zero came from a new visitor</b>, despite new visitors supplying 29% of all search-results views
+        (71 of 245) and 15.8% of result clicks (19 of 120). New-visitor search drops from 71 &rarr; 19 &rarr; 2
+        &rarr; 1 &rarr; 0: it survives to add-to-cart at roughly a third the rate of returning visitors (2.8% vs
+        25.3% of entrants) and never closes. Search currently behaves like a repeat-customer tool, not a
+        conversion path for people discovering Lucira for the first time.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Conversion</span><h2>Search vs. sitewide conversion ratio</h2>
+      <span class="note">GA4, 30d</span></div>
+    <div class="twrap">
+      <table>
+        <thead><tr><th>Rate</th><th class="num">Search-originated</th><th class="num">Sitewide</th><th class="num">Multiple</th></tr></thead>
+        <tbody>
+          <tr><td>Product click &rarr; add-to-cart</td><td class="num ok">36.7%</td><td class="num">2.98%</td><td class="num ok">12.3&times;</td></tr>
+          <tr><td>Began checkout &rarr; purchased</td><td class="num ok">21.1%</td><td class="num">7.14%</td><td class="num ok">3.0&times;</td></tr>
+          <tr><td>Entry &rarr; purchased</td><td class="num ok">1.63%<span class="chip good" style="margin-left:6px;">of search entrants</span></td>
+            <td class="num">0.021%<span class="chip low" style="margin-left:6px;">of product-viewers</span></td><td class="num ok">~78&times;</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note" style="font-size:12px;color:var(--faint);margin-top:8px;">Sitewide funnel: <code>view_item</code>
+      244,822 &rarr; <code>add_to_cart</code> 7,308 &rarr; <code>begin_checkout</code> 714 &rarr; <code>purchase</code>
+      51 (30d, users). The entry-point comparison (search-results-view vs. product-view) isn't apples-to-apples &mdash;
+      search entrants are already a qualified, intent-filtered population &mdash; but the add-to-cart and
+      checkout-completion rates are directly comparable and both come out clearly in search's favour. This is a
+      protect-and-invest signal: search visitors who reach a real result buy at several times the site average.</p>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">What they search for</span><h2>Top search terms</h2>
+      <span class="note">GA4 <code>searchTerm</code>, 60d, by sessions</span></div>
+    <div class="banner">
+      <p style="margin:0;"><b>Per-term revenue/add-to-cart cannot be pulled from the GA4 Data API.</b> Every term
+        below returns <code>addToCarts</code>, <code>ecommercePurchases</code> and <code>purchaseRevenue</code> as a
+        flat zero when queried alongside <code>searchTerm</code> &mdash; including terms independently confirmed
+        (below) to convert. This is an API-scope limitation (<code>searchTerm</code> doesn't join to session/ecommerce
+        metrics through this endpoint, unlike GA4 UI's discontinued Site Search report), not a real "nobody buys
+        after searching X" signal. A true per-term revenue view needs the BigQuery export.</p>
+    </div>
+    <div class="twrap" style="margin-top:14px;">
+      <table>
+        <thead><tr><th>Search term</th><th class="num">Sessions (60d)</th><th class="num">Users</th><th>Live result</th></tr></thead>
+        <tbody>
+          <tr><td>classic diamond nose pin</td><td class="num">75</td><td class="num">5</td><td><span class="chip critical">0 results &mdash; confirmed bug</span></td></tr>
+          <tr><td>kids Earrings</td><td class="num">25</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>tn0031 <span class="chip low" style="margin-left:4px;">SKU</span></td><td class="num">18</td><td class="num">1</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Chain</td><td class="num">11</td><td class="num">11</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Earrings</td><td class="num">10</td><td class="num">7</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Gold coin</td><td class="num">10</td><td class="num">2</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>Necklace</td><td class="num">9</td><td class="num">7</td><td><span class="chip good">has results</span></td></tr>
+          <tr><td>Tennis bracelet</td><td class="num">9</td><td class="num">9</td><td><span class="chip good">has results</span></td></tr>
+          <tr><td>Nosepin</td><td class="num">8</td><td class="num">6</td><td><span class="chip critical">0 results &mdash; confirmed bug</span></td></tr>
+          <tr><td>Pendant</td><td class="num">8</td><td class="num">9</td><td><span class="chip good">has results</span></td></tr>
+          <tr><td>Rings</td><td class="num">8</td><td class="num">7</td><td><span class="chip low">not checked</span></td></tr>
+          <tr><td>mangalsutra / Mangalsutra</td><td class="num">8</td><td class="num">6</td><td><span class="chip critical">0 results &mdash; confirmed bug</span></td></tr>
+          <tr><td>ANGUTHI <span class="chip low" style="margin-left:4px;">Hindi: ring</span></td><td class="num">1</td><td class="num">1</td><td><span class="chip good">has results</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note" style="font-size:12px;color:var(--faint);margin-top:8px;">687 distinct non-blank terms were
+      logged over 60 days; volume drops off fast after the top ~15 (long tail of one-off SKU codes, misspellings and
+      single-word category guesses). Full list available on request &mdash; showing the terms material to the
+      confirmed defect below plus the top of the tail for context.</p>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Critical</span><h2>The confirmed defect: a taxonomy mismatch zeroes out entire categories</h2></div>
+    <div class="banner alarm">
+      <p style="margin:0;"><b>Lucira's #1 search term by volume ("classic diamond nose pin", 75 sessions/60d) has
+        returned zero results on every query variant tested</b> &mdash; not because the product doesn't exist, but
+        because the storefront auto-applies a category filter whose value doesn't match the Shopify catalog.</p>
+    </div>
+    <div class="split" style="margin-top:16px;">
+      <div class="card">
+        <h4>What the site does</h4>
+        <p style="font-size:13px;margin:0;">Any query containing "nose pin" silently appends
+          <code>&filter.p.product_type=Nose+Pins</code> to the URL &mdash; even when the user (or this audit) never
+          requested a filter. Any query containing "mangalsutra" appends
+          <code>&filter.p.product_type=Mangalsutras</code>. Both are auto-added client-side and cannot be removed by
+          the shopper.</p>
+      </div>
+      <div class="card">
+        <h4>What the catalog actually has</h4>
+        <p style="font-size:13px;margin:0;">Shopify's real <code>product_type</code> values are
+          <code>Nosepins</code> (one word) and <code>Mangalsutra</code> (singular) &mdash; confirmed via the Admin
+          API. At least 10 active nose-pin products are in stock, including <b>"Classic Round Diamond Nosepin"</b>
+          (9 units, ₹5,999) &mdash; a near-exact match for the broken term &mdash; and 5+ active Mangalsutra pieces.
+          The filter value and the catalog value simply don't agree, so the intersection is always empty.</p>
+      </div>
+    </div>
+    <div class="twrap" style="margin-top:16px;">
+      <table>
+        <thead><tr><th>Query tested live</th><th>Auto-applied filter</th><th>Real catalog <code>product_type</code></th><th>Result</th></tr></thead>
+        <tbody>
+          <tr><td>classic diamond nose pin</td><td><code>Nose+Pins</code></td><td><code>Nosepins</code></td><td class="bad">0 results</td></tr>
+          <tr><td>nose pin</td><td><code>Nose+Pins</code></td><td><code>Nosepins</code></td><td class="bad">0 results</td></tr>
+          <tr><td>diamond nose pin</td><td><code>Nose+Pins</code></td><td><code>Nosepins</code></td><td class="bad">0 results</td></tr>
+          <tr><td>mangalsutra</td><td><code>Mangalsutras</code></td><td><code>Mangalsutra</code></td><td class="bad">0 results</td></tr>
+          <tr><td>tennis bracelet <span class="chip low" style="margin-left:4px;">control</span></td><td><code>Bracelets</code></td><td><code>Bracelets</code></td><td class="ok">results shown</td></tr>
+          <tr><td>Pendant <span class="chip low" style="margin-left:4px;">control</span></td><td><code>Pendants</code></td><td><code>Pendants</code></td><td class="ok">results shown</td></tr>
+          <tr><td>Necklace <span class="chip low" style="margin-left:4px;">control</span></td><td><code>Necklaces</code></td><td><code>Necklaces</code></td><td class="ok">results shown</td></tr>
+          <tr><td>ANGUTHI <span class="chip low" style="margin-left:4px;">control, no auto-filter</span></td><td class="dim">none applied</td><td class="dim">&mdash;</td><td class="ok">results shown</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note" style="font-size:12px;color:var(--faint);margin:10px 0 0;">Not a sitewide search outage &mdash;
+      3 of 5 category filters tested map correctly. This is a scoped but real defect in at least two categories, and
+      the fact that two different categories both broke on a singular/plural or spacing mismatch suggests the
+      mapping table was hand-typed against a category list, not read from live <code>product_type</code> values.
+      <b>Recommend a full audit</b>: every value the search auto-filter can emit, checked against actual
+      <code>product_type</code> values in the catalog.</p>
+
+    <div class="devlabel" style="margin-top:22px;">Real user hitting this bug &mdash; Clarity session recording, 11 Aug</div>
+    <div class="banner">
+      <p style="margin:0;">Facebook-retargeting visitor lands on <code>/search?q=classic+diamond+nose+pin&amp;
+        filter.p.product_type=Nose+Pins</code>, sees <b>"0 Results"</b>, dead-clicks the "0 Results" chip, dead-clicks
+        the quoted search term itself, clicks "No Results Found", then falls into the Spin-the-Wheel popup and leaves
+        &mdash; total session length <b>34 seconds</b>.
+        <a href="https://clarity.microsoft.com/player/ro0m9zh071/2ab3ef/17su8d1" target="_blank" rel="noopener">Watch the recording &rarr;</a></p>
+    </div>
+
+    <div class="devlabel" style="margin-top:22px;">Live screenshots, mobile &mdash; broken vs. control</div>
+    <div class="quad">
+      <figure>
+        <div class="shot"><img src="captures/search-classic-diamond-nose-pin-filtered-mobile.png" alt="Search for classic diamond nose pin showing 0 results"></div>
+        <figcaption><b>Broken.</b> "classic diamond nose pin" &mdash; the site's #1 search term &mdash; returns
+          0 Results. The spin-the-wheel popup fires immediately on top of the empty state.</figcaption>
+      </figure>
+      <figure>
+        <div class="shot"><img src="captures/search-mangalsutra-mobile.png" alt="Search for mangalsutra showing 0 results"></div>
+        <figcaption><b>Broken.</b> "mangalsutra" &mdash; same root cause, different category
+          (<code>Mangalsutras</code> filter vs. <code>Mangalsutra</code> catalog value).</figcaption>
+      </figure>
+      <figure>
+        <div class="shot"><img src="captures/search-tennis-bracelet-mobile.png" alt="Search for tennis bracelet showing results"></div>
+        <figcaption><b>Control &mdash; works.</b> "tennis bracelet" auto-filters to <code>Bracelets</code>, which
+          matches the catalog, and returns a full results grid.</figcaption>
+      </figure>
+      <figure>
+        <div class="shot"><img src="captures/search-necklace-mobile.png" alt="Search for necklace showing results"></div>
+        <figcaption><b>Control &mdash; works.</b> "Necklace" auto-filters to <code>Necklaces</code>, matches, and
+          returns results.</figcaption>
+      </figure>
+    </div>
+    <p class="note" style="font-size:12px;color:var(--faint);margin-top:8px;">Captured live via the <code>cro_screenshot</code>
+      Playwright tool, mobile profile (375&times;812 @2x, iPhone UA), 11 Aug 2026. Full-page captures; scroll within
+      each frame to see the rest of the page.</p>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Behaviour</span><h2>Clarity signals on /search</h2>
+      <span class="note">7d, 5&ndash;11 Aug</span></div>
+    <div class="kpis">
+      <div class="kpi"><div class="lbl">Sessions</div><div class="num">644</div></div>
+      <div class="kpi"><div class="lbl">Rage clicks</div><div class="num ok">2</div></div>
+      <div class="kpi"><div class="lbl">Dead clicks</div><div class="num warn">15</div></div>
+      <div class="kpi"><div class="lbl">Avg scroll depth</div><div class="num">45.0%</div></div>
+    </div>
+    <p style="font-size:13px;margin-top:6px;">Rage clicks are low &mdash; this doesn't read as a broadly frustrating
+      page. The dead clicks concentrate almost entirely on the zero-results defect above:</p>
+    <div class="twrap">
+      <table>
+        <thead><tr><th>Dead-clicked text</th><th class="num">Dead clicks (7d)</th></tr></thead>
+        <tbody>
+          <tr><td>Trending Search &mdash; "classic di[amond nose pin]"</td><td class="num bad">25</td></tr>
+          <tr><td>"classic diamond nose pin</td><td class="num bad">15</td></tr>
+          <tr><td>NO RESULTS FOUND / Results for "classic diam...</td><td class="num bad">8</td></tr>
+          <tr><td>No Results Found</td><td class="num bad">6</td></tr>
+          <tr><td>Spin the Wheel</td><td class="num">5</td></tr>
+          <tr><td>Trending Search (other terms)</td><td class="num">5</td></tr>
+          <tr><td>Filters / Clear All / In Store Available</td><td class="num">5</td></tr>
+          <tr><td>Home &rsaquo; Search Results (breadcrumb)</td><td class="num">5</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note" style="font-size:12px;color:var(--faint);margin-top:8px;">The zero-results page itself
+      re-suggests the same broken term as a "Trending Search" chip &mdash; clicking it re-runs the identical broken
+      query, which is why it's the single most dead-clicked element on the page (25 clicks/7d).</p>
+    <div class="devlabel" style="margin-top:18px;">JavaScript errors on /search (7d)</div>
+    <div class="twrap">
+      <table>
+        <thead><tr><th>Error</th><th class="num">Sessions</th></tr></thead>
+        <tbody>
+          <tr><td><code>undefined is not an object (evaluating 'window.webkit.messageHandlers')</code></td><td class="num">4</td></tr>
+          <tr><td><code>Error invoking postMessage: Java object is gone</code></td><td class="num">2</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note" style="font-size:12px;color:var(--faint);margin-top:8px;">Both are the known in-app-browser
+      WebView bridge errors already tracked against Meta/Instagram traffic sitewide (see
+      <a href="page-traffic-ads.html">Traffic &amp; Meta/Ads</a>) &mdash; not unique to search, just present here too
+      because that traffic also searches.</p>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Recommendations</span><h2>What to do next</h2></div>
+    <div class="split">
+      <div class="card">
+        <h4>Fix now</h4>
+        <ol class="rec-list">
+          <li><b>Correct the two confirmed filter/catalog mismatches</b> &mdash; point the "nose pin" auto-filter at
+            <code>Nosepins</code> and the "mangalsutra" auto-filter at <code>Mangalsutra</code>. This alone recovers
+            at least ~85 sessions/60d (nose-pin family) + ~8 sessions/60d (mangalsutra family) from a guaranteed
+            dead end, on a term that's currently the single highest-volume query on the site.</li>
+          <li><b>Audit the full auto-filter mapping table</b> against live <code>product_type</code> values &mdash;
+            this was found from spot-checking 5 categories and 2 broke. There is no reason to assume those are the
+            only two.</li>
+          <li>Stop re-suggesting a broken term as a "Trending Search" chip on its own zero-results page &mdash; at
+            minimum, suppress trending-search suggestions that themselves resolve to 0 results.</li>
+        </ol>
+      </div>
+      <div class="card">
+        <h4>Investigate next</h4>
+        <ol class="rec-list">
+          <li>Search converts new (first-time) visitors at roughly a third the rate of returning visitors and closes
+            zero purchases from them in 30 days. Worth a qualitative look at whether search UI assumes brand
+            familiarity (e.g. SKU-style/internal naming in results) that a first-time visitor wouldn't have.</li>
+          <li>Get BigQuery export access to unlock true per-search-term revenue/add-to-cart &mdash; the Data API
+            cannot join <code>searchTerm</code> to ecommerce outcomes, so today's term list has no reliable
+            conversion column.</li>
+          <li>Spot-check the remaining un-tested top terms (kids Earrings, tn0031, Chain, Rings) the same way, to
+            size the taxonomy-mismatch problem beyond the two confirmed categories.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <div class="foot">
+    Sources: GA4 (30d/60d event, funnel and search-term reports), Microsoft Clarity (7d dashboard queries + session
+    recording), Shopify Admin API (product/product_type cross-reference), Playwright <code>cro_screenshot</code>
+    (live captures, 11 Aug 2026). Full narrative in <a href="insights.html">Insights</a>.
+  </div>
+
+</div>
+</body>
+</html>
