@@ -1282,15 +1282,85 @@
     </div>
   </section>
 
+  <div class="divider">
+    <div class="eyebrow" style="color:var(--critical)">Added 11-14 Aug 2026 — Clarity recovered, F12 hit a 3rd week, two findings confirmed a 3rd time, and one genuinely positive signal</div>
+    <h2 style="font-size:24px;margin:6px 0 6px;">Update — the tracking break's base rate is now durable at ~60%, F18/F20 hold up a third time, and mobile purchase volume more than doubled</h2>
+    <p class="measure" style="margin:0;font-size:13.5px;color:var(--muted);">
+      Caught up 10-12 Aug (finalised) plus a look at 13-14 Aug. Microsoft Clarity's outage self-resolved without
+      intervention. Two critical findings were re-checked a third time and both held. One new, positive finding.</p>
+  </div>
+
+  <section>
+    <div class="sec-head"><span class="tag">Resolved</span><h2>Microsoft Clarity connector recovered 13 Aug, no intervention needed</h2></div>
+    <div class="banner fix">
+      <p style="margin:0;">The outage flagged in the previous update (10+ consecutive failures, 8-12 Aug) self-resolved
+        by 13 Aug — a query for 13 Aug's sessions/rage-clicks/scroll returned normally (11,779 sessions, 503 rage
+        clicks, 1,610 dead clicks, 28.57% scroll, all in the expected range), and it was used to independently
+        cross-validate that day's F12 occurrence with no issues. No connector-side fix was needed; treating this as
+        a resolved, if unusually long, outage rather than an ongoing risk. See <a href="connectors.html">Connectors</a>
+        for current status.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Critical — durable base rate confirmed</span><h2>F12/T22: now 8 of the last 13 days, including the clearest same-day self-correction seen yet</h2></div>
+    <div class="banner alarm">
+      <p style="margin:0 0 9px;">Broken-on-first-read confirmed on <b>1, 3, 4, 5, 7, 9, 10 and 13 Aug</b> — 8 of 13
+        checked days (62%), only 2, 6, 8, 11 and 12 Aug clean. 10 Aug supplied the cleanest before/after evidence
+        of the self-correction pattern to date: it was live-checked <em>same-day</em> on 10 Aug reading 99.89%
+        mobile bounce, then re-checked on 14 Aug reading a completely normal 45.21% — the same day, the same metric,
+        two different answers four days apart, nothing else changed. 13 Aug (the freshest break) is also notable for
+        hitting at <b>near-full daily volume</b> rather than a partial day — mobile bounce 99.31% on 12,768 sessions,
+        desktop 99.16% on 956 sessions — this isn't a low-traffic-hours artifact.</p>
+      <p style="margin:0;">Funnel events on 13 Aug stayed completely normal (340 add_to_cart, 77+39 begin_checkout
+        across devices, 2 purchases, 56 signups), and Clarity — freshly back online — independently confirmed real
+        behaviour was fine too. Ten days past the reported 3 Aug deployment with the identical pattern still firing
+        removes any remaining doubt: this is a standing GA4/GTM characteristic with a durable base rate around 60%
+        of days at first read, not a lingering regression. No further action beyond the documented monitoring rule
+        (never trust a same-day/next-day bounce number) unless someone wants to pursue the low-priority GTM
+        root-cause path.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Confirmed a 3rd time</span><h2>F18 & F20: both held up under a third weekly re-check</h2></div>
+    <div class="banner alarm" style="margin-bottom:10px;">
+      <p style="margin:0;"><b>F18 (Criteo + RTB.com):</b> a third week (8-13 Aug, 14,855 more sessions) shows GA4
+        starting to register 2 "conversions" for the first time — but total revenue is still exactly Rs 0, meaning
+        those are non-purchase events (the same conversion-inflation issue documented in F19), not real sales.
+        Three straight weeks, ~43,630 sessions total, zero actual revenue. The case for pausing has only gotten
+        stronger.</p>
+    </div>
+    <div class="banner fix">
+      <p style="margin:0;"><b>F20 (Shopify abandoned checkouts):</b> the 8-14 Aug check found zero new records again
+        — a full week straight at zero, despite continued cart traffic and begin_checkout events throughout. Ten
+        days total with no records, confirming this recovery channel stays effectively empty until F1/TASK-01 ships.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">New — positive</span><h2>F21/TASK-23: mobile purchase volume more than doubled week-over-week</h2></div>
+    <div class="banner fix">
+      <p style="margin:0;">Not every update needs to be a problem. GA4 purchase events by device: mobile went from
+        8 orders (Rs 58,337 revenue) in the 30 Jul-5 Aug window to <b>17 orders (Rs 79,997 revenue)</b> in the
+        6-12 Aug window — a +112% jump in order count and +37% in revenue, even as average order value fell
+        (more, lower-ticket orders rather than fewer high-ticket ones). Desktop stayed flat at 2 orders both weeks
+        — its revenue swing (Rs 67,860 to Rs 9,976) is one high-ticket ring dominating a tiny sample, not a real
+        desktop trend. Nothing in GA4/GTM or Clarity explains the mobile jump as a measurement artifact, so this
+        looks like a genuine business signal. Filed as TASK-23: worth segmenting by traffic source/product to see
+        if it's repeatable and, if so, worth protecting or amplifying rather than just noting.</p>
+    </div>
+  </section>
+
   <div class="foot">
     <div>Sources</div>
     <div class="g">
-      <div>GA4 — property 478308692 · daily series finalised through 9 Aug, funnels, pages, channels</div>
-      <div>Microsoft Clarity — ro0m9zh071 · finalised through 7 Aug; connector outage blocked 8-10 Aug checks</div>
-      <div>Shopify Admin — orders segmented by sourceName + tags; abandoned checkouts checked through 7 Aug</div>
+      <div>GA4 — property 478308692 · daily series finalised through 12 Aug, funnels, pages, channels</div>
+      <div>Microsoft Clarity — ro0m9zh071 · finalised through 12 Aug (recovered 13 Aug from an 8-12 Aug outage)</div>
+      <div>Shopify Admin — orders segmented by sourceName + tags; abandoned checkouts checked through 14 Aug</div>
       <div>Google Ads — account 2348623547 · full 30d campaign-level spend &amp; conversion pull, 30 Jul 2026</div>
       <div>Playwright 1.49 / Chromium 151 — live measurement 28 &amp; 30 Jul 2026; competitive check (caratlane.com) 4 Aug 2026</div>
-      <div>Google Search Console — attempted 30 Jul, failed (invalid_client) — not represented in this report</div>
+      <div>Google Search Console — attempted 30 Jul + 14 Aug, both failed (invalid_client) — not represented in this report</div>
     </div>
   </div>
 

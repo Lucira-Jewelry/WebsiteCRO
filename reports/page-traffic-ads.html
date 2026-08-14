@@ -146,7 +146,7 @@
   <div class="masthead">
     <div class="eyebrow">Page Insights &middot; Not a page — where the visitors come from</div>
     <h1>Traffic Sources: Meta &amp; Google Ads</h1>
-    <div class="meta">Paid Social (Meta/Instagram/Facebook), Google Ads &middot; data through 9 Aug, Ads pulled fresh 30 Jul 2026, channel-level check 7 Aug 2026</div>
+    <div class="meta">Paid Social (Meta/Instagram/Facebook), Google Ads &middot; data through 12 Aug, Ads pulled fresh 30 Jul 2026, channel-level check 7 Aug 2026</div>
   </div>
 
   <div class="goal">
@@ -225,23 +225,26 @@
   </section>
 
   <section>
-    <div class="sec-head"><span class="tag">GA4 channel &middot; new, 6 Aug</span><h2>"Paid Other" (Criteo + RTB.com retargeting): 0% conversion, two weeks straight</h2></div>
+    <div class="sec-head"><span class="tag">GA4 channel &middot; updated 14 Aug</span><h2>"Paid Other" (Criteo + RTB.com retargeting): 0% real conversion, three weeks straight</h2></div>
     <div class="kpis">
       <div class="kpi"><div class="lbl">Sessions, 29 Jul&ndash;4 Aug</div><div class="num">21,765</div></div>
       <div class="kpi"><div class="lbl">Sessions, 5&ndash;7 Aug (3d)</div><div class="num">+7,010</div></div>
-      <div class="kpi"><div class="lbl">Conversions, either week</div><div class="num bad">0</div></div>
-      <div class="kpi"><div class="lbl">Revenue, either week</div><div class="num bad">&#8377;0</div></div>
+      <div class="kpi"><div class="lbl">Sessions, 8&ndash;13 Aug (6d)</div><div class="num">+14,855</div></div>
+      <div class="kpi"><div class="lbl">Real revenue, all 3 checks</div><div class="num bad">&#8377;0</div></div>
     </div>
     <div class="banner alarm">
       <p style="margin:0;"><b>This is not a tracking gap &mdash; Clarity confirms it's real, low-quality traffic.</b>
         GA4's <code>sessionDefaultChannelGroup</code> shows "Paid Other" (Criteo + rtbcom retargeting/display
-        campaigns, live since 27 Jan 2026) sustaining zero conversions of any kind and &#8377;0 revenue across two
-        independent checks a week apart &mdash; 21,765 sessions in the first window, another 7,010 in the follow-up,
-        still zero. Cross-validated in Clarity: 74.83% bounce, 23.87% scroll on this traffic &mdash; genuinely poor
-        engagement, not a measurement blind spot. Root cause is still open: most likely either invalid/bot traffic
-        or a stale retargeting audience/creative, but confirming either would need IVT/viewability data from
-        Criteo's and RTB.com's own platforms, which isn't available here. See <b>F18/TASK-20</b> in
-        <a href="insights.html">Insights</a> &mdash; recommendation is to pause both vendors pending that
+        campaigns, live since 27 Jan 2026) sustaining &#8377;0 real revenue across three independent weekly checks
+        &mdash; 21,765 sessions in the first window, another 7,010 in the follow-up, another 14,855 in the third
+        (8-13 Aug). That third check is the first to show any "conversions" at all (2), but revenue stayed exactly
+        &#8377;0 &mdash; those are non-purchase events (the same conversion-inflation pattern documented in F19), not
+        real sales. ~43,630 sessions total, zero actual revenue. Cross-validated in Clarity: 74.83% bounce, 23.87%
+        scroll on this traffic &mdash; genuinely poor engagement, not a measurement blind spot. Root cause is still
+        open: most likely either invalid/bot traffic or a stale retargeting audience/creative, but confirming
+        either would need IVT/viewability data from Criteo's and RTB.com's own platforms, which isn't available
+        here. See <b>F18/TASK-20</b> in <a href="insights.html">Insights</a> &mdash; recommendation is to pause
+        both vendors pending that
         investigation; the evidence bar for pausing is now well past "one bad week."</p>
     </div>
   </section>
