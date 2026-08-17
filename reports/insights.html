@@ -1352,12 +1352,74 @@
     </div>
   </section>
 
+  <div class="divider">
+    <div class="eyebrow" style="color:var(--critical)">Added 15-17 Aug 2026 — F12 settled for good, the retargeting pause decision is now overdue, and a final synthesis</div>
+    <h2 style="font-size:24px;margin:6px 0 6px;">Update — nothing left to investigate on two of the biggest open questions; here's the final read</h2>
+    <p class="measure" style="margin:0;font-size:13.5px;color:var(--muted);">
+      Caught up 13-15 Aug (finalised) plus live checks through 16-17 Aug. Two findings crossed a threshold this
+      round: F12 has now been observed enough times with zero exceptions that it should stop being tracked as an
+      open question, and F18 has been re-checked enough times that "wait and see" is no longer a defensible position.</p>
+  </div>
+
+  <section>
+    <div class="sec-head"><span class="tag">Critical — now settled</span><h2>F12/T22: 9 of 16 checked days, every single occurrence self-corrected — this is closed as an investigation</h2></div>
+    <div class="banner fix">
+      <p style="margin:0 0 9px;">Broken-on-first-read confirmed on <b>1, 3, 4, 5, 7, 9, 10, 13 and 16 Aug</b> — 9 of
+        16 days checked since this was first spotted (56%). Every single occurrence has since self-corrected on
+        re-check, with zero exceptions across nine tries. Two clean same-metric before/after pairs prove the pattern
+        directly: 10 Aug read 99.89% bounce live, then 45.21% four days later; 13 Aug read 99.31% next-day, then
+        43.57% three days later. 16 Aug (the freshest, checked 17 Aug) broke the identical way at near-full volume
+        (13,795 mobile sessions, 99.38% bounce) while funnel events and Clarity both independently confirmed real
+        behaviour was completely normal — the same story as every prior occurrence.</p>
+      <p style="margin:0;"><b>The verdict:</b> nine occurrences, zero exceptions, is enough evidence for any
+        reasonable standard. This is not an active investigation anymore — it's a documented, permanent
+        characteristic of how this GA4 property processes engagement data. TASK-02 has been downgraded from
+        critical to medium priority and reclassified as monitoring-only. The one durable output of this whole
+        thread is a rule, not a fix: never trust a same-day or next-day bounce/engagement number for this
+        property without cross-checking Clarity or funnel events first.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Critical — decision overdue</span><h2>F18/TASK-20: four consecutive weekly checks at 0% real conversion — pause it</h2></div>
+    <div class="banner alarm">
+      <p style="margin:0;">Criteo + RTB.com retargeting has now been checked four separate times spanning nearly a
+        month (29 Jul-4 Aug, 5-7 Aug, 8-13 Aug, 14-16 Aug) — ~50,384 total sessions, and not one confirmed rupee of
+        real revenue across any of the four windows. The one check that showed any "conversions" (2, in the third
+        window) still showed &#8377;0 revenue, meaning those were non-purchase events, not sales. There is no
+        remaining scenario where continuing to wait produces a materially different answer than the one already in
+        hand four times over. This has moved from "recommend pausing" to simply overdue.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Final synthesis</span><h2>Where things actually stand, prioritised by what to do next</h2></div>
+    <div class="banner" style="margin-bottom:12px;">
+      <p style="margin:0 0 9px;"><b>1. Ship the checkout-step fix (T1/T2).</b> This remains the single largest
+        confirmed lever on the site. Cart visitors are the most qualified traffic on the entire property (90%+
+        engagement, near-zero new-user share) and mobile still converts cart-to-checkout at a fraction of
+        desktop's rate behind the same login requirement. The fix isn't "remove login" (ruled out via the
+        CaratLane competitive test) — it's moving the login prompt to commitment and keeping the cart visible
+        throughout, exactly as CaratLane and Lucira's own desktop flow already do. Every other finding below is
+        smaller in scale than this one.</p>
+      <p style="margin:0 0 9px;"><b>2. Pause Criteo + RTB.com now.</b> Four weekly checks, zero real revenue, is a
+        closed question — this is a spend decision, not a data question anymore. Get the spend figures and act.</p>
+      <p style="margin:0 0 9px;"><b>3. Stop tracking F12 daily.</b> Nine occurrences with a 100% self-correction
+        rate is enough evidence. Document the "wait 2-3 days, cross-check Clarity" rule once, apply it going
+        forward, and free up the attention this was consuming every cycle for the two items above.</p>
+      <p style="margin:0;"><b>4. Keep a light eye on the mobile purchase signal (F21/TASK-23) and the Shopify
+        abandoned-checkout gap (F20)</b> — both are secondary to items 1-2, but F21 is worth a segmentation pass
+        if it stabilises, and F20 will resolve itself as a side effect of shipping T1/T2, not a fix in its own
+        right.</p>
+    </div>
+  </section>
+
   <div class="foot">
     <div>Sources</div>
     <div class="g">
-      <div>GA4 — property 478308692 · daily series finalised through 12 Aug, funnels, pages, channels</div>
-      <div>Microsoft Clarity — ro0m9zh071 · finalised through 12 Aug (recovered 13 Aug from an 8-12 Aug outage)</div>
-      <div>Shopify Admin — orders segmented by sourceName + tags; abandoned checkouts checked through 14 Aug</div>
+      <div>GA4 — property 478308692 · daily series finalised through 15 Aug, funnels, pages, channels</div>
+      <div>Microsoft Clarity — ro0m9zh071 · finalised through 15 Aug</div>
+      <div>Shopify Admin — orders segmented by sourceName + tags; abandoned-checkout connector unavailable 17 Aug, last checked 14 Aug</div>
       <div>Google Ads — account 2348623547 · full 30d campaign-level spend &amp; conversion pull, 30 Jul 2026</div>
       <div>Playwright 1.49 / Chromium 151 — live measurement 28 &amp; 30 Jul 2026; competitive check (caratlane.com) 4 Aug 2026</div>
       <div>Google Search Console — attempted 30 Jul + 14 Aug, both failed (invalid_client) — not represented in this report</div>

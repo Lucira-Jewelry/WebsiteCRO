@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-08-14",
-  "window": "GA4 daily series finalised through 12 Aug (13 Aug broken-read, within T-2 reprocessing window — see TASK-02) + 7d snapshot 27 Jul–2 Aug · Clarity finalised through 12 Aug (recovered from 8-12 Aug outage) · Shopify checked through 14 Aug · Playwright + competitive check 4 Aug",
+  "generated_at": "2026-08-17",
+  "window": "GA4 daily series finalised through 15 Aug (16 Aug broken-read, within T-2 reprocessing window — see TASK-02) + 7d snapshot 27 Jul–2 Aug · Clarity finalised through 15 Aug · Shopify abandoned-checkout connector unavailable this cycle, last checked 14 Aug · Playwright + competitive check 4 Aug",
   "sources": ["GA4 property 478308692", "Microsoft Clarity ro0m9zh071", "Playwright live measurement", "Shopify Admin", "Competitive check: caratlane.com"],
   "tasks": [
     {
@@ -26,25 +26,24 @@
     },
     {
       "id": "TASK-02",
-      "title": "GA4/GTM tracking break — now confirmed on 8 separate days across 13 checked; deployment theory fully ruled out, durable ~60% base rate",
-      "priority": "critical",
+      "title": "GA4/GTM tracking break — now confirmed on 9 separate days across 16 checked; settled as a permanent GA4 characteristic, downgrade to monitoring-only",
+      "priority": "medium",
       "category": "tracking",
       "status": "open",
       "source": "GA4 + Clarity + Playwright",
       "relatedFindings": ["F12"],
       "relatedActionItems": ["T22"],
       "dateIdentified": "2026-08-01",
-      "dateConfirmed": "2026-08-14",
-      "insight": "UPDATED 14 Aug: broken-on-first-read is now confirmed on 1, 3, 4, 5, 7, 9, 10 and 13 Aug — 8 of the last 13 days (62%), only 2, 6, 8, 11 and 12 Aug clean. 1, 3, 4, 5, 7, 9 and 10 Aug have all since self-corrected within roughly 2-3 days each — 10 Aug is the cleanest before/after pair yet: same-day it read 99.89% mobile bounce, and a fresh pull on 14 Aug shows a completely normal 45.21%. 13 Aug (checked 14 Aug) is the freshest break, and notably hit at near-full daily volume rather than a partial day — mobile 99.31% bounce on 12,768 sessions, desktop 99.16% on 956 sessions, tablet 100.00%. Funnel events on 13 Aug stayed completely normal (340 add_to_cart, 77+39 begin_checkout, 2 purchases, 56 signups). Clarity — back online after its outage — independently confirms 13 Aug real behaviour was fine (11,779 sessions, 503 rage clicks, 1,610 dead clicks, 28.57% scroll, all normal range). This is now 10 days post-deployment with the identical pattern still firing — the deployment theory is fully ruled out; this is a standing GA4/GTM characteristic with a durable ~60% base rate.",
+      "dateConfirmed": "2026-08-17",
+      "insight": "UPDATED 17 Aug: broken-on-first-read is now confirmed on 1, 3, 4, 5, 7, 9, 10, 13 and 16 Aug — 9 of the last 16 days (56%), only 2, 6, 8, 11, 12, 14 and 15 Aug clean. Every prior occurrence has now self-corrected on re-check, including two clean before/after pairs: 10 Aug (99.89% live, 45.21% four days later) and 13 Aug (99.31% next-day, 43.57% three days later). 16 Aug (checked 17 Aug) is the freshest break, again near-full volume — mobile 99.38% bounce on 13,795 sessions, desktop 98.59% on 425 sessions. Funnel events on 16 Aug stayed entirely normal (382 add_to_cart, 68+5 begin_checkout, 4 purchases, 77 signups), and Clarity independently confirmed real behaviour was fine (462 rage clicks, 1,339 dead clicks, 27.21% scroll — normal range). With 9 confirmed occurrences and zero exceptions to the self-correction pattern, this is now settled: a permanent GA4 processing characteristic of this property, not an open question. Downgrading priority from critical to medium — reclassifying as monitoring-only.",
       "action": [
-        "Reclassify this as a standing GA4 data-processing characteristic (breaks on ~60% of days at first read, self-corrects within a few days) rather than a GTM regression to hunt down",
-        "Document the rule sitewide: never quote same-day or next-day bounce/engagement figures without checking Clarity or funnel events first; wait 2-3 days for GA4 to settle before trusting a bounce number",
-        "Still worth a low-priority root-cause attempt if anyone has GTM debug access — check the container's tag-firing order/timing for a race condition on the pageView trigger — but this is no longer urgent since the numbers self-correct reliably",
-        "Identify the source of the 403/400 console errors first seen 6 Aug — still unattributed",
-        "Clarity connector has recovered (was down 8-12 Aug, 10+ consecutive failures) — no further action needed there unless it recurs"
+        "Reclassify as settled: a standing GA4 data-processing characteristic (breaks on ~55-60% of days at first read, self-corrects within a few days) — stop treating this as an active investigation",
+        "Keep the sitewide rule in place: never quote same-day or next-day bounce/engagement figures without checking Clarity or funnel events first; wait 2-3 days for GA4 to settle before trusting a bounce number",
+        "Still worth a low-priority root-cause attempt if anyone has GTM debug access — check the container's tag-firing order/timing for a race condition on the pageView trigger — but no longer worth active tracking effort",
+        "Identify the source of the 403/400 console errors first seen 6 Aug — still unattributed, lowest priority remaining thread"
       ],
-      "impact": "Stops wasted effort chasing a phantom deployment regression, and sets a durable rule (wait 2-3 days, cross-check Clarity) that prevents this from causing a false alarm every time it recurs.",
-      "effort": "~1 hour to settle the before/after question, then scope accordingly, Analytics — escalated priority"
+      "impact": "Stops wasted effort chasing a phantom deployment regression, and sets a durable rule (wait 2-3 days, cross-check Clarity) that prevents this from causing a false alarm every time it recurs. No further daily tracking needed once this rule is adopted.",
+      "effort": "~1 hour to document the rule and communicate it to the team; ongoing effort should now be near zero, Analytics"
     },
     {
       "id": "TASK-03",
@@ -378,7 +377,7 @@
     },
     {
       "id": "TASK-20",
-      "title": "Pause or fix Criteo + RTB.com retargeting — now confirmed 0% real conversion across THREE consecutive weeks",
+      "title": "Pause Criteo + RTB.com retargeting — now confirmed 0% real conversion across FOUR consecutive checks, decision is overdue",
       "priority": "critical",
       "category": "traffic",
       "status": "open",
@@ -386,15 +385,15 @@
       "relatedFindings": ["F18"],
       "relatedActionItems": [],
       "dateIdentified": "2026-08-06",
-      "dateConfirmed": "2026-08-14",
-      "insight": "GA4's 'Paid Other' channel (21,765 sessions, 29 Jul-4 Aug) is almost entirely two vendors — rtbcom-retargeting and Criteo's display campaigns (both set up 27 Jan 2026) — with zero conversions and Rs 0 revenue. RE-CHECKED 5-7 Aug: another 7,010 sessions, again exactly 0 conversions, Rs 0 revenue. RE-CHECKED AGAIN 8-13 Aug: another 14,855 sessions — this time 2 'conversions' appear, but revenue is still exactly Rs 0, meaning those are non-purchase events (the same conversion-inflation pattern as TASK-21/F19), not real sales. Three straight weeks, ~43,630 sessions total, still zero actual revenue. Cross-checked directly in Clarity: this traffic bounces at 74.83% and scrolls only 23.87%, both far worse than the sitewide average — this is genuinely low-quality traffic, not a tracking gap hiding real engagement. Retargeting specifically converting at 0% real revenue for three weeks straight is a strong, now very well-evidenced case for pausing.",
+      "dateConfirmed": "2026-08-17",
+      "insight": "GA4's 'Paid Other' channel (21,765 sessions, 29 Jul-4 Aug) is almost entirely two vendors — rtbcom-retargeting and Criteo's display campaigns (both set up 27 Jan 2026) — with zero conversions and Rs 0 revenue. RE-CHECKED 5-7 Aug: another 7,010 sessions, again exactly 0 conversions, Rs 0 revenue. RE-CHECKED 8-13 Aug: another 14,855 sessions, 2 non-purchase 'conversions' (same inflation pattern as TASK-21/F19) but still Rs 0 real revenue. RE-CHECKED AGAIN 14-16 Aug: another 6,754 sessions, back to 0 conversions of any kind, Rs 0 revenue. Four consecutive checks, ~50,384 sessions total, not one rupee of confirmed real revenue this entire time. Cross-checked directly in Clarity: this traffic bounces at 74.83% and scrolls only 23.87%, both far worse than the sitewide average — this is genuinely low-quality traffic, not a tracking gap hiding real engagement. There is no remaining scenario in which more waiting produces a different answer.",
       "action": [
         "Get the actual weekly/monthly spend on rtbcom and Criteo — this data shows volume but not cost, and cost is the missing piece for a pause decision",
-        "With three full weeks of 0% real conversion now confirmed, recommend pausing both immediately rather than continuing to watch — the 'is this real' question has been answered three times over",
+        "Pause both immediately — four consecutive checks at 0% real conversion removes any reasonable case for continuing to \"just watch a bit longer\"",
         "If keeping either, check whether their landing pages/redirects are stripping tracking parameters or loading differently from normal traffic (similar to the Meta in-app WebView issue in F4)",
         "Re-run this same channel check after any fix to confirm real (purchase-backed) conversions start appearing before resuming spend at volume"
       ],
-      "impact": "This is the single largest pool of traffic on the site with zero measurable business return for three consecutive weeks running — larger in volume than Paid Search + Organic Search + Direct + Referral combined.",
+      "impact": "This is the single largest pool of traffic on the site with zero measurable business return across a full month of checks — larger in volume than Paid Search + Organic Search + Direct + Referral combined.",
       "effort": "~1 hour to get spend figures + pause decision, Paid media"
     },
     {
@@ -438,7 +437,7 @@
     },
     {
       "id": "TASK-23",
-      "title": "NEW — Understand what drove mobile purchase volume to more than double week-over-week (8 to 17 orders)",
+      "title": "UPDATED — mobile purchase surge has partly moderated (2.43/day peak → 1.75/day), still above original 1.14/day baseline",
       "priority": "medium",
       "category": "growth",
       "status": "needs_investigation",
@@ -446,13 +445,13 @@
       "relatedFindings": ["F21"],
       "relatedActionItems": [],
       "dateIdentified": "2026-08-14",
-      "dateConfirmed": "2026-08-14",
-      "insight": "GA4 purchase events by device, week-over-week: mobile went from 8 orders (Rs 58,337 revenue, ~Rs 7,292 AOV) in the 30 Jul-5 Aug window to 17 orders (Rs 79,997 revenue, ~Rs 4,706 AOV) in the 6-12 Aug window — a +112% jump in order count and +37% in revenue, even though average order value fell. Desktop stayed flat at 2 orders both weeks; its revenue swing (Rs 67,860 to Rs 9,976) is sample-size noise from one high-ticket ring, not a real trend, and should not be read as a desktop problem. The mobile jump has no corresponding GA4/GTM or Clarity anomaly explaining it away as a measurement artifact — it looks like a genuine, positive business signal. Nothing in the current pipeline explains *why* yet (traffic mix, a specific product, a promo, organic seasonality are all untested hypotheses).",
+      "dateConfirmed": "2026-08-17",
+      "insight": "UPDATED 17 Aug: the originally-flagged 6-12 Aug surge (2.43 mobile orders/day, up from 1.14/day the week before) has been re-checked over 13-16 Aug (4 days): 1.75 orders/day (7 orders), including 4 purchases on 16 Aug alone despite that being an F12-broken day — confirms purchases track real activity regardless of the tracking bug. So the daily rate has pulled back from the 6-12 Aug peak but is still meaningfully above the original baseline — reads as a genuine, moderating lift rather than a one-week fluke that's now fully reverted. Still worth understanding the driver, though the urgency is lower than initially flagged since it wasn't a clean step-change.",
       "action": [
-        "Break down the 17 mobile orders by traffic source/channel and by product — is this concentrated in one campaign, one SKU, or broad-based?",
-        "Check if any promo, discount code, or marketing push went out in the 6-12 Aug window that could explain more (lower-ticket) orders converting",
+        "Break down mobile orders by traffic source/channel and by product across the full 6-16 Aug window — is this concentrated in one campaign, one SKU, or broad-based?",
+        "Check if any promo, discount code, or marketing push went out in the 6-12 Aug window that could explain the peak, and whether it lapsed going into 13-16 Aug",
         "If a specific driver is found, consider whether it's repeatable/scalable rather than a one-off — this is the kind of positive signal worth protecting and amplifying, not just noting",
-        "Re-check the following week to confirm this is a sustained shift and not itself a one-week blip in the other direction"
+        "Keep tracking the daily rate for another week to see whether it stabilises around 1.75/day, keeps reverting to 1.14/day, or is still noisy at this sample size"
       ],
       "impact": "If this volume increase is repeatable and attributable to something specific, it's a lower-effort growth lever than any of the fixes above — understanding it could inform where to double down.",
       "effort": "~1 hour to segment the 17 orders and check for a promo/campaign match, Analytics + Marketing"
