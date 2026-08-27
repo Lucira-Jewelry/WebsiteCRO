@@ -106,12 +106,11 @@
   <div class="masthead">
     <div class="eyebrow">System Health</div>
     <h1>Connector Status</h1>
-    <div class="meta">Every data source this analysis depends on, checked live &middot; 30 Jul 2026, re-verified through 17 Aug 2026</div>
+    <div class="meta">Every data source this analysis depends on, checked live &middot; 30 Jul 2026, re-verified through 27 Aug 2026</div>
   </div>
 
   <div class="kpis">
-    <div class="kpi"><div class="lbl">Connected &amp; working</div><div class="num ok">5</div></div>
-    <div class="kpi"><div class="lbl">Broken</div><div class="num bad">1</div></div>
+    <div class="kpi"><div class="lbl">Connected &amp; working</div><div class="num ok">6</div></div>
     <div class="kpi"><div class="lbl">Not configured</div><div class="num warn">1</div></div>
   </div>
 
@@ -121,20 +120,20 @@
 
       <div class="conn">
         <div class="dot ok"></div>
-        <div><h4>Google Analytics 4</h4><p>Property 478308692 ("Lucira"), Standard tier &middot; sessions, funnel events, page-level data. Note: a separate engagement/bounce-rate tracking break (F12) has now recurred on 9 of the last 16 days &mdash; this is a data-quality issue within GA4, not a connector failure; the API itself is responding normally every day.</p></div>
-        <div class="status ok">CONNECTED &middot; verified 17 Aug</div>
+        <div><h4>Google Analytics 4</h4><p>Property 478308692 ("Lucira"), Standard tier &middot; sessions, funnel events, page-level data. Note: a separate engagement/bounce-rate tracking break (F12) has now recurred on 10 of the last 26 days &mdash; this is a data-quality issue within GA4, not a connector failure; the API itself is responding normally every day.</p></div>
+        <div class="status ok">CONNECTED &middot; verified 27 Aug</div>
       </div>
 
       <div class="conn">
         <div class="dot ok"></div>
-        <div><h4>Microsoft Clarity</h4><p>Project ro0m9zh071 &middot; rage/dead clicks, scroll depth, session recordings, JS errors. <b>Recovered 13 Aug</b> after an outage from 8-12 Aug (10+ consecutive failed <code>query-analytics-dashboard</code> calls across 3 sessions). Back to normal behaviour since &mdash; used to independently cross-validate the 13 Aug F12 occurrence with no issues.</p></div>
-        <div class="status ok">CONNECTED &middot; recovered 13 Aug, verified 17 Aug</div>
+        <div><h4>Microsoft Clarity</h4><p>Project ro0m9zh071 &middot; rage/dead clicks, scroll depth, session recordings, JS errors. Recovered 13 Aug after an 8-12 Aug outage; stable since, no issues across the 16-25 Aug catch-up or the 26 Aug F12 cross-validation.</p></div>
+        <div class="status ok">CONNECTED &middot; verified 27 Aug</div>
       </div>
 
       <div class="conn">
         <div class="dot ok"></div>
-        <div><h4>Shopify Admin</h4><p>luciraonline.myshopify.com, Advanced plan &middot; orders, products, customers. Note: the specific GraphQL connector used for abandoned-checkout queries (F20) was unavailable this session (17 Aug) &mdash; last checked 14 Aug, no update this cycle.</p></div>
-        <div class="status ok">CONNECTED &middot; verified 17 Aug</div>
+        <div><h4>Shopify Admin</h4><p>luciraonline.myshopify.com, Advanced plan &middot; orders, products, customers. The GraphQL connector used for abandoned-checkout queries (F20), unavailable on 17 Aug, is back &mdash; used successfully this cycle.</p></div>
+        <div class="status ok">CONNECTED &middot; verified 27 Aug</div>
       </div>
 
       <div class="conn">
@@ -143,12 +142,14 @@
         <div class="status ok">CONNECTED &middot; verified 30 Jul</div>
       </div>
 
-      <div class="conn" style="border-color:var(--critical);background:var(--critical-bg);">
-        <div class="dot bad"></div>
-        <div><h4>Google Search Console</h4><p>Attempted <code>site_snapshot</code>, <code>quick_wins</code>,
-          <code>ctr_opportunities</code> &mdash; all failed with <code>invalid_client</code> after 4 tries.
-          This is a broken OAuth client configuration, not a rate limit.</p></div>
-        <div class="status bad">BROKEN &middot; needs reconnect</div>
+      <div class="conn" style="border-color:var(--good);background:var(--good-bg);">
+        <div class="dot ok"></div>
+        <div><h4>Google Search Console</h4><p>sc-domain:lucirajewelry.com &mdash; <b>reconnected 27 Aug</b> after being
+          broken with <code>invalid_client</code> for the entire project up to this point. Now returning full
+          search-analytics, page/query breakdowns, and URL inspection data. First real findings pulled this cycle:
+          see <b>F22/F23</b> and <b>TASK-24/TASK-25</b> in <a href="insights.html">Insights</a> and
+          <a href="tasks.html">Tasks</a>.</p></div>
+        <div class="status ok">CONNECTED &middot; reconnected 27 Aug</div>
       </div>
 
       <div class="conn">
@@ -172,23 +173,20 @@
 
   <section>
     <div class="sec-head"><span class="tag">Action</span><h2>What to do about the gaps</h2></div>
-    <div class="banner alarm" style="margin-bottom:12px;">
-      <p style="margin:0;"><b>Google Search Console:</b> reconnect the connector before the next deep-dive if
-        organic search visibility, keyword rankings, or title/meta-description CTR opportunities are wanted — none
-        of that is currently represented anywhere in this report.</p>
-    </div>
     <div class="banner">
       <p style="margin:0;"><b>Meta Ads API:</b> if you want Meta's own spend/ROAS/campaign data alongside Google
         Ads (rather than inferring Paid Social behaviour from GA4 + Clarity, which is what this report does today),
-        that connector would need to be set up separately.</p>
+        that connector would need to be set up separately. This is now the only remaining gap.</p>
     </div>
   </section>
 
   <div class="foot">
-    Checked by attempting a real, lightweight call against each connector, most recently 17 Aug 2026 — this is a
+    Checked by attempting a real, lightweight call against each connector, most recently 27 Aug 2026 — this is a
     live status, not a configuration assumption. Re-run this check periodically; connector auth and uptime can
-    change independently of the data pipeline. Note: Microsoft Clarity had a 5-day outage (8-12 Aug, 10+ consecutive
-    failures) that self-resolved by 13 Aug with no intervention — worth remembering next time it happens.
+    change independently of the data pipeline. History: Microsoft Clarity had a 5-day outage (8-12 Aug) that
+    self-resolved by 13 Aug; Google Search Console was broken with <code>invalid_client</code> from the start of
+    this project until it started working again on 27 Aug, with no action taken on this end — worth remembering
+    that connector health can change without warning in either direction.
   </div>
 
 </div>

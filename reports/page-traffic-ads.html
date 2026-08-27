@@ -146,7 +146,7 @@
   <div class="masthead">
     <div class="eyebrow">Page Insights &middot; Not a page — where the visitors come from</div>
     <h1>Traffic Sources: Meta &amp; Google Ads</h1>
-    <div class="meta">Paid Social (Meta/Instagram/Facebook), Google Ads &middot; data through 15 Aug, Ads pulled fresh 30 Jul 2026, channel-level check 7 Aug 2026</div>
+    <div class="meta">Paid Social (Meta/Instagram/Facebook), Google Ads, Organic Search &middot; data through 25 Aug, Ads pulled fresh 30 Jul 2026, GSC connected 27 Aug 2026</div>
   </div>
 
   <div class="goal">
@@ -225,26 +225,26 @@
   </section>
 
   <section>
-    <div class="sec-head"><span class="tag">GA4 channel &middot; updated 17 Aug</span><h2>"Paid Other" (Criteo + RTB.com retargeting): 0% real conversion across four straight checks &mdash; pause is overdue</h2></div>
+    <div class="sec-head"><span class="tag">GA4 channel &middot; updated 27 Aug</span><h2>"Paid Other" (Criteo + RTB.com retargeting): 0% real conversion across five straight checks &mdash; ~75,450 sessions, still running</h2></div>
     <div class="kpis">
       <div class="kpi"><div class="lbl">Sessions, 29 Jul&ndash;4 Aug</div><div class="num">21,765</div></div>
       <div class="kpi"><div class="lbl">Sessions, 5&ndash;7 Aug (3d)</div><div class="num">+7,010</div></div>
       <div class="kpi"><div class="lbl">Sessions, 8&ndash;13 Aug (6d)</div><div class="num">+14,855</div></div>
-      <div class="kpi"><div class="lbl">Sessions, 14&ndash;16 Aug (3d)</div><div class="num">+6,754</div></div>
-      <div class="kpi"><div class="lbl">Real revenue, all 4 checks</div><div class="num bad">&#8377;0</div></div>
+      <div class="kpi"><div class="lbl">Sessions, 14&ndash;26 Aug (13d)</div><div class="num">+31,820</div></div>
+      <div class="kpi"><div class="lbl">Real revenue, all 5 checks</div><div class="num bad">&#8377;0</div></div>
     </div>
     <div class="banner alarm">
       <p style="margin:0;"><b>This is not a tracking gap &mdash; Clarity confirms it's real, low-quality traffic.</b>
         GA4's <code>sessionDefaultChannelGroup</code> shows "Paid Other" (Criteo + rtbcom retargeting/display
-        campaigns, live since 27 Jan 2026) sustaining &#8377;0 real revenue across four independent weekly checks
-        &mdash; 21,765 sessions in the first window, 7,010 in the second, 14,855 in the third (which briefly showed
-        2 non-purchase "conversions," same inflation pattern as F19, still &#8377;0 real revenue), and 6,754 more in
-        the fourth (14-16 Aug), back to zero conversions of any kind. ~50,384 sessions total across a full month of
-        checking, not one rupee of confirmed real revenue. Cross-validated in Clarity: 74.83% bounce, 23.87%
-        scroll on this traffic &mdash; genuinely poor engagement, not a measurement blind spot. Root cause is still
-        open (invalid/bot traffic vs. a stale retargeting audience/creative), but that no longer matters for the
-        pause decision itself. See <b>F18/TASK-20</b> in <a href="insights.html">Insights</a> &mdash; four
-        consecutive weekly checks at 0% real conversion removes any remaining case for waiting longer.</p>
+        campaigns, live since 27 Jan 2026) sustaining &#8377;0 real revenue across five independent checks spanning
+        nearly a month &mdash; 21,765 sessions in the first window, 7,010 in the second, 14,855 in the third (which
+        briefly showed 2 non-purchase "conversions," same inflation pattern as F19, still &#8377;0 real revenue),
+        6,754 more in the fourth (14-16 Aug), and 25,066 more in the fifth (17-26 Aug), back to zero conversions of
+        any kind. ~75,450 sessions total, not one rupee of confirmed real revenue at any point. Cross-validated in
+        Clarity: 74.83% bounce, 23.87% scroll on this traffic &mdash; genuinely poor engagement, not a measurement
+        blind spot. See <b>F18/TASK-20</b> in <a href="insights.html">Insights</a> &mdash; this has now been
+        re-verified five times with an identical result each time, and traffic volume shows no sign the campaigns
+        have actually been paused yet.</p>
     </div>
   </section>
 
@@ -299,15 +299,45 @@
   </section>
 
   <section>
-    <div class="sec-head"><span class="tag">Gap</span><h2>Organic search (Google Search Console)</h2></div>
-    <p class="measure" style="font-size:13.5px;color:var(--muted);">Not represented here — the connector is broken.
-      See <a href="connectors.html">Connectors</a> for details and what's needed to fix it.</p>
+    <div class="sec-head"><span class="tag">New, 27 Aug</span><h2>Organic search (Google Search Console) — reconnected for the first time this project</h2></div>
+    <div class="kpis">
+      <div class="kpi"><div class="lbl">Clicks, 28d</div><div class="num">4,693</div></div>
+      <div class="kpi"><div class="lbl">Impressions, 28d</div><div class="num">843,385</div></div>
+      <div class="kpi"><div class="lbl">Blended CTR</div><div class="num warn">0.56%</div></div>
+      <div class="kpi"><div class="lbl">Avg position</div><div class="num">9.0</div></div>
+    </div>
+    <div class="banner alarm" style="margin-bottom:12px;">
+      <p style="margin:0;"><b>The blended CTR number is misleading — it's mostly a low-intent traffic type, not a
+        real SEO problem.</b> Impressions roughly doubled from ~20K/day (early Aug) to ~40-50K/day (from 15 Aug
+        onward) while CTR nearly halved (0.6-0.9% down to 0.4-0.5%). The cause: a family of programmatic
+        "[city]-[metal]-rate-today" pages (nanded-silver-rate-today +9,312 impressions/+1877%, jamshedpur-gold-rate-today
+        +3,720 impressions/+33,818%, port-blair-gold-rate-today +9,414 impressions) started ranking hard for generic
+        commodity-price queries — "gold rate today" alone gets 32,850 impressions at a 0.2% CTR, "silver rate today"
+        22,257 at 0.21%. These are people checking a metal price, not shopping for jewellery; near-zero CTR here is
+        correct, expected behaviour, not a defect. See <b>F22/TASK-24</b> in <a href="insights.html">Insights</a>.</p>
+    </div>
+    <div class="banner alarm" style="margin-bottom:12px;">
+      <p style="margin:0;"><b>The bigger issue: real product pages are almost invisible in organic search.</b> None
+        of the 6 reference PDP/PLP pages this project tracks appear in the top-20 organic pages by impressions —
+        all visibility is either branded ("lucira jewellery" etc — excellent, 15-65% CTR at position 1-2) or the
+        generic rate-checker content above. Worse, one reference PDP
+        (<code>/products/corinthian-pave-diamond-mens-ring</code>) shows a stale <b>404</b> in Google's index —
+        last crawled 2026-05-02, months before this project's own traffic data even starts, despite the page being
+        live and getting real GA4 sessions every day since. The other 3 reference pages checked the same way are
+        all freshly and correctly indexed. See <b>F23/TASK-25</b> — requesting re-indexing is a 15-minute fix.</p>
+    </div>
+    <div class="banner fix">
+      <p style="margin:0;"><b>Genuine positive:</b> two blog posts (VVS/EF diamonds, 22-carat gold hallmark) are
+        climbing in both position (11.5→8.5 and 9.8→8.1) and clicks (+160%, +137%) over the same window — real
+        content-SEO traction worth building on, separate from the rate-page noise.</p>
+    </div>
   </section>
 
   <div class="foot">
     Sources: GA4 channel/landing-page data (7d), GA4 30d page-level data (for the filter above), Microsoft Clarity
-    JS-error signatures, Google Ads full account pull (30 Jul 2026). Full narrative in
-    <a href="insights.html">Insights</a>; tasks tracked in <a href="action_plan.html">Action Plan</a> (T9, T10, T12, T13, T17).
+    JS-error signatures, Google Ads full account pull (30 Jul 2026), Google Search Console (sc-domain:lucirajewelry.com,
+    28d, reconnected 27 Aug 2026). Full narrative in
+    <a href="insights.html">Insights</a>; tasks tracked in <a href="action_plan.html">Action Plan</a> (T9, T10, T12, T13, T17) and <a href="tasks.html">Tasks</a> (TASK-24, TASK-25).
   </div>
 
 </div>
