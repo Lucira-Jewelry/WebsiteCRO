@@ -1414,15 +1414,146 @@
     </div>
   </section>
 
+  <div class="divider">
+    <div class="eyebrow" style="color:var(--critical)">Added 18-27 Aug 2026 — Google Search Console reconnected for the first time this project, plus routine catch-up</div>
+    <h2 style="font-size:24px;margin:6px 0 6px;">Update — organic search finally has a voice, and it changes the picture: real product pages are nearly invisible, and a big chunk of visibility is low-intent noise</h2>
+    <p class="measure" style="margin:0;font-size:13.5px;color:var(--muted);">
+      Caught up 16-25 Aug (finalised) plus a live check through 27 Aug. The headline this cycle isn't GA4 or
+      Clarity — it's that Google Search Console, broken with <code>invalid_client</code> since the very start of
+      this project, is working again. What it shows changes how the "improve further" question should be answered.</p>
+  </div>
+
+  <section>
+    <div class="sec-head"><span class="tag">New — reconnected</span><h2>F22: organic search impressions doubled, CTR nearly halved — almost entirely explained by "gold rate today" pages, not a real SEO problem</h2></div>
+    <div class="banner alarm">
+      <p style="margin:0 0 9px;">28-day GSC totals (30 Jul-27 Aug): <b>4,693 clicks, 843,385 impressions, 0.56%
+        blended CTR, average position 9.0</b>. The daily trend shows impressions roughly doubling from ~20K/day in
+        early August to ~40-50K/day from 15 Aug onward, while CTR nearly halved (0.6-0.9% down to 0.4-0.5%) over
+        the same window — the kind of shift that looks alarming in a blended chart.</p>
+      <p style="margin:0;">A page-level before/after comparison (30 Jul-13 Aug vs 14-26 Aug) pins the cause exactly:
+        a family of programmatic <code>[city]-[metal]-rate-today</code> pages started ranking hard for generic
+        commodity-price queries mid-month — <b>nanded-silver-rate-today</b> (+9,312 impressions, +1877%),
+        <b>jamshedpur-gold-rate-today</b> (+3,720 impressions, +33,818%), <b>port-blair-gold-rate-today</b> (+9,414
+        impressions), <b>alwar-silver-rate-today</b> (+6,964 impressions), among many more. Query-level data
+        confirms who's searching: "gold rate today" alone carries 32,850 impressions at a 0.2% CTR, "silver rate
+        today" 22,257 at 0.21%, "silver rate today" + city modifiers add tens of thousands more, all in the same
+        0.2-1.8% CTR range. These are people checking a metal price, not shopping for jewellery — the near-zero
+        CTR is the correct, expected outcome for that intent, not a defect to fix.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">New — reconnected</span><h2>F22 continued: the real gap — actual product pages are almost invisible in organic search</h2></div>
+    <div class="banner alarm">
+      <p style="margin:0 0 9px;">None of the 6 reference PDP/PLP pages this project tracks appear anywhere in the
+        top-20 organic pages by impressions. Every unit of organic visibility on this site is either (a) branded
+        queries — excellent, "lucira jewellery" runs 14-21% CTR at position ~1.1-1.6, "lucira diamond" hits 65% CTR
+        — or (b) the rate-checker content above. There is essentially no meaningful organic visibility for
+        buyer-intent queries like "diamond ring for men" or "lab-grown diamond earrings" pointed at dedicated,
+        optimised commercial pages.</p>
+      <p style="margin:0;">A look at the homepage's own long-tail query list is telling: it's picking up scattered
+        impressions for genuine shopping queries ("1 carat diamond ring solitaire", "diamond nose pin", "designer
+        earrings in gold", "0.25 carat diamond ring") at 0-1 clicks each and positions 2-12 — meaning there IS some
+        real buyer-intent search volume reaching the site, but Google is matching the generic homepage to it for
+        lack of a better-targeted page, rather than a dedicated PDP/PLP built to answer that specific query. This is
+        a content/architecture gap, not a demand gap. Separately, the homepage's own CTR also declined independently
+        (6.49%→4.54%, -258 clicks, position roughly flat) over the same window — most likely diluted by the same
+        broader indexing event pulling in more loosely-matched queries, though this wasn't isolated with full
+        certainty. Filed as <b>TASK-24</b>.</p>
+    </div>
+    <div class="banner fix">
+      <p style="margin:0;"><b>Genuine bright spot:</b> two blog posts — "VVS/EF diamonds, what they really mean"
+        and "22-carat gold hallmark" — are climbing in both position (11.5→8.5 and 9.8→8.1) and clicks (+160%,
+        +137%) over the same window. This is real, organic content-SEO traction, distinct from the rate-page noise,
+        and worth treating as a template for what to build more of.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">New — reconnected</span><h2>F23: a reference PDP shows a stale 404 in Google's index, last crawled in May — a 15-minute fix</h2></div>
+    <div class="banner fix">
+      <p style="margin:0;">GSC's URL Inspection API reports coverage_state "Not found (404)" for
+        <code>/products/corinthian-pave-diamond-mens-ring</code> — one of this project's own 6 reference pages,
+        with real GA4 traffic every single day tracked. The catch: <code>last_crawled</code> is <b>2026-05-02</b>,
+        months before this project's data even begins. A live fetch just now confirms the page renders correctly
+        with a proper title tag. Cross-checked the other 3 reference pages the same way: <code>/collections/eterna</code>
+        shows "Submitted and indexed", PASS verdict, crawled fresh on 14 Aug — confirming this is an isolated stale
+        record, not a site-wide indexing problem. A stale 404 can actively suppress a page from search results even
+        when the live page works fine. Filed as <b>TASK-25</b> — request re-indexing via GSC, and spot-check a few
+        more PDPs in case this is more widespread than one page.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Routine catch-up</span><h2>F12, F18, F20, F21 — all re-checked, no surprises</h2></div>
+    <div class="banner" style="margin-bottom:10px;">
+      <p style="margin:0;"><b>F12 (GA4 tracking break):</b> now 10 occurrences across 26 checked days (38%, down
+        from the ~56-60% estimated on a smaller sample) — 26 Aug broke again at near-full volume, cross-validated
+        clean in Clarity and funnel events as always. Notably, 17-25 Aug ran a 9-day clean streak — the longest
+        all project — proving this comes in clusters, not a steady rate. Revising the mental model accordingly;
+        still monitoring-only.</p>
+    </div>
+    <div class="banner" style="margin-bottom:10px;">
+      <p style="margin:0;"><b>F18 (Criteo/RTB.com):</b> 5th consecutive check (17-26 Aug, +25,066 sessions) — back
+        to 0 conversions of any kind, Rs 0 revenue. ~75,450 sessions total across nearly a month, never a confirmed
+        rupee of real revenue. TASK-20 now also asks directly whether the pause was ever actually actioned, since
+        volume shows no sign of having stopped.</p>
+    </div>
+    <div class="banner" style="margin-bottom:10px;">
+      <p style="margin:0;"><b>F20 (Shopify abandoned checkouts):</b> 1 new record in the 13 days since the last
+        check (17 Aug, Rs 1,76,368) — across the full ~4-week tracking period only 4 records exist in total. Same
+        conclusion as before, now with a longer track record behind it.</p>
+    </div>
+    <div class="banner">
+      <p style="margin:0;"><b>F21 (mobile purchase signal):</b> a third re-check (19-25 Aug: 1.57/day) lands in the
+        same 1.5-1.75/day band as the prior two checks — durable, if modest, above the 1.14/day original baseline.
+        Enough consistency now to stop treating this as an active weekly investigation and just track it in the
+        normal cadence.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">How to improve further</span><h2>Where the next real gains are, in priority order</h2></div>
+    <div class="banner" style="margin-bottom:10px;">
+      <p style="margin:0 0 9px;"><b>1. Ship T1/T2 (checkout-step fix) — still the single largest lever on the
+        site, unchanged from every prior synthesis.</b> Cart visitors are the most qualified traffic on the entire
+        property. Nothing below outranks this in expected impact per unit of effort.</p>
+      <p style="margin:0;"><b>2. Pause Criteo + RTB.com — now simply overdue.</b> Five checks, ~75,450 sessions,
+        zero real revenue. Confirm whether this has actually been actioned; if not, this is the single easiest
+        "stop wasting money" decision available right now.</p>
+    </div>
+    <div class="banner" style="margin-bottom:10px;">
+      <p style="margin:0 0 9px;"><b>3. Build dedicated, optimised pages for buyer-intent search queries — this is
+        the newest, and possibly the largest untapped, opportunity this project has surfaced.</b> GSC shows real
+        demand ("1 carat diamond ring solitaire", "diamond nose pin", specific carat/style searches) landing weakly
+        on the homepage instead of a matching PDP/PLP. Unlike paid channels, this is free, compounding traffic once
+        built — pick the 10-20 highest-volume buyer-intent queries already showing impressions and build or
+        optimise a page to specifically answer each one.</p>
+      <p style="margin:0;"><b>4. Fix the stale-404 PDP (TASK-25) — 15 minutes, do it today.</b> Free visibility
+        recovery for a page that already converts; no reason to wait.</p>
+    </div>
+    <div class="banner">
+      <p style="margin:0 0 9px;"><b>5. Decide, on purpose, what the rate-checker pages are for.</b> They're not
+        broken — they're doing exactly what they were built to do (rank for commodity-price searches). The question
+        is whether that's worth the pages/effort at all, and if so, whether they should route people toward the
+        actual product catalog instead of dead-ending. Report their performance separately from commercial-intent
+        SEO so one doesn't distort the other.</p>
+      <p style="margin:0;"><b>6. Double down on blog content — it's the one organic channel already showing
+        genuine, unambiguous growth</b> (F22's blog posts: +160%/+137% clicks, climbing rank). More content in the
+        same vein (jewellery education, buying guides, hallmark/certification explainers) is a proven, working
+        formula — extend it rather than starting something new.</p>
+    </div>
+  </section>
+
   <div class="foot">
     <div>Sources</div>
     <div class="g">
-      <div>GA4 — property 478308692 · daily series finalised through 15 Aug, funnels, pages, channels</div>
-      <div>Microsoft Clarity — ro0m9zh071 · finalised through 15 Aug</div>
-      <div>Shopify Admin — orders segmented by sourceName + tags; abandoned-checkout connector unavailable 17 Aug, last checked 14 Aug</div>
+      <div>GA4 — property 478308692 · daily series finalised through 25 Aug, funnels, pages, channels</div>
+      <div>Microsoft Clarity — ro0m9zh071 · finalised through 25 Aug</div>
+      <div>Shopify Admin — orders segmented by sourceName + tags; abandoned checkouts checked through 27 Aug</div>
       <div>Google Ads — account 2348623547 · full 30d campaign-level spend &amp; conversion pull, 30 Jul 2026</div>
+      <div>Google Search Console — sc-domain:lucirajewelry.com · reconnected 27 Aug 2026 after being broken (invalid_client) since project start; search analytics, page/query breakdowns, URL inspection all now working</div>
       <div>Playwright 1.49 / Chromium 151 — live measurement 28 &amp; 30 Jul 2026; competitive check (caratlane.com) 4 Aug 2026</div>
-      <div>Google Search Console — attempted 30 Jul + 14 Aug, both failed (invalid_client) — not represented in this report</div>
     </div>
   </div>
 

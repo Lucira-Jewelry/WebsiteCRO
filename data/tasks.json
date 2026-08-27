@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-08-17",
-  "window": "GA4 daily series finalised through 15 Aug (16 Aug broken-read, within T-2 reprocessing window — see TASK-02) + 7d snapshot 27 Jul–2 Aug · Clarity finalised through 15 Aug · Shopify abandoned-checkout connector unavailable this cycle, last checked 14 Aug · Playwright + competitive check 4 Aug",
-  "sources": ["GA4 property 478308692", "Microsoft Clarity ro0m9zh071", "Playwright live measurement", "Shopify Admin", "Competitive check: caratlane.com"],
+  "generated_at": "2026-08-27",
+  "window": "GA4 daily series finalised through 25 Aug (26 Aug broken-read, within T-2 reprocessing window — see TASK-02) + 7d snapshot 27 Jul–2 Aug · Clarity finalised through 25 Aug · Shopify abandoned-checkout connector reconnected, checked through 27 Aug · Google Search Console reconnected 27 Aug for the first time this project · Playwright + competitive check 4 Aug",
+  "sources": ["GA4 property 478308692", "Microsoft Clarity ro0m9zh071", "Playwright live measurement", "Shopify Admin", "Google Search Console: sc-domain:lucirajewelry.com", "Competitive check: caratlane.com"],
   "tasks": [
     {
       "id": "TASK-01",
@@ -26,7 +26,7 @@
     },
     {
       "id": "TASK-02",
-      "title": "GA4/GTM tracking break — now confirmed on 9 separate days across 16 checked; settled as a permanent GA4 characteristic, downgrade to monitoring-only",
+      "title": "GA4/GTM tracking break — now 10 occurrences across 26 checked days; base rate revised down (~38%), comes in clusters not a steady rate",
       "priority": "medium",
       "category": "tracking",
       "status": "open",
@@ -34,10 +34,10 @@
       "relatedFindings": ["F12"],
       "relatedActionItems": ["T22"],
       "dateIdentified": "2026-08-01",
-      "dateConfirmed": "2026-08-17",
-      "insight": "UPDATED 17 Aug: broken-on-first-read is now confirmed on 1, 3, 4, 5, 7, 9, 10, 13 and 16 Aug — 9 of the last 16 days (56%), only 2, 6, 8, 11, 12, 14 and 15 Aug clean. Every prior occurrence has now self-corrected on re-check, including two clean before/after pairs: 10 Aug (99.89% live, 45.21% four days later) and 13 Aug (99.31% next-day, 43.57% three days later). 16 Aug (checked 17 Aug) is the freshest break, again near-full volume — mobile 99.38% bounce on 13,795 sessions, desktop 98.59% on 425 sessions. Funnel events on 16 Aug stayed entirely normal (382 add_to_cart, 68+5 begin_checkout, 4 purchases, 77 signups), and Clarity independently confirmed real behaviour was fine (462 rage clicks, 1,339 dead clicks, 27.21% scroll — normal range). With 9 confirmed occurrences and zero exceptions to the self-correction pattern, this is now settled: a permanent GA4 processing characteristic of this property, not an open question. Downgrading priority from critical to medium — reclassifying as monitoring-only.",
+      "dateConfirmed": "2026-08-27",
+      "insight": "UPDATED 27 Aug: broken-on-first-read confirmed on 1, 3, 4, 5, 7, 9, 10, 13, 16 and 26 Aug — 10 of 26 checked days (38%, down from the ~56-60% estimated on a smaller sample). 17-25 Aug ran a 9-day clean streak with zero occurrences — the longest clean run all project — proving this comes in clusters, not as a steady background rate. 26 Aug (checked 27 Aug) broke again at near-full volume — mobile 99.79% bounce on 13,203 sessions, desktop 99.31% on 723 sessions. Funnel events stayed normal (354 add_to_cart, 22+10 begin_checkout, 1 purchase), and Clarity confirmed real behaviour was fine (368 rage clicks, 1,239 dead clicks, 27.03% scroll). Every occurrence to date has self-corrected within days — still settled as a standing GA4 characteristic, just with a revised, lower and clustered base-rate model.",
       "action": [
-        "Reclassify as settled: a standing GA4 data-processing characteristic (breaks on ~55-60% of days at first read, self-corrects within a few days) — stop treating this as an active investigation",
+        "Update the mental model: expect runs of clean days punctuated by occasional clusters of breaks (~38% overall rate), not a steady ~50-60% coin flip — revise any internal documentation written with the earlier higher estimate",
         "Keep the sitewide rule in place: never quote same-day or next-day bounce/engagement figures without checking Clarity or funnel events first; wait 2-3 days for GA4 to settle before trusting a bounce number",
         "Still worth a low-priority root-cause attempt if anyone has GTM debug access — check the container's tag-firing order/timing for a race condition on the pageView trigger — but no longer worth active tracking effort",
         "Identify the source of the 403/400 console errors first seen 6 Aug — still unattributed, lowest priority remaining thread"
@@ -377,7 +377,7 @@
     },
     {
       "id": "TASK-20",
-      "title": "Pause Criteo + RTB.com retargeting — now confirmed 0% real conversion across FOUR consecutive checks, decision is overdue",
+      "title": "Pause Criteo + RTB.com retargeting — now confirmed 0% real conversion across FIVE consecutive checks (~75,450 sessions, nearly a month), spend appears to be continuing regardless",
       "priority": "critical",
       "category": "traffic",
       "status": "open",
@@ -385,11 +385,11 @@
       "relatedFindings": ["F18"],
       "relatedActionItems": [],
       "dateIdentified": "2026-08-06",
-      "dateConfirmed": "2026-08-17",
-      "insight": "GA4's 'Paid Other' channel (21,765 sessions, 29 Jul-4 Aug) is almost entirely two vendors — rtbcom-retargeting and Criteo's display campaigns (both set up 27 Jan 2026) — with zero conversions and Rs 0 revenue. RE-CHECKED 5-7 Aug: another 7,010 sessions, again exactly 0 conversions, Rs 0 revenue. RE-CHECKED 8-13 Aug: another 14,855 sessions, 2 non-purchase 'conversions' (same inflation pattern as TASK-21/F19) but still Rs 0 real revenue. RE-CHECKED AGAIN 14-16 Aug: another 6,754 sessions, back to 0 conversions of any kind, Rs 0 revenue. Four consecutive checks, ~50,384 sessions total, not one rupee of confirmed real revenue this entire time. Cross-checked directly in Clarity: this traffic bounces at 74.83% and scrolls only 23.87%, both far worse than the sitewide average — this is genuinely low-quality traffic, not a tracking gap hiding real engagement. There is no remaining scenario in which more waiting produces a different answer.",
+      "dateConfirmed": "2026-08-27",
+      "insight": "GA4's 'Paid Other' channel (21,765 sessions, 29 Jul-4 Aug) is almost entirely two vendors — rtbcom-retargeting and Criteo's display campaigns (both set up 27 Jan 2026) — with zero conversions and Rs 0 revenue. RE-CHECKED 5-7 Aug: 7,010 sessions, 0 conversions. RE-CHECKED 8-13 Aug: 14,855 sessions, 2 non-purchase 'conversions' (inflation pattern per TASK-21/F19), Rs 0 real revenue. RE-CHECKED 14-16 Aug: 6,754 sessions, 0 conversions. RE-CHECKED AGAIN 17-26 Aug: 25,066 more sessions, still 0 conversions, Rs 0 revenue. Five consecutive checks, ~75,450 sessions total, not one rupee of confirmed real revenue across nearly a month of continuous checking. Cross-checked directly in Clarity: this traffic bounces at 74.83% and scrolls only 23.87%, both far worse than the sitewide average. This task has now been open for three weeks without a visible change in campaign status — worth confirming directly whether a pause decision was actually acted on, since the traffic volume shows no sign of having stopped.",
       "action": [
         "Get the actual weekly/monthly spend on rtbcom and Criteo — this data shows volume but not cost, and cost is the missing piece for a pause decision",
-        "Pause both immediately — four consecutive checks at 0% real conversion removes any reasonable case for continuing to \"just watch a bit longer\"",
+        "Confirm directly whether these campaigns have actually been paused yet — five checks at 0% real conversion and three weeks of this task sitting open suggests the recommendation may not have been actioned",
         "If keeping either, check whether their landing pages/redirects are stripping tracking parameters or loading differently from normal traffic (similar to the Meta in-app WebView issue in F4)",
         "Re-run this same channel check after any fix to confirm real (purchase-backed) conversions start appearing before resuming spend at volume"
       ],
@@ -417,7 +417,7 @@
     },
     {
       "id": "TASK-22",
-      "title": "Check whether Shopify's abandoned-checkout recovery email is even enabled — now zero records for a full week straight",
+      "title": "Check whether Shopify's abandoned-checkout recovery email is even enabled — only 1 new record in the last 13 days",
       "priority": "medium",
       "category": "commerce",
       "status": "needs_investigation",
@@ -425,19 +425,19 @@
       "relatedFindings": ["F20"],
       "relatedActionItems": ["T14"],
       "dateIdentified": "2026-08-06",
-      "dateConfirmed": "2026-08-14",
-      "insight": "Shopify recorded only 3 abandoned checkouts in the first 7 days checked (Rs 12,795, Rs 71,991, Rs 1,09,861 — Rs 1,94,647 total, all named real products). RE-CHECKED 5-7 Aug: zero abandoned checkouts. RE-CHECKED AGAIN 8-14 Aug: still zero — a full week straight with no new records, despite continued cart-page traffic and begin_checkout events in GA4 the whole time (74, 40 and 22 begin_checkout events on 11-12 Aug alone). Ten straight days at zero, right after a week that only produced 3, confirms this isn't sampling noise — it's the normal, near-total state of this recovery channel, and will stay that way until F1/TASK-01 ships.",
+      "dateConfirmed": "2026-08-27",
+      "insight": "Shopify recorded only 3 abandoned checkouts in the first 7 days checked (Rs 1,94,647 total, all named real products). RE-CHECKED 5-7 Aug: zero. RE-CHECKED 8-14 Aug: zero, a full week straight. RE-CHECKED AGAIN 14-27 Aug (13 more days): exactly 1 new record (17 Aug, Rs 1,76,368). Across nearly a full month of tracking, only 4 abandoned-checkout records exist in Shopify total, despite consistent daily cart-page traffic and begin_checkout events throughout. This confirms it isn't sampling noise — it's the normal, near-total state of this recovery channel, and will stay that way until F1/TASK-01 ships.",
       "action": [
         "Check Shopify Admin → Settings → Checkout → whether the abandoned checkout recovery email is switched on at all",
-        "Manually follow up on the 3 known high-value abandons if no automated email went out — Rs 1,09,861 and Rs 71,991 are large enough to be worth a direct outreach",
+        "Manually follow up on the 4 known high-value abandons if no automated email went out — Rs 1,76,368, Rs 1,09,861 and Rs 71,991 are large enough to be worth direct outreach",
         "Flag to whoever owns TASK-01/T1 that fixing the login-wall presentation would have a second benefit beyond conversion rate: it would let far more real abandoned-checkout records exist for Shopify's own recovery system to work with"
       ],
-      "impact": "Rs 1,94,647 in known, named, recoverable cart value sitting unaddressed — and that's only the small fraction of drop-off that even made it into a Shopify record. Ten days of near-total invisibility since.",
+      "impact": "Rs 3,71,015 in known, named, recoverable cart value across the 4 records to date sitting unaddressed — and that's only the small fraction of drop-off that even made it into a Shopify record.",
       "effort": "~30 minutes to check settings + manual outreach, Marketing ops"
     },
     {
       "id": "TASK-23",
-      "title": "UPDATED — mobile purchase surge has partly moderated (2.43/day peak → 1.75/day), still above original 1.14/day baseline",
+      "title": "UPDATED — mobile purchase rate has stabilised around 1.5-1.75/day across three consecutive re-checks, a durable if modest lift above the 1.14/day baseline",
       "priority": "medium",
       "category": "growth",
       "status": "needs_investigation",
@@ -445,16 +445,58 @@
       "relatedFindings": ["F21"],
       "relatedActionItems": [],
       "dateIdentified": "2026-08-14",
-      "dateConfirmed": "2026-08-17",
-      "insight": "UPDATED 17 Aug: the originally-flagged 6-12 Aug surge (2.43 mobile orders/day, up from 1.14/day the week before) has been re-checked over 13-16 Aug (4 days): 1.75 orders/day (7 orders), including 4 purchases on 16 Aug alone despite that being an F12-broken day — confirms purchases track real activity regardless of the tracking bug. So the daily rate has pulled back from the 6-12 Aug peak but is still meaningfully above the original baseline — reads as a genuine, moderating lift rather than a one-week fluke that's now fully reverted. Still worth understanding the driver, though the urgency is lower than initially flagged since it wasn't a clean step-change.",
+      "dateConfirmed": "2026-08-27",
+      "insight": "UPDATED 27 Aug: the originally-flagged 6-12 Aug surge (2.43 mobile orders/day, up from 1.14/day the week before) has now been re-checked three times: 13-16 Aug (1.75/day), and 19-25 Aug (1.57/day, 11 orders, Rs 82,836 mobile revenue). Three consecutive checks landing in a 1.5-1.75/day band, consistently above the original 1.14/day baseline and consistently below the 6-12 Aug peak, is enough to call this a real, durable (if modest) lift rather than noise or a fully-reverted one-week fluke. Still no confirmed driver identified.",
       "action": [
-        "Break down mobile orders by traffic source/channel and by product across the full 6-16 Aug window — is this concentrated in one campaign, one SKU, or broad-based?",
-        "Check if any promo, discount code, or marketing push went out in the 6-12 Aug window that could explain the peak, and whether it lapsed going into 13-16 Aug",
+        "Break down mobile orders by traffic source/channel and by product across the full 6-25 Aug window — is this concentrated in one campaign, one SKU, or broad-based?",
+        "Check if any promo, discount code, or marketing push went out in early-to-mid August that could explain the shift, and whether it's still active",
         "If a specific driver is found, consider whether it's repeatable/scalable rather than a one-off — this is the kind of positive signal worth protecting and amplifying, not just noting",
-        "Keep tracking the daily rate for another week to see whether it stabilises around 1.75/day, keeps reverting to 1.14/day, or is still noisy at this sample size"
+        "This has now stabilised across 3 checks — consider closing out the active-investigation phase and just tracking it in the regular weekly cadence rather than a dedicated re-check every cycle"
       ],
       "impact": "If this volume increase is repeatable and attributable to something specific, it's a lower-effort growth lever than any of the fixes above — understanding it could inform where to double down.",
-      "effort": "~1 hour to segment the 17 orders and check for a promo/campaign match, Analytics + Marketing"
+      "effort": "~1 hour to segment recent orders and check for a promo/campaign match, Analytics + Marketing"
+    },
+    {
+      "id": "TASK-24",
+      "title": "NEW — Decide the fate of the 'rate-today' programmatic SEO pages: they're flooding organic search with near-zero-intent traffic and hiding real performance",
+      "priority": "high",
+      "category": "seo",
+      "status": "needs_investigation",
+      "source": "Google Search Console",
+      "relatedFindings": ["F22"],
+      "relatedActionItems": [],
+      "dateIdentified": "2026-08-27",
+      "dateConfirmed": "2026-08-27",
+      "insight": "GSC reconnected for the first time this project after being broken since day one. A family of programmatic '[city]-[metal]-rate-today' pages is ranking hard for generic commodity-price queries ('gold rate today' 32,850 impressions/0.2% CTR, 'silver rate today' 22,257 impressions/0.21% CTR) and drove impressions from ~20K/day to ~40-50K/day starting mid-August while blended CTR nearly halved (0.6-0.9% down to 0.4-0.5%). These visitors want a quick price check, not a jewellery purchase — near-zero CTR reflects genuine intent mismatch, not a ranking failure. Meanwhile none of the site's actual product/collection pages appear in the top-20 organic pages by impressions at all — organic visibility is either branded (excellent) or this generic utility content, with real shopping-intent pages essentially invisible in search.",
+      "action": [
+        "Decide intentionally whether these rate pages are a deliberate strategy (top-of-funnel brand exposure / retargeting-pool building) or scope creep nobody is tracking the ROI on — if intentional, fine, but measure it separately from core commercial SEO health",
+        "Report organic performance in two tracks going forward: branded + commercial-intent queries (the metric that matters for revenue) vs. rate-checker traffic (a separate, low-intent channel) — don't let one blended CTR number hide the other",
+        "If keeping the rate pages, add clear on-page CTAs bridging to actual product pages, since this traffic is currently a dead end even for the small fraction who do click through",
+        "Separately: investigate why real commercial pages (PDP/PLP) have near-zero organic visibility — this is arguably the bigger opportunity, see TASK-25 for one already-confirmed cause"
+      ],
+      "impact": "Right now the CTR/impressions trend looks like a big story but it's almost entirely a low-value traffic type — understanding this prevents both false alarm (\"our SEO is failing\") and false credit (\"our SEO is booming\") from the same raw numbers, and redirects attention to the commercial-page visibility gap that's actually worth fixing.",
+      "effort": "~2 hours to segment reporting + decide on rate-page strategy, SEO/Marketing"
+    },
+    {
+      "id": "TASK-25",
+      "title": "NEW — Request re-indexing for corinthian-pave-diamond-mens-ring: Google's index shows a stale 404 from May despite the page being live and working",
+      "priority": "high",
+      "category": "seo",
+      "status": "open",
+      "source": "Google Search Console",
+      "relatedFindings": ["F23"],
+      "relatedActionItems": [],
+      "dateIdentified": "2026-08-27",
+      "dateConfirmed": "2026-08-27",
+      "insight": "GSC's URL Inspection API reports 'Not found (404)' for this PDP, but last_crawled is 2026-05-02 — months stale, and well before this project's own GA4 data confirms continuous real daily traffic to this exact URL. A live fetch just now confirms the page renders correctly with a valid title tag. The other 3 reference pages checked the same way all show fresh, healthy index status (e.g. /collections/eterna: 'Submitted and indexed', last crawled 14 Aug) — this is an isolated stale record on one URL, not a site-wide problem. A stale 404 in Google's index can actively suppress a page from search results even though the live page works fine, which would explain why this PDP (like the others) barely shows up in organic search at all.",
+      "action": [
+        "Use GSC's URL Inspection tool (either the web UI or the 'request indexing' API action) to submit this specific URL for re-crawl",
+        "Spot-check a handful of other PDPs the same way to see if this is a one-off or a broader pattern of stale crawl records across the product catalog",
+        "Once re-crawled and confirmed indexed, monitor this URL's organic impressions/clicks in GSC over the following 2-3 weeks to see if visibility improves",
+        "If a pattern of stale/incorrect index records turns up across many PDPs, consider submitting a fresh sitemap to prompt a broader re-crawl rather than fixing pages one at a time"
+      ],
+      "impact": "A quick, low-effort fix (minutes, not hours) that could restore search visibility to a real commercial page — directly relevant to the bigger gap flagged in TASK-24 (real product pages being nearly invisible in organic search).",
+      "effort": "~15 minutes to request re-indexing + spot-check others, SEO/Marketing"
     }
   ]
 }
