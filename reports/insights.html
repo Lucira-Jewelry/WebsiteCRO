@@ -1545,14 +1545,58 @@
     </div>
   </section>
 
+  <div class="divider">
+    <div class="eyebrow" style="color:var(--muted)">Added 31 Aug 2026 — routine catch-up, everything holding as predicted</div>
+    <h2 style="font-size:24px;margin:6px 0 6px;">Update — 26 Aug's break self-corrected exactly as expected, 30 Aug broke fresh, and the two big open decisions (Criteo/RTB.com pause, stale-404 fix) are still sitting unactioned</h2>
+    <p class="measure" style="margin:0;font-size:13.5px;color:var(--muted);">
+      Caught up 26-29 Aug (finalised) plus a live check through 31 Aug. Nothing new surfaced this cycle — every
+      tracked finding moved exactly the way the model predicted, which is itself worth noting after a month of
+      daily tracking.</p>
+  </div>
+
+  <section>
+    <div class="sec-head"><span class="tag">Confirmed</span><h2>F12: 26 Aug self-corrected on schedule, 30 Aug broke fresh — 11 occurrences across 30 days (37%), model unchanged</h2></div>
+    <div class="banner fix">
+      <p style="margin:0;">26 Aug — flagged broken in the last update (99.79% mobile bounce) — has already
+        self-corrected: a fresh pull now shows a normal 45.13% mobile bounce, right on the usual 2-4 day schedule.
+        30 Aug (checked 31 Aug) broke fresh in its place, near-full volume as always (99.79% mobile bounce on
+        13,349 sessions), cross-validated clean in both Clarity and funnel events. 11 occurrences across 30 checked
+        days (37%) — the clustered base-rate model from last cycle needs no revision.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Still open</span><h2>F18 and TASK-25 — both decisions remain unactioned</h2></div>
+    <div class="banner alarm" style="margin-bottom:10px;">
+      <p style="margin:0;"><b>F18 (Criteo/RTB.com):</b> 6th consecutive check (27-30 Aug, +9,321 sessions) — still
+        essentially 0% real conversion. ~84,771 sessions total across more than a month, never a confirmed rupee of
+        real revenue. Traffic volume shows no sign of a pause. This is now the longest-standing unactioned
+        recommendation in the whole project.</p>
+    </div>
+    <div class="banner alarm">
+      <p style="margin:0;"><b>TASK-25 (stale 404 on corinthian-pave-diamond-mens-ring):</b> re-checked via GSC's
+        URL Inspection API — still showing "Not found (404)," still last crawled 2026-05-02. No re-indexing request
+        has been submitted yet. This is a 15-minute fix that's been sitting open since it was found.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="tag">Confirmed</span><h2>F20: zero new abandoned checkouts, holding at 4 records total across 5 weeks</h2></div>
+    <div class="banner">
+      <p style="margin:0;">Re-checked 27-30 Aug: zero new records, consistent with every check since the first
+        week. Four records total exist in Shopify across a full 5-week tracking period — the pattern is stable and
+        will remain so until F1/TASK-01 ships.</p>
+    </div>
+  </section>
+
   <div class="foot">
     <div>Sources</div>
     <div class="g">
-      <div>GA4 — property 478308692 · daily series finalised through 25 Aug, funnels, pages, channels</div>
-      <div>Microsoft Clarity — ro0m9zh071 · finalised through 25 Aug</div>
-      <div>Shopify Admin — orders segmented by sourceName + tags; abandoned checkouts checked through 27 Aug</div>
+      <div>GA4 — property 478308692 · daily series finalised through 29 Aug, funnels, pages, channels</div>
+      <div>Microsoft Clarity — ro0m9zh071 · finalised through 29 Aug</div>
+      <div>Shopify Admin — orders segmented by sourceName + tags; abandoned checkouts checked through 30 Aug</div>
       <div>Google Ads — account 2348623547 · full 30d campaign-level spend &amp; conversion pull, 30 Jul 2026</div>
-      <div>Google Search Console — sc-domain:lucirajewelry.com · reconnected 27 Aug 2026 after being broken (invalid_client) since project start; search analytics, page/query breakdowns, URL inspection all now working</div>
+      <div>Google Search Console — sc-domain:lucirajewelry.com · checked through 31 Aug 2026</div>
       <div>Playwright 1.49 / Chromium 151 — live measurement 28 &amp; 30 Jul 2026; competitive check (caratlane.com) 4 Aug 2026</div>
     </div>
   </div>
