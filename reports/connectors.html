@@ -106,7 +106,7 @@
   <div class="masthead">
     <div class="eyebrow">System Health</div>
     <h1>Connector Status</h1>
-    <div class="meta">Every data source this analysis depends on, checked live &middot; 30 Jul 2026, re-verified through 27 Aug 2026</div>
+    <div class="meta">Every data source this analysis depends on, checked live &middot; 30 Jul 2026, re-verified through 31 Aug 2026</div>
   </div>
 
   <div class="kpis">
@@ -120,20 +120,20 @@
 
       <div class="conn">
         <div class="dot ok"></div>
-        <div><h4>Google Analytics 4</h4><p>Property 478308692 ("Lucira"), Standard tier &middot; sessions, funnel events, page-level data. Note: a separate engagement/bounce-rate tracking break (F12) has now recurred on 10 of the last 26 days &mdash; this is a data-quality issue within GA4, not a connector failure; the API itself is responding normally every day.</p></div>
-        <div class="status ok">CONNECTED &middot; verified 27 Aug</div>
+        <div><h4>Google Analytics 4</h4><p>Property 478308692 ("Lucira"), Standard tier &middot; sessions, funnel events, page-level data. Note: a separate engagement/bounce-rate tracking break (F12) has now recurred on 11 of the last 30 days &mdash; this is a data-quality issue within GA4, not a connector failure; the API itself is responding normally every day.</p></div>
+        <div class="status ok">CONNECTED &middot; verified 31 Aug</div>
       </div>
 
       <div class="conn">
         <div class="dot ok"></div>
         <div><h4>Microsoft Clarity</h4><p>Project ro0m9zh071 &middot; rage/dead clicks, scroll depth, session recordings, JS errors. Recovered 13 Aug after an 8-12 Aug outage; stable since, no issues across the 16-25 Aug catch-up or the 26 Aug F12 cross-validation.</p></div>
-        <div class="status ok">CONNECTED &middot; verified 27 Aug</div>
+        <div class="status ok">CONNECTED &middot; verified 31 Aug</div>
       </div>
 
       <div class="conn">
         <div class="dot ok"></div>
         <div><h4>Shopify Admin</h4><p>luciraonline.myshopify.com, Advanced plan &middot; orders, products, customers. The GraphQL connector used for abandoned-checkout queries (F20), unavailable on 17 Aug, is back &mdash; used successfully this cycle.</p></div>
-        <div class="status ok">CONNECTED &middot; verified 27 Aug</div>
+        <div class="status ok">CONNECTED &middot; verified 31 Aug</div>
       </div>
 
       <div class="conn">
@@ -181,7 +181,7 @@
   </section>
 
   <div class="foot">
-    Checked by attempting a real, lightweight call against each connector, most recently 27 Aug 2026 — this is a
+    Checked by attempting a real, lightweight call against each connector, most recently 31 Aug 2026 — this is a
     live status, not a configuration assumption. Re-run this check periodically; connector auth and uptime can
     change independently of the data pipeline. History: Microsoft Clarity had a 5-day outage (8-12 Aug) that
     self-resolved by 13 Aug; Google Search Console was broken with <code>invalid_client</code> from the start of
